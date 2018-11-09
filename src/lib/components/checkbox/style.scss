@@ -1,0 +1,31 @@
+.gaia-chat .checkbox {
+  background: #fff;
+  border: 1px solid #1E223F;
+  width: auto;
+  color: grey;
+  animation: slide-up 0.4s ease;
+  -webkit-animation: slide-up .4s ease;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, .19), 0 6px 6px rgba(0, 0, 0, .23);
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 100px;
+  padding: 5px 20px;
+}
+.gaia-chat .checkbox.toggle {
+  color: dimgrey;
+  background-color:#00ffc8;
+  border-color: #00ffc8;
+  font-weight: bold;
+}
+//.gaia-chat .checkbox:hover {
+  //font-weight: normal;
+//}
+.gaia-chat .checkbox > input {
+  display: none;
+}
+.gaia-chat  .checkbox .toggle, .gaia .checkbox .toggle:hover {
+  font-weight: bold;
+}
+.gaia-chat  .checkbox + div {
+  height: 10px;
+}

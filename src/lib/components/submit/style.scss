@@ -1,0 +1,37 @@
+.gaia-chat .submit {
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 50px;
+    background: white;
+    animation: slide-up 0.4s ease;
+    border: 1px solid lightgray;
+    color: black;
+}
+.gaia-chat .submit:hover {
+    font-weight: bold;
+}
+.gaia-chat .submit.right {
+     background: white;
+     border: 1px solid lightgray;
+    display: none;
+ }
+.gaia-chat .submit-nested {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 50px;
+    background: white;
+    color: black;
+    animation: slide-up 0.4s ease;
+    width: calc(100% - 100px);
+    font-size: 20px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, .19), 0 6px 6px rgba(0, 0, 0, .23);
+}
+.gaia-chat .submit-nested:hover {
+    //font-weight: bold;
+}
+.gaia-chat .submit-nested.right {
+    background: white;
+    border: 1px solid lightgray;
+    display: none;
+}

@@ -1,0 +1,50 @@
+.gaia-chat .carousel {
+  max-width: 80%;
+  min-width: 30%;
+  background: white;
+  border: 1px solid #1E223F;
+  border-radius: 15px;
+  color: #1E223F;
+  transition: transform .5s ease-out;
+  margin-bottom: 30px;
+}
+
+.gaia-chat .carousel .button-group {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+
+.gaia-chat .carousel .goto {
+  border: none;
+  background: #1E223F;
+  height: 16px;
+  width: 16px;
+  border-radius: 8px;
+  color: #1E223F;
+  margin: 3px;
+}
+
+.gaia-chat .carousel .goto:hover {
+  background: lightgrey;
+}
+
+.gaia-chat .carousel > div.block {
+  z-index: 1;
+  display: none;
+  -webkit-transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  -o-transition: opacity 1s;
+  transition: opacity 1s;
+  width: auto;
+}
+
+.gaia-chat .carousel > div.active {
+  display: block;
+  z-index: 2;
+}
+
+.gaia-chat .carousel:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
