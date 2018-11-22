@@ -180,11 +180,12 @@
             }
         };
 
-        let channel = new GaiaChannel("#chat-messages", emitter);
-        let promise = channel.connect("https://beta-api.leftshift.one/channel/ws", "dd319124-6fdd-4543-9f44-7d238cafa68c");
+        let channel = new GaiaChannel("#chat-messages", "dd319124-6fdd-4543-9f44-7d238cafa68c", emitter);
+        let promise = channel.connect("ws://localhost:61616");
         promise.then(() => {
             // the channel is ready to use
         });
+        channel.subscribe(channel.inboundDestination);
 
         document.getElementById("chat-messageInput").addEventListener("keyup", ((ev) => {
             if (ev.keyCode === 13) {
@@ -198,7 +199,7 @@
 
         function send(value) {
             if (value.replace(/^\s+|\s+$/g,"") !== "") {
-                channel.sendMessage({type: "text", text: value});
+                channel.sendMessage(channel.outboundDestination, {type: "text", text: value});
             }
             clearMessageInput();
         }
