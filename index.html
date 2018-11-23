@@ -186,6 +186,7 @@
             // the channel is ready to use
         });
         channel.subscribe(channel.inboundDestination);
+        channel.servus();
 
         document.getElementById("chat-messageInput").addEventListener("keyup", ((ev) => {
             if (ev.keyCode === 13) {

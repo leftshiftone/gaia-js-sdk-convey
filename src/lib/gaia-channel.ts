@@ -19,7 +19,7 @@ export class GaiaChannel {
         this.renderer = new Renderer(document.querySelector(container));
         this._clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
         this._identityId = identityId;
-        this._userId = Math.random(); //todo: make user id more persistent for an actual user (e.g. cookie, etc)
+        this._userId = Math.floor(Math.random() * 10000000001); //todo: make user id more persistent for an actual user (e.g. cookie, etc)
         this._inboundDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/in';
         this._outboundDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/out';
         this.onMessage = this.onMessage.bind(this);
@@ -86,6 +86,27 @@ export class GaiaChannel {
             },                                               console.error);
         } catch (err) {
             return Promise.reject(err);
+        }
+    }
+
+    /**
+     * Initial request to make the system aware that the user is listening
+     */
+    public servus() {
+        try {
+            const header = { userId: this.userId };
+            const body = { type: 'reception' };
+            if (this.mqttClient) {
+                this.mqttClient.publish(this.outboundDestination, JSON.stringify({ header, body }), (error?: Error, packet?: Packet) => {
+                    if (error) {
+                        console.error('Failed to publish servus message ' + error.message, error, packet);
+                    } else {
+                        console.debug('Successfully published message');
+                    }
+                });
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 
