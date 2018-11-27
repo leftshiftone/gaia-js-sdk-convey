@@ -34,7 +34,7 @@ export class Button extends MarkupComponent {
             sendMessage({
                     type: 'button',
                     text: this.text,
-                    attributes: {name: this.buttonName, value: this.value}
+                    attributes: {type: 'button', name: this.buttonName, value: this.value}
                 },
             );
         });
