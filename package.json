@@ -1,6 +1,6 @@
 {
-  "name": "gaia-js",
-  "version": "0.0.1",
+  "name": "gaia-js-sdk-convey",
+  "version": "0.1.0",
   "description": "JavaScript connector to the GAIA ecosystem.",
   "main": "dist/index.js",
   "dependencies": {},
@@ -53,7 +53,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MiniXC/GaiaJS.git"
+    "url": "git+https://github.com/leftshiftone/gaia-js-sdk-convey.git"
   },
   "keywords": [
     "digital",
@@ -65,7 +65,7 @@
   "author": "Leftshift One Software GmbH <devs@leftshift.one>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MiniXC/GaiaJS/issues"
+    "url": "https://github.com/leftshiftone/gaia-js-sdk-convey/issues"
   },
-  "homepage": "https://github.com/MiniXC/GaiaJS#readme"
+  "homepage": "https://github.com/leftshiftone/gaia-js-sdk-convey"
 }
