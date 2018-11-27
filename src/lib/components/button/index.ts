@@ -16,6 +16,9 @@ export class Button extends MarkupComponent {
   }
 
   public render(container: any, sendMessage: any) {
+    console.debug('Send message function: ');
+    console.debug(sendMessage);
+
     const position = this.position || 'left';
     const button = document.createElement('button');
     button.setAttribute('name', this.buttonName);

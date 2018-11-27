@@ -62,6 +62,7 @@ export class GaiaChannel {
     }
 
     public sendMessage(topic: string, msg: any) {
+        console.debug('Sending message to topic ' + topic);
         try {
             // remove left buttons
             const elements = document.querySelectorAll('button.left');
@@ -74,7 +75,7 @@ export class GaiaChannel {
                     if (error) {
                         console.error('Failed to publish message ' + error.message, error, packet);
                     } else {
-                        console.debug('Successfully published message');
+                        console.debug('Successfully published message ' + msg);
                     }
                 });
             }
@@ -97,11 +98,14 @@ export class GaiaChannel {
             const header = { identityId: this.idenityId, clientId: this.clientId, userId: this.userId };
             const body = { type: 'reception' };
             if (this.mqttClient) {
-                this.mqttClient.publish(this.outboundDestination, JSON.stringify({ header, body }), (error?: Error, packet?: Packet) => {
+                this.mqttClient.publish(this.outboundDestination, JSON.stringify({
+                    header,
+                    body,
+                }),                     (error?: Error, packet?: Packet) => {
                     if (error) {
                         console.error('Failed to publish servus message ' + error.message, error, packet);
                     } else {
-                        console.debug('Successfully published message');
+                        console.debug('Successfully published servus message');
                     }
                 });
             }
@@ -131,6 +135,7 @@ export class GaiaChannel {
     }
 
     private onMessage(topic: string, msg: string) {
+        console.debug('Received message ' + msg + ' from topic ' + topic);
         const message = JSON.parse(msg);
         if (message.type) {
             this.emitter.onMessage(Object.assign(message, { position: 'left' }));
@@ -141,7 +146,7 @@ export class GaiaChannel {
                     if (msg == null) {
                         return null;
                     }
-                    $this.renderer.render(Object.assign(msg, { position: 'left' }), $this.sendMessage.bind($this, topic));
+                    $this.renderer.render(Object.assign(msg, { position: 'left' }), $this.sendMessage.bind($this, this.outboundDestination));
                     return $this.emitter.onPostRender(Object.assign(msg, { position: 'left' }), false);
                 });
         }
