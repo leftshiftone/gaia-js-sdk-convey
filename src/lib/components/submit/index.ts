@@ -1,4 +1,4 @@
-import { MarkupComponent } from '../markup-component';
+import {MarkupComponent} from '../markup-component';
 
 export class Submit extends MarkupComponent {
 

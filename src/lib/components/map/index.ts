@@ -1,4 +1,4 @@
-import { MarkupComponent } from '../markup-component';
+import {MarkupComponent} from '../markup-component';
 import * as L from 'leaflet';
 
 export class Map extends MarkupComponent {
@@ -79,7 +79,7 @@ export class Map extends MarkupComponent {
         const position = this.map.getCenter();
         const radius = this.getRadius();
         if (!this.circle) {
-            this.circle = L.circle([position.lat, position.lng], { radius });
+            this.circle = L.circle([position.lat, position.lng], {radius});
             this.circle.addTo(this.map);
         } else {
             this.circle.setLatLng(position);
@@ -97,20 +97,20 @@ export class Map extends MarkupComponent {
             }
         });
 
-   //  const gaiaButtonElem = <HTMLElement>document.querySelector('.gaia-button-nested');
-   //  const noMarkersElem = <HTMLElement>document.querySelector('.no-markers');
+        //  const gaiaButtonElem = <HTMLElement>document.querySelector('.gaia-button-nested');
+        //  const noMarkersElem = <HTMLElement>document.querySelector('.no-markers');
 //
-   //  if (this.numMarkers > 0) {
-   //      const numMarkersElem = <HTMLElement>document.querySelector('.num-markers');
-   //      if (numMarkersElem && gaiaButtonElem && noMarkersElem) {
-   //          numMarkersElem.innerHTML = String(this.numMarkers);
-   //          gaiaButtonElem.style.display = 'inherit';
-   //          noMarkersElem.style.display = 'None';
-   //      }
-   //  } else {
-   //      gaiaButtonElem.style.display = 'None';
-   //      noMarkersElem.style.display = 'inherit';
-   //  }
+        //  if (this.numMarkers > 0) {
+        //      const numMarkersElem = <HTMLElement>document.querySelector('.num-markers');
+        //      if (numMarkersElem && gaiaButtonElem && noMarkersElem) {
+        //          numMarkersElem.innerHTML = String(this.numMarkers);
+        //          gaiaButtonElem.style.display = 'inherit';
+        //          noMarkersElem.style.display = 'None';
+        //      }
+        //  } else {
+        //      gaiaButtonElem.style.display = 'None';
+        //      noMarkersElem.style.display = 'inherit';
+        //  }
     }
 
 
@@ -132,7 +132,7 @@ export class Map extends MarkupComponent {
         setTimeout(() => {
             const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
             const osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-            const osm = new L.TileLayer(osmUrl, { subdomains: ['a', 'b', 'c'], attribution: osmAttrib });
+            const osm = new L.TileLayer(osmUrl, {subdomains: ['a', 'b', 'c'], attribution: osmAttrib});
             this.map = L.map(this.mapContainer, this.leafletSettings);
             this.map.setView(this.center, this.zoom);
             this.map.addLayer(osm);
@@ -144,12 +144,12 @@ export class Map extends MarkupComponent {
             });
             this.mapMarkers = [];
             this.markers.forEach((m: any) => {
-                const marker = L.marker(m, { icon: this.mapMarkerInactive });
+                const marker = L.marker(m, {icon: this.mapMarkerInactive});
                 marker.addTo(this.map);
                 this.mapMarkers.push(marker);
             });
             this.drawCircleAndMarkers();
             this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
-        },         500);
+        }, 500);
     }
 }

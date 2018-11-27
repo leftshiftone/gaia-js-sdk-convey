@@ -1,14 +1,14 @@
-import { MarkupComponent } from '../markup-component';
+import {MarkupComponent} from '../markup-component';
 
 export class Break extends MarkupComponent {
 
-  constructor() {
-    super('break');
-  }
+    constructor() {
+        super('break');
+    }
 
-  public render(container: any) {
-    const br = document.createElement('br');
-    container.appendChild(br);
-  }
+    public render(container: any) {
+        const br = document.createElement('br');
+        container.appendChild(br);
+    }
 
 }

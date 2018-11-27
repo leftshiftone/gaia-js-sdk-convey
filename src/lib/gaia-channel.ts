@@ -1,7 +1,7 @@
-import { Emitter, EmitterAdapter } from './emitter';
-import { Renderer } from './renderer';
+import {Emitter, EmitterAdapter} from './emitter';
+import {Renderer} from './renderer';
 import * as mqtt from 'mqtt';
-import { Packet } from 'mqtt';
+import {Packet} from 'mqtt';
 
 export class GaiaChannel {
 
@@ -28,7 +28,7 @@ export class GaiaChannel {
     public connect(url: any) {
         if (!this.mqttClient) {
             return new Promise((resolve) => {
-                this.mqttClient = mqtt.connect(url, { clean: false, clientId: this._clientId });
+                this.mqttClient = mqtt.connect(url, {clean: false, clientId: this._clientId});
                 this.mqttClient.on('connect', this.emitter.onConnected);
                 this.mqttClient.on('message', this.onMessage);
                 resolve();
@@ -68,10 +68,10 @@ export class GaiaChannel {
             const elements = document.querySelectorAll('button.left');
             elements.forEach(element => element.remove());
 
-            const header = { identityId: this.idenityId, clientId: this.clientId, userId: this.userId };
-            const body = Object.assign(msg, { position: 'right', timestamp: new Date().getTime() });
+            const header = {identityId: this.idenityId, clientId: this.clientId, userId: this.userId};
+            const body = Object.assign(msg, {position: 'right', timestamp: new Date().getTime()});
             if (this.mqttClient) {
-                this.mqttClient.publish(topic, JSON.stringify({ header, body }), (error?: Error, packet?: Packet) => {
+                this.mqttClient.publish(topic, JSON.stringify({header, body}), (error?: Error, packet?: Packet) => {
                     if (error) {
                         console.error('Failed to publish message ' + error.message, error, packet);
                     } else {
@@ -84,7 +84,7 @@ export class GaiaChannel {
             return this.emitter.onPreRender(body, true).then(msg => {
                 $this.renderer.render(msg, $this.sendMessage.bind($this, topic));
                 return this.emitter.onPostRender(msg, true);
-            },                                               console.error);
+            }, console.error);
         } catch (err) {
             return Promise.reject(err);
         }
@@ -95,13 +95,13 @@ export class GaiaChannel {
      */
     public servus() {
         try {
-            const header = { identityId: this.idenityId, clientId: this.clientId, userId: this.userId };
-            const body = { type: 'reception' };
+            const header = {identityId: this.idenityId, clientId: this.clientId, userId: this.userId};
+            const body = {type: 'reception'};
             if (this.mqttClient) {
                 this.mqttClient.publish(this.outboundDestination, JSON.stringify({
                     header,
                     body,
-                }),                     (error?: Error, packet?: Packet) => {
+                }), (error?: Error, packet?: Packet) => {
                     if (error) {
                         console.error('Failed to publish servus message ' + error.message, error, packet);
                     } else {
@@ -138,16 +138,16 @@ export class GaiaChannel {
         console.debug('Received message ' + msg + ' from topic ' + topic);
         const message = JSON.parse(msg);
         if (message.type) {
-            this.emitter.onMessage(Object.assign(message, { position: 'left' }));
+            this.emitter.onMessage(Object.assign(message, {position: 'left'}));
 
             const $this = this;
-            this.emitter.onPreRender(Object.assign(message, { position: 'left' }), false)
+            this.emitter.onPreRender(Object.assign(message, {position: 'left'}), false)
                 .then(msg => {
                     if (msg == null) {
                         return null;
                     }
-                    $this.renderer.render(Object.assign(msg, { position: 'left' }), $this.sendMessage.bind($this, this.outboundDestination));
-                    return $this.emitter.onPostRender(Object.assign(msg, { position: 'left' }), false);
+                    $this.renderer.render(Object.assign(msg, {position: 'left'}), $this.sendMessage.bind($this, this.outboundDestination));
+                    return $this.emitter.onPostRender(Object.assign(msg, {position: 'left'}), false);
                 });
         }
     }

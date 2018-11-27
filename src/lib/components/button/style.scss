@@ -9,12 +9,14 @@
   animation: slide-up 0.4s ease;
   cursor: pointer;
 }
+
 .gaia-chat .button.right {
   border: 1px solid lightgray;
   background: #eeeeee;
   margin-right: 30px;
   color: #545454;
 }
+
 .gaia-chat .button-nested {
   width: 50%;
   margin-right: 10px;
@@ -24,17 +26,21 @@
   padding: 5px;
   animation: slide-up 0.4s ease;
 }
+
 .gaia-chat .button-nested.right {
   background: white;
   border: 1px solid lightgray;
 }
+
 .gaia-chat .button:hover {
   background: rgba(184, 185, 181, 0.4);
 }
+
 .gaia-chat .button-nested:hover {
   background: white;
   color: #2f4050;
 }
-.gaia-chat .button:disabled{
+
+.gaia-chat .button:disabled {
   cursor: default;
 }

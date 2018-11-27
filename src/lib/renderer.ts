@@ -1,5 +1,5 @@
-import { MarkupComponent } from './components/markup-component';
-import { components } from './Components';
+import {MarkupComponent} from './components/markup-component';
+import {components} from './Components';
 
 export class Renderer {
 

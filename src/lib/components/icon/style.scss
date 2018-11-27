@@ -1,22 +1,24 @@
 .gaia-chat .icon {
-    display: inline-block;
-    border: 1px solid #1E223F;
-    width: 40px;
-    height: 40px;
-    background:white;
-    background-size:cover;
-    animation: slide-up 0.4s ease;
+  display: inline-block;
+  border: 1px solid #1E223F;
+  width: 40px;
+  height: 40px;
+  background: white;
+  background-size: cover;
+  animation: slide-up 0.4s ease;
 }
+
 .gaia-chat .icon.left {
-    margin-left: 20px;
-    margin-right: 20px;
-    clear: both;
-    background: white;
-    background-size: cover;
-    box-shadow: none !important;
-    border-radius: 50% !important;
+  margin-left: 20px;
+  margin-right: 20px;
+  clear: both;
+  background: white;
+  background-size: cover;
+  box-shadow: none !important;
+  border-radius: 50% !important;
 }
+
 .gaia-chat .icon.right {
-    margin-right: 20px;
-    margin-left: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
 }

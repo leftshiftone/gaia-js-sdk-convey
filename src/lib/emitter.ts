@@ -1,63 +1,63 @@
 export interface Emitter {
 
-  onConnected?(): void;
+    onConnected?(): void;
 
-  onDisconnected?(): void;
+    onDisconnected?(): void;
 
-  onError?(error: string): void;
+    onError?(error: string): void;
 
-  onMessage?(data: any): void;
+    onMessage?(data: any): void;
 
-  onPreRender?(message: any, outgoing:boolean): Promise<any>;
+    onPreRender?(message: any, outgoing: boolean): Promise<any>;
 
-  onPostRender?(message: any, outgoing: boolean): Promise<any>;
+    onPostRender?(message: any, outgoing: boolean): Promise<any>;
 
 }
 
 export class EmitterAdapter implements Emitter {
 
-  private emitter: Emitter | null;
+    private emitter: Emitter | null;
 
-  constructor(emitter: Emitter | null) {
-    this.emitter = emitter;
-  }
-
-  onConnected(): void {
-    if (this.emitter && this.emitter.onConnected) {
-      this.emitter.onConnected();
+    constructor(emitter: Emitter | null) {
+        this.emitter = emitter;
     }
-  }
 
-  onDisconnected(): void {
-    if (this.emitter && this.emitter.onDisconnected) {
-      this.emitter.onDisconnected();
+    onConnected(): void {
+        if (this.emitter && this.emitter.onConnected) {
+            this.emitter.onConnected();
+        }
     }
-  }
 
-  onError(error: string): void {
-    if (this.emitter && this.emitter.onError) {
-      this.emitter.onError(error);
+    onDisconnected(): void {
+        if (this.emitter && this.emitter.onDisconnected) {
+            this.emitter.onDisconnected();
+        }
     }
-  }
 
-  onMessage(data: any): void {
-    if (this.emitter && this.emitter.onMessage) {
-      this.emitter.onMessage(data);
+    onError(error: string): void {
+        if (this.emitter && this.emitter.onError) {
+            this.emitter.onError(error);
+        }
     }
-  }
 
-  onPostRender(message: any, outgoing:boolean): Promise<any> {
-    if (this.emitter && this.emitter.onPostRender) {
-      return this.emitter.onPostRender(message, outgoing);
+    onMessage(data: any): void {
+        if (this.emitter && this.emitter.onMessage) {
+            this.emitter.onMessage(data);
+        }
     }
-    return Promise.resolve(message);
-  }
 
-  onPreRender(message: any, outgoing:boolean): Promise<any> {
-    if (this.emitter && this.emitter.onPreRender) {
-      return this.emitter.onPreRender(message, outgoing);
+    onPostRender(message: any, outgoing: boolean): Promise<any> {
+        if (this.emitter && this.emitter.onPostRender) {
+            return this.emitter.onPostRender(message, outgoing);
+        }
+        return Promise.resolve(message);
     }
-    return Promise.resolve(message);
-  }
+
+    onPreRender(message: any, outgoing: boolean): Promise<any> {
+        if (this.emitter && this.emitter.onPreRender) {
+            return this.emitter.onPreRender(message, outgoing);
+        }
+        return Promise.resolve(message);
+    }
 
 }
