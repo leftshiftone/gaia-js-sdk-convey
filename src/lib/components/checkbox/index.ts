@@ -1,5 +1,5 @@
 import node from '../../support/node';
-import {MarkupComponent} from '../markup-component';
+import { MarkupComponent } from '../markup-component';
 
 export class Checkbox extends MarkupComponent {
 

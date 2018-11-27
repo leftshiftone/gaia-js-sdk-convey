@@ -1,4 +1,4 @@
-import {MarkupComponent} from '../markup-component';
+import { MarkupComponent } from '../markup-component';
 
 // TODO: improve swipe feature: https://css-tricks.com/simple-swipe-with-vanilla-javascript/
 export class Carousel extends MarkupComponent {

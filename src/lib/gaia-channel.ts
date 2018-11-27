@@ -67,7 +67,7 @@ export class GaiaChannel {
             const elements = document.querySelectorAll('button.left');
             elements.forEach(element => element.remove());
 
-            const header = { userId: this.userId };
+            const header = { identityId: this.idenityId, clientId: this.clientId, userId: this.userId };
             const body = Object.assign(msg, { position: 'right', timestamp: new Date().getTime() });
             if (this.mqttClient) {
                 this.mqttClient.publish(topic, JSON.stringify({ header, body }), (error?: Error, packet?: Packet) => {
@@ -94,7 +94,7 @@ export class GaiaChannel {
      */
     public servus() {
         try {
-            const header = { userId: this.userId };
+            const header = { identityId: this.idenityId, clientId: this.clientId, userId: this.userId };
             const body = { type: 'reception' };
             if (this.mqttClient) {
                 this.mqttClient.publish(this.outboundDestination, JSON.stringify({ header, body }), (error?: Error, packet?: Packet) => {
@@ -112,6 +112,10 @@ export class GaiaChannel {
 
     get idenityId(): string {
         return this._identityId;
+    }
+
+    get clientId(): string {
+        return this._clientId;
     }
 
     get userId(): number {

@@ -180,7 +180,7 @@
             }
         };
 
-        let channel = new GaiaChannel("#chat-messages", "dd319124-6fdd-4543-9f44-7d238cafa68c", emitter);
+        let channel = new GaiaChannel("#chat-messages", "1337", emitter);
         let promise = channel.connect("ws://localhost:61616");
         promise.then(() => {
             // the channel is ready to use

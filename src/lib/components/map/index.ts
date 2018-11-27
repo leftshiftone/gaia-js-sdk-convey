@@ -1,4 +1,4 @@
-import {MarkupComponent} from '../markup-component';
+import { MarkupComponent } from '../markup-component';
 import * as L from 'leaflet';
 
 export class Map extends MarkupComponent {

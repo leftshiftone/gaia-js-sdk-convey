@@ -1,6 +1,6 @@
-import {Icon} from '../icon';
-import {Timestamp} from '../timestamp';
-import {MarkupComponent} from '../markup-component';
+import { Icon } from '../icon';
+import { Timestamp } from '../timestamp';
+import { MarkupComponent } from '../markup-component';
 
 export class Block extends MarkupComponent {
 
