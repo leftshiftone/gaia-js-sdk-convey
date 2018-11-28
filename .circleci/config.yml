@@ -10,15 +10,18 @@ jobs:
       - restore_cache:
           key: cache-{{ checksum "package.json" }}
       - run:
+          name: "Install"
+          command: yarn install
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-{{ checksum "package.json" }}
+      - run:
           name: "Lint"
           command: yarn lint
       - run:
           name: "Build"
           command: yarn build
-      - save_cache:
-          paths:
-            - ./node_modules
-          key: cache-{{ checksum "package.json" }}
   release:
     docker:
       - image: circleci/node:lts-browsers
