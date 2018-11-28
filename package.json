@@ -51,8 +51,10 @@
     "docz:build": "docz build",
     "build": "npm run webpack:build && npm run docz:build",
     "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
-    "prepare-release": "release-it",
-    "release": "release-it"
+    "prepare-release:major": "release-it major",
+    "prepare-release:minor": "release-it minor",
+    "prepare-release:patch": "release-it patch",
+    "release": "release-it $npm_package_version"
   },
   "repository": {
     "type": "git",
