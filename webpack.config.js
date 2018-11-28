@@ -21,7 +21,7 @@ module.exports = (env, argv) => ({
           {
             loader: 'tslint-loader',
             options: {
-              fix: true,
+              fix: false,
             },
           },
         ],
