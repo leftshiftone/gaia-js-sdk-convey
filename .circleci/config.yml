@@ -3,8 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/node:lts-browsers
-    environment:
-      TZ: "/usr/share/zoneinfo/Europe/Vienna"
     steps:
       - checkout
       - restore_cache:
