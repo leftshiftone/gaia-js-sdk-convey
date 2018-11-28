@@ -10,19 +10,12 @@ jobs:
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
-          name: "Install"
+          name: "Download dependencies"
           command: yarn install
       - save_cache:
           paths:
             - ./node_modules
-          key: cache-{{ checksum "package.json" }}
-      - run:
-          name: "Lint"
-          command: yarn lint
-      - run:
-          name: "Build"
-          command: yarn build
-
+          key: cache-node-{{ checksum "package.json" }}
 workflows:
   version: 2
   test:
