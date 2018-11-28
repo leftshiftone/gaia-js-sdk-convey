@@ -54,7 +54,8 @@
     "prepare-release:major": "release-it major",
     "prepare-release:minor": "release-it minor",
     "prepare-release:patch": "release-it patch",
-    "release": "release-it ${npm_package_version}"
+    "version": "$npm_package_version",
+    "release": "release-it "
   },
   "repository": {
     "type": "git",
