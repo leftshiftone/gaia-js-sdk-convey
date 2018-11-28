@@ -8,6 +8,6 @@ module.exports = {
     "rules": {
       "import/no-extraneous-dependencies": 0,
       "prefer-arrow-callback": 2,
-      "prefer-const": 2,
-    },
+      "prefer-const": 2
+    }
 };

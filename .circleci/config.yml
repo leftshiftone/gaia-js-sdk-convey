@@ -15,8 +15,5 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run:
-          name: "Lint"
-          command: yarn lint
-      - run:
           name: "Build"
           command: yarn build
