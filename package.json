@@ -28,6 +28,7 @@
     "node-sass-utils": "^1.1.2",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "postcss-loader": "^3.0.0",
+    "release-it": "^8.2.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.22.1",
     "stylelint": "^9.5.0",
@@ -49,7 +50,9 @@
     "webpack:build": "webpack --mode=production",
     "docz:build": "docz build",
     "build": "npm run webpack:build && npm run docz:build",
-    "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js"
+    "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
+    "prepare-release": "release-it",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
