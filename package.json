@@ -51,11 +51,15 @@
     "docz:build": "docz build",
     "build": "npm run webpack:build && npm run docz:build",
     "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
-    "prepare-release:major": "release-it major",
-    "prepare-release:minor": "release-it minor",
-    "prepare-release:patch": "release-it patch",
-    "version": "$npm_package_version",
-    "release": "release-it "
+    "trigger-release:major": "git tag release-major && git push --tags",
+    "cleanup-release:major": "git tag -d release-major && git push -d origin release-major",
+    "trigger-release:minor": "git tag release-minor && git push --tags",
+    "cleanup-release:minor": "git tag -d release-minor && git push -d origin release-minor",
+    "trigger-release:patch": "git tag release-patch && git push --tags",
+    "cleanup-release:patch": "git tag -d release-patch && git push -d origin release-patch",
+    "release:major": "release-it major",
+    "release:minor": "release-it minor",
+    "release:patch": "release-it patch"
   },
   "repository": {
     "type": "git",

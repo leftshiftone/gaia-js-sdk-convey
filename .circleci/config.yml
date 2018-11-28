@@ -17,3 +17,96 @@ jobs:
       - run:
           name: "Build"
           command: yarn build
+  release-major:
+    docker:
+      - image: circleci/node:lts-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: "Download dependencies"
+          command: yarn install
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: "Build"
+          command: yarn build
+      - run:
+          name: "Release"
+          command: yarn release:major
+      - run:
+          name: "Cleanup release"
+          command: yarn cleanup-release:major
+  release-minor:
+    docker:
+      - image: circleci/node:lts-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: "Download dependencies"
+          command: yarn install
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: "Build"
+          command: yarn build
+      - run:
+          name: "Release"
+          command: yarn release:minor
+      - run:
+          name: "Cleanup release"
+          command: yarn cleanup-release:minor
+  release-patch:
+    docker:
+      - image: circleci/node:lts-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: "Download dependencies"
+          command: yarn install
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: "Build"
+          command: yarn build
+      - run:
+          name: "Release"
+          command: yarn release:patch
+      - run:
+          name: "Cleanup release"
+          command: yarn cleanup-release:patch
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - build:
+      - release-major:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^release-major$/
+      - release-minor:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^release-minor$/
+      - release-patch:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^release-patch$/
