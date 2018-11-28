@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache-{{ checksum "package.json" }}
+          key: cache-node-{{ checksum "package.json" }}
       - run:
           name: "Install"
           command: yarn install
@@ -22,30 +22,9 @@ jobs:
       - run:
           name: "Build"
           command: yarn build
-  release:
-    docker:
-      - image: circleci/node:lts-browsers
-    environment:
-      TZ: "/usr/share/zoneinfo/Europe/Vienna"
-    steps:
-      - checkout
-      - restore_cache:
-          key: cache-{{ checksum "package.json" }}
-      - run:
-          name: "Build, release and publish"
-          command: echo "Not implemented yet" && exit 1
-      - save_cache:
-          paths:
-            - ./node_modules
-          key: cache-{{ checksum "package.json" }}
+
 workflows:
   version: 2
   test:
     jobs:
       - build:
-      - release:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+$/
