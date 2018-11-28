@@ -91,7 +91,7 @@ workflows:
   version: 2
   test:
     jobs:
-      - build:
+      - build
       - release-major:
           filters:
             branches:
