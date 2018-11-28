@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:lts-browsers
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Vienna"
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-{{ checksum "package.json" }}
+      - run:
+          name: "Lint"
+          command: yarn lint
+      - run:
+          name: "Build"
+          command: yarn build
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-{{ checksum "package.json" }}
+  release:
+    docker:
+      - image: circleci/node:lts-browsers
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Vienna"
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-{{ checksum "package.json" }}
+      - run:
+          name: "Build, release and publish"
+          command: echo "Not implemented yet" && exit 1
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-{{ checksum "package.json" }}
+workflows:
+  version: 2
+  test:
+    jobs:
+      - build:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
