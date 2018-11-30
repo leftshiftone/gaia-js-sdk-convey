@@ -70,16 +70,15 @@ module.exports = (env, argv) => ({
     library: 'GaiaChannel',
     libraryTarget: 'umd',
     libraryExport: 'default',
-    filename: 'dist/gaia.min.js',
+    filename: 'dist/artifact.js',
     path: __dirname,
   },
   plugins: [
     new StyleLintPlugin({
       files: ['src/**/*.scss'],
     }),
-    // new UglifyJsPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'dist/gaia.min.css',
+      filename: 'dist/artifact.css',
     }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.min\.css$/g,

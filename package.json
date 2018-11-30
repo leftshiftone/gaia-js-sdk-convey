@@ -49,7 +49,7 @@
     "docz:dev": "docz dev",
     "webpack:build": "webpack --mode=production",
     "docz:build": "docz build",
-    "build": "npm run webpack:build && npm run docz:build",
+    "build": "npm run webpack:build && npm run docz:build && mv dist/artifact.js dist/gaia-js-sdk-convey-$npm_package_version.min.js && mv dist/artifact.css dist/gaia-js-sdk-convey-$npm_package_version.min.css",
     "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
     "trigger-release:major": "git tag release-major && git push --tags",
     "cleanup-release:major": "git tag -d release-major && git push -d origin release-major",
