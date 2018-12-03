@@ -1,7 +1,6 @@
 # G.A.I.A. JavaScript SDK Convey
 
 [![CircleCI branch](https://img.shields.io/circleci/project/github/leftshiftone/gaia-js-sdk-convey/master.svg?style=flat-square)](https://circleci.com/gh/leftshiftone/gaia-js-sdk-convey)
-
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/leftshiftone/gaia-js-sdk-convey.svg?style=flat-square)](https://github.com/leftshiftone/gaia-js-sdk-convey/tags)
 
 ## Development
