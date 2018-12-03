@@ -22,7 +22,7 @@ jobs:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
-      - run: git checkout master && git branch --set-upstream-to=origin/master master
+      - run: git checkout master
       - run: yarn cleanup-release:major
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -42,7 +42,7 @@ jobs:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
-      - run: git checkout master && git branch --set-upstream-to=origin/master master
+      - run: git checkout master
       - run: yarn cleanup-release:minor
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -62,7 +62,7 @@ jobs:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
-      - run: git checkout master && git branch --set-upstream-to=origin/master master
+      - run: git checkout master
       - run: yarn cleanup-release:patch
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
