@@ -7,16 +7,12 @@ jobs:
       - checkout
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Download dependencies"
-          command: yarn install
+      - run: yarn install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Build"
-          command: yarn build
+      - run: yarn build
   release-major:
     docker:
       - image: circleci/node:lts-browsers
@@ -25,27 +21,17 @@ jobs:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
-      - run:
-          name: "Configure git user"
-          command: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: yarn cleanup-release:major
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Download dependencies"
-          command: yarn install
+      - run: yarn install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Build"
-          command: yarn build
-      - run:
-          name: "Release"
-          command: yarn release:major
-      - run:
-          name: "Cleanup release"
-          command: yarn cleanup-release:major
+      - run: yarn build
+      - run: yarn release:major
   release-minor:
     docker:
       - image: circleci/node:lts-browsers
@@ -54,27 +40,17 @@ jobs:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
-      - run:
-          name: "Configure git user"
-          command: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: yarn cleanup-release:minor
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Download dependencies"
-          command: yarn install
+      - run: yarn install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Build"
-          command: yarn build
-      - run:
-          name: "Release"
-          command: yarn release:minor
-      - run:
-          name: "Cleanup release"
-          command: yarn cleanup-release:minor
+      - run: yarn build
+      - run: yarn release:minor
   release-patch:
     docker:
       - image: circleci/node:lts-browsers
@@ -83,27 +59,17 @@ jobs:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
-      - run:
-          name: "Configure git user"
-          command: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: yarn cleanup-release:patch
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Download dependencies"
-          command: yarn install
+      - run: yarn install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run:
-          name: "Build"
-          command: yarn build
-      - run:
-          name: "Release"
-          command: yarn release:patch
-      - run:
-          name: "Cleanup release"
-          command: yarn cleanup-release:patch
+      - run: yarn build
+      - run: yarn release:patch
 
 workflows:
   version: 2
