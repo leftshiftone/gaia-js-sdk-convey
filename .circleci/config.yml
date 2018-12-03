@@ -52,7 +52,7 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
-      - run: yarn release:minor --debug --verbose
+      - run: yarn release:minor
   release-patch:
     docker:
       - image: circleci/node:lts-browsers
