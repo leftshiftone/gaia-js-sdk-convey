@@ -22,6 +22,9 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
+      - run:
+          name: "Configure git user"
+          command: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
@@ -45,6 +48,9 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
+      - run:
+          name: "Configure git user"
+          command: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
@@ -68,6 +74,9 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
+      - run:
+          name: "Configure git user"
+          command: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
