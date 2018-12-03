@@ -22,9 +22,6 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
-      - run:
-          name: "Add upstream"
-          command: git branch --set-upstream-to=origin/master master
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
@@ -48,9 +45,6 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
-      - run:
-          name: "Add upstream"
-          command: git branch --set-upstream-to=origin/master master
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
@@ -74,9 +68,6 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
-      - run:
-          name: "Add upstream"
-          command: git branch --set-upstream-to=origin/master master
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run:
