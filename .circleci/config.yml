@@ -14,6 +14,7 @@ jobs:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
   release-major:
+    working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
@@ -32,9 +33,10 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > $CIRCLE_WORKING_DIRECTORY/.npmrc
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
       - run: yarn release:major
   release-minor:
+    working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
@@ -53,9 +55,10 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > $CIRCLE_WORKING_DIRECTORY/.npmrc
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
       - run: yarn release:minor
   release-patch:
+    working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
@@ -74,7 +77,7 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > $CIRCLE_WORKING_DIRECTORY/.npmrc
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
       - run: cat .npmrc
       - run: yarn release:patch
 
