@@ -75,6 +75,7 @@ jobs:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run: cat .npmrc
       - run: yarn release:patch
 
 workflows:
