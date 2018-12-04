@@ -1,6 +1,6 @@
 {
   "name": "gaia-js-sdk-convey",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "JavaScript connector to the GAIA ecosystem.",
   "main": "src/index.ts",
   "dependencies": {},
