@@ -70,7 +70,7 @@ module.exports = (env, argv) => ({
     library: 'GaiaChannel',
     libraryTarget: 'umd',
     libraryExport: 'default',
-    filename: 'dist/artifact.js',
+    filename: 'dist/gaia-js-sdk-convey.js',
     path: __dirname,
   },
   plugins: [
@@ -78,7 +78,7 @@ module.exports = (env, argv) => ({
       files: ['src/**/*.scss'],
     }),
     new MiniCssExtractPlugin({
-      filename: 'dist/artifact.css',
+      filename: 'dist/gaia-js-sdk-convey.css',
     }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.min\.css$/g,

@@ -7,7 +7,7 @@
   ],
   "increment": "patch",
   "preReleaseId": null,
-  "buildCommand": false,
+  "buildCommand": "mv dist/gaia-js-sdk-convey.js dist/gaia-js-sdk-convey-${version}.min.js && mv dist/gaia-js-sdk-convey.css dist/gaia-js-sdk-convey-${version}.min.css",
   "safeBump": true,
   "beforeChangelogCommand": false,
   "changelogCommand": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]",
