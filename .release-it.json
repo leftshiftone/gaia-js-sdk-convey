@@ -29,7 +29,7 @@
     "addUntrackedFiles": false
   },
   "npm": {
-    "publish": false,
+    "publish": true,
     "publishPath": ".",
     "tag": "latest",
     "private": false,

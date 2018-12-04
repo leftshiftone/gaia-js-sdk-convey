@@ -2,7 +2,7 @@
   "name": "gaia-js-sdk-convey",
   "version": "0.1.0",
   "description": "JavaScript connector to the GAIA ecosystem.",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "dependencies": {},
   "devDependencies": {
     "@types/leaflet": "^1.2.9",
@@ -72,7 +72,7 @@
     "gaia",
     "leftshiftone"
   ],
-  "author": "Leftshift One Software GmbH <devs@leftshift.one>",
+  "author": "Leftshift One Software GmbH <core-devs@leftshift.one>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/leftshiftone/gaia-js-sdk-convey/issues"
