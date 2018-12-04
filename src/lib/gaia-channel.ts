@@ -11,8 +11,8 @@ export class GaiaChannel {
     private _clientId: string;
     private _identityId: string;
     private _userId: number;
-    private _inboundDestination: string;
-    private _outboundDestination: string;
+    private _inboundTextDestination: string;
+    private _outboundTextDestination: string;
 
     constructor(container: any, identityId: string, emitter: Emitter | null) {
         this.emitter = new EmitterAdapter(emitter);
@@ -20,8 +20,8 @@ export class GaiaChannel {
         this._clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
         this._identityId = identityId;
         this._userId = Math.floor(Math.random() * 10000000001); //todo: make user id more persistent for an actual user (e.g. cookie, etc)
-        this._inboundDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/in';
-        this._outboundDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/out';
+        this._inboundTextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/text/in';
+        this._outboundTextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/text/out';
         this.onMessage = this.onMessage.bind(this);
     }
 
@@ -98,7 +98,7 @@ export class GaiaChannel {
             const header = {identityId: this.idenityId, clientId: this.clientId, userId: this.userId};
             const body = {type: 'reception'};
             if (this.mqttClient) {
-                this.mqttClient.publish(this.outboundDestination, JSON.stringify({
+                this.mqttClient.publish(this.outboundTextDestination, JSON.stringify({
                     header,
                     body,
                 }), (error?: Error, packet?: Packet) => {
@@ -126,12 +126,12 @@ export class GaiaChannel {
         return this._userId;
     }
 
-    get inboundDestination(): string {
-        return this._inboundDestination;
+    get inboundTextDestination(): string {
+        return this._inboundTextDestination;
     }
 
-    get outboundDestination(): string {
-        return this._outboundDestination;
+    get outboundTextDestination(): string {
+        return this._outboundTextDestination;
     }
 
     private onMessage(topic: string, msg: string) {
@@ -146,7 +146,7 @@ export class GaiaChannel {
                     if (msg == null) {
                         return null;
                     }
-                    $this.renderer.render(Object.assign(msg, {position: 'left'}), $this.sendMessage.bind($this, this.outboundDestination));
+                    $this.renderer.render(Object.assign(msg, {position: 'left'}), $this.sendMessage.bind($this, this.outboundTextDestination));
                     return $this.emitter.onPostRender(Object.assign(msg, {position: 'left'}), false);
                 });
         }

@@ -185,7 +185,7 @@
         promise.then(() => {
             // the channel is ready to use
         });
-        channel.subscribe(channel.inboundDestination);
+        channel.subscribe(channel.inboundTextDestination);
         channel.servus();
 
         document.getElementById("chat-messageInput").addEventListener("keyup", ((ev) => {
@@ -200,7 +200,7 @@
 
         function send(value) {
             if (value.replace(/^\s+|\s+$/g,"") !== "") {
-                channel.sendMessage(channel.outboundDestination, {type: "text", text: value});
+                channel.sendMessage(channel.outboundTextDestination, {type: "text", text: value});
             }
             clearMessageInput();
         }
