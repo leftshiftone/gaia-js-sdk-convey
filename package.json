@@ -77,5 +77,8 @@
   "bugs": {
     "url": "https://github.com/leftshiftone/gaia-js-sdk-convey/issues"
   },
-  "homepage": "https://github.com/leftshiftone/gaia-js-sdk-convey"
+  "homepage": "https://github.com/leftshiftone/gaia-js-sdk-convey",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
 }
