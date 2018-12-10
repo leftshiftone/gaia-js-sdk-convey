@@ -3,7 +3,10 @@
   "version": "0.2.0",
   "description": "JavaScript connector to the GAIA ecosystem.",
   "main": "src/index.ts",
-  "dependencies": {},
+  "dependencies": {
+    "leaflet": "1.3.4",
+    "mqtt": "2.18.8"
+  },
   "devDependencies": {
     "@types/leaflet": "^1.2.9",
     "@types/mqtt": "^2.5.0",
@@ -21,7 +24,6 @@
     "eslint-plugin-promise": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
     "import-glob-loader": "^1.1.0",
-    "leaflet": "^1.3.4",
     "mini-css-extract-plugin": "^0.4.2",
     "mqtt": "2.18.8",
     "node-sass": "^4.9.3",
