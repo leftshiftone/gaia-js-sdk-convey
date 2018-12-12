@@ -11,6 +11,8 @@ export class GaiaChannel {
     private _clientId: string;
     private _identityId: string;
     private _userId: number;
+    private _inboundNotificationDestination: string;
+    private _inboundContextDestination: string;
     private _inboundTextDestination: string;
     private _outboundTextDestination: string;
 
@@ -20,6 +22,8 @@ export class GaiaChannel {
         this._clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
         this._identityId = identityId;
         this._userId = Math.floor(Math.random() * 10000000001); //todo: make user id more persistent for an actual user (e.g. cookie, etc)
+        this._inboundNotificationDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/notification/in';
+        this._inboundContextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/context/in';
         this._inboundTextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/text/in';
         this._outboundTextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/text/out';
         this.onMessage = this.onMessage.bind(this);
@@ -124,6 +128,14 @@ export class GaiaChannel {
 
     get userId(): number {
         return this._userId;
+    }
+
+    get inboundNotificationDestination(): string {
+        return this._inboundNotificationDestination;
+    }
+
+    get inboundContextDestination(): string {
+        return this._inboundContextDestination;
     }
 
     get inboundTextDestination(): string {
