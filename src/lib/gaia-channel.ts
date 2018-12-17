@@ -55,20 +55,20 @@ export class GaiaChannel {
         });
     }
 
-    public subscribe(name: string) {
+    public subscribe(destination: string) {
         if (this.mqttClient) {
-            this.mqttClient.subscribe(name);
+            this.mqttClient.subscribe(destination);
         }
     }
 
-    public unsubscribe(name: string) {
+    public unsubscribe(destination: string) {
         if (this.mqttClient) {
-            this.mqttClient.unsubscribe(name);
+            this.mqttClient.unsubscribe(destination);
         }
     }
 
-    public sendMessage(topic: string, msg: any) {
-        console.debug('Sending message to topic ' + topic);
+    public sendMessage(destination: string, msg: any) {
+        console.debug('Sending message to destination ' + destination);
         try {
             // remove left buttons
             const elements = document.querySelectorAll('button.left');
@@ -77,7 +77,7 @@ export class GaiaChannel {
             const header = {identityId: this.idenityId, clientId: this.clientId, userId: this.userId};
             const body = Object.assign(msg, {position: 'right', timestamp: new Date().getTime()});
             if (this.mqttClient) {
-                this.mqttClient.publish(topic, JSON.stringify({header, body}), (error?: Error, packet?: Packet) => {
+                this.mqttClient.publish(destination, JSON.stringify({header, body}), (error?: Error, packet?: Packet) => {
                     if (error) {
                         console.error('Failed to publish message ' + error.message, error, packet);
                     } else {
@@ -88,7 +88,7 @@ export class GaiaChannel {
 
             const $this = this;
             return this.emitter.onPreRender(body, true).then(msg => {
-                $this.renderer.render(msg, $this.sendMessage.bind($this, topic));
+                $this.renderer.render(msg, $this.sendMessage.bind($this, destination));
                 return this.emitter.onPostRender(msg, true);
             }, console.error);
         } catch (err) {
