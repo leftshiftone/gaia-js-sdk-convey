@@ -2,6 +2,8 @@ import {Emitter, EmitterAdapter} from './emitter';
 import {Renderer} from './renderer';
 import * as mqtt from 'mqtt';
 import {Packet} from 'mqtt';
+import {ChannelNameFactory} from "./support/ChannelNameFactory";
+import {ChannelType} from "./support/ChannelType";
 
 export class GaiaChannel {
 
@@ -22,10 +24,10 @@ export class GaiaChannel {
         this._clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
         this._identityId = identityId;
         this._userId = Math.floor(Math.random() * 10000000001); //todo: make user id more persistent for an actual user (e.g. cookie, etc)
-        this._inboundNotificationDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/notification/in';
-        this._inboundContextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/context/in';
-        this._inboundTextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/text/in';
-        this._outboundTextDestination = 'GAIA/RAIN/' + this._clientId + '/' + this._identityId + '/text/out';
+        this._inboundNotificationDestination = ChannelNameFactory.clientChannelNameIn(this._clientId, this._identityId, ChannelType.NOTIFICATION);
+        this._inboundContextDestination = ChannelNameFactory.clientChannelNameIn(this._clientId, this._identityId, ChannelType.CONTEXT);
+        this._inboundTextDestination = ChannelNameFactory.clientChannelNameIn(this._clientId, this._identityId, ChannelType.TEXT);
+        this._outboundTextDestination = ChannelNameFactory.clientChannelNameOut(this._clientId, this._identityId, ChannelType.TEXT);
         this.onMessage = this.onMessage.bind(this);
     }
 
