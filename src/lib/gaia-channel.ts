@@ -17,8 +17,10 @@ export class GaiaChannel {
     private _inboundContextDestination: string;
     private _inboundTextDestination: string;
     private _outboundTextDestination: string;
+    private callbacks: Map<ChannelType, (message:object) => void>;
 
     constructor(container: any, identityId: string, emitter: Emitter | null) {
+        this.callbacks = new Map();
         this.emitter = new EmitterAdapter(emitter);
         this.renderer = new Renderer(document.querySelector(container));
         this._clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
@@ -55,9 +57,17 @@ export class GaiaChannel {
         });
     }
 
-    public subscribe(destination: string) {
+    private getChannelType(topic: string): ChannelType {
+        return ChannelType[topic.match(/GAIA\/RAIN\/\w+\/\w+\/(\w+)\/in/)![1].toUpperCase()];;
+    }
+
+    public subscribe(destination: string, callback?: (message: object) => void) {
         if (this.mqttClient) {
             this.mqttClient.subscribe(destination);
+        }
+
+        if(callback !== undefined) {
+            this.callbacks!.set(this.getChannelType(destination), callback)
         }
     }
 
@@ -150,19 +160,34 @@ export class GaiaChannel {
 
     private onMessage(topic: string, msg: string) {
         console.debug('Received message ' + msg + ' from topic ' + topic);
-        const message = JSON.parse(msg);
-        if (message.type) {
-            this.emitter.onMessage(Object.assign(message, {position: 'left'}));
 
-            const $this = this;
-            this.emitter.onPreRender(Object.assign(message, {position: 'left'}), false)
-                .then(msg => {
-                    if (msg == null) {
-                        return null;
-                    }
-                    $this.renderer.render(Object.assign(msg, {position: 'left'}), $this.sendMessage.bind($this, this.outboundTextDestination));
-                    return $this.emitter.onPostRender(Object.assign(msg, {position: 'left'}), false);
-                });
+        const channelType: ChannelType = this.getChannelType(topic);
+        const message = JSON.parse(msg);
+
+        if (channelType !== null) {
+            switch (channelType) {
+                case ChannelType.TEXT:
+                    this.emitter.onMessage(Object.assign(message, {position: 'left'}));
+                    const $this = this;
+                    this.emitter.onPreRender(Object.assign(message, {position: 'left'}), false)
+                        .then(msg => {
+                            if (msg == null) {
+                                return null;
+                            }
+                            $this.renderer.render(Object.assign(msg, {position: 'left'}), $this.sendMessage.bind($this, this.outboundTextDestination));
+                            return $this.emitter.onPostRender(Object.assign(msg, {position: 'left'}), false);
+                        });
+                    break;
+                case ChannelType.CONTEXT:
+                    this.callbacks!.get(ChannelType.CONTEXT)!(message);
+                    break;
+                case ChannelType.AUDIO:
+                    break; // TODO Implementation
+                case ChannelType.NOTIFICATION:
+                    break; // TODO Implementation
+                default :
+                    console.debug("No such channel " + channelType + "defined")
+            }
         }
     }
 }

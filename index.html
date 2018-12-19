@@ -185,6 +185,12 @@
             // the channel is ready to use
         });
         channel.subscribe(channel.inboundTextDestination);
+
+        let context = function (message) {
+            console.log(message);
+        };
+
+        channel.subscribe(channel.inboundContextDestination, context);
         channel.servus();
 
         document.getElementById("chat-messageInput").addEventListener("keyup", ((ev) => {

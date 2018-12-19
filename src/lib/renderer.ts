@@ -1,5 +1,6 @@
 import {MarkupComponent} from './components/markup-component';
 import {components} from './Components';
+import {Button} from "./components/button";
 
 export class Renderer {
 
@@ -19,12 +20,19 @@ export class Renderer {
     public renderElement(element: MarkupComponent, sendMessage: any) {
         if (this.container) {
             element.render(this.container, sendMessage);
+
+            if (element.name === 'button'){
+                if ((element as Button).position !== 'right') {
+                    return;
+                }
+            }
+            
             const div = document.createElement('div');
             div.classList.add('separator');
             div.classList.add('separator-' + element.name);
-
             this.container.appendChild(div);
-
+            
+            
             const objDiv = document.querySelector('.gaia-chat .scrollbar');
             if (objDiv != null) {
                 objDiv.scrollTop = objDiv.scrollHeight;
