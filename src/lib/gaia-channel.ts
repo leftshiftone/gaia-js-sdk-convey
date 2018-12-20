@@ -17,7 +17,7 @@ export class GaiaChannel {
     private _inboundContextDestination: string;
     private _inboundTextDestination: string;
     private _outboundTextDestination: string;
-    private callbacks: Map<ChannelType, (message:object) => void>;
+    public callbacks: Map<ChannelType, (message:object) => void>;
 
     constructor(container: any, identityId: string, emitter: Emitter | null) {
         this.callbacks = new Map();
@@ -57,17 +57,16 @@ export class GaiaChannel {
         });
     }
 
-    private getChannelType(topic: string): ChannelType {
-        return ChannelType[topic.match(/GAIA\/RAIN\/[\w-]+\/[\w-]+\/(\w+)\/in/)![1].toUpperCase()];
-    }
-
     public subscribe(destination: string, callback?: (message: object) => void) {
         if (this.mqttClient) {
             this.mqttClient.subscribe(destination);
         }
 
         if(callback !== undefined) {
-            this.callbacks!.set(this.getChannelType(destination), callback)
+            const channelType = ChannelType.match(destination);
+            if(channelType !== null) {
+                this.callbacks!.set(channelType, callback)
+            }
         }
     }
 
@@ -167,7 +166,7 @@ export class GaiaChannel {
     private onMessage(topic: string, msg: string) {
         console.debug('Received message ' + msg + ' from topic ' + topic);
 
-        const channelType: ChannelType = this.getChannelType(topic);
+        const channelType: ChannelType = ChannelType.match(topic);
         const message = JSON.parse(msg);
 
         if (channelType !== null) {
