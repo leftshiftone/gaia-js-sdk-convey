@@ -58,7 +58,7 @@ export class GaiaChannel {
     }
 
     private getChannelType(topic: string): ChannelType {
-        return ChannelType[topic.match(/GAIA\/RAIN\/\w+\/\w+\/(\w+)\/in/)![1].toUpperCase()];;
+        return ChannelType[topic.match(/GAIA\/RAIN\/[\w-]+\/[\w-]+\/(\w+)\/in/)![1].toUpperCase()];
     }
 
     public subscribe(destination: string, callback?: (message: object) => void) {
@@ -158,6 +158,12 @@ export class GaiaChannel {
         return this._outboundTextDestination;
     }
 
+    private callback(channelType: ChannelType, message: object) {
+        if(this.callbacks.get(channelType) !== undefined) {
+            this.callbacks.get(channelType)!(message);
+        }
+    }
+
     private onMessage(topic: string, msg: string) {
         console.debug('Received message ' + msg + ' from topic ' + topic);
 
@@ -177,9 +183,10 @@ export class GaiaChannel {
                             $this.renderer.render(Object.assign(msg, {position: 'left'}), $this.sendMessage.bind($this, this.outboundTextDestination));
                             return $this.emitter.onPostRender(Object.assign(msg, {position: 'left'}), false);
                         });
+                    this.callback(channelType, message);
                     break;
                 case ChannelType.CONTEXT:
-                    this.callbacks!.get(ChannelType.CONTEXT)!(message);
+                    this.callback(channelType, message);
                     break;
                 case ChannelType.AUDIO:
                     break; // TODO Implementation

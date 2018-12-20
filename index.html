@@ -179,18 +179,19 @@
             }
         };
 
-        let channel = new GaiaChannel("#chat-messages", "1337", emitter);
+        let channel = new GaiaChannel("#chat-messages", "f09e3cdd-b25c-4107-99df-7b6f97e90798", emitter);
         let promise = channel.connect("ws://localhost:61616");
-        promise.then(() => {
-            // the channel is ready to use
-        });
-        channel.subscribe(channel.inboundTextDestination);
 
-        let context = function (message) {
+        let contextCallback = function (message) {
             console.log(message);
         };
 
-        channel.subscribe(channel.inboundContextDestination, context);
+        promise.then(() => {
+            // the channel is ready to use
+        });
+
+        channel.subscribe(channel.inboundTextDestination);
+        channel.subscribe(channel.inboundContextDestination, contextCallback);
         channel.servus();
 
         document.getElementById("chat-messageInput").addEventListener("keyup", ((ev) => {
