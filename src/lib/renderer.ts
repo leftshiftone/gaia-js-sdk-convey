@@ -21,18 +21,19 @@ export class Renderer {
         if (this.container) {
             element.render(this.container, sendMessage);
 
-            if (element.name === 'button'){
+            if (element.name === 'button') {
                 if ((element as Button).position !== 'right') {
-                    return;
+                    return
                 }
+            } else if (element.name === 'link') {
+                return
             }
-            
+
             const div = document.createElement('div');
             div.classList.add('separator');
             div.classList.add('separator-' + element.name);
             this.container.appendChild(div);
-            
-            
+
             const objDiv = document.querySelector('.gaia-chat .scrollbar');
             if (objDiv != null) {
                 objDiv.scrollTop = objDiv.scrollHeight;

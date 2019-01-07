@@ -55,6 +55,12 @@
         let promise = channel.connect("ws://localhost:61616");
 
         let contextCallback = function (message) {
+            console.log("Context");
+            console.log(message);
+        };
+
+        let textCallback = function (message) {
+            console.log("Text");
             console.log(message);
         };
 
@@ -62,7 +68,7 @@
             // the channel is ready to use
         });
 
-        channel.subscribe(channel.inboundTextDestination);
+        channel.subscribe(channel.inboundTextDestination, textCallback);
         channel.subscribe(channel.inboundContextDestination, contextCallback);
         channel.servus();
 
