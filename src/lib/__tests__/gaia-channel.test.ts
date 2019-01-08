@@ -1,14 +1,17 @@
-import {GaiaChannel} from "../gaia-channel";
+import {Gaia} from "../Gaia";
+import {ClassicRenderer} from '../renderer/ClassicRenderer';
 
 let channel: any;
 
 beforeAll(() => {
-    channel = new GaiaChannel(document.createElement('div').setAttribute("id", "container"), "1337",{});
-    channel.connect("ws://localhost:61616");
+    const renderer = new ClassicRenderer(document.createElement('div'));
+
+    channel = new Gaia(renderer);
+    channel.connect("ws://localhost:61616", "1337");
 });
 
 describe("gaia-channel test", () => {
-    test("identityId is correct", () => { expect(channel.idenityId).toBe("1337") });
+    test("identityId is correct", () => { expect(channel.idenityId).toBe("1337"); });
 
     test("no callbacks in map", () => {
         channel.subscribe(channel.inboundTextDestination);
@@ -17,7 +20,7 @@ describe("gaia-channel test", () => {
     });
 
     test("on callback in map", () => {
-        channel.subscribe(channel.inboundContextDestination,() => {});
+        channel.subscribe(channel.inboundContextDestination, () => {});
         expect(channel.callbacks.size).toBe(1);
         channel.unsubscribe(channel.inboundContextDestination);
     });

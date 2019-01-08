@@ -1,9 +1,9 @@
-import {Renderer} from "../renderer";
+import {ClassicRenderer} from "../renderer/ClassicRenderer";
 
 let renderer: any;
 
 beforeAll(() => {
-    renderer = new Renderer(document.createElement("div"));
+    renderer = new ClassicRenderer(document.createElement("div"));
 });
 
 describe("renderer test", () => {

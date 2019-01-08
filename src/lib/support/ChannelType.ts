@@ -8,12 +8,12 @@ export enum ChannelType {
 export namespace ChannelType {
     export function match(topic: string) {
         const match = topic.match(/GAIA\/RAIN\/[\w-]+\/[\w-]+\/(\w+)\/in/);
-        if(match !== null) {
+        if (match !== null) {
             const channelType = ChannelType[match![1].toUpperCase()];
-            if(channelType !== undefined) {
+            if (channelType !== undefined) {
                 return channelType;
             }
         }
-        return null;
+        throw new Error("no channel " + topic + " found");
     }
 }

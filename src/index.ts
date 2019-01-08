@@ -1,4 +1,4 @@
-import {GaiaChannel} from './lib/gaia-channel';
+import {Gaia} from './lib/Gaia';
 import './styles.scss';
 // export default Gaia class
-export default GaiaChannel;
+export default Gaia;

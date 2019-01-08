@@ -13,7 +13,7 @@
         <div class="header" id="chat-header"></div>
         <div class="messages scrollbar" id="chat-messages"></div>
         <div class="control" id="chat-control">
-            <textarea class="messageInput" id="chat-messageInput"></textarea>
+            <textarea title="" class="messageInput" id="chat-messageInput"></textarea>
             <button class="sendButton" id="chat-sendButton"></button>
         </div>
         <div class="footer" id="chat-footer"></div>
@@ -22,80 +22,19 @@
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function(){
-        let emitter = {
-            onPreRender: (message, outgoing) => {
-                if (message.type === "container" && message.elements[message.elements.length - 1].type === "text") {
-                    let input = message.elements[message.elements.length - 1].text;
-                    if (input.includes("*clear*")) {
-                        clearChat();
-                        document.getElementById('chat-control').hidden = false;
-                    } else if (input.includes("*textreply*")) {
-                        document.getElementById('chat-control').hidden = false;
-                        message.elements[message.elements.length - 1].text =
-                            message.elements[message.elements.length - 1].text.replace("*textreply*", "");
-                    } else {
-                        document.getElementById('chat-control').hidden = false;
-                    }
-                } else {
-                    document.getElementById('chat-control').hidden=true;
-                }
+    document.addEventListener('DOMContentLoaded', function () {
+        const renderer = new ClassicRenderer(document.getElementById('chat-messages'));
 
-                if (outgoing) {
-                    return Promise.resolve(message);
-                }
+        let gaia = new Gaia(renderer);
+        gaia.connect('ws://localhost:61616', '1337')
+            .then(connection => {
+                connection.bind(new KeyboardBehaviour(document.getElementById('chat-messageInput')));
+                connection.bind(new MouseBehaviour(document.getElementById('chat-sendButton')));
 
-                return new Promise((resolve) => {
-                    resolve(message);
-                });
-            }
-        };
+                connection.subscribe(ChannelType.TEXT, (e) => console.log('Text: ' + e));
+                connection.reception();
+            });
 
-        let channel = new GaiaChannel("#chat-messages", "1337", emitter);
-        let promise = channel.connect("ws://localhost:61616");
-
-        let contextCallback = function (message) {
-            console.log("Context");
-            console.log(message);
-        };
-
-        let textCallback = function (message) {
-            console.log("Text");
-            console.log(message);
-        };
-
-        promise.then(() => {
-            // the channel is ready to use
-        });
-
-        channel.subscribe(channel.inboundTextDestination, textCallback);
-        channel.subscribe(channel.inboundContextDestination, contextCallback);
-        channel.servus();
-
-        document.getElementById("chat-messageInput").addEventListener("keyup", ((ev) => {
-            if (ev.keyCode === 13) {
-                send(document.getElementById("chat-messageInput").value);
-            }
-        }));
-
-        document.getElementById("chat-sendButton").addEventListener("click", (() => {
-            send(document.getElementById("chat-messageInput").value);
-        }));
-
-        function send(value) {
-            if (value.replace(/^\s+|\s+$/g,"") !== "") {
-                channel.sendMessage(channel.outboundTextDestination, {type: "text", text: value});
-            }
-            clearMessageInput();
-        }
-
-        function clearChat() {
-            document.getElementById("chat-messages").innerHTML = '';
-        }
-
-        function clearMessageInput() {
-            document.getElementById("chat-messageInput").value = '';
-        }
     });
 </script>
 </html>

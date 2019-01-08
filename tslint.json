@@ -1,15 +1,22 @@
 {
-  "defaultSeverity": "error",
-  "extends": "tslint-config-airbnb",
-  "jsRules": {},
-  "rules": {
-    "variable-name": false,
-    "comment-format": false,
-    "number-literal-format": false,
-    "no-trailing-whitespace": false,
-    "no-irregular-whitespace": false,
-    "no-consecutive-blank-lines": false,
-    "ter-indent": false,
-    "max-line-length": false
-  }
+    "defaultSeverity": "error",
+    "extends": "tslint-config-airbnb",
+    "jsRules": {},
+    "rules": {
+        "variable-name": false,
+        "comment-format": false,
+        "number-literal-format": false,
+        "no-trailing-whitespace": false,
+        "no-irregular-whitespace": false,
+        "no-consecutive-blank-lines": false,
+        "ter-indent": false,
+        "max-line-length": false,
+        "object-curly-spacing": false,
+        "prefer-template": false,
+        "quotemark": false,
+        "no-this-assignment": false,
+        "align": false,
+        "trailing-comma":false,
+        "ter-arrow-parens":false
+    }
 }
