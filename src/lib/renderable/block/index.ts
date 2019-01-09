@@ -1,30 +1,29 @@
 import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
 /**
  * Implementation of the 'block' markup element.
  */
-export class Block extends AbstractRenderable {
+export class Block implements IRenderable {
 
-    private readonly message: ISpecification;
+    private readonly spec: ISpecification;
 
     constructor(message: ISpecification) {
-        super('block');
-        this.message = message;
+        this.spec = message;
     }
 
     /**
      * {@inheritDoc}
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
-        const position = this.message.position || 'left';
+        const position = this.spec.position || 'left';
         const block = document.createElement('div');
         block.classList.add('block', position);
         block.appendChild(Timestamp.render());
 
-        const elements = renderer.render(this.message, false);
+        const elements = renderer.render(this.spec, false);
         elements.forEach(block.appendChild);
 
         if (!isNested) {
@@ -33,5 +32,7 @@ export class Block extends AbstractRenderable {
         }
         return block;
     }
+
+    public name = () => "block";
 
 }

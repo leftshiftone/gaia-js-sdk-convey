@@ -1,4 +1,3 @@
-import {AbstractRenderable} from '../renderable/AbstractRenderable';
 import {renderables} from '../renderable/Renderables';
 import {IRenderer, ISpecification} from '../api/IRenderer';
 import {IRenderable} from '../api/IRenderable';
@@ -18,30 +17,30 @@ export abstract class AbstractRenderer implements IRenderer {
      * {@inheritDoc}
      */
     public render(message: ISpecification | IRenderable, append: boolean): HTMLElement[] {
-        if (message instanceof AbstractRenderable) {
-            return [this.renderElement(message as AbstractRenderable, append)];
+        if (message["render"] !== undefined) {
+            return [this.renderElement(message as IRenderable, append)];
         }
         const renderables = this.getRenderables(message as ISpecification);
         return renderables.map(r => this.renderElement(r, append));
     }
 
-    protected abstract renderElement(element: AbstractRenderable, append:boolean): HTMLElement;
+    protected abstract renderElement(element: IRenderable, append:boolean): HTMLElement;
 
     /**
      * Returns the element by evaluating the message type.
      *
      * @param message the message
      */
-    private getRenderables(message: ISpecification): AbstractRenderable[] {
+    private getRenderables(message: ISpecification): IRenderable[] {
         if (message.type.toUpperCase() === 'CONTAINER') {
-            const renderables = message.elements.map((element: ISpecification) => {
+            const renderables = (message.elements || []).map((element: ISpecification) => {
                 return this.getRenderables(element);
             });
             return [].concat.apply([], renderables);
         }
         console.debug('Element message of type ' + message.type);
         const renderableClass = renderables[message.type.toUpperCase()];
-        return [new renderableClass(message) as AbstractRenderable];
+        return [new renderableClass(message) as IRenderable];
     }
 
 }

@@ -13,4 +13,7 @@ export class Icon implements IRenderable{
         icon.classList.add('icon', this.position);
         return icon;
     }
+
+    public name = () => "icon";
+
 }

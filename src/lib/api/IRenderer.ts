@@ -5,7 +5,7 @@ export interface IRenderer {
 }
 export interface ISpecification {
     type: string;
-    elements: any[];
+    elements?: any[];
     position?: "left" | "right";
     text?:string;
     name?:string;
@@ -13,4 +13,5 @@ export interface ISpecification {
     source?:string;
     width?:string;
     height?:string;
+    timestamp?:string;
 }

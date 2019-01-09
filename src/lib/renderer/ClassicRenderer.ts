@@ -1,7 +1,7 @@
-import {AbstractRenderable} from '../renderable/AbstractRenderable';
 import {Button} from "../renderable/button";
 import {AbstractRenderer} from './AbstractRenderer';
 import {Link} from '../renderable/link';
+import {IRenderable} from '../api/IRenderable';
 
 /**
  * The classic renderer renders the G.A.I.A. messages in a classic top-down manner.
@@ -15,7 +15,7 @@ export class ClassicRenderer extends AbstractRenderer {
         this.container = container;
     }
 
-    protected renderElement(renderable: AbstractRenderable, append: boolean):HTMLElement {
+    protected renderElement(renderable: IRenderable, append: boolean):HTMLElement {
         const element = renderable.render(this, ClassicRenderer.isNested(this.container));
 
         if (append) {
@@ -38,7 +38,7 @@ export class ClassicRenderer extends AbstractRenderer {
     }
 
     // noinspection JSMethodCanBeStatic
-    private needsSeparator(renderable:AbstractRenderable) {
+    private needsSeparator(renderable:IRenderable) {
         if (renderable instanceof Button) {
             if ((renderable as Button).getPosition() !== 'right') {
                 return false;

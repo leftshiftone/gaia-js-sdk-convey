@@ -1,8 +1,8 @@
-import {AbstractRenderable} from '../AbstractRenderable';
 import * as L from 'leaflet';
 import {IRenderer} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Map extends AbstractRenderable {
+export class Map implements IRenderable {
 
     public map: any;
     public markers: any;
@@ -19,7 +19,6 @@ export class Map extends AbstractRenderable {
     public mapContainer: any;
 
     constructor(message: any) {
-        super('map');
         this.markers = message.markers;
         this.center = message.center;
         this.zoom = message.zoom;
@@ -153,4 +152,7 @@ export class Map extends AbstractRenderable {
 
         return this.mapContainer;
     }
+
+    public name = () => "map";
+
 }

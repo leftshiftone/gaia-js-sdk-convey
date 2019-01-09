@@ -1,15 +1,20 @@
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Headline extends AbstractRenderable {
+/**
+ * Implementation of the 'headline' markup element.
+ */
+export class Headline implements IRenderable {
 
     private readonly message: ISpecification;
 
     constructor(message: ISpecification) {
-        super('headline');
         this.message = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const position = this.message.position || 'left';
         const headline = document.createElement('h2');
@@ -18,5 +23,7 @@ export class Headline extends AbstractRenderable {
 
         return headline;
     }
+
+    public name = () => "headline";
 
 }

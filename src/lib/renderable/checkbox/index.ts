@@ -1,18 +1,23 @@
 import node from '../../support/node';
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Checkbox extends AbstractRenderable {
+/**
+ * Implementation of the 'checkbox' markup language.
+ */
+export class Checkbox implements IRenderable {
 
     private readonly message:ISpecification;
 
     constructor(message: ISpecification) {
-        super('checkbox');
         this.message = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
-        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.name});
+        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.message.name || ""});
         const label = node('label').addClasses('checkbox', this.message.position || "left");
 
         label.appendChild(checkbox);
@@ -24,5 +29,7 @@ export class Checkbox extends AbstractRenderable {
 
         return label.unwrap();
     }
+
+    public name = () => "checkbox";
 
 }

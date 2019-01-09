@@ -1,21 +1,20 @@
 import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
 /**
  * Implementation of the 'table' markup element.
  */
-export class Table extends AbstractRenderable {
+export class Table implements IRenderable {
 
     private readonly spec: ISpecification;
 
     constructor(message: ISpecification) {
-        super('table');
         this.spec = message;
     }
 
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const table = document.createElement('table');
         if (!isNested) {
             const position = this.spec.position || 'left';
@@ -34,4 +33,7 @@ export class Table extends AbstractRenderable {
 
         return table;
     }
+
+    public name = () => "table";
+
 }

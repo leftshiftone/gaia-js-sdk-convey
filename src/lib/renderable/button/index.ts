@@ -1,29 +1,27 @@
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
+import {IRenderable} from '../../api/IRenderable';
 
 /**
  * Implementation of the 'button' markup element.
  */
-export class Button extends AbstractRenderable {
+export class Button implements IRenderable {
 
     private readonly message: ISpecification;
 
     constructor(message: ISpecification) {
-        super('button');
         this.message = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.message.position || 'left';
         const button = document.createElement('button');
         button.setAttribute('name', this.message.name || "");
 
-        if (!isNested) {
-            button.classList.add('button', position);
-        } else {
-            button.classList.add('button-nested', position);
-        }
+        button.classList.add(isNested ? "button-nested" : "button", position);
         button.appendChild(document.createTextNode(this.message.text || ""));
 
         button.addEventListener('click', () => {
@@ -37,8 +35,8 @@ export class Button extends AbstractRenderable {
         return button;
     }
 
-    public getPosition() {
-        return this.message.position || "left";
-    }
+    public getPosition = () => this.message.position || "left";
+
+    public name = () => "button";
 
 }

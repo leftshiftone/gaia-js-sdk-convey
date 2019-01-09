@@ -1,27 +1,26 @@
-import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
 // TODO: improve swipe feature: https://css-tricks.com/simple-swipe-with-vanilla-javascript/
-export class Carousel extends AbstractRenderable {
+export class Carousel implements IRenderable {
 
-    public message: any;
+    public spec: ISpecification;
 
     private count: number;
     private counter: number = 0;
     private touchstartX: number = 0;
     private touchendX: number = 0;
 
-    constructor(message: any) {
-        super('carousel');
-        this.message = message;
-        this.count = message.elements.length;
+    constructor(message: ISpecification) {
+        this.spec = message;
+        this.count = (message.elements || []).length;
     }
 
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const carousel = document.createElement('div');
         carousel.classList.add('carousel', 'left');
 
-        const elements = renderer.render(this.message, false);
+        const elements = renderer.render(this.spec, false);
         elements.forEach(carousel.appendChild);
 
         if (carousel.children[this.counter]) {
@@ -87,5 +86,7 @@ export class Carousel extends AbstractRenderable {
             this.goto(i, e);
         }
     }
+
+    public name = () => "carousel";
 
 }

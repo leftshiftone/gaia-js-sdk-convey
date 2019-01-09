@@ -1,33 +1,39 @@
 import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
-import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Text extends AbstractRenderable {
+/**
+ * Implementation of the 'text' markup element.
+ */
+export class Text implements IRenderable {
 
-    public text: string;
-    public position: string;
+    private readonly spec:ISpecification;
 
-    constructor(message: any) {
-        super('text');
-        this.text = message.text;
-        this.position = message.position;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         if (!isNested) {
-            const position = this.position || 'left';
+            const position = this.spec.position || 'left';
             const text = document.createElement('div');
             text.classList.add('text', position);
             text.appendChild(Timestamp.render());
-            text.appendChild(document.createTextNode(this.text));
+            text.appendChild(document.createTextNode(this.spec.text || ""));
             text.appendChild(new Icon(position).render());
 
             return text;
         }
         const text = document.createElement('div');
-        text.appendChild(document.createTextNode(this.text));
+        text.appendChild(document.createTextNode(this.spec.text || ""));
 
         return text;
     }
+
+    public name = () => "text";
+
 }

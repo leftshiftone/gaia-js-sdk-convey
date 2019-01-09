@@ -1,15 +1,14 @@
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
 /**
  * Implementation of the 'link' markup element.
  */
-export class Link extends AbstractRenderable {
+export class Link implements IRenderable {
 
     private readonly spec:ISpecification;
 
     constructor(spec: ISpecification) {
-        super('link');
         this.spec = spec;
     }
 
@@ -25,5 +24,7 @@ export class Link extends AbstractRenderable {
 
         return link;
     }
+
+    public name = () => "link";
 
 }

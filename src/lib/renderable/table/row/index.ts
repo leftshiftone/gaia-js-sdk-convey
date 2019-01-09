@@ -1,22 +1,21 @@
-import {AbstractRenderable} from '../../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
+import {IRenderable} from '../../../api/IRenderable';
 
 /**
  * Implementation of the 'row' markup element.
  */
-export class Row extends AbstractRenderable {
+export class Row implements IRenderable {
 
     public spec: ISpecification;
 
     constructor(message: ISpecification) {
-        super('row');
         this.spec = message;
     }
 
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const row = document.createElement('tr');
         row.classList.add('row');
 
@@ -25,5 +24,7 @@ export class Row extends AbstractRenderable {
 
         return row;
     }
+
+    public name = () => "row";
 
 }

@@ -1,20 +1,22 @@
-import {AbstractRenderable} from '../AbstractRenderable';
 import {Timestamp} from '../timestamp';
 import {Icon} from '../icon';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
 /**
  * Implementation of the 'items' markup element.
  */
-export class Items extends AbstractRenderable {
+export class Items implements IRenderable {
 
     public spec: ISpecification;
 
-    constructor(message: ISpecification) {
-        super('items');
-        this.spec = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         if (!isNested) {
             const div = document.createElement('div');
@@ -36,5 +38,7 @@ export class Items extends AbstractRenderable {
 
         return items;
     }
+
+    public name = () => "items";
 
 }

@@ -1,40 +1,40 @@
-import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Suggestion extends AbstractRenderable {
+/**
+ * Implementation of the 'suggestion' markup element.
+ */
+export class Suggestion implements IRenderable {
 
-    public text: string;
-    public buttonName: string;
-    public value: string;
+    private readonly spec:ISpecification;
 
-    constructor(message: any) {
-        super('suggestion');
-        this.text = message.text;
-        this.buttonName = message.name;
-        this.value = message.value;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const button = document.createElement('button');
-        button.setAttribute('name', this.buttonName);
+        button.setAttribute('name', this.spec.name || "");
 
-        if (!isNested) {
-            button.classList.add('button', "left");
-        } else {
-            button.classList.add('button-nested', "left");
-        }
-        button.appendChild(document.createTextNode(this.text));
+        button.classList.add(isNested ? "button-nested" : "button", "left");
+        button.appendChild(document.createTextNode(this.spec.text || ""));
 
         button.addEventListener('click', () => {
-            EventStream.emit("Gaia::publish", {
+            EventStream.emit("GAIA::publish", {
                     type: 'button',
-                    text: this.text,
-                    attributes: {type: 'button', name: this.buttonName, value: this.value}
+                    text: this.spec.text || "",
+                    attributes: {type: 'button', name: this.spec.name || "", value: this.spec.value || ""}
                 },
             );
         });
 
         return button;
     }
+
+    public name = () => "suggestion";
+
 }

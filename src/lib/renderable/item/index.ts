@@ -1,20 +1,28 @@
-import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Item extends AbstractRenderable {
+/**
+ * Implementation of the 'item' markup element.
+ */
+export class Item implements IRenderable {
 
-    public text: string;
+    private spec:ISpecification;
 
-    constructor(message: any) {
-        super('item');
-        this.text = message.text;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const item = document.createElement('li');
         item.classList.add('item');
-        item.appendChild(document.createTextNode(this.text));
+        item.appendChild(document.createTextNode(this.spec.text || ""));
 
         return item;
     }
+
+    public name = () => "item";
+
 }

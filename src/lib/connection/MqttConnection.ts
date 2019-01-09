@@ -3,8 +3,9 @@ import * as mqtt from 'mqtt';
 import {ChannelNameFactory} from "../support/ChannelNameFactory";
 import {ChannelType} from "../support/ChannelType";
 import {IBehaviour} from '../api/IBehaviour';
-import {IRenderer} from '../api/IRenderer';
+import {IRenderer, ISpecification} from '../api/IRenderer';
 import {uuid} from '../support/Uuid';
+import EventStream from '../event/EventStream';
 
 export class MqttConnection {
 
@@ -27,6 +28,8 @@ export class MqttConnection {
         this.mqttClient = mqtt.connect(url, {clean: false, clientId: this.clientId});
         this.mqttClient.on('connect', this.emitter.onConnected);
         this.mqttClient.on('message', this.onMessage.bind(this));
+
+        EventStream.addListener("GAIA::publish", this.publish.bind(this, ChannelType.TEXT));
     }
 
     /**
@@ -61,7 +64,7 @@ export class MqttConnection {
      * @param channelType the channel type
      * @param msg the message
      */
-    public publish(channelType: ChannelType, msg: any) {
+    public publish(channelType: ChannelType, msg: ISpecification) {
         const destination = this.outgoing(channelType);
         console.debug('Sending message to destination ' + destination);
         try {
@@ -73,7 +76,7 @@ export class MqttConnection {
             const payload = JSON.stringify({body, header: this.header()});
 
             this.mqttClient.publish(destination, payload, this.errorHandler(msg));
-            return this.renderer.render(body, this.publish.bind(this, destination));
+            return this.renderer.render(body, true);
         } catch (err) {
             return Promise.reject(err);
         }

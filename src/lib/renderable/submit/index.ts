@@ -1,8 +1,8 @@
-import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Submit extends AbstractRenderable {
+export class Submit implements IRenderable {
 
     // TODO: move to utility class
     public static closestByClass(element: any, clazz: string) {
@@ -16,31 +16,21 @@ export class Submit extends AbstractRenderable {
         return el;
     }
 
-    public text: string;
-    public position: string;
-    public timestamp: any;
+    private readonly spec:ISpecification;
 
-    constructor(message: any) {
-        super('submit');
-        this.text = message.text;
-        this.position = message.position;
-        this.timestamp = message.timestamp;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        const position = this.position || 'left';
+        const position = this.spec.position || 'left';
         const submit = document.createElement('button');
 
-        if (!isNested) {
-            submit.classList.add('submit', position);
-        } else {
-            submit.classList.add('submit-nested', position);
-        }
+        submit.classList.add(isNested ? "submit-nested" : "nested", position);
+        submit.appendChild(document.createTextNode(this.spec.text || ""));
 
-        submit.appendChild(document.createTextNode(this.text));
-
-        const text = this.text;
-        const timestamp = this.timestamp;
+        const text = this.spec.text || "";
+        const timestamp = this.spec.timestamp || "";
 
         submit.addEventListener('click', (ev) => {
             const attributes = {type: 'submit'};
@@ -60,10 +50,12 @@ export class Submit extends AbstractRenderable {
                 }
             });
 
-            EventStream.emit("Gaia::publish", {timestamp, text, attributes, type: 'submit', position: 'right'});
+            EventStream.emit("GAIA::publish", {timestamp, text, attributes, type: 'submit', position: 'right'});
         });
 
         return submit;
     }
+
+    public name = () => "submit";
 
 }

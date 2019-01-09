@@ -1,15 +1,20 @@
-import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
 
-export class Image extends AbstractRenderable {
+/**
+ * Implementation of the 'image' markup element.
+ */
+export class Image implements IRenderable {
 
     private readonly spec:ISpecification;
 
     constructor(spec: ISpecification) {
-        super('image');
         this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const image = document.createElement('img');
         image.setAttribute('src', this.spec.source || "");
@@ -20,5 +25,7 @@ export class Image extends AbstractRenderable {
 
         return image;
     }
+
+    public name = () => "image";
 
 }

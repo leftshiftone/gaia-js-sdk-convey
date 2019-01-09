@@ -1,16 +1,18 @@
-import {AbstractRenderable} from '../../AbstractRenderable';
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
+import {IRenderable} from '../../../api/IRenderable';
 
-export class Col extends AbstractRenderable {
+export class Col implements IRenderable {
 
     public spec: ISpecification;
 
     constructor(spec: ISpecification) {
-        super('col');
         this.spec = spec;
     }
 
-    public render(renderer:IRenderer, isNested: boolean):HTMLElement {
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const col = document.createElement('td');
         col.classList.add('col');
 
@@ -19,4 +21,7 @@ export class Col extends AbstractRenderable {
 
         return col;
     }
+
+    public name = () => "col";
+
 }
