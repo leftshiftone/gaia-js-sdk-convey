@@ -10,26 +10,20 @@ export class MqttConnection {
 
     private readonly callbacks: Map<ChannelType, (message: object) => void> = new Map();
 
-    private readonly renderer: IRenderer;
     private readonly emitter: IEmitter;
-    private readonly mqttClient: mqtt.MqttClient;
+    private readonly renderer: IRenderer;
     private readonly clientId: string;
     private readonly identityId: string;
     private readonly userId: string;
-    private readonly outgoingText: string;
+    private readonly mqttClient: mqtt.MqttClient;
 
     constructor(url: string, identityId: string, renderer: IRenderer, emitter: IEmitter) {
-        // variables
         this.emitter = emitter;
         this.renderer = renderer;
         this.clientId = uuid();
         this.identityId = identityId;
         this.userId = uuid();
 
-        // mqtt destinations
-        this.outgoingText = ChannelNameFactory.clientOutgoing(this.clientId, this.identityId, ChannelType.TEXT);
-
-        // mqtt client
         this.mqttClient = mqtt.connect(url, {clean: false, clientId: this.clientId});
         this.mqttClient.on('connect', this.emitter.onConnected);
         this.mqttClient.on('message', this.onMessage.bind(this));
@@ -38,14 +32,7 @@ export class MqttConnection {
     /**
      * Disconnects from the mqtt connection.
      */
-    public disconnect() {
-        return new Promise((resolve) => {
-            this.mqttClient.end(false, () => {
-                this.emitter.onDisconnected();
-                resolve();
-            });
-        });
-    }
+    public disconnect = () => this.mqttClient.end(false, this.emitter.onDisconnected);
 
     /**
      * Subscribes to the given destination.
@@ -54,7 +41,7 @@ export class MqttConnection {
      * @param callback the callback function
      */
     public subscribe(type: ChannelType, callback: (message: object) => void) {
-        const destination = ChannelNameFactory.clientIncoming(this.clientId, this.identityId, type);
+        const destination = this.incoming(type);
         this.mqttClient.subscribe(destination);
 
         const channelType = ChannelType.match(destination);
@@ -75,7 +62,7 @@ export class MqttConnection {
      * @param msg the message
      */
     public publish(channelType: ChannelType, msg: any) {
-        const destination = ChannelNameFactory.clientOutgoing(this.clientId, this.identityId, channelType);
+        const destination = this.outgoing(channelType);
         console.debug('Sending message to destination ' + destination);
         try {
             // remove left buttons
@@ -96,17 +83,17 @@ export class MqttConnection {
      * Initial request to make the system aware that the user is listening.
      */
     public reception() {
-        try {
-            const payload = JSON.stringify({header: this.header(), type: 'reception'});
-            this.mqttClient.publish(this.outgoingText, payload, this.errorHandler("reception"));
-        } catch (err) {
-            console.error(err);
-        }
+        const payload = JSON.stringify({header: this.header(), type: 'reception'});
+        this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.errorHandler("reception"));
     }
 
-    private callback(channelType: ChannelType, message: object) {
-        return (this.callbacks.get(channelType) || console.warn)(message);
-    }
+    /**
+     * Executes the registered channel type callback.
+     *
+     * @param type the cannel type
+     * @param msg the message
+     */
+    private callback = (type: ChannelType, msg: object) => (this.callbacks.get(type) || console.warn)(msg);
 
     private onMessage(topic: string, msg: string) {
         console.debug('Received message ' + msg + ' from topic ' + topic);
@@ -120,7 +107,7 @@ export class MqttConnection {
                     const payload = Object.assign(message, {position: 'left'});
 
                     this.emitter.onMessage(payload);
-                    this.renderer.render(payload, this.publish.bind(this, this.outgoingText));
+                    this.renderer.render(payload, this.publish.bind(this, this.outgoing(ChannelType.TEXT)));
 
                     this.callback(channelType, message);
                     break;
@@ -144,6 +131,9 @@ export class MqttConnection {
      */
     public bind = (behaviour: IBehaviour) => behaviour.bind(this);
 
+    private outgoing = (type: ChannelType) => ChannelNameFactory.clientOutgoing(this.clientId, this.identityId, type);
+    private incoming = (type: ChannelType) => ChannelNameFactory.clientIncoming(this.clientId, this.identityId, type);
+
     private errorHandler(msg: any) {
         return (error?: Error, packet?: mqtt.Packet) => {
             if (error) {
@@ -154,8 +144,6 @@ export class MqttConnection {
         };
     }
 
-    private header() {
-        return {identityId: this.identityId, clientId: this.clientId, userId: this.userId};
-    }
+    private header = () => ({identityId: this.identityId, clientId: this.clientId, userId: this.userId});
 
 }

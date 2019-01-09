@@ -8,7 +8,7 @@ import {Link} from '../renderable/link';
  */
 export class ClassicRenderer extends AbstractRenderer {
 
-    private readonly container: HTMLElement;
+    protected readonly container: HTMLElement;
 
     constructor(container: HTMLElement) {
         super();

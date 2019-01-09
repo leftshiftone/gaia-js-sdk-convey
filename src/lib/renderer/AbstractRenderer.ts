@@ -30,8 +30,8 @@ export abstract class AbstractRenderer implements IRenderer {
             return [].concat.apply([], renderables);
         }
         console.debug('Element message of type ' + message.type);
-        const componentClass = renderables[message.type.toUpperCase()];
-        return [new componentClass(message) as AbstractRenderable];
+        const renderableClass = renderables[message.type.toUpperCase()];
+        return [new renderableClass(message) as AbstractRenderable];
     }
 
 }
