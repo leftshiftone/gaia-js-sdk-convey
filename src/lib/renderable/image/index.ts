@@ -1,29 +1,24 @@
 import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
 export class Image extends AbstractRenderable {
 
-    public source: string;
-    public text: string;
-    public width: any;
-    public height: any;
+    private readonly spec:ISpecification;
 
-    constructor(message: any) {
+    constructor(spec: ISpecification) {
         super('image');
-        this.source = message.source;
-        this.text = message.text;
-        this.width = message.width || 'auto';
-        this.height = message.height || 'auto';
+        this.spec = spec;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const image = document.createElement('img');
-        image.setAttribute('src', this.source);
-        image.setAttribute('alt', this.text);
-        image.setAttribute('width', this.width);
-        image.setAttribute('height', this.height);
+        image.setAttribute('src', this.spec.source || "");
+        image.setAttribute('alt', this.spec.text || "");
+        image.setAttribute('width', this.spec.width || "auto");
+        image.setAttribute('height', this.spec.height || "auto");
         image.classList.add('image');
-        container.appendChild(image);
+
+        return image;
     }
 
 }

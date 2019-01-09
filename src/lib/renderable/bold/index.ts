@@ -1,20 +1,27 @@
 import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
+/**
+ * Implementation of the 'bold' markup element.
+ */
 export class Bold extends AbstractRenderable {
 
-    public text: string;
+    private readonly message: ISpecification;
 
-    constructor(message: any) {
+    constructor(message: ISpecification) {
         super('bold');
-        this.text = message.text;
+        this.message = message;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const bold = document.createElement('b');
         bold.classList.add('bold');
-        bold.appendChild(document.createTextNode(this.text));
-        container.appendChild(bold);
+        bold.appendChild(document.createTextNode(this.message.text || ""));
+
+        return bold;
     }
 
 }

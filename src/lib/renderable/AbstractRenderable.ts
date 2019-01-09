@@ -15,12 +15,6 @@ export abstract class AbstractRenderable implements IRenderable {
         this.name = name;
     }
 
-    public renderElements(renderer:IRenderer, component: HTMLElement, message: any, sendMessage: (msg: any) => void) {
-        Array.from(message.elements)
-            .map(e => Object.assign(e, {position: (message.position || 'left')}))
-            .forEach(e => renderer.render(e, sendMessage));
-    }
-
-    abstract render(renderer:IRenderer, container: HTMLElement, sendMessage?: (msg: any) => void): void;
+    abstract render(renderer: IRenderer, isNested: boolean): HTMLElement;
 
 }

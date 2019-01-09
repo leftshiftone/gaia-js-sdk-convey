@@ -1,20 +1,29 @@
 import {AbstractRenderable} from '../../AbstractRenderable';
-import {IRenderer} from '../../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../../api/IRenderer';
 
+/**
+ * Implementation of the 'row' markup element.
+ */
 export class Row extends AbstractRenderable {
 
-    public message: any;
+    public spec: ISpecification;
 
-    constructor(message: any) {
+    constructor(message: ISpecification) {
         super('row');
-        this.message = message;
+        this.spec = message;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const row = document.createElement('tr');
         row.classList.add('row');
-        this.renderElements(renderer, row, this.message, sendMessage);
-        container.appendChild(row);
+
+        const elements = renderer.render(this.spec, false);
+        elements.forEach(row.appendChild);
+
+        return row;
     }
 
 }

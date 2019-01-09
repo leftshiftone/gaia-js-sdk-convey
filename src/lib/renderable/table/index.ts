@@ -1,31 +1,37 @@
 import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
 import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
+/**
+ * Implementation of the 'table' markup element.
+ */
 export class Table extends AbstractRenderable {
 
-    public message: any;
-    public position: string;
+    private readonly spec: ISpecification;
 
-    constructor(message: any) {
+    constructor(message: ISpecification) {
         super('table');
-        this.message = message;
-        this.position = message.position;
+        this.spec = message;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const table = document.createElement('table');
-        if (!Table.isNested(container)) {
-            const position = this.position || 'left';
+        if (!isNested) {
+            const position = this.spec.position || 'left';
             table.classList.add('table', position);
             table.appendChild(Timestamp.render());
-            this.renderElements(renderer, table, this.message, sendMessage);
-            container.appendChild(new Icon(position).render());
+
+            const elements = renderer.render(this.spec, false);
+            elements.forEach(table.appendChild);
+
+            table.appendChild(new Icon(position).render());
         } else {
             table.classList.add('table-nested');
-            this.renderElements(renderer, table, this.message, sendMessage);
+            const elements = renderer.render(this.spec, false);
+            elements.forEach(table.appendChild);
         }
-        container.appendChild(table);
+
+        return table;
     }
 }

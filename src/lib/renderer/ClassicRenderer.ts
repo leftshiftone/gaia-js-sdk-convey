@@ -15,8 +15,12 @@ export class ClassicRenderer extends AbstractRenderer {
         this.container = container;
     }
 
-    protected renderElement(renderable: AbstractRenderable, sendMessage: any):void {
-        renderable.render(this, this.container, sendMessage);
+    protected renderElement(renderable: AbstractRenderable, append: boolean):HTMLElement {
+        const element = renderable.render(this, ClassicRenderer.isNested(this.container));
+
+        if (append) {
+            this.container.appendChild(element);
+        }
 
         if (this.needsSeparator(renderable)) {
             const div = document.createElement('div');
@@ -29,12 +33,14 @@ export class ClassicRenderer extends AbstractRenderer {
                 objDiv.scrollTop = objDiv.scrollHeight;
             }
         }
+
+        return element;
     }
 
     // noinspection JSMethodCanBeStatic
     private needsSeparator(renderable:AbstractRenderable) {
         if (renderable instanceof Button) {
-            if ((renderable as Button).position !== 'right') {
+            if ((renderable as Button).getPosition() !== 'right') {
                 return false;
             }
         } else if (renderable instanceof Link) {

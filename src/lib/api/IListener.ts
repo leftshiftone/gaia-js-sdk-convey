@@ -1,4 +1,4 @@
-export interface IEmitter {
+export interface IListener {
 
     onConnected(): void;
 

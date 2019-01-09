@@ -11,8 +11,8 @@ export class ContentCentricRenderer extends ClassicRenderer {
         super(container);
     }
 
-    protected renderElement(renderable: AbstractRenderable, sendMessage: any):void {
-        super.renderElement(renderable, sendMessage);
+    protected renderElement(renderable: AbstractRenderable, append: boolean):HTMLElement {
+        return super.renderElement(renderable, append);
     }
 
 }

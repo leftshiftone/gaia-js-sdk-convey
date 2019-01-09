@@ -17,6 +17,9 @@
         "no-this-assignment": false,
         "align": false,
         "trailing-comma":false,
-        "ter-arrow-parens":false
+        "ter-arrow-parens":false,
+        "linebreak-style":false,
+        "no-increment-decrement":false,
+        "prefer-array-literal":false
     }
 }

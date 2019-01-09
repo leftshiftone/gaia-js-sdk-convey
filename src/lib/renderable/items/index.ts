@@ -1,19 +1,22 @@
 import {AbstractRenderable} from '../AbstractRenderable';
 import {Timestamp} from '../timestamp';
 import {Icon} from '../icon';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
+/**
+ * Implementation of the 'items' markup element.
+ */
 export class Items extends AbstractRenderable {
 
-    public message: any;
+    public spec: ISpecification;
 
-    constructor(message: any) {
+    constructor(message: ISpecification) {
         super('items');
-        this.message = message;
+        this.spec = message;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
-        if (!Items.isNested(container)) {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
+        if (!isNested) {
             const div = document.createElement('div');
             div.classList.add('items');
             div.appendChild(Timestamp.render());
@@ -21,14 +24,17 @@ export class Items extends AbstractRenderable {
             const items = document.createElement('ul');
             div.appendChild(items);
 
-            this.renderElements(renderer, items, this.message, sendMessage);
-            container.appendChild(new Icon(this.message.position || 'left').render());
-            container.appendChild(div);
-        } else {
-            const items = document.createElement('ul');
-            this.renderElements(renderer, items, this.message, sendMessage);
-            container.appendChild(items);
+            const elements = renderer.render(this.spec, false);
+            elements.forEach(items.appendChild);
+            div.appendChild(new Icon(this.spec.position || 'left').render());
+
+            return div;
         }
+        const items = document.createElement('ul');
+        const elements = renderer.render(this.spec, false);
+        elements.forEach(items.appendChild);
+
+        return items;
     }
 
 }

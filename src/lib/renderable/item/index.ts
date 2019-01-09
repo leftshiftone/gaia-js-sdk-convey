@@ -10,10 +10,11 @@ export class Item extends AbstractRenderable {
         this.text = message.text;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement) {
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const item = document.createElement('li');
         item.classList.add('item');
         item.appendChild(document.createTextNode(this.text));
-        container.appendChild(item);
+
+        return item;
     }
 }

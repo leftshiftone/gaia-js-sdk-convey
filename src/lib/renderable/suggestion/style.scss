@@ -1,0 +1,46 @@
+.gaia-chat .button {
+  border-radius: 15px;
+  padding: 5px 20px;
+  margin: 10px;
+  background: white;
+  color: #989898;
+  border: solid 1px lightgray !important;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  animation: slide-up 0.4s ease;
+  cursor: pointer;
+}
+
+.gaia-chat .button.right {
+  border: 1px solid lightgray;
+  background: #eeeeee;
+  margin-right: 30px;
+  color: #545454;
+}
+
+.gaia-chat .button-nested {
+  width: 50%;
+  margin-right: 10px;
+  border: solid white;
+  border-radius: 15px;
+  color: white;
+  padding: 5px;
+  animation: slide-up 0.4s ease;
+}
+
+.gaia-chat .button-nested.right {
+  background: white;
+  border: 1px solid lightgray;
+}
+
+.gaia-chat .button:hover {
+  background: rgba(184, 185, 181, 0.4);
+}
+
+.gaia-chat .button-nested:hover {
+  background: white;
+  color: #2f4050;
+}
+
+.gaia-chat .button:disabled {
+  cursor: default;
+}

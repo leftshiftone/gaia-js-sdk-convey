@@ -1,4 +1,4 @@
-import {IEmitter} from '../api/IEmitter';
+import {IListener} from '../api/IListener';
 import * as mqtt from 'mqtt';
 import {ChannelNameFactory} from "../support/ChannelNameFactory";
 import {ChannelType} from "../support/ChannelType";
@@ -10,14 +10,14 @@ export class MqttConnection {
 
     private readonly callbacks: Map<ChannelType, (message: object) => void> = new Map();
 
-    private readonly emitter: IEmitter;
+    private readonly emitter: IListener;
     private readonly renderer: IRenderer;
     private readonly clientId: string;
     private readonly identityId: string;
     private readonly userId: string;
     private readonly mqttClient: mqtt.MqttClient;
 
-    constructor(url: string, identityId: string, renderer: IRenderer, emitter: IEmitter) {
+    constructor(url: string, identityId: string, renderer: IRenderer, emitter: IListener) {
         this.emitter = emitter;
         this.renderer = renderer;
         this.clientId = uuid();

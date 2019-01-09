@@ -1,5 +1,6 @@
 import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer} from '../../api/IRenderer';
+import EventStream from '../../event/EventStream';
 
 export class Submit extends AbstractRenderable {
 
@@ -26,21 +27,18 @@ export class Submit extends AbstractRenderable {
         this.timestamp = message.timestamp;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
-        console.debug('Send message function: ');
-        console.debug(sendMessage);
-
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.position || 'left';
         const submit = document.createElement('button');
 
-        if (!Submit.isNested(container)) {
+        if (!isNested) {
             submit.classList.add('submit', position);
         } else {
             submit.classList.add('submit-nested', position);
         }
 
         submit.appendChild(document.createTextNode(this.text));
-        container.appendChild(submit);
+
         const text = this.text;
         const timestamp = this.timestamp;
 
@@ -61,14 +59,11 @@ export class Submit extends AbstractRenderable {
                     }
                 }
             });
-            sendMessage({
-                timestamp,
-                text,
-                attributes,
-                type: 'submit',
-                position: 'right',
-            });
+
+            EventStream.emit("Gaia::publish", {timestamp, text, attributes, type: 'submit', position: 'right'});
         });
+
+        return submit;
     }
 
 }

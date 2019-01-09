@@ -1,19 +1,22 @@
 import {AbstractRenderable} from '../../AbstractRenderable';
-import {IRenderer} from '../../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../../api/IRenderer';
 
 export class Col extends AbstractRenderable {
 
-    public message: any;
+    public spec: ISpecification;
 
-    constructor(message: any) {
+    constructor(spec: ISpecification) {
         super('col');
-        this.message = message;
+        this.spec = spec;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    public render(renderer:IRenderer, isNested: boolean):HTMLElement {
         const col = document.createElement('td');
         col.classList.add('col');
-        this.renderElements(renderer, col, this.message, sendMessage);
-        container.appendChild(col);
+
+        const elements = renderer.render(this.spec, false);
+        elements.forEach(col.appendChild);
+
+        return col;
     }
 }

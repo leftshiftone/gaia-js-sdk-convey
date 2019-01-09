@@ -115,7 +115,7 @@ export class Map extends AbstractRenderable {
     }
 
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         this.mapContainer = document.createElement('div');
         this.mapContainer.classList.add('map');
 
@@ -127,8 +127,6 @@ export class Map extends AbstractRenderable {
 
         this.mapContainer.appendChild(countMarkers);
         this.mapContainer.appendChild(noMarkers);
-
-        container.appendChild(this.mapContainer);
 
         setTimeout(() => {
             const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
@@ -152,5 +150,7 @@ export class Map extends AbstractRenderable {
             this.drawCircleAndMarkers();
             this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
         }, 500);
+
+        return this.mapContainer;
     }
 }

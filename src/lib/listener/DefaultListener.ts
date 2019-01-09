@@ -1,13 +1,13 @@
-import {IEmitter} from '../api/IEmitter';
+import {IListener} from '../api/IListener';
 
 /**
  * Default IEmitter implementation.
  */
-export class DefaultEmitter implements IEmitter {
+export class DefaultListener implements IListener {
 
-    private emitter: IEmitter | null;
+    private emitter: IListener | null;
 
-    constructor(emitter: IEmitter | null) {
+    constructor(emitter: IListener | null) {
         this.emitter = emitter;
     }
 

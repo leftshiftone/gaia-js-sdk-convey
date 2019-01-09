@@ -1,24 +1,29 @@
 import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
+/**
+ * Implementation of the 'link' markup element.
+ */
 export class Link extends AbstractRenderable {
 
-    public text: string;
-    public value: string;
+    private readonly spec:ISpecification;
 
-    constructor(message: any) {
+    constructor(spec: ISpecification) {
         super('link');
-        this.text = message.text;
-        this.value = message.value;
+        this.spec = spec;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer:IRenderer, isNested: boolean):HTMLElement {
         const link = document.createElement('a');
-        link.setAttribute('href', this.value);
+        link.setAttribute('href', this.spec.value || "");
         link.setAttribute('target', '_blank');
         link.classList.add('link');
-        link.appendChild(document.createTextNode(this.text));
-        container.appendChild(link);
+        link.appendChild(document.createTextNode(this.spec.text || ""));
+
+        return link;
     }
 
 }

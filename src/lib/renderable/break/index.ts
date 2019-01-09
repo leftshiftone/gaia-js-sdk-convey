@@ -1,15 +1,20 @@
 import {AbstractRenderable} from '../AbstractRenderable';
 import {IRenderer} from '../../api/IRenderer';
 
+/**
+ * Implementation of the 'break' markup element.
+ */
 export class Break extends AbstractRenderable {
 
     constructor() {
         super('break');
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
-        const br = document.createElement('br');
-        container.appendChild(br);
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer:IRenderer, isNested: boolean):HTMLElement {
+        return document.createElement('br');
     }
 
 }

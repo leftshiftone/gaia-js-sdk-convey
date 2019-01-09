@@ -4,9 +4,7 @@ import {IRenderer} from '../../api/IRenderer';
 // TODO: improve swipe feature: https://css-tricks.com/simple-swipe-with-vanilla-javascript/
 export class Carousel extends AbstractRenderable {
 
-    public timestamp: any;
     public message: any;
-    public value: string;
 
     private count: number;
     private counter: number = 0;
@@ -15,17 +13,17 @@ export class Carousel extends AbstractRenderable {
 
     constructor(message: any) {
         super('carousel');
-        this.timestamp = message.timestamp;
-        this.value = message.value;
         this.message = message;
         this.count = message.elements.length;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const carousel = document.createElement('div');
         carousel.classList.add('carousel', 'left');
 
-        this.renderElements(renderer, carousel, this.message, sendMessage);
+        const elements = renderer.render(this.message, false);
+        elements.forEach(carousel.appendChild);
+
         if (carousel.children[this.counter]) {
             carousel.children[this.counter].classList.add('active');
         }
@@ -46,12 +44,11 @@ export class Carousel extends AbstractRenderable {
         carousel.addEventListener('mouseup', this.mouseUp.bind(this), false);
 
         carousel.appendChild(buttonGroup);
-        container.appendChild(carousel);
+
+        return carousel;
     }
 
     private goto(i: number, e: any) {
-        console.log('goto ' + i);
-
         const carousel = e.target.closest('.carousel');
         const slides = carousel.querySelectorAll('.block');
 

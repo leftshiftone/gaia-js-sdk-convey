@@ -14,17 +14,20 @@ export class Text extends AbstractRenderable {
         this.position = message.position;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
-        if (!Text.isNested(container)) {
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+        if (!isNested) {
             const position = this.position || 'left';
             const text = document.createElement('div');
             text.classList.add('text', position);
             text.appendChild(Timestamp.render());
             text.appendChild(document.createTextNode(this.text));
-            container.appendChild(new Icon(position).render());
-            container.appendChild(text);
-        } else {
-            container.appendChild(document.createTextNode(this.text));
+            text.appendChild(new Icon(position).render());
+
+            return text;
         }
+        const text = document.createElement('div');
+        text.appendChild(document.createTextNode(this.text));
+
+        return text;
     }
 }

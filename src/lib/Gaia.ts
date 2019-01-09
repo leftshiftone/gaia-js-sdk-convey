@@ -1,15 +1,15 @@
-import {IEmitter} from './api/IEmitter';
+import {IListener} from './api/IListener';
 import {IRenderer} from './api/IRenderer';
 import {MqttConnection} from './connection/MqttConnection';
-import {DefaultEmitter} from './emitter/DefaultEmitter';
+import {DefaultListener} from './listener/DefaultListener';
 
 export class Gaia {
 
-    private readonly emitter: IEmitter;
+    private readonly emitter: IListener;
     private readonly renderer: IRenderer;
 
-    constructor(renderer: IRenderer, emitter?: IEmitter) {
-        this.emitter = new DefaultEmitter(emitter || null);
+    constructor(renderer: IRenderer, emitter?: IListener) {
+        this.emitter = new DefaultListener(emitter || null);
         this.renderer = renderer;
     }
 

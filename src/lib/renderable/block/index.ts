@@ -1,31 +1,37 @@
 import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
 import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
+/**
+ * Implementation of the 'block' markup element.
+ */
 export class Block extends AbstractRenderable {
 
-    public message: any;
-    public position: string;
+    private readonly message: ISpecification;
 
-    constructor(message: any) {
+    constructor(message: ISpecification) {
         super('block');
         this.message = message;
-        this.position = message.position;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
-        const position = this.position || 'left';
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+        const position = this.message.position || 'left';
         const block = document.createElement('div');
-        block.classList.add('block');
-        block.classList.add(position);
+        block.classList.add('block', position);
         block.appendChild(Timestamp.render());
-        this.renderElements(renderer, block, this.message, sendMessage);
-        if (!Block.isNested(container)) {
-            container.appendChild(new Icon(position).render());
+
+        const elements = renderer.render(this.message, false);
+        elements.forEach(block.appendChild);
+
+        if (!isNested) {
+            renderer.render(new Icon(position), true);
             block.classList.add('nested');
         }
-        container.appendChild(block);
+        return block;
     }
 
 }

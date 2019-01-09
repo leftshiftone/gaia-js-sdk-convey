@@ -1,4 +1,6 @@
-export class Icon {
+import {IRenderable} from '../../api/IRenderable';
+
+export class Icon implements IRenderable{
 
     public position: string;
 

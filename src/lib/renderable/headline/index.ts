@@ -1,25 +1,22 @@
 import {AbstractRenderable} from '../AbstractRenderable';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 
 export class Headline extends AbstractRenderable {
 
-    public message: any;
-    public text: string;
-    public position: string;
+    private readonly message: ISpecification;
 
-    constructor(message: any) {
+    constructor(message: ISpecification) {
         super('headline');
         this.message = message;
-        this.text = message.text;
-        this.position = message.position;
     }
 
-    public render(renderer:IRenderer, container: HTMLElement, sendMessage: (msg:any) => void) {
-        const position = this.position || 'left';
+    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+        const position = this.message.position || 'left';
         const headline = document.createElement('h2');
         headline.classList.add('headline', position);
-        headline.appendChild(document.createTextNode(this.text));
-        container.appendChild(headline);
+        headline.appendChild(document.createTextNode(this.message.text || ""));
+
+        return headline;
     }
 
 }
