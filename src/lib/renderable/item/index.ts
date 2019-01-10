@@ -17,12 +17,10 @@ export class Item implements IRenderable {
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const item = document.createElement('li');
-        item.classList.add('item');
+        item.classList.add('lto-item');
         item.appendChild(document.createTextNode(this.spec.text || ""));
 
         return item;
     }
-
-    public name = () => "item";
 
 }

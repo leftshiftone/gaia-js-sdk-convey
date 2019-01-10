@@ -17,7 +17,7 @@ export class Bold implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const bold = document.createElement('b');
-        bold.classList.add('bold');
+        bold.classList.add('lto-bold');
         bold.appendChild(document.createTextNode(this.spec.text || ""));
 
         return bold;

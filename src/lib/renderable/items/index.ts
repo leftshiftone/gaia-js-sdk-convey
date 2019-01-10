@@ -20,7 +20,7 @@ export class Items implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         if (!isNested) {
             const div = document.createElement('div');
-            div.classList.add('items');
+            div.classList.add('lto-items');
             div.appendChild(Timestamp.render());
 
             const items = document.createElement('ul');

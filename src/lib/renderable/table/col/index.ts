@@ -14,7 +14,7 @@ export class Col implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const col = document.createElement('td');
-        col.classList.add('col');
+        col.classList.add('lto-col');
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "col"));
         elements.forEach(e => e.forEach(x => col.appendChild(x)));

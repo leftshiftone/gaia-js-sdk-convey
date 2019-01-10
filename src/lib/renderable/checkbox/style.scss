@@ -1,4 +1,4 @@
-.gaia-chat .checkbox {
+.lto-checkbox {
   background: #fff;
   border: 1px solid #1E223F;
   width: auto;
@@ -11,25 +11,18 @@
   border-radius: 100px;
   padding: 5px 20px;
 }
-
-.gaia-chat .checkbox.toggle {
+.lto-checkbox.lto-toggle {
   color: dimgrey;
   background-color: #00ffc8;
   border-color: #00ffc8;
   font-weight: bold;
 }
-
-//.gaia-chat .checkbox:hover {
-//font-weight: normal;
-//}
-.gaia-chat .checkbox > input {
+.lto-checkbox > input {
   display: none;
 }
-
-.gaia-chat .checkbox .toggle, .gaia .checkbox .toggle:hover {
+.lto-checkbox .lto-toggle, .lto-checkbox .lto-toggle:hover {
   font-weight: bold;
 }
-
-.gaia-chat .checkbox + div {
+.lto-checkbox + div {
   height: 10px;
 }

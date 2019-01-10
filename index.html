@@ -10,20 +10,18 @@
 
 <div class="gaia">
     <div class="gaia-chat">
-        <div class="header" id="chat-header"></div>
-        <div class="messages scrollbar" id="chat-messages"></div>
-        <div class="control" id="chat-control">
+        <div class="messages lto-scrollbar"></div>
+        <div class="lto-control" id="chat-control">
             <textarea title="" class="messageInput" id="chat-messageInput"></textarea>
             <button class="sendButton" id="chat-sendButton"></button>
         </div>
-        <div class="footer" id="chat-footer"></div>
     </div>
 </div>
 
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const renderer = new GaiaSDK.ClassicRenderer(document.getElementById('chat-messages'));
+        const renderer = new GaiaSDK.ClassicRenderer(document.getElementsByClassName('lto-scrollbar')[0]);
 
         let gaia = new GaiaSDK.Gaia(renderer);
         gaia.connect('ws://localhost:61616', '1337')

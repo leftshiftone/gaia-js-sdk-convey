@@ -19,7 +19,7 @@ export class Link implements IRenderable {
         const link = document.createElement('a');
         link.setAttribute('href', this.spec.value || "");
         link.setAttribute('target', '_blank');
-        link.classList.add('link');
+        link.classList.add('lto-link');
         link.appendChild(document.createTextNode(this.spec.text || ""));
 
         return link;

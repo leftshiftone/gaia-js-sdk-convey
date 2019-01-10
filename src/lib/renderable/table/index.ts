@@ -18,7 +18,7 @@ export class Table implements IRenderable {
         const table = document.createElement('table');
         if (!isNested) {
             const position = this.spec.position || 'left';
-            table.classList.add('table', position);
+            table.classList.add('lto-table', "lto-" + position);
             table.appendChild(Timestamp.render());
 
             const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
@@ -26,7 +26,7 @@ export class Table implements IRenderable {
 
             table.appendChild(new Icon(position).render());
         } else {
-            table.classList.add('table-nested');
+            table.classList.add('lto-table", "lto-nested');
             const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
             elements.forEach(e => e.forEach(x => table.appendChild(x)));
         }

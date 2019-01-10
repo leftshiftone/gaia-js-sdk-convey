@@ -17,7 +17,7 @@ export class Row implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const row = document.createElement('tr');
-        row.classList.add('row');
+        row.classList.add('lto-row');
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "row"));
         elements.forEach(e => e.forEach(x => row.appendChild(x)));

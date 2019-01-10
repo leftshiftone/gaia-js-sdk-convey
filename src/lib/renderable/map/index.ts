@@ -116,7 +116,7 @@ export class Map implements IRenderable {
 
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         this.mapContainer = document.createElement('div');
-        this.mapContainer.classList.add('map');
+        this.mapContainer.classList.add('lto-map');
 
         const countMarkers = document.createElement('span');
         countMarkers.classList.add('num-markers');

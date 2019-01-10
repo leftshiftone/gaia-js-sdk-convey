@@ -18,13 +18,13 @@ export class Checkbox implements IRenderable {
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const checkbox = node('input').addAttributes({type: 'checkbox', name: this.message.name || ""});
-        const label = node('label').addClasses('checkbox', this.message.position || "left");
+        const label = node('label').addClasses('lto-checkbox', "lto-" + (this.message.position || "left"));
 
         label.appendChild(checkbox);
         label.appendChild(this.message.text || "");
         label.onClick((e: MouseEvent) => {
             checkbox.toggle();
-            label.toggleClass('toggle');
+            label.toggleClass('lto-toggle');
         });
 
         return label.unwrap();

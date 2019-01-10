@@ -1,4 +1,4 @@
-.gaia-chat .text {
+.lto-text {
   max-width: 75%;
   min-width: 30%;
   margin-top: 5px;
@@ -11,16 +11,14 @@
   display: inline-block;
   margin-bottom: 30px;
 }
-
-.gaia-chat .text.right {
+.lto-text.lto-right {
   background: #1E223F;
   color: white;
   border: 1px solid lightgray;
   margin-left: 30px;
   bottom: 40px;
 }
-
-.gaia-chat .icon {
+.lto-icon {
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -28,18 +26,15 @@
   background-size: cover;
   animation: slide-up 0.4s ease;
 }
-
-.gaia-chat .icon:hover {
+.lto-icon:hover {
   -ms-transform: scale(1.2);
   -webkit-transform: scale(1.2);
   transform: scale(1.2);
 }
-
-.gaia-chat .icon.right {
+.lto-icon.lto-right {
   margin-left: 30px;
 }
-
-.gaia-chat .text:hover {
+.lto-text:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }

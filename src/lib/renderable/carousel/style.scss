@@ -1,4 +1,4 @@
-.gaia-chat .carousel {
+.lto-carousel {
   max-width: 80%;
   min-width: 30%;
   background: white;
@@ -8,14 +8,12 @@
   transition: transform .5s ease-out;
   margin-bottom: 30px;
 }
-
-.gaia-chat .carousel .button-group {
+.lto-carousel .lto-button-group {
   margin-left: auto;
   margin-right: auto;
   display: table;
 }
-
-.gaia-chat .carousel .goto {
+.lto-carousel .lto-goto {
   border: none;
   background: #1E223F;
   height: 16px;
@@ -24,12 +22,13 @@
   color: #1E223F;
   margin: 3px;
 }
-
-.gaia-chat .carousel .goto:hover {
+.lto-goto:focus {
+    outline: 0 !important;
+}
+.lto-carousel .lto-goto:hover {
   background: lightgrey;
 }
-
-.gaia-chat .carousel > div.block {
+.lto-carousel > .lto-block {
   z-index: 1;
   display: none;
   -webkit-transition: opacity 1s;
@@ -38,13 +37,11 @@
   transition: opacity 1s;
   width: auto;
 }
-
-.gaia-chat .carousel > div.active {
+.lto-carousel > .lto-active {
   display: block;
   z-index: 2;
 }
-
-.gaia-chat .carousel:hover {
+.lto-carousel:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }

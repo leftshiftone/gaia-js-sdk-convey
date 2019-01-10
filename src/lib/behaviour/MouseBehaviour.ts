@@ -2,6 +2,10 @@ import {IBehaviour} from '../api/IBehaviour';
 import {MqttConnection} from '../connection/MqttConnection';
 import {ChannelType} from '../support/ChannelType';
 
+/**
+ * IBehaviour implementation which listens for a mouse click event in order to publish
+ * a text message to the outgoing text channel.
+ */
 export class MouseBehaviour implements IBehaviour {
 
     private readonly target1: HTMLButtonElement;

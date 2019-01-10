@@ -8,8 +8,8 @@ export class Gaia {
     private readonly listener: IListener;
     private readonly renderer: IRenderer;
 
-    constructor(renderer: IRenderer, emitter?: IListener) {
-        this.listener = new DefaultListener(emitter || null);
+    constructor(renderer: IRenderer, listener?: IListener) {
+        this.listener = new DefaultListener(listener || null);
         this.renderer = renderer;
     }
 

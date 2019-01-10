@@ -5,7 +5,7 @@ export class Timestamp {
         const f = (e: any) => e.toString().padStart(2, '0');
         const text = f(date.getHours()) + ':' + f(date.getMinutes());
         const timestamp = document.createElement('span');
-        timestamp.classList.add('timestamp');
+        timestamp.classList.add('lto-timestamp');
         timestamp.appendChild(document.createTextNode(text));
         return timestamp;
     }

@@ -21,20 +21,20 @@ export class Carousel implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const carousel = document.createElement('div');
-        carousel.classList.add('carousel', 'left');
+        carousel.classList.add('lto-carousel', 'lto-left');
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "carousel"));
         elements.forEach(e => e.forEach(x => carousel.appendChild(x)));
 
         if (carousel.children[this.counter]) {
-            carousel.children[this.counter].classList.add('active');
+            carousel.children[this.counter].classList.add('lto-active');
         }
 
         const buttonGroup = document.createElement('div');
-        buttonGroup.classList.add('button-group');
+        buttonGroup.classList.add('lto-button-group');
         for (let i = 0; i < this.count; i++) {
             const goto = document.createElement('button');
-            goto.classList.add('goto');
+            goto.classList.add('lto-goto');
             goto.addEventListener('click', this.goto.bind(this, i));
 
             buttonGroup.appendChild(goto);
@@ -51,13 +51,14 @@ export class Carousel implements IRenderable {
     }
 
     private goto(i: number, e: any) {
-        const carousel = e.target.closest('.carousel');
-        const slides = carousel.querySelectorAll('.block');
+        const carousel = e.target.closest('.lto-carousel');
+        const slides = carousel.querySelectorAll('.lto-block');
 
-        slides[this.counter].classList.replace('active', 'passive');
+        slides[this.counter].classList.replace('lto-active', 'lto-passive');
 
         this.counter = i;
-        slides[this.counter].classList.add('active');
+        slides[this.counter].classList.add('lto-active');
+        slides[this.counter].classList.replace('lto-passive', '');
     }
 
     private touchStart = (e: any) => this.touchstartX = e.changedTouches[0].screenX;

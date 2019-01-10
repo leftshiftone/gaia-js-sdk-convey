@@ -10,9 +10,9 @@ describe("ChannelType test", () => {
             ["/GAIA/RAIN/identity_id/1234/test/in", null],
             ["/GAIA//identity_id/1234/test/in", null],
             ["/GAIA/RAIN/identity_id/1234/in", null],
-            ["/GAIA/RAIN/identity_id/123 4/notification/in",null],
+            ["/GAIA/RAIN/identity_id/123 4/notification/in", null],
             ["context", null]
         ]
-            .forEach(topic => expect(ChannelType.match(topic[0]!)).toBe(topic[1]))
-    })
+            .forEach(topic => expect(ChannelType.match(topic[0]!)).toBe(topic[1]));
+    });
 });

@@ -1,4 +1,4 @@
-.gaia-chat .icon {
+.lto-icon {
   display: inline-block;
   border: 1px solid #1E223F;
   width: 40px;
@@ -7,8 +7,7 @@
   background-size: cover;
   animation: slide-up 0.4s ease;
 }
-
-.gaia-chat .icon.left {
+.lto-icon.lto-left {
   margin-left: 20px;
   margin-right: 20px;
   clear: both;
@@ -17,8 +16,7 @@
   box-shadow: none !important;
   border-radius: 50% !important;
 }
-
-.gaia-chat .icon.right {
+.lto-icon.lto-right {
   margin-right: 20px;
   margin-left: 20px;
 }

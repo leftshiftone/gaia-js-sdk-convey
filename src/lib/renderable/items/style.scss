@@ -1,4 +1,4 @@
-.gaia-chat .items {
+.lto-items {
   max-width: 80%;
   min-width: 30%;
   margin-top: 5px;
@@ -12,15 +12,13 @@
   display: inline-block;
   margin-bottom: 30px;
 }
-
-.gaia-chat .items.right {
+.lto-items.lto-right {
   background: #1E223F;
   color: white;
   margin-left: 30px;
   bottom: 40px;
 }
-
-.gaia-chat .items:hover {
+.lto-items:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }

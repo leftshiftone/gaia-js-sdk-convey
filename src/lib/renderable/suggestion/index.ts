@@ -7,7 +7,7 @@ import {IRenderable} from '../../api/IRenderable';
  */
 export class Suggestion implements IRenderable {
 
-    private readonly spec:ISpecification;
+    private readonly spec: ISpecification;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -16,21 +16,26 @@ export class Suggestion implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const button = document.createElement('button');
         button.setAttribute('name', this.spec.name || "");
 
-        button.classList.add(isNested ? "button-nested" : "button", "left");
+        button.classList.add("lto-suggestion", "lto-left");
+        if (isNested) {
+            button.classList.add("lto-nested");
+        }
         button.appendChild(document.createTextNode(this.spec.text || ""));
 
-        button.addEventListener('click', () => {
-            EventStream.emit("GAIA::publish", {
-                    type: 'button',
-                    text: this.spec.text || "",
-                    attributes: {type: 'button', name: this.spec.name || "", value: this.spec.value || ""}
-                },
-            );
-        });
+        if (this.spec.position === "left") {
+            button.addEventListener('click', () => {
+                EventStream.emit("GAIA::publish", {
+                        type: 'button',
+                        text: this.spec.text || "",
+                        attributes: {type: 'button', name: this.spec.name || "", value: this.spec.value || ""}
+                    },
+                );
+            }, {once: true});
+        }
 
         return button;
     }

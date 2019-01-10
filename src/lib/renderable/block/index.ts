@@ -20,15 +20,15 @@ export class Block implements IRenderable {
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const position = this.spec.position || 'left';
         const block = document.createElement('div');
-        block.classList.add('block', position);
+        block.classList.add('lto-block', "lto-" + position);
         block.appendChild(Timestamp.render());
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "block"));
         elements.forEach(e => e.forEach(x => block.appendChild(x)));
 
-        if (!isNested) {
+        if (isNested) {
             block.appendChild(renderer.render(new Icon(position))[0]);
-            block.classList.add('nested');
+            block.classList.add('lto-nested');
         }
         return block;
     }

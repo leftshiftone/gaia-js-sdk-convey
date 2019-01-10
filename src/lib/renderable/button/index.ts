@@ -21,7 +21,10 @@ export class Button implements IRenderable {
         const button = document.createElement('button');
         button.setAttribute('name', this.message.name || "");
 
-        button.classList.add(isNested ? "button-nested" : "button", position);
+        button.classList.add("lto-button", "lto-" + position);
+        if (isNested) {
+            button.classList.add("lto-nested");
+        }
         button.appendChild(document.createTextNode(this.message.text || ""));
 
         if (position === "left") {

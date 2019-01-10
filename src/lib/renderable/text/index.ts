@@ -21,7 +21,7 @@ export class Text implements IRenderable {
         if (!isNested) {
             const position = this.spec.position || 'left';
             const text = document.createElement('div');
-            text.classList.add('text', position);
+            text.classList.add('lto-text', "lto-" + position);
             text.appendChild(Timestamp.render());
             text.appendChild(document.createTextNode(this.spec.text || ""));
 

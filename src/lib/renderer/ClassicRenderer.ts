@@ -21,12 +21,12 @@ export class ClassicRenderer extends AbstractRenderer {
         if (!ClassicRenderer.isNested(containerType)) {
             if (this.needsSeparator(renderable)) {
                 const div = document.createElement('div');
-                div.classList.add('separator');
+                div.classList.add('lto-separator');
                 array.push(div);
             }
         }
 
-        const objDiv = document.querySelector('.gaia-chat .scrollbar');
+        const objDiv = document.querySelector('.lto-scrollbar');
         if (objDiv != null) {
             objDiv.scrollTop = objDiv.scrollHeight;
         }

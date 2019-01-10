@@ -1,4 +1,4 @@
-.gaia-chat .submit {
+.lto-submit {
   border-radius: 5px;
   padding: 5px;
   margin: 5px 50px;
@@ -7,18 +7,15 @@
   border: 1px solid lightgray;
   color: black;
 }
-
-.gaia-chat .submit:hover {
+.lto-submit:hover {
   font-weight: bold;
 }
-
-.gaia-chat .submit.right {
+.lto-submit.lto-right {
   background: white;
   border: 1px solid lightgray;
   display: none;
 }
-
-.gaia-chat .submit-nested {
+.lto-submit.lto-nested {
   border: 1px solid lightgray;
   border-radius: 5px;
   padding: 5px;
@@ -30,12 +27,7 @@
   font-size: 20px;
   box-shadow: 0 1px 10px rgba(0, 0, 0, .19), 0 6px 6px rgba(0, 0, 0, .23);
 }
-
-.gaia-chat .submit-nested:hover {
-  //font-weight: bold;
-}
-
-.gaia-chat .submit-nested.right {
+.lto-submit.lto-nested.lto-right {
   background: white;
   border: 1px solid lightgray;
   display: none;

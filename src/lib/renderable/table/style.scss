@@ -1,4 +1,4 @@
-.gaia-chat .table {
+.lto-table {
   display: table;
   max-width: 80%;
   min-width: 30%;
@@ -9,8 +9,7 @@
   table-layout: auto;
   border-collapse: collapse;
 }
-
-.gaia-chat .table-nested {
+.lto-table.lto-nested {
   width: auto;
   display: table;
   border-radius: 20px;
@@ -20,7 +19,6 @@
   table-layout: auto;
   border-collapse: collapse;
 }
-
-.gaia-chat .col {
+.lto-col {
   padding-right: 15px;
 }

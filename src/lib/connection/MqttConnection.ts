@@ -69,7 +69,7 @@ export class MqttConnection {
         console.debug('Sending message to destination ' + destination);
 
         // remove left buttons
-        const elements = document.querySelectorAll('button.left');
+        const elements = document.querySelectorAll('.lto-button.lto-left');
         elements.forEach(element => element.remove());
 
         const body = Object.assign(msg[0], {position: 'right', timestamp: new Date().getTime()});

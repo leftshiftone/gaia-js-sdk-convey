@@ -18,7 +18,7 @@ export class Headline implements IRenderable {
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const position = this.message.position || 'left';
         const headline = document.createElement('h2');
-        headline.classList.add('headline', position);
+        headline.classList.add('lto-headline', position);
         headline.appendChild(document.createTextNode(this.message.text || ""));
 
         return headline;

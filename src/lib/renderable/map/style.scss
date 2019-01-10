@@ -1,4 +1,4 @@
-.gaia-chat .map {
+.lto-map {
   width: 100%;
   height: 300px;
   border-radius: 20px;
@@ -9,7 +9,6 @@
   margin: 10px auto;
   mix-blend-mode: hard-light;
 }
-
-.gaia-chat .map .leaflet-interactive {
+.lto-map .leaflet-interactive {
   transition: all 0.3s ease-in-out;
 }

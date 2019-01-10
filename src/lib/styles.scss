@@ -1,220 +1,198 @@
 @keyframes slide-up {
-  0% {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 * {
-  font-family: open sans, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: open sans, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 .gaia-chat {
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
 }
 
-.gaia-chat .right {
-  float: right;
-  border: solid 1px lightgray;
-  color: #545454;
+.lto-right {
+    float: right;
+    border: solid 1px lightgray;
+    color: #545454;
 }
 
-.gaia-chat .left {
-  float: left;
-  //color: white;
+.lto-left {
+    float: left;
 }
 
-.gaia-chat .header {
-  height: 5vh;
-}
-
-.gaia-chat .footer {
-  height: 5vh;
-}
-
-.gaia-chat .separator {
-  clear: both;
-}
-
-.gaia-chat .separator-button {
-  clear: none;
+.lto-separator {
+    clear: both;
 }
 
 // scrollbar
 // *********
-.gaia-chat .scrollbar {
-  margin: 0 auto;
-  background: white;
-  padding-right: 5px;
-  padding-left: 5px;
-  padding-top: 5px;
-  min-height: 10vh;
-  max-height: 65vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  line-height: 1.9;
+.lto-scrollbar {
+    margin: 0 auto;
+    background: white;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    min-height: 10vh;
+    max-height: 65vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    line-height: 1.9;
 }
-
-.gaia-chat .scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+.lto-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
-
-.gaia-chat .scrollbar::-webkit-scrollbar-track-piece {
-  background: white;
-  -webkit-border-radius: 3px;
+.lto-scrollbar::-webkit-scrollbar-track-piece {
+    background: white;
+    -webkit-border-radius: 3px;
 }
-
-.gaia-chat .scrollbar::-webkit-scrollbar-thumb:horizontal {
-  width: 50px;
-  background-color: white;
-  -webkit-border-radius: 3px;
+.lto-scrollbar::-webkit-scrollbar-thumb:horizontal {
+    width: 50px;
+    background-color: white;
+    -webkit-border-radius: 3px;
 }
-
-.gaia-chat .scrollbar::-webkit-scrollbar-thumb:vertical {
-  height: 50px;
-  background: #1E223F;
-  -webkit-border-radius: 3px;
+.lto-scrollbar::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background: #1E223F;
+    -webkit-border-radius: 3px;
 }
-
-.gaia-chat .scrollbar::-webkit-scrollbar-button:start:decrement,
-.gaia-chat .scrollbar::-webkit-scrollbar-button:end:increment {
-  display: block;
-  height: 10px;
+.lto-scrollbar::-webkit-scrollbar-button:start:decrement,
+.lto-scrollbar::-webkit-scrollbar-button:end:increment {
+    display: block;
+    height: 10px;
 }
-
-.gaia-chat .scrollbar::-webkit-scrollbar-button:vertical:increment {
-  background: white;
+.lto-scrollbar::-webkit-scrollbar-button:vertical:increment {
+    background: white;
 }
 
 // icon
 // ****
-.gaia-chat .icon.left {
-  position: relative;
-  border-radius: 15px;
-  animation: slide-up 0.4s ease;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+.lto-icon.lto-left {
+    position: relative;
+    border-radius: 15px;
+    animation: slide-up 0.4s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
-
-.gaia-chat .icon.right {
-  position: relative;
-  background: #1E223F;
-  animation: slide-up 0.4s ease;
-  border-radius: 50px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+.lto-icon.lto-right {
+    position: relative;
+    background: #1E223F;
+    animation: slide-up 0.4s ease;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
-
-.gaia-chat .icon.right:hover {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+.lto-icon.lto-right:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
-
-.gaia-chat .icon.left:hover {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+.lto-icon.lto-left:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 //chat control
 //************
-.gaia-chat .control {
-  //margin: 0 auto;
-  background-color: white;
-  font-family: "GT-Walsheim-Regular", Helvetica, Arial, sans-serif;
-  height: 65px;
-  padding: 0;
-  margin: 10px;
-  overflow: hidden;
+.lto-control {
+    //margin: 0 auto;
+    background-color: white;
+    font-family: "GT-Walsheim-Regular", Helvetica, Arial, sans-serif;
+    height: 65px;
+    padding: 0;
+    margin: 10px;
+    overflow: hidden;
 }
 
 .gaia-chat .sendButton {
-  font-size: 25px;
-  height: 65px;
-  width: 65px;
-  resize: none;
-  border-radius: 50%;
-  border: 1px solid #1E223F;
-  color: #1E223F;
-  background-color: white;
-  background-size: cover;
-  float: right;
+    font-size: 25px;
+    height: 65px;
+    width: 65px;
+    resize: none;
+    border-radius: 50%;
+    border: 1px solid #1E223F;
+    color: #1E223F;
+    background-color: white;
+    background-size: cover;
+    float: right;
 }
 
 .gaia-chat .messageInput {
-  background-color: white;
-  width: 90%;
-  height: auto;
-  resize: none;
-  padding: 10px;
-  float: left;
-  border-radius: 15px;
-  border: 1px solid #1E223F;
-  overflow: auto;
-  outline: none;
+    background-color: white;
+    width: 90%;
+    height: auto;
+    resize: none;
+    padding: 10px;
+    float: left;
+    border-radius: 15px;
+    border: 1px solid #1E223F;
+    overflow: auto;
+    outline: none;
 
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 
-  font-size: 19px;
+    font-size: 19px;
 }
 
 @media only screen and (max-width: 600px) {
-  .gaia-chat .column {
-    padding-right: 5px;
-    min-width: 40px;
-  }
-  .gaia-chat {
-    width: 100%;
-    max-height: 60vh;
-    line-height: 1.8;
-  }
-  .gaia-chat .text {
-    max-width: unset;
-    min-width: 30%;
-    margin-bottom: 20px;
-  }
-  .gaia-chat .table {
-    max-width: 80%;
-  }
-  .gaia-chat .block {
-    max-width: 80%;
-    margin-bottom: 20px;
-    font-size: 14px;
-  }
-  .gaia-chat .button {
-    width: 80%;
-    margin: 0 20px 20px;
-    padding: 7px;
-    font-size: 14px;
-  }
-  .gaia-chat .control {
-    width: 100%;
-    font-size: 13px;
-  }
-  .gaia-chat .button.right {
-    margin-right: 20px;
-  }
-  .gaia-chat .text.right {
-    margin-right: 20px;
-  }
-  .gaia-chat .icon {
-    margin-top: 10px;
-    height: 20px;
-    width: 20px;
-    display: none;
-  }
-  .gaia-chat .icon.left {
-    margin-right: 25px;
-  }
-  .gaia-chat .submit-nested.left {
-    width: auto;
-    margin: auto;
-  }
+    .gaia-chat .column {
+        padding-right: 5px;
+        min-width: 40px;
+    }
+    .gaia-chat {
+        width: 100%;
+        max-height: 60vh;
+        line-height: 1.8;
+    }
+    .lto-text {
+        max-width: unset;
+        min-width: 30%;
+        margin-bottom: 20px;
+    }
+    .lto-table {
+        max-width: 80%;
+    }
+    .lto-block {
+        max-width: 80%;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .lto-button {
+        width: 80%;
+        margin: 0 20px 20px;
+        padding: 7px;
+        font-size: 14px;
+    }
+    .lto-control {
+        width: 100%;
+        font-size: 13px;
+    }
+    .lto-button.lto-right {
+        margin-right: 20px;
+    }
+    .lto-text.lto-right {
+        margin-right: 20px;
+    }
+    .lto-icon {
+        margin-top: 10px;
+        height: 20px;
+        width: 20px;
+        display: none;
+    }
+    .lto-icon.lto-left {
+        margin-right: 25px;
+    }
+    .lto-submit.lto-nested.lto-left {
+        width: auto;
+        margin: auto;
+    }
 }

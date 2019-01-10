@@ -10,7 +10,7 @@ export class Icon implements IRenderable{
 
     public render() {
         const icon = document.createElement('div');
-        icon.classList.add('icon', this.position);
+        icon.classList.add('lto-icon', "lto-" + this.position);
         return icon;
     }
 

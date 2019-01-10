@@ -21,11 +21,9 @@ export class Image implements IRenderable {
         image.setAttribute('alt', this.spec.text || "");
         image.setAttribute('width', this.spec.width || "auto");
         image.setAttribute('height', this.spec.height || "auto");
-        image.classList.add('image');
+        image.classList.add('lto-image');
 
         return image;
     }
-
-    public name = () => "image";
 
 }

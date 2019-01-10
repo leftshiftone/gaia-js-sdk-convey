@@ -20,6 +20,7 @@
         "ter-arrow-parens":false,
         "linebreak-style":false,
         "no-increment-decrement":false,
-        "prefer-array-literal":false
+        "prefer-array-literal":false,
+        "eofline":false
     }
 }

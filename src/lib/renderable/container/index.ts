@@ -17,7 +17,7 @@ export class Container implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const div = document.createElement("div");
-        div.classList.add("container");
+        div.classList.add("lto-container");
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "container"));
         elements.forEach(e => e.forEach(x => div.appendChild(x)));
