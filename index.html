@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>gaia-transmitter-js</title>
+    <title>gaia-js-sdk-convey</title>
     <script src="dist/gaia-js-sdk-convey.min.js"></script>
     <link rel="stylesheet" href="dist/gaia-js-sdk-convey.min.css">
 </head>
@@ -23,15 +23,15 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const renderer = new ClassicRenderer(document.getElementById('chat-messages'));
+        const renderer = new GaiaSDK.ClassicRenderer(document.getElementById('chat-messages'));
 
-        let gaia = new Gaia(renderer);
+        let gaia = new GaiaSDK.Gaia(renderer);
         gaia.connect('ws://localhost:61616', '1337')
             .then(connection => {
-                connection.bind(new KeyboardBehaviour(document.getElementById('chat-messageInput')));
-                connection.bind(new MouseBehaviour(document.getElementById('chat-sendButton')));
+                connection.bind(new GaiaSDK.KeyboardBehaviour(document.getElementById('chat-messageInput')));
+                connection.bind(new GaiaSDK.MouseBehaviour(document.getElementById('chat-sendButton')));
 
-                connection.subscribe(ChannelType.TEXT, (e) => console.log('Text: ' + e));
+                connection.subscribe(GaiaSDK.ChannelType.TEXT, (e) => console.log('Text: ' + e));
                 connection.reception();
             });
 

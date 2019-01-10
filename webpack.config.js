@@ -70,7 +70,7 @@ module.exports = (env, argv) => ({
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        library: 'GaiaChannel',
+        library: 'GaiaSDK',
         libraryTarget: 'umd',
         libraryExport: 'default',
         filename: 'dist/gaia-js-sdk-convey.min.js',

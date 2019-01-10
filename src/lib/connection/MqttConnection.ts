@@ -11,22 +11,22 @@ export class MqttConnection {
 
     private readonly callbacks: Map<ChannelType, (message: object) => void> = new Map();
 
-    private readonly emitter: IListener;
+    private readonly listener: IListener;
     private readonly renderer: IRenderer;
     private readonly clientId: string;
     private readonly identityId: string;
     private readonly userId: string;
     private readonly mqttClient: mqtt.MqttClient;
 
-    constructor(url: string, identityId: string, renderer: IRenderer, emitter: IListener) {
-        this.emitter = emitter;
+    constructor(url: string, identityId: string, renderer: IRenderer, listener: IListener) {
+        this.listener = listener;
         this.renderer = renderer;
         this.clientId = uuid();
         this.identityId = identityId;
         this.userId = uuid();
 
         this.mqttClient = mqtt.connect(url, {clean: false, clientId: this.clientId});
-        this.mqttClient.on('connect', this.emitter.onConnected);
+        this.mqttClient.on('connect', this.listener.onConnected);
         this.mqttClient.on('message', this.onMessage.bind(this));
 
         EventStream.addListener("GAIA::publish", this.publish.bind(this, ChannelType.TEXT));
@@ -35,7 +35,7 @@ export class MqttConnection {
     /**
      * Disconnects from the mqtt connection.
      */
-    public disconnect = () => this.mqttClient.end(false, this.emitter.onDisconnected);
+    public disconnect = () => this.mqttClient.end(false, this.listener.onDisconnected);
 
     /**
      * Subscribes to the given destination.
@@ -75,7 +75,7 @@ export class MqttConnection {
             const body = Object.assign(msg, {position: 'right', timestamp: new Date().getTime()});
             const payload = JSON.stringify({body, header: this.header()});
 
-            this.mqttClient.publish(destination, payload, this.errorHandler(msg));
+            this.mqttClient.publish(destination, payload, this.mqttCallback(msg));
             return this.renderer.render(body, true);
         } catch (err) {
             return Promise.reject(err);
@@ -87,7 +87,7 @@ export class MqttConnection {
      */
     public reception() {
         const payload = JSON.stringify({header: this.header(), type: 'reception'});
-        this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.errorHandler("reception"));
+        this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.mqttCallback("reception"));
     }
 
     /**
@@ -109,7 +109,7 @@ export class MqttConnection {
                 case ChannelType.TEXT:
                     const payload = Object.assign(message, {position: 'left'});
 
-                    this.emitter.onMessage(payload);
+                    this.listener.onMessage(payload);
                     this.renderer.render(payload, this.publish.bind(this, this.outgoing(ChannelType.TEXT)));
 
                     this.callback(channelType, message);
@@ -137,7 +137,7 @@ export class MqttConnection {
     private outgoing = (type: ChannelType) => ChannelNameFactory.clientOutgoing(this.clientId, this.identityId, type);
     private incoming = (type: ChannelType) => ChannelNameFactory.clientIncoming(this.clientId, this.identityId, type);
 
-    private errorHandler(msg: any) {
+    private mqttCallback(msg: any) {
         return (error?: Error, packet?: mqtt.Packet) => {
             if (error) {
                 console.error('Failed to publish message ' + error.message, error, packet);
