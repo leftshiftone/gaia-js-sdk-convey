@@ -16,12 +16,15 @@ export class Carousel implements IRenderable {
         this.count = (message.elements || []).length;
     }
 
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const carousel = document.createElement('div');
         carousel.classList.add('carousel', 'left');
 
-        const elements = renderer.render(this.spec, false);
-        elements.forEach(carousel.appendChild);
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, "carousel"));
+        elements.forEach(e => e.forEach(x => carousel.appendChild(x)));
 
         if (carousel.children[this.counter]) {
             carousel.children[this.counter].classList.add('active');
@@ -57,13 +60,8 @@ export class Carousel implements IRenderable {
         slides[this.counter].classList.add('active');
     }
 
-    private touchStart(e: any) {
-        this.touchstartX = e.changedTouches[0].screenX;
-    }
-
-    private mouseDown(e: any) {
-        this.touchstartX = e.screenX;
-    }
+    private touchStart = (e: any) => this.touchstartX = e.changedTouches[0].screenX;
+    private mouseDown = (e: any) => this.touchstartX = e.screenX;
 
     private touchEnd(e: any) {
         this.touchendX = e.changedTouches[0].screenX;
@@ -86,7 +84,5 @@ export class Carousel implements IRenderable {
             this.goto(i, e);
         }
     }
-
-    public name = () => "carousel";
 
 }

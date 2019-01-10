@@ -30,6 +30,4 @@ export class Checkbox implements IRenderable {
         return label.unwrap();
     }
 
-    public name = () => "checkbox";
-
 }

@@ -35,6 +35,4 @@ export class Suggestion implements IRenderable {
         return button;
     }
 
-    public name = () => "suggestion";
-
 }

@@ -7,41 +7,43 @@ import {IRenderable} from '../api/IRenderable';
  */
 export abstract class AbstractRenderer implements IRenderer {
 
-    private static NESTED_ELEMENTS = ["block", "carousel", "col"];
+    private static CONTAINER_ELEMENTS = ["block", "carousel", "col", "items", "row", "table", "block"];
 
-    protected static isNested(container: HTMLElement) {
-        return AbstractRenderer.NESTED_ELEMENTS.find(e => container.classList.contains(e)) !== undefined;
+    protected static isNested(containerType?: string) {
+        return containerType === undefined ? false : AbstractRenderer.CONTAINER_ELEMENTS.indexOf(containerType) >= 0;
+    }
+
+    private readonly target:HTMLElement;
+
+    constructor(target:HTMLElement) {
+        this.target = target;
     }
 
     /**
      * {@inheritDoc}
      */
-    public render(message: ISpecification | IRenderable, append: boolean): HTMLElement[] {
+    public render(message: ISpecification | IRenderable, containerType?:string): HTMLElement[] {
         if (message["render"] !== undefined) {
-            return [this.renderElement(message as IRenderable, append)];
+            return this.renderElement(message as IRenderable, containerType);
         }
-        const renderables = this.getRenderables(message as ISpecification);
-        return renderables.map(r => this.renderElement(r, append));
+        const renderable = this.getRenderable(message as ISpecification);
+        return this.renderElement(renderable, containerType);
     }
 
-    protected abstract renderElement(element: IRenderable, append:boolean): HTMLElement;
+    protected abstract renderElement(element: IRenderable, containerType?:string): HTMLElement[];
 
+    // noinspection JSMethodCanBeStatic
     /**
      * Returns the element by evaluating the message type.
      *
      * @param message the message
      */
-    private getRenderables(message: ISpecification): IRenderable[] {
-        if (message.type.toUpperCase() === 'CONTAINER') {
-            const renderables = (message.elements || []).map((element: ISpecification) => {
-                return this.getRenderables(element);
-            });
-            return [].concat.apply([], renderables);
-        }
+    private getRenderable(message: ISpecification): IRenderable {
         console.debug('Element message of type ' + message.type);
         const renderableClass = renderables[message.type.toUpperCase()];
-        return [new renderableClass(message) as IRenderable];
+        return new renderableClass(message) as IRenderable;
     }
 
-}
+    public append = (element: HTMLElement) => this.target.appendChild(element);
 
+}

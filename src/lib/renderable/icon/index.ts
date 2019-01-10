@@ -14,6 +14,4 @@ export class Icon implements IRenderable{
         return icon;
     }
 
-    public name = () => "icon";
-
 }

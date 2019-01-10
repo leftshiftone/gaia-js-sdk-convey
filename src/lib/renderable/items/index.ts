@@ -26,19 +26,17 @@ export class Items implements IRenderable {
             const items = document.createElement('ul');
             div.appendChild(items);
 
-            const elements = renderer.render(this.spec, false);
-            elements.forEach(items.appendChild);
+            const elements = (this.spec.elements || []).map(e => renderer.render(e, "items"));
+            elements.forEach(e => e.forEach(x => items.appendChild(x)));
             div.appendChild(new Icon(this.spec.position || 'left').render());
 
             return div;
         }
         const items = document.createElement('ul');
-        const elements = renderer.render(this.spec, false);
-        elements.forEach(items.appendChild);
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, "items"));
+        elements.forEach(e => e.forEach(x => items.appendChild(x)));
 
         return items;
     }
-
-    public name = () => "items";
 
 }

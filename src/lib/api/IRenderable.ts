@@ -5,6 +5,4 @@ import {IRenderer} from './IRenderer';
  */
 export interface IRenderable {
     render(renderer: IRenderer, isNested:boolean): HTMLElement;
-
-    name():string;
 }

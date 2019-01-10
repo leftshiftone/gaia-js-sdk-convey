@@ -10,6 +10,10 @@
   cursor: pointer;
 }
 
+.gaia-chat .button:focus {
+    outline:0 !important;
+}
+
 .gaia-chat .button.right {
   border: 1px solid lightgray;
   background: #eeeeee;

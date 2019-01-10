@@ -56,6 +56,4 @@ export class Submit implements IRenderable {
         return submit;
     }
 
-    public name = () => "submit";
-
 }

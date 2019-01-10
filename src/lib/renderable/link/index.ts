@@ -25,6 +25,4 @@ export class Link implements IRenderable {
         return link;
     }
 
-    public name = () => "link";
-
 }

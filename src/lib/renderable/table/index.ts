@@ -21,19 +21,17 @@ export class Table implements IRenderable {
             table.classList.add('table', position);
             table.appendChild(Timestamp.render());
 
-            const elements = renderer.render(this.spec, false);
-            elements.forEach(table.appendChild);
+            const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
+            elements.forEach(e => e.forEach(x => table.appendChild(x)));
 
             table.appendChild(new Icon(position).render());
         } else {
             table.classList.add('table-nested');
-            const elements = renderer.render(this.spec, false);
-            elements.forEach(table.appendChild);
+            const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
+            elements.forEach(e => e.forEach(x => table.appendChild(x)));
         }
 
         return table;
     }
-
-    public name = () => "table";
 
 }

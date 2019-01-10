@@ -24,6 +24,4 @@ export class Headline implements IRenderable {
         return headline;
     }
 
-    public name = () => "headline";
-
 }

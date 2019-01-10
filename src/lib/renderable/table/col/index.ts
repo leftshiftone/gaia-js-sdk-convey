@@ -16,12 +16,10 @@ export class Col implements IRenderable {
         const col = document.createElement('td');
         col.classList.add('col');
 
-        const elements = renderer.render(this.spec, false);
-        elements.forEach(col.appendChild);
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, "col"));
+        elements.forEach(e => e.forEach(x => col.appendChild(x)));
 
         return col;
     }
-
-    public name = () => "col";
 
 }

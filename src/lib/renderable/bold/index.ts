@@ -23,6 +23,4 @@ export class Bold implements IRenderable {
         return bold;
     }
 
-    public name = () => "bold";
-
 }

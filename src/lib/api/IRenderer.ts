@@ -1,11 +1,12 @@
 import {IRenderable} from './IRenderable';
 
 export interface IRenderer {
-    render(message: ISpecification | IRenderable, append: boolean):HTMLElement[];
+    render(message: ISpecification | IRenderable, containerType?:string):HTMLElement[];
+    append(element: HTMLElement):void;
 }
 export interface ISpecification {
     type: string;
-    elements?: any[];
+    elements?: ISpecification[];
     position?: "left" | "right";
     text?:string;
     name?:string;

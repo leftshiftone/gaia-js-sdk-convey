@@ -13,6 +13,4 @@ export class Break implements IRenderable {
         return document.createElement('br');
     }
 
-    public name = () => "break";
-
 }

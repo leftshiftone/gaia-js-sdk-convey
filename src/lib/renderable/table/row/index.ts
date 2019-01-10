@@ -19,12 +19,10 @@ export class Row implements IRenderable {
         const row = document.createElement('tr');
         row.classList.add('row');
 
-        const elements = renderer.render(this.spec, false);
-        elements.forEach(row.appendChild);
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, "row"));
+        elements.forEach(e => e.forEach(x => row.appendChild(x)));
 
         return row;
     }
-
-    public name = () => "row";
 
 }

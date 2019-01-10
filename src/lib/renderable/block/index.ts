@@ -23,16 +23,14 @@ export class Block implements IRenderable {
         block.classList.add('block', position);
         block.appendChild(Timestamp.render());
 
-        const elements = renderer.render(this.spec, false);
-        elements.forEach(block.appendChild);
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, "block"));
+        elements.forEach(e => e.forEach(x => block.appendChild(x)));
 
         if (!isNested) {
-            renderer.render(new Icon(position), true);
+            block.appendChild(renderer.render(new Icon(position))[0]);
             block.classList.add('nested');
         }
         return block;
     }
-
-    public name = () => "block";
 
 }

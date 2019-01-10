@@ -153,6 +153,4 @@ export class Map implements IRenderable {
         return this.mapContainer;
     }
 
-    public name = () => "map";
-
 }

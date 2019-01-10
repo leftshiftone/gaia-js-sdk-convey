@@ -24,19 +24,19 @@ export class Button implements IRenderable {
         button.classList.add(isNested ? "button-nested" : "button", position);
         button.appendChild(document.createTextNode(this.message.text || ""));
 
-        button.addEventListener('click', () => {
-            const text = this.message.text || "";
-            const name = this.message.name || "";
-            const value = this.message.value || "";
+        if (position === "left") {
+            const eventListener = () => {
+                const text = this.message.text || "";
+                const name = this.message.name || "";
+                const value = this.message.value || "";
 
-            EventStream.emit("GAIA::publish", {text, type: 'button', attributes: {name, value, type: 'button'}});
-        });
-
+                EventStream.emit("GAIA::publish", {text, type: 'button', attributes: {name, value, type: 'button'}});
+            };
+            button.addEventListener('click', eventListener, {once: true});
+        }
         return button;
     }
 
     public getPosition = () => this.message.position || "left";
-
-    public name = () => "button";
 
 }

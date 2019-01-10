@@ -17,23 +17,24 @@ export class Text implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer:IRenderer, isNested:boolean): HTMLElement {
         if (!isNested) {
             const position = this.spec.position || 'left';
             const text = document.createElement('div');
             text.classList.add('text', position);
             text.appendChild(Timestamp.render());
             text.appendChild(document.createTextNode(this.spec.text || ""));
-            text.appendChild(new Icon(position).render());
 
-            return text;
+            const div = document.createElement("div");
+            div.appendChild(new Icon(position).render());
+            div.appendChild(text);
+
+            return div;
         }
         const text = document.createElement('div');
         text.appendChild(document.createTextNode(this.spec.text || ""));
 
         return text;
     }
-
-    public name = () => "text";
 
 }

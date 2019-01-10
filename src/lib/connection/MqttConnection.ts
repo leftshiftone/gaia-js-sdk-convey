@@ -67,33 +67,30 @@ export class MqttConnection {
     public publish(channelType: ChannelType, msg: ISpecification) {
         const destination = this.outgoing(channelType);
         console.debug('Sending message to destination ' + destination);
-        try {
-            // remove left buttons
-            const elements = document.querySelectorAll('button.left');
-            elements.forEach(element => element.remove());
 
-            const body = Object.assign(msg, {position: 'right', timestamp: new Date().getTime()});
-            const payload = JSON.stringify({body, header: this.header()});
+        // remove left buttons
+        const elements = document.querySelectorAll('button.left');
+        elements.forEach(element => element.remove());
 
-            this.mqttClient.publish(destination, payload, this.mqttCallback(msg));
-            return this.renderer.render(body, true);
-        } catch (err) {
-            return Promise.reject(err);
-        }
+        const body = Object.assign(msg[0], {position: 'right', timestamp: new Date().getTime()});
+        const payload = JSON.stringify({body, header: this.header()});
+
+        this.mqttClient.publish(destination, payload, this.mqttCallback(msg[0]));
+        this.renderer.render({type:"container", elements:[body]}).forEach(e => this.renderer.append(e));
     }
 
     /**
      * Initial request to make the system aware that the user is listening.
      */
     public reception() {
-        const payload = JSON.stringify({header: this.header(), type: 'reception'});
+        const payload = JSON.stringify({header: this.header(), body: {type: 'reception'}});
         this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.mqttCallback("reception"));
     }
 
     /**
      * Executes the registered channel type callback.
      *
-     * @param type the cannel type
+     * @param type the channel type
      * @param msg the message
      */
     private callback = (type: ChannelType, msg: object) => (this.callbacks.get(type) || console.warn)(msg);
@@ -110,7 +107,7 @@ export class MqttConnection {
                     const payload = Object.assign(message, {position: 'left'});
 
                     this.listener.onMessage(payload);
-                    this.renderer.render(payload, this.publish.bind(this, this.outgoing(ChannelType.TEXT)));
+                    this.renderer.render(payload).forEach(e => this.renderer.append(e));
 
                     this.callback(channelType, message);
                     break;
@@ -142,7 +139,7 @@ export class MqttConnection {
             if (error) {
                 console.error('Failed to publish message ' + error.message, error, packet);
             } else {
-                console.debug('Successfully published message ' + msg);
+                console.debug('Successfully published message ' + JSON.stringify(msg));
             }
         };
     }
