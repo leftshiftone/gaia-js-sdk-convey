@@ -24,7 +24,7 @@
         const renderer = new GaiaSDK.ClassicRenderer(document.getElementsByClassName('lto-scrollbar')[0]);
 
         let gaia = new GaiaSDK.Gaia(renderer);
-        gaia.connect('ws://localhost:61616', '1337')
+        gaia.connect('ws://localhost:61616/channel', '1337')
             .then(connection => {
                 connection.bind(new GaiaSDK.KeyboardBehaviour(document.getElementById('chat-messageInput')));
                 connection.bind(new GaiaSDK.MouseBehaviour(document.getElementById('chat-sendButton')));
