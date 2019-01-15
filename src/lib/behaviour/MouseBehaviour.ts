@@ -1,6 +1,7 @@
 import {IBehaviour} from '../api/IBehaviour';
 import {MqttConnection} from '../connection/MqttConnection';
 import {ChannelType} from '../support/ChannelType';
+import {Defaults} from '../support/Defaults';
 
 /**
  * IBehaviour implementation which listens for a mouse click event in order to publish
@@ -11,9 +12,9 @@ export class MouseBehaviour implements IBehaviour {
     private readonly target1: HTMLButtonElement;
     private readonly target2: HTMLTextAreaElement;
 
-    constructor(target1: HTMLButtonElement, target2: HTMLTextAreaElement) {
-        this.target1 = target1;
-        this.target2 = target2;
+    constructor(target1?: HTMLButtonElement, target2?: HTMLTextAreaElement) {
+        this.target1 = target1 || Defaults.invoker();
+        this.target2 = target2 || Defaults.textbox();
     }
 
     public bind(gateway: MqttConnection): void {

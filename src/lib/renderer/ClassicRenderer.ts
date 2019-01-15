@@ -2,14 +2,15 @@ import {AbstractRenderer} from './AbstractRenderer';
 import {IRenderable} from '../api/IRenderable';
 import {Button} from '../renderable/button';
 import {Link} from '../renderable/link';
+import {Defaults} from '../support/Defaults';
 
 /**
  * The classic renderer renders the G.A.I.A. messages in a classic top-down manner.
  */
 export class ClassicRenderer extends AbstractRenderer {
 
-    constructor(container: HTMLElement) {
-        super(container);
+    constructor(container?: HTMLElement) {
+        super(container || Defaults.content());
     }
 
     protected renderElement(renderable: IRenderable, containerType?: string): HTMLElement[] {

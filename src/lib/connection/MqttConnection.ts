@@ -6,10 +6,14 @@ import {IBehaviour} from '../api/IBehaviour';
 import {IRenderer, ISpecification} from '../api/IRenderer';
 import {uuid} from '../support/Uuid';
 import EventStream from '../event/EventStream';
+import {KeyboardBehaviour} from '../behaviour/KeyboardBehaviour';
+import {MouseBehaviour} from '../behaviour/MouseBehaviour';
 
 export class MqttConnection {
 
     private readonly callbacks: Map<ChannelType, (message: object) => void> = new Map();
+    private readonly subscriptions: Array<string> = [];
+    private readonly behaviourBind: Array<string> = [];
 
     private readonly listener: IListener;
     private readonly renderer: IRenderer;
@@ -44,11 +48,15 @@ export class MqttConnection {
      * @param callback the callback function
      */
     public subscribe(type: ChannelType, callback: (message: object) => void) {
-        const destination = this.incoming(type);
-        this.mqttClient.subscribe(destination);
+        if (this.subscriptions.indexOf(type) < 0) {
+            this.subscriptions.push(type);
 
-        const channelType = ChannelType.match(destination);
-        this.callbacks!.set(channelType, callback);
+            const destination = this.incoming(type);
+            this.mqttClient.subscribe(destination);
+
+            const channelType = ChannelType.match(destination);
+            this.callbacks!.set(channelType, callback);
+        }
     }
 
     /**
@@ -76,13 +84,20 @@ export class MqttConnection {
         const payload = JSON.stringify({body, header: this.header()});
 
         this.mqttClient.publish(destination, payload, this.mqttCallback(msg[0]));
-        this.renderer.render({type:"container", elements:[body]}).forEach(e => this.renderer.append(e));
+        this.renderer.render({type: "container", elements: [body]}).forEach(e => this.renderer.append(e));
     }
 
     /**
      * Initial request to make the system aware that the user is listening.
      */
     public reception() {
+        if (this.subscriptions.indexOf(ChannelType.TEXT) < 0) {
+            this.subscribe(ChannelType.TEXT, console.log);
+        }
+        if (this.behaviourBind.length === 0) {
+            this.bind(new KeyboardBehaviour());
+            this.bind(new MouseBehaviour());
+        }
         const payload = JSON.stringify({header: this.header(), body: {type: 'reception'}});
         this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.mqttCallback("reception"));
     }
@@ -129,7 +144,10 @@ export class MqttConnection {
      *
      * @param behaviour
      */
-    public bind = (behaviour: IBehaviour) => behaviour.bind(this);
+    public bind(behaviour: IBehaviour) {
+        this.behaviourBind.push(behaviour.constructor.name);
+        behaviour.bind(this);
+    }
 
     private outgoing = (type: ChannelType) => ChannelNameFactory.clientOutgoing(this.clientId, this.identityId, type);
     private incoming = (type: ChannelType) => ChannelNameFactory.clientIncoming(this.clientId, this.identityId, type);

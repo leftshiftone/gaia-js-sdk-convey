@@ -15,4 +15,5 @@ export interface ISpecification {
     width?:string;
     height?:string;
     timestamp?:string;
+    nerStrategies?:Map<string, any>;
 }
