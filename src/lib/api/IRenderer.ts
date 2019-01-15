@@ -15,5 +15,9 @@ export interface ISpecification {
     width?:string;
     height?:string;
     timestamp?:string;
+    min?:string;
+    max?:string;
+    step?:string;
+    horizontal?:string;
     nerStrategies?:Map<string, any>;
 }
