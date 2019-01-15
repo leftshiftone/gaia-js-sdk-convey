@@ -17,6 +17,8 @@ import {Carousel} from './carousel';
 import {Break} from './break';
 import {Container} from './container';
 import {Slider} from "./slider";
+import {Spinner} from "./spinner";
+import {Calendar} from "./calendar";
 
 export const renderables: object = {
     BREAK: Break,
@@ -37,5 +39,7 @@ export const renderables: object = {
     TEXT: Text,
     CAROUSEL: Carousel,
     CONTAINER: Container,
-    SLIDER: Slider
+    SLIDER: Slider,
+    SPINNER: Spinner,
+    CALENDAR: Calendar
 };

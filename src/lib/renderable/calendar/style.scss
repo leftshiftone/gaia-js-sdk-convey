@@ -1,0 +1,29 @@
+
+.lto-calendar-container {
+    background: white;
+    max-width: 80%;
+    min-width: 30%;
+    border: 1px solid #1E223F;
+    border-radius: 15px;
+    color: #1E223F;
+    display: inline-block;
+    margin: 0 auto 30px;
+    padding: 10px;
+}
+
+.lto-calendar-container.lto-nested {
+    width: auto;
+    box-shadow: none;
+    transition: none;
+    border: none !important;
+}
+
+.lto-calendar-container .calendar {
+    display:none;
+}
+
+.lto-calendar-container .input {
+    padding-left: 5px;
+    height: 30px;
+    width: 100%;
+}
