@@ -23,7 +23,7 @@
         const listener = new GaiaSDK.OffSwitchListener();
 
         let gaia = new GaiaSDK.Gaia(renderer, listener);
-        gaia.connect('ws://localhost:61616', '1337')
+        gaia.connect('ws://localhost:61616/channel', '1337')
             .then(connection => connection.reception());
 
     });
