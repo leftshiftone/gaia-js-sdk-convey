@@ -8,30 +8,23 @@
 </head>
 <body>
 
-<div class="gaia">
-    <div class="gaia-chat">
-        <div class="messages lto-scrollbar"></div>
-        <div class="lto-control" id="chat-control">
-            <textarea title="" class="messageInput" id="chat-messageInput"></textarea>
-            <button class="sendButton" id="chat-sendButton"></button>
-        </div>
+<div class="lto-gaia">
+    <div class="lto-content"></div>
+    <div>
+        <textarea title="" class="lto-textbox"></textarea>
+        <button class="lto-invoker"></button>
     </div>
 </div>
 
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const renderer = new GaiaSDK.ClassicRenderer(document.getElementsByClassName('lto-scrollbar')[0]);
+        const renderer = new GaiaSDK.ClassicRenderer();
+        const listener = new GaiaSDK.OffSwitchListener();
 
-        let gaia = new GaiaSDK.Gaia(renderer);
+        let gaia = new GaiaSDK.Gaia(renderer, listener);
         gaia.connect('ws://localhost:61616/channel', '1337')
-            .then(connection => {
-                connection.bind(new GaiaSDK.KeyboardBehaviour(document.getElementById('chat-messageInput')));
-                connection.bind(new GaiaSDK.MouseBehaviour(document.getElementById('chat-sendButton')));
-
-                connection.subscribe(GaiaSDK.ChannelType.TEXT, (e) => console.log('Text: ' + e));
-                connection.reception();
-            });
+            .then(connection => connection.reception());
 
     });
 </script>

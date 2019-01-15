@@ -13,7 +13,7 @@
     font-family: open sans, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-.gaia-chat {
+.lto-gaia {
     margin-left: auto;
     margin-right: auto;
     width: 40%;
@@ -35,7 +35,7 @@
 
 // scrollbar
 // *********
-.lto-scrollbar {
+.lto-content {
     margin: 0 auto;
     background: white;
     padding-right: 5px;
@@ -48,30 +48,36 @@
     position: relative;
     line-height: 1.9;
 }
-.lto-scrollbar::-webkit-scrollbar {
+
+.lto-content::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
-.lto-scrollbar::-webkit-scrollbar-track-piece {
+
+.lto-content::-webkit-scrollbar-track-piece {
     background: white;
     -webkit-border-radius: 3px;
 }
-.lto-scrollbar::-webkit-scrollbar-thumb:horizontal {
+
+.lto-content::-webkit-scrollbar-thumb:horizontal {
     width: 50px;
     background-color: white;
     -webkit-border-radius: 3px;
 }
-.lto-scrollbar::-webkit-scrollbar-thumb:vertical {
+
+.lto-content::-webkit-scrollbar-thumb:vertical {
     height: 50px;
     background: #1E223F;
     -webkit-border-radius: 3px;
 }
-.lto-scrollbar::-webkit-scrollbar-button:start:decrement,
-.lto-scrollbar::-webkit-scrollbar-button:end:increment {
+
+.lto-content::-webkit-scrollbar-button:start:decrement,
+.lto-content::-webkit-scrollbar-button:end:increment {
     display: block;
     height: 10px;
 }
-.lto-scrollbar::-webkit-scrollbar-button:vertical:increment {
+
+.lto-content::-webkit-scrollbar-button:vertical:increment {
     background: white;
 }
 
@@ -84,6 +90,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
+
 .lto-icon.lto-right {
     position: relative;
     background: #1E223F;
@@ -92,26 +99,16 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
+
 .lto-icon.lto-right:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
+
 .lto-icon.lto-left:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-//chat control
-//************
-.lto-control {
-    //margin: 0 auto;
-    background-color: white;
-    font-family: "GT-Walsheim-Regular", Helvetica, Arial, sans-serif;
-    height: 65px;
-    padding: 0;
-    margin: 10px;
-    overflow: hidden;
-}
-
-.gaia-chat .sendButton {
+.lto-invoker {
     font-size: 25px;
     height: 65px;
     width: 65px;
@@ -119,12 +116,12 @@
     border-radius: 50%;
     border: 1px solid #1E223F;
     color: #1E223F;
-    background-color: white;
+    background: white;
     background-size: cover;
     float: right;
 }
 
-.gaia-chat .messageInput {
+.lto-textbox {
     background-color: white;
     width: 90%;
     height: auto;
@@ -141,58 +138,4 @@
     box-shadow: none;
 
     font-size: 19px;
-}
-
-@media only screen and (max-width: 600px) {
-    .gaia-chat .column {
-        padding-right: 5px;
-        min-width: 40px;
-    }
-    .gaia-chat {
-        width: 100%;
-        max-height: 60vh;
-        line-height: 1.8;
-    }
-    .lto-text {
-        max-width: unset;
-        min-width: 30%;
-        margin-bottom: 20px;
-    }
-    .lto-table {
-        max-width: 80%;
-    }
-    .lto-block {
-        max-width: 80%;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-    .lto-button {
-        width: 80%;
-        margin: 0 20px 20px;
-        padding: 7px;
-        font-size: 14px;
-    }
-    .lto-control {
-        width: 100%;
-        font-size: 13px;
-    }
-    .lto-button.lto-right {
-        margin-right: 20px;
-    }
-    .lto-text.lto-right {
-        margin-right: 20px;
-    }
-    .lto-icon {
-        margin-top: 10px;
-        height: 20px;
-        width: 20px;
-        display: none;
-    }
-    .lto-icon.lto-left {
-        margin-right: 25px;
-    }
-    .lto-submit.lto-nested.lto-left {
-        width: auto;
-        margin: auto;
-    }
 }

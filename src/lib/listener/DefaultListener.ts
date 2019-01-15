@@ -1,7 +1,7 @@
 import {IListener} from '../api/IListener';
 
 /**
- * Default IEmitter implementation.
+ * Default IListener implementation.
  */
 export class DefaultListener implements IListener {
 

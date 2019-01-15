@@ -19,4 +19,5 @@ export interface ISpecification {
     max?:string;
     step?:string;
     horizontal?:string;
+    nerStrategies?:Map<string, any>;
 }
