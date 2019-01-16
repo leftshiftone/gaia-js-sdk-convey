@@ -18,7 +18,9 @@ export interface ISpecification {
     timestamp?:string;
     min?:string;
     max?:string;
+    size?:string;
     step?:string;
+    src?:string;
     horizontal?:string;
     nerStrategies?:Map<string, any>;
 }

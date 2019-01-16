@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "dependencies": {
     "leaflet": "1.3.4",
-    "mqtt": "2.18.8"
+    "mqtt": "2.18.8",
+    "node-ical": "0.9.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",

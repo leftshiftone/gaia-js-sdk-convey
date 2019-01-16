@@ -21,6 +21,7 @@ import {Spinner} from "./spinner";
 import {Calendar} from "./calendar";
 import {Reel} from "./reel";
 import {SlotMachine} from "./slotmachine";
+import {DatePicker} from "./datePicker";
 
 export const renderables: object = {
     BREAK: Break,
@@ -46,4 +47,5 @@ export const renderables: object = {
     CALENDAR: Calendar,
     SLOTMACHINE: SlotMachine,
     REEL: Reel,
+    DATEPICKER: DatePicker,
 };
