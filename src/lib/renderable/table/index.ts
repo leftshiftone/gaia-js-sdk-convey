@@ -26,7 +26,7 @@ export class Table implements IRenderable {
 
             table.appendChild(new Icon(position).render());
         } else {
-            table.classList.add('lto-table", "lto-nested');
+            table.classList.add("lto-nested");
             const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
             elements.forEach(e => e.forEach(x => table.appendChild(x)));
         }

@@ -79,8 +79,7 @@ export class MqttConnection {
         // remove left buttons
         const elements = document.querySelectorAll('.lto-button.lto-left');
         elements.forEach(element => element.remove());
-
-        const body = Object.assign(msg[0], {position: 'right', timestamp: new Date().getTime()});
+        const body = Object.assign(msg instanceof Array ? msg[0] : msg, {position: 'right', timestamp: new Date().getTime()});
         const payload = JSON.stringify({body, header: this.header()});
 
         this.mqttClient.publish(destination, payload, this.mqttCallback(msg[0]));

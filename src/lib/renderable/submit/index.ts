@@ -35,11 +35,12 @@ export class Submit implements IRenderable {
         const text = this.spec.text || "";
         const timestamp = this.spec.timestamp || "";
 
-        submit.addEventListener('click', (ev) => {
+        submit.addEventListener('click', () => {
             const attributes = {type: 'submit'};
 
             // FIXME: use generic class name e.g. message-content
-            const content = Submit.closestByClass(submit, 'block');
+            const content = Submit.closestByClass(submit, 'lto-block');
+
             content.querySelectorAll('input[type=\'checkbox\']').forEach((i: any, checkbox: any) => {
                 if (checkbox.checked === true) {
                     const name = checkbox.getAttribute('name');
@@ -50,6 +51,36 @@ export class Submit implements IRenderable {
                     } else {
                         attributes[name] = [value];
                     }
+                }
+            });
+
+            content.querySelectorAll('input[type=\'range\']').forEach((i: any, range: any) => {
+                const name = range.getAttribute('name');
+                const value = range.getAttribute('value');
+                if (attributes[name] !== undefined) {
+                    attributes[name].push(value);
+                } else {
+                    attributes[name] = [value];
+                }
+            });
+
+            content.querySelectorAll('div[class=\'lto-input\']').forEach((i: any, calendar:any) => {
+                const name = calendar.getAttribute('name');
+                const value = calendar.getAttribute('value');
+                if (attributes[name] !== undefined) {
+                    attributes[name].push(value);
+                } else {
+                    attributes[name] = [value];
+                }
+            });
+
+            content.querySelectorAll('input[type=\'number\']').forEach((i: any, number: any) => {
+                const name = number.getAttribute('name');
+                const value = number.getAttribute('value');
+                if (attributes[name] !== undefined) {
+                    attributes[name].push(value);
+                } else {
+                    attributes[name] = [value];
                 }
             });
 

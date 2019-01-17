@@ -26,7 +26,7 @@ export class Calendar implements IRenderable {
         this.currentYear = this.today.getFullYear();
         this.months = [["JAN", 0], ["FEB", 1], ["MAR", 2], ["APR", 3], ["MAI", 4], ["JUN", 5], ["JUL", 6], ["AUG", 7], ["SEP", 8], ["OKT", 9], ["NOV", 10], ["DEZ", 11]];
         this.input = this.renderInput();
-        this.headline = this.renderHeadline();
+        this.headline = Calendar.renderHeadline();
         this.monthSelect = this.renderMonthSelect();
         this.yearInput = this.renderYearInput();
         this.calendar = document.createElement('div');
@@ -37,7 +37,7 @@ export class Calendar implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const calendarContainer = document.createElement('div');
         const position = this.message.position || 'left';
-
+        this.input.setAttribute("name", this.message.name + "");
         if (isNested) { calendarContainer.classList.add("lto-nested") }
 
         calendarContainer.classList.add("lto-calendar-container", "lto-" + position);
@@ -68,9 +68,10 @@ export class Calendar implements IRenderable {
         this.calendar.style.display = "none";
         this.input.style.display = "inline-block";
         this.input.innerText = date;
+        this.input.setAttribute("value", date);
     }
 
-    public renderHeadline(): HTMLDivElement {
+    public static renderHeadline(): HTMLDivElement {
         const headline = document.createElement('div');
         headline.classList.add('headline');
         return headline;

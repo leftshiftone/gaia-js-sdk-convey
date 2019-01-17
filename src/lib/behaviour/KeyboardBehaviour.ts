@@ -10,9 +10,11 @@ import {Defaults} from '../support/Defaults';
 export class KeyboardBehaviour implements IBehaviour {
 
     private readonly target:HTMLTextAreaElement;
+    private readonly callback: (() => void) | undefined;
 
-    constructor(target?:HTMLTextAreaElement) {
+    constructor(target?:HTMLTextAreaElement, callback?: () => void) {
         this.target = target || Defaults.textbox();
+        this.callback = callback;
     }
 
     /**
@@ -20,12 +22,13 @@ export class KeyboardBehaviour implements IBehaviour {
      */
     public bind(gateway:MqttConnection):void {
         this.target.addEventListener("keyup", ((ev) => {
-            if (ev.keyCode === 13) {
+            if (ev.key === "Enter") {
                 const value = this.target.value;
 
                 if (value.replace(/^\s+|\s+$/g, "") !== "") {
                     gateway.publish(ChannelType.TEXT, {type: "text", text: value});
                     this.target.value = "";
+                    if(this.callback !== undefined) { this.callback() }
                 }
             }
         }));
