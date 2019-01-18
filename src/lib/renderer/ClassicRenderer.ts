@@ -27,10 +27,13 @@ export class ClassicRenderer extends AbstractRenderer {
             }
         }
 
-        const objDiv = document.querySelector('.lto-scrollbar');
-        if (objDiv != null) {
-            objDiv.scrollTop = objDiv.scrollHeight;
-        }
+        setTimeout (() =>{
+            const content = document.querySelector('.lto-content');
+            if (content != null) {
+                content.scrollTop = content.scrollHeight;
+            }
+        }, 1);
+
 
         return array;
     }

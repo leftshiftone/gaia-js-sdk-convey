@@ -47,6 +47,7 @@
     overflow-y: auto;
     position: relative;
     line-height: 1.9;
+    scroll-behavior: smooth;
 }
 
 .lto-content::-webkit-scrollbar {
