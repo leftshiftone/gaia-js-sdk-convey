@@ -21,6 +21,8 @@ export class Suggestion implements IRenderable {
         button.setAttribute('name', this.spec.name || "");
 
         button.classList.add("lto-suggestion", "lto-left");
+        if (this.spec.class !== undefined) button.classList.add(this.spec.class);
+
         if (isNested) {
             button.classList.add("lto-nested");
         }

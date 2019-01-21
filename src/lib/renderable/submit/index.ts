@@ -27,6 +27,8 @@ export class Submit implements IRenderable {
         const submit = document.createElement('button');
 
         submit.classList.add("lto-submit", "lto-" + position);
+        if (this.spec.class !== undefined) submit.classList.add(this.spec.class);
+
         if (isNested) {
             submit.classList.add("lto-nested");
         }

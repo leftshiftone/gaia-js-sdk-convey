@@ -22,6 +22,7 @@ export class Reel implements IRenderable {
     public render(renderer:IRenderer, isNested:boolean): HTMLElement {
         const position = this.spec.position || 'left';
         this.reel.classList.add('lto-reel', "lto-" + position);
+        if (this.spec.class !== undefined) this.reel.classList.add(this.spec.class);
 
         const up = document.createElement("input");
         up.setAttribute("type", "button");

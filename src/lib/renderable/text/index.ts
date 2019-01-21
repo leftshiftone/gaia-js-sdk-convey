@@ -22,6 +22,7 @@ export class Text implements IRenderable {
             const position = this.spec.position || 'left';
             const text = document.createElement('div');
             text.classList.add('lto-text', "lto-" + position);
+            if (this.spec.class !== undefined) text.classList.add(this.spec.class);
             text.appendChild(Timestamp.render());
             text.appendChild(document.createTextNode(this.spec.text || ""));
 

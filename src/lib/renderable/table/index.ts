@@ -10,17 +10,19 @@ export class Table implements IRenderable {
 
     private readonly spec: ISpecification;
 
-    constructor(message: ISpecification) {
-        this.spec = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const table = document.createElement('table');
-        if (!isNested) {
-            const position = this.spec.position || 'left';
-            table.classList.add('lto-table', "lto-" + position);
-            table.appendChild(Timestamp.render());
+        const position = this.spec.position || 'left';
 
+        if (this.spec.class !== undefined) table.classList.add(this.spec.class);
+        table.classList.add('lto-table', "lto-" + position);
+
+        if (!isNested) {
+            table.appendChild(Timestamp.render());
             const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
             elements.forEach(e => e.forEach(x => table.appendChild(x)));
 

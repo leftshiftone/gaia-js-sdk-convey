@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 
 export class Map implements IRenderable {
@@ -17,16 +17,18 @@ export class Map implements IRenderable {
     public mapMarkerActive: any;
     public mapMarkerInactive: any;
     public mapContainer: any;
+    public spec: ISpecification
 
-    constructor(message: any) {
+    constructor(spec: any) {
         this.zoom = 13;
         this.leafletSettings = {
             minZoom: 10,
             maxZoom: 14,
         };
-        this.mapMarkerActiveUrl = message.mapMarkerActiveUrl;
-        this.mapMarkerInactiveUrl = message.mapMarkerInactiveUrl;
-        this.getJSON(message.src);
+        this.spec = spec;
+        this.mapMarkerActiveUrl = spec.mapMarkerActiveUrl;
+        this.mapMarkerInactiveUrl = spec.mapMarkerInactiveUrl;
+        this.getJSON(spec.src);
         this.center = [0,0];
     }
 
@@ -157,6 +159,8 @@ export class Map implements IRenderable {
             this.drawCircleAndMarkers();
             this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
         }, 500);
+
+        if (this.spec.class !== undefined) this.mapContainer.classList.add(this.spec.class);
 
         return this.mapContainer;
     }

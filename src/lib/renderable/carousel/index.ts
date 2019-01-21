@@ -22,6 +22,7 @@ export class Carousel implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const carousel = document.createElement('div');
         carousel.classList.add('lto-carousel', 'lto-left');
+        if (this.spec.class !== undefined) carousel.classList.add(this.spec.class);
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "carousel"));
         elements.forEach(e => e.forEach(x => carousel.appendChild(x)));

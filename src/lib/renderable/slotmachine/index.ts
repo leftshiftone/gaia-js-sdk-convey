@@ -8,18 +8,18 @@ export class SlotMachine implements IRenderable {
 
     private readonly spec: ISpecification;
 
-    constructor(message: ISpecification) {
-        this.spec = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean): HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const slotMachine = document.createElement("div");
         slotMachine.classList.add('lto-slotmachine', "lto-" + position);
-
+        if (this.spec.class !== undefined) slotMachine.classList.add(this.spec.class);
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "slotmachine"));
         elements.forEach(e => e.forEach(x => slotMachine.appendChild(x)));
 

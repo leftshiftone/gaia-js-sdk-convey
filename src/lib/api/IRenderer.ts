@@ -10,6 +10,7 @@ export interface ISpecification {
     position?: "left" | "right";
     text?:string;
     name?:string;
+    class?:string
     value?:string;
     source?:string;
     width?:string;

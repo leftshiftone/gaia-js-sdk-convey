@@ -6,7 +6,7 @@ import {IRenderable} from '../../api/IRenderable';
  */
 export class Calendar implements IRenderable {
 
-    private readonly message: ISpecification;
+    private readonly spec: ISpecification;
     private readonly months: Array<[string, number]>;
     private readonly input: HTMLDivElement;
     private readonly calendar: HTMLDivElement;
@@ -19,8 +19,8 @@ export class Calendar implements IRenderable {
     private currentMonth: number;
     private currentYear: number;
 
-    constructor(message: ISpecification) {
-        this.message = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
         this.today = new Date();
         this.currentMonth = this.today.getMonth();
         this.currentYear = this.today.getFullYear();
@@ -36,8 +36,9 @@ export class Calendar implements IRenderable {
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const calendarContainer = document.createElement('div');
-        const position = this.message.position || 'left';
-        this.input.setAttribute("name", this.message.name + "");
+        if (this.spec.class !== undefined) calendarContainer.classList.add(this.spec.class);
+        const position = this.spec.position || 'left';
+        this.input.setAttribute("name", this.spec.name + "");
         if (isNested) { calendarContainer.classList.add("lto-nested") }
 
         calendarContainer.classList.add("lto-calendar-container", "lto-" + position);
