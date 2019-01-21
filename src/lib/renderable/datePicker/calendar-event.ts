@@ -15,10 +15,25 @@ export class CalendarEvent {
         return startWithoutTime <= date && date < endWithoutTime;
     }
 
-    public isEventInDateRange(rangeBegin: Date, rangeEndExclusive: Date): boolean {
+    public isInDateRange(rangeBegin: Date, rangeEndExclusive: Date): boolean {
         const rangeBeginWithoutTime = CalendarEvent.withoutTime(rangeBegin);
         const rangeEndExclusiveWithoutTime = CalendarEvent.withoutTime(new Date(rangeEndExclusive));
         return this.start < rangeEndExclusiveWithoutTime && this.end >= rangeBeginWithoutTime;
+    }
+
+    public startsInRange(rangeBegin: Date, rangeEndExclusive: Date): boolean {
+        const rangeBeginWithoutTime = CalendarEvent.withoutTime(rangeBegin);
+        const rangeEndExclusiveWithoutTime = CalendarEvent.withoutTime(new Date(rangeEndExclusive));
+        return this.start < rangeEndExclusiveWithoutTime && this.start >= rangeBeginWithoutTime;
+    }
+
+    public getTimeIntervalString(locale: string) {
+        return this.start.toLocaleTimeString(locale, {hour: 'numeric', minute: 'numeric'})
+            + " - " + this.end.toLocaleTimeString(locale, {hour: 'numeric', minute: 'numeric'});
+    }
+
+    public getDateString(locale: string) {
+        return this.start.toLocaleDateString(locale, {day: 'numeric', month: 'long'});
     }
 
     public static withoutTime(date: Date): Date {

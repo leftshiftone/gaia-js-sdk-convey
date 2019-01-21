@@ -1,0 +1,76 @@
+
+.lto-date-picker-container {
+    background: white;
+    max-width: 80%;
+    min-width: 30%;
+    border: 1px solid #1E223F;
+    border-radius: 15px;
+    color: #1E223F;
+    display: inline-block;
+    margin: 0 auto 30px;
+    padding: 10px;
+}
+
+.lto-date-picker-container.lto-nested {
+    width: auto;
+    transition: none;
+    border: none !important;
+}
+
+.lto-date-picker-container .date-picker, .lto-date-picker-container .date-picker-navigation {
+    display: block;
+}
+
+.lto-date-picker-container .days-container {
+    display: inline-table;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.lto-date-picker-container .days-container .day {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.lto-date-picker-container .days-container .free {
+    border: 3px solid dodgerblue;
+    cursor: pointer;
+}
+
+.lto-date-picker-container .days-container .taken {
+    border: 3px solid grey;
+}
+
+.lto-date-picker-container .day .weekday {
+    text-align: center;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.lto-date-picker-container .day .abbreviated-date {
+    text-align: center;
+    line-height: 1;
+}
+
+.lto-date-picker-container .date-picker .previous, .lto-date-picker-container .date-picker .next {
+    display: inline;
+}
+
+.lto-date-picker-container > .date-picker > .input {
+    width: 100%;
+    text-align: center;
+}
+
+.lto-date-picker-container .btn-group > button {
+    background-color: white; /* Green background */
+    border: 1px solid #1E223F;
+    border-radius: 5px;
+    color: #1E223F;
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 100%; /* Set a width if needed */
+    display: block; /* Make the buttons appear below each other */
+}

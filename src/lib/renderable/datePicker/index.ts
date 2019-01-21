@@ -6,24 +6,26 @@ import {CalendarEvent} from "./calendar-event";
  * Implementation of the 'datePicker' markup element.
  */
 export class DatePicker implements IRenderable {
+    public readonly locale = 'de-DE';
     private readonly freeEventTitle = "Freier Termin";
     private readonly defaultSize = '7';
-    private readonly locale = 'de-DE';
 
-    private readonly events: CalendarEvent[];
+
+    protected readonly events: CalendarEvent[];
     private readonly size: number;
     private readonly message: ISpecification;
     private _currentStartDate: Date;
 
-    private readonly datePicker: HTMLDivElement;
+    public readonly input: HTMLDivElement;
+    protected readonly datePicker: HTMLDivElement;
     private readonly dayButtonContainer: HTMLDivElement;
-    private readonly headline: HTMLDivElement;
     private readonly nextButton: HTMLButtonElement;
     private readonly previousButton: HTMLButtonElement;
-    private readonly input: HTMLDivElement;
+
 
     constructor(message: ISpecification) {
         const ical = require("node-ical");
+        console.log(message);
         const icalObject = ical.parseICS(message.src);
         this.events = Object.keys(icalObject)
             .filter(key => icalObject[key]['summary'] === this.freeEventTitle)
@@ -35,8 +37,8 @@ export class DatePicker implements IRenderable {
         this.message = message;
         this.size = parseInt(message.size || this.defaultSize);
         this._currentStartDate = new Date();
-        this.headline = this.renderHeadline();
-        this.datePicker = document.createElement('div');
+
+       this.datePicker = document.createElement('div');
         this.dayButtonContainer = document.createElement('div');
 
         this.nextButton = this.renderNext();
@@ -45,26 +47,28 @@ export class DatePicker implements IRenderable {
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        const datePickerContainer = document.createElement('div');
-        const position = this.message.position || 'left';
-
+    const datePickerContainer = this.renderDatePickerContainer();
         if (isNested) {
             datePickerContainer.classList.add("lto-nested");
         }
-        datePickerContainer.classList.add("lto-date-picker-container", "lto-" + position);
-
 
         this.datePicker.classList.add("date-picker");
         this.dayButtonContainer.classList.add("days-container");
 
-        this.datePicker.appendChild(this.renderHeader());
         this.datePicker.appendChild(this.previousButton);
         this.datePicker.appendChild(this.dayButtonContainer);
         this.datePicker.appendChild(this.nextButton);
-        this.datePicker.appendChild(this.input);
+        datePickerContainer.appendChild(this.input);
         this.updateDayButtons();
 
         datePickerContainer.appendChild(this.datePicker);
+        return datePickerContainer;
+    }
+
+    private renderDatePickerContainer(): HTMLDivElement {
+        const datePickerContainer = document.createElement('div');
+        const position = this.message.position || 'left';
+        datePickerContainer.classList.add("lto-date-picker-container", "lto-" + position);
         return datePickerContainer;
     }
 
@@ -103,56 +107,53 @@ export class DatePicker implements IRenderable {
         const dates = this.getDatesToRender();
         const relevantEvents = this.getRelevantEvents();
         return dates.map(date => {
-            const weekDay = date.toLocaleDateString(this.locale, {weekday: 'short'});
-            const abbreviatedDate = date.toLocaleDateString(this.locale, {day: 'numeric', month: 'short'});
             const event = relevantEvents.find((event: CalendarEvent) => event.isDateInEventRange(date));
-            return this.renderDayButton(weekDay, abbreviatedDate, event);
+            return this.renderDayButton(date, event);
         });
     }
 
 
     private getRelevantEvents(): CalendarEvent[] {
         return this.events.filter(event =>
-            event.isEventInDateRange(this.currentStartDate, CalendarEvent.addDays(this.currentStartDate, this.size))
+            event.isInDateRange(this.currentStartDate, CalendarEvent.addDays(this.currentStartDate, this.size))
         );
     }
 
-    public renderHeadline(): HTMLDivElement {
-        const headline = document.createElement('div');
-        headline.classList.add('headline');
-        return headline;
+    public renderWeekDay(date: Date): HTMLDivElement {
+        const weekDay = date.toLocaleDateString(this.locale, {weekday: 'short'});
+        const weekDayContainer = document.createElement('div');
+        weekDayContainer.textContent = weekDay;
+        weekDayContainer.classList.add('weekday');
+        return weekDayContainer;
     }
 
-    public renderDayButton(weekDay: string, abbreviatedDate: string, event: CalendarEvent | undefined): HTMLDivElement {
+    public renderAbbreviatedDate(date: Date): HTMLDivElement {
+        const abbreviatedDate = date.toLocaleDateString(this.locale, {day: 'numeric', month: 'short'});
+        const abbreviatedDateContainer = document.createElement('div');
+        abbreviatedDateContainer.textContent = abbreviatedDate;
+        abbreviatedDateContainer.classList.add('abbreviated-date');
+        return abbreviatedDateContainer;
+    }
+
+    public renderDayButton(date: Date, event: CalendarEvent | undefined): HTMLDivElement {
         const input = document.createElement('div');
         input.classList.add('day');
         input.classList.add(event ? 'free' : 'taken');
 
-        const weekDayContainer = document.createElement('div');
-        weekDayContainer.textContent = weekDay;
-        weekDayContainer.classList.add('weekday');
-
-        const abbreviatedDateContainer = document.createElement('div');
-        abbreviatedDateContainer.textContent = abbreviatedDate;
-        abbreviatedDateContainer.classList.add('abbreviated-date');
-
-        input.appendChild(weekDayContainer);
-        input.appendChild(abbreviatedDateContainer);
+        input.appendChild(this.renderWeekDay(date));
+        input.appendChild(this.renderAbbreviatedDate(date));
         if (event) {
-            const uid = event.uid;
-            input.onclick = () => {
-                this.input.setAttribute("value", uid);
-                this.input.textContent = weekDay + ", " + abbreviatedDate;
-            };
-
+            input.onclick = this.onDayClick(date, event);
         }
         return input;
     }
 
-    public renderHeader(): HTMLDivElement {
-        const header = document.createElement("div");
-        header.appendChild(this.headline);
-        return header;
+    public onDayClick(date: Date, event: CalendarEvent) {
+        return () => {
+            this.input.setAttribute("value", event.uid);
+            this.input.setAttribute("date", date.toISOString());
+            this.input.textContent = date.toLocaleDateString(this.locale, {day: 'numeric', month: 'long'});
+        };
     }
 
     public updateDayButtons(): void {
