@@ -17,7 +17,7 @@ export class Image implements IRenderable {
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const image = document.createElement('img');
-        image.setAttribute('src', this.spec.source || "");
+        image.setAttribute('src', this.spec.value || "");
         image.setAttribute('alt', this.spec.text || "");
         image.setAttribute('width', this.spec.width || "auto");
         image.setAttribute('height', this.spec.height || "auto");

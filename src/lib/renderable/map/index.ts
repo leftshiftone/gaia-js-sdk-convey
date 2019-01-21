@@ -6,7 +6,7 @@ export class Map implements IRenderable {
 
     public map: any;
     public markers: any;
-    public center: number[];
+    public center: [number, number];
     public zoom: number;
     public leafletSettings: any;
     public circle: any;
@@ -19,15 +19,23 @@ export class Map implements IRenderable {
     public mapContainer: any;
 
     constructor(message: any) {
-        this.markers = message.markers;
-        this.center = message.center;
-        this.zoom = message.zoom;
+        this.zoom = 13;
         this.leafletSettings = {
-            minZoom: message.minZoom,
-            maxZoom: message.maxZoom,
+            minZoom: 10,
+            maxZoom: 14,
         };
         this.mapMarkerActiveUrl = message.mapMarkerActiveUrl;
         this.mapMarkerInactiveUrl = message.mapMarkerInactiveUrl;
+        this.getJSON(message.src);
+        this.center = [0,0];
+    }
+
+    public getJSON(src: string) {
+        fetch(src).then(response =>
+            response.json().then(data => {
+                this.markers = data.markers;
+                this.center = data.center;
+            }));
     }
 
     public static distance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -97,24 +105,24 @@ export class Map implements IRenderable {
             }
         });
 
-        //  const gaiaButtonElem = <HTMLElement>document.querySelector('.gaia-button-nested');
-        //  const noMarkersElem = <HTMLElement>document.querySelector('.no-markers');
-//
-        //  if (this.numMarkers > 0) {
-        //      const numMarkersElem = <HTMLElement>document.querySelector('.num-markers');
-        //      if (numMarkersElem && gaiaButtonElem && noMarkersElem) {
-        //          numMarkersElem.innerHTML = String(this.numMarkers);
-        //          gaiaButtonElem.style.display = 'inherit';
-        //          noMarkersElem.style.display = 'None';
-        //      }
-        //  } else {
-        //      gaiaButtonElem.style.display = 'None';
-        //      noMarkersElem.style.display = 'inherit';
-        //  }
+         // const gaiaButtonElem = <HTMLElement>document.querySelector('.gaia-button-nested');
+         // const noMarkersElem = <HTMLElement>document.querySelector('.no-markers');
+         //
+         // if (this.numMarkers > 0) {
+         //     const numMarkersElem = <HTMLElement>document.querySelector('.num-markers');
+         //     if (numMarkersElem && gaiaButtonElem && noMarkersElem) {
+         //         numMarkersElem.innerHTML = String(this.numMarkers);
+         //         gaiaButtonElem.style.display = 'inherit';
+         //         noMarkersElem.style.display = 'None';
+         //     }
+         // } else {
+         //     gaiaButtonElem.style.display = 'None';
+         //     noMarkersElem.style.display = 'inherit';
+         // }
     }
 
 
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.mapContainer = document.createElement('div');
         this.mapContainer.classList.add('lto-map');
 

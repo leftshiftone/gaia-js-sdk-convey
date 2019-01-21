@@ -19,6 +19,8 @@ import {Container} from './container';
 import {Slider} from "./slider";
 import {Spinner} from "./spinner";
 import {Calendar} from "./calendar";
+import {Reel} from "./reel";
+import {SlotMachine} from "./slotmachine";
 
 export const renderables: object = {
     BREAK: Break,
@@ -41,5 +43,7 @@ export const renderables: object = {
     CONTAINER: Container,
     SLIDER: Slider,
     SPINNER: Spinner,
-    CALENDAR: Calendar
+    CALENDAR: Calendar,
+    SLOTMACHINE: SlotMachine,
+    REEL: Reel,
 };

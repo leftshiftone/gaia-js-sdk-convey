@@ -7,7 +7,7 @@ import {IRenderable} from '../api/IRenderable';
  */
 export abstract class AbstractRenderer implements IRenderer {
 
-    private static CONTAINER_ELEMENTS = ["block", "carousel", "col", "items", "row", "table", "block"];
+    private static CONTAINER_ELEMENTS = ["block", "carousel", "col", "items", "row", "table", "block", "reel", "slotmachine"];
 
     protected static isNested(containerType?: string) {
         return containerType === undefined ? false : AbstractRenderer.CONTAINER_ELEMENTS.indexOf(containerType) >= 0;

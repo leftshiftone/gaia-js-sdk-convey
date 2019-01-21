@@ -1,0 +1,27 @@
+.lto-reel {
+    background: white;
+    max-width: 80%;
+    min-width: 30%;
+    border: 1px solid #1E223F;
+    border-radius: 15px;
+    color: #1E223F;
+    margin: 0 auto 30px;
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.lto-reel.lto-nested {
+    background: white;
+    max-width: 30%;
+    border: none;
+    padding: 10px;
+    display: block;
+    text-align: center;
+}
+.lto-up {
+    top: 0
+}
+.lto-down {
+    bottom: 0;
+}

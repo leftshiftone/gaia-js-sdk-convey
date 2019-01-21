@@ -84,6 +84,16 @@ export class Submit implements IRenderable {
                 }
             });
 
+            content.querySelectorAll('div[class=\'lto-reel\']').forEach((i: any, number: any) => {
+                const name = number.getAttribute('name');
+                const value = number.getAttribute('value');
+                if (attributes[name] !== undefined) {
+                    attributes[name].push(value);
+                } else {
+                    attributes[name] = [value];
+                }
+            });
+
             EventStream.emit("GAIA::publish", {timestamp, text, attributes, type: 'submit', position: 'right'});
         });
 
