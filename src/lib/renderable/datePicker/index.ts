@@ -25,7 +25,8 @@ export class DatePicker implements IRenderable {
 
     constructor(message: ISpecification) {
         const ical = require('node-ical');
-        const icalObject = ical.parseICS(message.src);
+        const unescapedSrc = (message.src || "").replace(/\\r\\n/g, '\r\n');
+        const icalObject = ical.parseICS(unescapedSrc);
         this.events = Object.keys(icalObject)
             .filter(key => icalObject[key]['summary'] === this.freeEventTitle)
             .map(key =>
@@ -85,7 +86,7 @@ export class DatePicker implements IRenderable {
         return next;
     }
 
-    private renderInput(name : string): HTMLDivElement {
+    private renderInput(name: string): HTMLDivElement {
         const input = document.createElement('div');
         input.classList.add('ical-event-input');
         input.setAttribute('name', name);
