@@ -9,10 +9,8 @@ export class CalendarEvent {
         this.uid = uid;
     }
 
-    public isDateInEventRange(date: Date): boolean {
-        const startWithoutTime = CalendarEvent.withoutTime(this.start);
-        const endWithoutTime = CalendarEvent.withoutTime(CalendarEvent.addDays(this.end, 1));
-        return startWithoutTime <= date && date < endWithoutTime;
+    public startsOnDay(date: Date): boolean {
+        return this.startsInRange(date, CalendarEvent.addDays(date, 1));
     }
 
     public isInDateRange(rangeBegin: Date, rangeEndExclusive: Date): boolean {

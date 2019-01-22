@@ -9,11 +9,12 @@ export class DatePicker implements IRenderable {
     public readonly locale = 'de-DE';
     private readonly freeEventTitle = 'Freier Termin';
     private readonly defaultSize = '7';
+    private readonly defaultInputName = 'date_uid';
 
 
     protected readonly events: CalendarEvent[];
     private readonly size: number;
-    private readonly message: ISpecification;
+    private readonly position: string;
     private _currentStartDate: Date;
 
     public readonly input: HTMLDivElement;
@@ -32,9 +33,8 @@ export class DatePicker implements IRenderable {
                 new CalendarEvent(icalObject[key]['start'], icalObject[key]['end'], icalObject[key]['uid'])
             );
 
-
-        this.message = message;
         this.size = parseInt(message.size || this.defaultSize);
+        this.position = message.position || 'left';
         this._currentStartDate = new Date();
 
         this.datePicker = document.createElement('div');
@@ -42,7 +42,7 @@ export class DatePicker implements IRenderable {
 
         this.nextButton = this.renderNext();
         this.previousButton = this.renderPrevious();
-        this.input = this.renderInput();
+        this.input = this.renderInput(message.name || this.defaultInputName);
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
@@ -66,8 +66,7 @@ export class DatePicker implements IRenderable {
 
     private renderDatePickerContainer(): HTMLDivElement {
         const datePickerContainer = document.createElement('div');
-        const position = this.message.position || 'left';
-        datePickerContainer.classList.add('lto-date-picker-container', 'lto-' + position);
+        datePickerContainer.classList.add('lto-date-picker-container', 'lto-' + this.position);
         return datePickerContainer;
     }
 
@@ -87,10 +86,10 @@ export class DatePicker implements IRenderable {
         return next;
     }
 
-    private renderInput(): HTMLDivElement {
+    private renderInput(name : string): HTMLDivElement {
         const input = document.createElement('div');
         input.classList.add('ical-event-input');
-        input.setAttribute('name', 'uid');
+        input.setAttribute('name', name);
         input.textContent = 'Select a day';
         return input;
     }
@@ -107,7 +106,7 @@ export class DatePicker implements IRenderable {
         const dates = this.getDatesToRender();
         const relevantEvents = this.getRelevantEvents();
         return dates.map(date => {
-            const event = relevantEvents.find((event: CalendarEvent) => event.isDateInEventRange(date));
+            const event = relevantEvents.find((event: CalendarEvent) => event.startsOnDay(date));
             return this.renderDayButton(date, event);
         });
     }

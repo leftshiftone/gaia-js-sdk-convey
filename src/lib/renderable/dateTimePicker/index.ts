@@ -53,20 +53,16 @@ export class DateTimePicker extends DatePicker {
     public updateTimeButtons(date: Date) {
         this.timeButtonGroup.innerHTML = "";
 
-        this.getEventsStartingOnDay(date).reverse().forEach(
-            event => {
-                const eventButton = document.createElement('button');
-                eventButton.textContent = event.getTimeIntervalString(this.locale);
-                eventButton.onclick = this.onTimeClick(event);
-                this.timeButtonGroup.appendChild(eventButton);
-            }
-        );
-    }
-
-    private getEventsStartingOnDay(day: Date): CalendarEvent[] {
-        return this.events.filter(event =>
-            event.startsInRange(day, CalendarEvent.addDays(day, 1))
-        );
+        this.events.filter(event => event.startsOnDay(date))
+            .reverse()
+            .forEach(
+                event => {
+                    const eventButton = document.createElement('button');
+                    eventButton.textContent = event.getTimeIntervalString(this.locale);
+                    eventButton.onclick = this.onTimeClick(event);
+                    this.timeButtonGroup.appendChild(eventButton);
+                }
+            );
     }
 
     public onTimeClick(event: CalendarEvent) {
