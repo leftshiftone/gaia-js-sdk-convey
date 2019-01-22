@@ -22,8 +22,8 @@ export class Overlay implements IRenderable {
 
         const content = document.createElement("div");
         const button = document.createElement("button");
-        button.append(document.createTextNode("x"));
-        content.append(button);
+        button.appendChild(document.createTextNode("x"));
+        content.appendChild(button);
 
         button.addEventListener("click", () => {
             if (div.parentElement) {
@@ -32,7 +32,7 @@ export class Overlay implements IRenderable {
         }, {once:true});
 
         this.renderable.render(renderer, true).querySelectorAll("*")
-            .forEach(e => content.append(e));
+            .forEach(e => content.appendChild(e));
 
         div.appendChild(content);
 
