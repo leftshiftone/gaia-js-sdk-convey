@@ -3,6 +3,8 @@ import {IRenderable} from '../api/IRenderable';
 import {Button} from '../renderable/button';
 import {Link} from '../renderable/link';
 import {Defaults} from '../support/Defaults';
+import {Submit} from '../renderable/submit';
+import {Suggestion} from '../renderable/suggestion';
 
 /**
  * The classic renderer renders the G.A.I.A. messages in a classic top-down manner.
@@ -27,7 +29,7 @@ export class ClassicRenderer extends AbstractRenderer {
             }
         }
 
-        setTimeout (() =>{
+        setTimeout(() => {
             const content = document.querySelector('.lto-content');
             if (content != null) {
                 content.scrollTop = content.scrollHeight;
@@ -41,6 +43,12 @@ export class ClassicRenderer extends AbstractRenderer {
     // noinspection JSMethodCanBeStatic
     private needsSeparator(renderable:IRenderable) {
         if (renderable instanceof Button) {
+            return false;
+        }
+        if (renderable instanceof Submit) {
+            return false;
+        }
+        if (renderable instanceof Suggestion) {
             return false;
         }
         if (renderable instanceof Link) {
