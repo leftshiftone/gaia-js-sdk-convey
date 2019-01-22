@@ -41,6 +41,9 @@ export abstract class AbstractRenderer implements IRenderer {
     private getRenderable(message: ISpecification): IRenderable {
         console.debug('Element message of type ' + message.type);
         const renderableClass = renderables[message.type.toUpperCase()];
+        if (renderableClass === undefined) {
+            console.error(`unable to render element of type "${message.type}"`);
+        }
         return new renderableClass(message) as IRenderable;
     }
 

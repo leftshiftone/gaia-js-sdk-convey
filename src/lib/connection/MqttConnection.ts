@@ -76,15 +76,8 @@ export class MqttConnection {
         const destination = this.outgoing(channelType);
         console.debug('Sending message to destination ' + destination);
 
-        // remove left buttons
-        const elements = document.querySelectorAll('.lto-button.lto-left');
-        elements.forEach(element => element.remove());
-
-        const body = Object.assign(msg[0], {position: 'right', timestamp: new Date().getTime()});
-        const payload = JSON.stringify({body, header: this.header()});
-
+        const payload = JSON.stringify({body: msg[0], header: this.header()});
         this.mqttClient.publish(destination, payload, this.mqttCallback(msg[0]));
-        this.renderer.render({type: "container", elements: [body]}).forEach(e => this.renderer.append(e));
     }
 
     /**
@@ -92,7 +85,7 @@ export class MqttConnection {
      */
     public reception() {
         if (this.subscriptions.indexOf(ChannelType.TEXT) < 0) {
-            this.subscribe(ChannelType.TEXT, console.log);
+            this.subscribe(ChannelType.TEXT, () => {});
         }
         if (this.behaviourBind.length === 0) {
             this.bind(new KeyboardBehaviour());

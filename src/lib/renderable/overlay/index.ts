@@ -1,0 +1,42 @@
+import {IRenderer} from '../../api/IRenderer';
+import {IRenderable} from '../../api/IRenderable';
+import "./style.scss";
+
+/**
+ * Implementation of the 'overlay' markup element.
+ */
+export class Overlay implements IRenderable {
+
+    private readonly renderable: IRenderable;
+
+    constructor(renderable: IRenderable) {
+        this.renderable = renderable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
+        const div = document.createElement("div");
+        div.classList.add("lto-overlay");
+
+        const content = document.createElement("div");
+        const button = document.createElement("button");
+        button.append(document.createTextNode("x"));
+        content.append(button);
+
+        button.addEventListener("click", () => {
+            if (div.parentElement) {
+                div.parentElement.removeChild(div);
+            }
+        }, {once:true});
+
+        this.renderable.render(renderer, true).querySelectorAll("*")
+            .forEach(e => content.append(e));
+
+        div.appendChild(content);
+
+        return div;
+    }
+
+}

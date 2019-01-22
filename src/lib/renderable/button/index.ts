@@ -33,7 +33,24 @@ export class Button implements IRenderable {
                 const name = this.message.name || "";
                 const value = this.message.value || "";
 
-                EventStream.emit("GAIA::publish", {text, type: 'button', attributes: {name, value, type: 'button'}});
+                const button = {text, type: 'button', attributes: {name, value, type: 'button'}};
+                EventStream.emit("GAIA::publish", button);
+
+                // remove left buttons
+                const elements = document.querySelectorAll('.lto-button.lto-left');
+                elements.forEach(element => element.remove());
+
+                // remove left submits
+                const submits = document.querySelectorAll('.lto-submit.lto-left');
+                submits.forEach(element => element.remove());
+
+                // remove left suggestions
+                const suggestions = document.querySelectorAll('.lto-suggestion.lto-left');
+                suggestions.forEach(element => element.remove());
+
+                // add right button
+                const newButton = Object.assign(button, {position: 'right', timestamp: new Date().getTime()});
+                renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.append(e));
             };
             button.addEventListener('click', eventListener, {once: true});
         }

@@ -19,11 +19,11 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const renderer = new GaiaSDK.ClassicRenderer();
+        const renderer = new GaiaSDK.ContentCentricRenderer();
         const listener = new GaiaSDK.OffSwitchListener();
 
         let gaia = new GaiaSDK.Gaia(renderer, listener);
-        gaia.connect('ws://localhost:61616/channel', '1337')
+        gaia.connect('ws://localhost:61616', '6413')
             .then(connection => connection.reception());
 
     });

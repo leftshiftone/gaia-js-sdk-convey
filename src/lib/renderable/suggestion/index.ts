@@ -17,21 +17,26 @@ export class Suggestion implements IRenderable {
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
+        const position = this.spec.position || 'left';
         const button = document.createElement('button');
         button.setAttribute('name', this.spec.name || "");
 
-        button.classList.add("lto-suggestion", "lto-left");
+        button.classList.add("lto-suggestion", "lto-" + position);
         if (isNested) {
             button.classList.add("lto-nested");
         }
         button.appendChild(document.createTextNode(this.spec.text || ""));
 
-        if (this.spec.position === "left") {
+        if (position === "left") {
             button.addEventListener('click', () => {
+                // remove left buttons
+                const elements = document.querySelectorAll('.lto-suggestion.lto-left');
+                elements.forEach(element => element.remove());
+
                 EventStream.emit("GAIA::publish", {
-                        type: 'button',
+                        type: 'suggestion',
                         text: this.spec.text || "",
-                        attributes: {type: 'button', name: this.spec.name || "", value: this.spec.value || ""}
+                        attributes: {type: 'suggestion', name: this.spec.name || "", value: this.spec.value || ""}
                     },
                 );
             }, {once: true});
