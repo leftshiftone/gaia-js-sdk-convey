@@ -26,6 +26,10 @@ export class Spinner implements IRenderable {
         spinner.setAttribute('step', this.spec.step || "");
         spinner.setAttribute('name', this.spec.name || "");
 
+        spinner.addEventListener("change", () => {
+            spinner.setAttribute('value', spinner.value);
+        })
+
         spinner.classList.add("lto-spinner", "lto-" + position);
         if (this.spec.class !== undefined) spinner.classList.add(this.spec.class);
 
