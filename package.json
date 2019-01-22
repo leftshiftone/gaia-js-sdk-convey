@@ -53,6 +53,7 @@
     "webpack:dev": "webpack-dev-server --open --mode=development",
     "docz:dev": "docz dev",
     "webpack:build": "webpack --mode=production",
+    "webpack:dev-build": "webpack --mode=development",
     "docz:build": "docz build",
     "build": "npm run webpack:build && npm run docz:build",
     "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",

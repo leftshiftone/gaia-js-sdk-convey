@@ -1,6 +1,5 @@
 
 .lto-date-picker-container {
-    background: white;
     max-width: 80%;
     min-width: 30%;
     border: 1px solid #1E223F;
@@ -65,12 +64,15 @@
 }
 
 .lto-date-picker-container .btn-group > button {
-    background-color: white; /* Green background */
     border: 1px solid #1E223F;
     border-radius: 5px;
     color: #1E223F;
-    padding: 10px 24px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
-    width: 100%; /* Set a width if needed */
-    display: block; /* Make the buttons appear below each other */
+    padding: 10px 24px;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+}
+
+.lto-date-picker-container .btn-group {
+    display: block;
 }

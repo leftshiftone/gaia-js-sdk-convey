@@ -1,13 +1,13 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
-import {CalendarEvent} from "./calendar-event";
+import {CalendarEvent} from './calendar-event';
 
 /**
  * Implementation of the 'datePicker' markup element.
  */
 export class DatePicker implements IRenderable {
     public readonly locale = 'de-DE';
-    private readonly freeEventTitle = "Freier Termin";
+    private readonly freeEventTitle = 'Freier Termin';
     private readonly defaultSize = '7';
 
 
@@ -24,8 +24,7 @@ export class DatePicker implements IRenderable {
 
 
     constructor(message: ISpecification) {
-        const ical = require("node-ical");
-        console.log(message);
+        const ical = require('node-ical');
         const icalObject = ical.parseICS(message.src);
         this.events = Object.keys(icalObject)
             .filter(key => icalObject[key]['summary'] === this.freeEventTitle)
@@ -38,7 +37,7 @@ export class DatePicker implements IRenderable {
         this.size = parseInt(message.size || this.defaultSize);
         this._currentStartDate = new Date();
 
-       this.datePicker = document.createElement('div');
+        this.datePicker = document.createElement('div');
         this.dayButtonContainer = document.createElement('div');
 
         this.nextButton = this.renderNext();
@@ -47,13 +46,13 @@ export class DatePicker implements IRenderable {
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-    const datePickerContainer = this.renderDatePickerContainer();
+        const datePickerContainer = this.renderDatePickerContainer();
         if (isNested) {
-            datePickerContainer.classList.add("lto-nested");
+            datePickerContainer.classList.add('lto-nested');
         }
 
-        this.datePicker.classList.add("date-picker");
-        this.dayButtonContainer.classList.add("days-container");
+        this.datePicker.classList.add('date-picker');
+        this.dayButtonContainer.classList.add('days-container');
 
         this.datePicker.appendChild(this.previousButton);
         this.datePicker.appendChild(this.dayButtonContainer);
@@ -68,30 +67,31 @@ export class DatePicker implements IRenderable {
     private renderDatePickerContainer(): HTMLDivElement {
         const datePickerContainer = document.createElement('div');
         const position = this.message.position || 'left';
-        datePickerContainer.classList.add("lto-date-picker-container", "lto-" + position);
+        datePickerContainer.classList.add('lto-date-picker-container', 'lto-' + position);
         return datePickerContainer;
     }
 
     private renderPrevious(): HTMLButtonElement {
         const previous = document.createElement('button');
-        previous.classList.add("previous");
-        previous.innerText = "<";
+        previous.classList.add('previous');
+        previous.innerText = '<';
         previous.onclick = () => this.previous();
         return previous;
     }
 
     private renderNext(): HTMLButtonElement {
         const next = document.createElement('button');
-        next.classList.add("next");
-        next.innerText = ">";
+        next.classList.add('next');
+        next.innerText = '>';
         next.onclick = () => this.next();
         return next;
     }
 
     private renderInput(): HTMLDivElement {
         const input = document.createElement('div');
-        input.classList.add("input");
-        input.textContent = "Select a day";
+        input.classList.add('ical-event-input');
+        input.setAttribute('name', 'uid');
+        input.textContent = 'Select a day';
         return input;
     }
 
@@ -150,14 +150,14 @@ export class DatePicker implements IRenderable {
 
     public onDayClick(date: Date, event: CalendarEvent) {
         return () => {
-            this.input.setAttribute("value", event.uid);
-            this.input.setAttribute("date", date.toISOString());
+            this.input.setAttribute('value', event.uid);
+            this.input.setAttribute('date', date.toISOString());
             this.input.textContent = date.toLocaleDateString(this.locale, {day: 'numeric', month: 'long'});
         };
     }
 
     public updateDayButtons(): void {
-        this.dayButtonContainer.innerHTML = "";
+        this.dayButtonContainer.innerHTML = '';
         this.renderDayButtons().forEach(button => this.dayButtonContainer.appendChild(button));
     }
 

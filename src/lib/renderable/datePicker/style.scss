@@ -1,6 +1,5 @@
 
 .lto-date-picker-container {
-    background: white;
     max-width: 80%;
     min-width: 30%;
     border: 1px solid #1E223F;
@@ -59,7 +58,7 @@
     display: inline;
 }
 
-.lto-date-picker-container > .date-picker > .input {
+.lto-date-picker-container > .date-picker > .ical-event-input {
     width: 100%;
     text-align: center;
 }
