@@ -8,8 +8,8 @@ export class Row implements IRenderable {
 
     public spec: ISpecification;
 
-    constructor(message: ISpecification) {
-        this.spec = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
     /**
@@ -17,6 +17,7 @@ export class Row implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const row = document.createElement('tr');
+        if (this.spec.class !== undefined) row.classList.add(this.spec.class);
         row.classList.add('lto-row');
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "row"));

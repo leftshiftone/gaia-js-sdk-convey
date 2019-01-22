@@ -11,10 +11,12 @@ export class MouseBehaviour implements IBehaviour {
 
     private readonly target1: HTMLButtonElement;
     private readonly target2: HTMLTextAreaElement;
+    private readonly callback: (() => void) | undefined;
 
-    constructor(target1?: HTMLButtonElement, target2?: HTMLTextAreaElement) {
+    constructor(target1?: HTMLButtonElement, target2?: HTMLTextAreaElement, callback?: () => void) {
         this.target1 = target1 || Defaults.invoker();
         this.target2 = target2 || Defaults.textbox();
+        this.callback = callback
     }
 
     public bind(gateway: MqttConnection): void {
@@ -23,7 +25,9 @@ export class MouseBehaviour implements IBehaviour {
 
             if (value.replace(/^\s+|\s+$/g, "") !== "") {
                 gateway.publish(ChannelType.TEXT, {type: "text", text: value});
+                console.log(value)
                 this.target2.value = "";
+                if(this.callback !== undefined) { this.callback() }
             }
         }));
     }

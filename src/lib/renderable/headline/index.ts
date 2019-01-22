@@ -6,20 +6,21 @@ import {IRenderable} from '../../api/IRenderable';
  */
 export class Headline implements IRenderable {
 
-    private readonly message: ISpecification;
+    private readonly spec: ISpecification;
 
-    constructor(message: ISpecification) {
-        this.message = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
     /**
      * {@inheritDoc}
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
-        const position = this.message.position || 'left';
+        const position = this.spec.position || 'left';
         const headline = document.createElement('h2');
+        if (this.spec.class !== undefined) headline.classList.add(this.spec.class);
         headline.classList.add('lto-headline', position);
-        headline.appendChild(document.createTextNode(this.message.text || ""));
+        headline.appendChild(document.createTextNode(this.spec.text || ""));
 
         return headline;
     }

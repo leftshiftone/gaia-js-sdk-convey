@@ -18,6 +18,12 @@ import {Break} from './break';
 import {Container} from './container';
 import {Slider} from "./slider";
 import {Suggestion} from "./suggestion";
+import {Spinner} from "./spinner";
+import {Calendar} from "./calendar";
+import {Reel} from "./reel";
+import {SlotMachine} from "./slotmachine";
+import {DatePicker} from "./datePicker";
+import {DateTimePicker} from "./dateTimePicker";
 
 export const renderables: object = {
     BREAK: Break,
@@ -39,5 +45,12 @@ export const renderables: object = {
     CAROUSEL: Carousel,
     CONTAINER: Container,
     SLIDER: Slider,
-    SUGGESTION: Suggestion
+    SUGGESTION: Suggestion,
+    SLIDER: Slider,
+    SPINNER: Spinner,
+    CALENDAR: Calendar,
+    SLOTMACHINE: SlotMachine,
+    REEL: Reel,
+    DATEPICKER: DatePicker,
+    DATETIMEPICKER: DateTimePicker,
 };

@@ -7,21 +7,22 @@ import {IRenderable} from '../../api/IRenderable';
  */
 export class Checkbox implements IRenderable {
 
-    private readonly message:ISpecification;
+    private readonly spec:ISpecification;
 
-    constructor(message: ISpecification) {
-        this.message = message;
+    constructor(spec: ISpecification) {
+        this.spec = spec;
     }
 
     /**
      * {@inheritDoc}
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
-        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.message.name || ""});
-        const label = node('label').addClasses('lto-checkbox', "lto-" + (this.message.position || "left"));
+        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || ""});
+        const label = node('label').addClasses('lto-checkbox', "lto-" + (this.spec.position || "left"));
+        if (this.spec.class !== undefined) checkbox.addClasses(this.spec.class);
 
         label.appendChild(checkbox);
-        label.appendChild(this.message.text || "");
+        label.appendChild(this.spec.text || "");
         label.onClick((e: MouseEvent) => {
             checkbox.toggle();
             label.toggleClass('lto-toggle');

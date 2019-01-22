@@ -21,6 +21,7 @@ export class Items implements IRenderable {
         if (!isNested) {
             const div = document.createElement('div');
             div.classList.add('lto-items');
+            if (this.spec.class !== undefined) div.classList.add(this.spec.class);
             div.appendChild(Timestamp.render());
 
             const items = document.createElement('ul');
@@ -33,6 +34,7 @@ export class Items implements IRenderable {
             return div;
         }
         const items = document.createElement('ul');
+        if (this.spec.class !== undefined) items.classList.add(this.spec.class);
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "items"));
         elements.forEach(e => e.forEach(x => items.appendChild(x)));
 

@@ -1,5 +1,4 @@
 import {IListener} from '../api/IListener';
-import {ISpecification} from '../api/IRenderer';
 import {Defaults} from '../support/Defaults';
 
 /**
@@ -40,18 +39,18 @@ export class OffSwitchListener implements IListener {
      * {@inheritDoc}
      */
     public onMessage(data: any): void {
-        this.txt.disabled = this.switchOff(data);
-        this.btn.disabled = this.switchOff(data);
+        this.txt.disabled = false;
+        this.btn.disabled = false;
     }
 
-    protected switchOff(data:ISpecification):boolean {
-        if ((data.nerStrategies || new Map<string, any>()).has("email")) {
-            return false;
-        }
-        if ((data.nerStrategies || new Map<string, any>()).has("text")) {
-            return false;
-        }
-        return true;
-    }
+  //  protected switchOff(data:ISpecification):boolean {
+  //      if ((data.nerStrategies || new Map<string, any>()).has("email")) {
+  //          return false;
+  //      }
+  //      if ((data.nerStrategies || new Map<string, any>()).has("text")) {
+  //          return false;
+  //      }
+  //      return true;
+  //  }
 
 }

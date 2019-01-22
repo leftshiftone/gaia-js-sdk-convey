@@ -21,6 +21,7 @@ export class Block implements IRenderable {
         const position = this.spec.position || 'left';
         const block = document.createElement('div');
         block.classList.add('lto-block', "lto-" + position);
+        if (this.spec.class !== undefined) block.classList.add(this.spec.class);
         block.appendChild(Timestamp.render());
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, "block"));
@@ -32,5 +33,4 @@ export class Block implements IRenderable {
         }
         return block;
     }
-
 }

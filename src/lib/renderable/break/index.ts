@@ -1,4 +1,4 @@
-import {IRenderer} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 
 /**
@@ -6,11 +6,16 @@ import {IRenderable} from '../../api/IRenderable';
  */
 export class Break implements IRenderable {
 
-    /**
-     * {@inheritDoc}
-     */
+    private readonly spec: ISpecification;
+
+    constructor(spec: ISpecification) {
+        this.spec = spec
+    }
+
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        return document.createElement('br');
+        const br = document.createElement('br');
+        if (this.spec.class !== undefined) br.classList.add(this.spec.class);
+        return br;
     }
 
 }

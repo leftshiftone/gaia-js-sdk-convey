@@ -10,6 +10,7 @@ export interface ISpecification {
     position?: "left" | "right";
     text?:string;
     name?:string;
+    class?:string
     value?:string;
     source?:string;
     width?:string;
@@ -17,7 +18,9 @@ export interface ISpecification {
     timestamp?:string;
     min?:string;
     max?:string;
+    size?:string;
     step?:string;
+    src?:string;
     horizontal?:string;
     nerStrategies?:Map<string, any>;
 }

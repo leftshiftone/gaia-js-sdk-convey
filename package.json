@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "dependencies": {
     "leaflet": "1.3.4",
-    "mqtt": "2.18.8"
+    "mqtt": "2.18.8",
+    "node-ical": "0.9.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",
@@ -52,6 +53,7 @@
     "webpack:dev": "webpack-dev-server --open --mode=development",
     "docz:dev": "docz dev",
     "webpack:build": "webpack --mode=production",
+    "webpack:dev-build": "webpack --mode=development",
     "docz:build": "docz build",
     "build": "npm run webpack:build && npm run docz:build",
     "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",

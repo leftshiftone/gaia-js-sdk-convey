@@ -47,6 +47,7 @@
     overflow-y: auto;
     position: relative;
     line-height: 1.9;
+    scroll-behavior: smooth;
 }
 
 .lto-content::-webkit-scrollbar {
@@ -87,7 +88,6 @@
     position: relative;
     border-radius: 15px;
     animation: slide-up 0.4s ease;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
@@ -96,16 +96,7 @@
     background: #1E223F;
     animation: slide-up 0.4s ease;
     border-radius: 50px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-}
-
-.lto-icon.lto-right:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-}
-
-.lto-icon.lto-left:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .lto-invoker {

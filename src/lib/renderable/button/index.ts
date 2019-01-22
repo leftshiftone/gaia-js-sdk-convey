@@ -7,31 +7,31 @@ import {IRenderable} from '../../api/IRenderable';
  */
 export class Button implements IRenderable {
 
-    private readonly message: ISpecification;
+    private readonly spec: ISpecification;
 
     constructor(message: ISpecification) {
-        this.message = message;
+        this.spec = message;
     }
 
     /**
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        const position = this.message.position || 'left';
+        const position = this.spec.position || 'left';
         const button = document.createElement('button');
-        button.setAttribute('name', this.message.name || "");
-
+        button.setAttribute('name', this.spec.name || "");
+        if (this.spec.class !== undefined) button.classList.add(this.spec.class);
         button.classList.add("lto-button", "lto-" + position);
         if (isNested) {
             button.classList.add("lto-nested");
         }
-        button.appendChild(document.createTextNode(this.message.text || ""));
+        button.appendChild(document.createTextNode(this.spec.text || ""));
 
         if (position === "left") {
             const eventListener = () => {
-                const text = this.message.text || "";
-                const name = this.message.name || "";
-                const value = this.message.value || "";
+                const text = this.spec.text || "";
+                const name = this.spec.name || "";
+                const value = this.spec.value || "";
 
                 const button = {text, type: 'button', attributes: {name, value, type: 'button'}};
                 EventStream.emit("GAIA::publish", button);
@@ -57,6 +57,6 @@ export class Button implements IRenderable {
         return button;
     }
 
-    public getPosition = () => this.message.position || "left";
+    public getPosition = () => this.spec.position || "left";
 
 }
