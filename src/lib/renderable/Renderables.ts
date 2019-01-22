@@ -44,7 +44,6 @@ export const renderables: object = {
     TEXT: Text,
     CAROUSEL: Carousel,
     CONTAINER: Container,
-    SLIDER: Slider,
     SUGGESTION: Suggestion,
     SLIDER: Slider,
     SPINNER: Spinner,
