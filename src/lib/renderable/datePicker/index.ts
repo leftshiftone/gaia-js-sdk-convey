@@ -11,7 +11,6 @@ export class DatePicker implements IRenderable {
     private readonly defaultSize = '7';
     private readonly defaultInputName = 'date_uid';
 
-
     protected readonly events: CalendarEvent[];
     private readonly size: number;
     private readonly position: string;
@@ -33,7 +32,7 @@ export class DatePicker implements IRenderable {
                 new CalendarEvent(icalObject[key]['start'], icalObject[key]['end'], icalObject[key]['uid'])
             );
 
-        this.size = parseInt(message.size || this.defaultSize);
+        this.size = parseInt(message.size || this.defaultSize, 10);
         this.position = message.position || 'left';
         this._currentStartDate = new Date();
 
