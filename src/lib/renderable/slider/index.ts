@@ -26,6 +26,10 @@ export class Slider implements IRenderable {
         slider.setAttribute('step', this.spec.step || "");
         slider.setAttribute('name', this.spec.name || "");
 
+        slider.addEventListener('change', () => {
+            slider.setAttribute('value', slider.value);
+        });
+
         slider.classList.add("lto-slider", "lto-" + position);
         if (this.spec.class !== undefined) slider.classList.add(this.spec.class);
 
