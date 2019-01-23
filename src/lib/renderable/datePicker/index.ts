@@ -25,8 +25,8 @@ export class DatePicker implements IRenderable {
 
     constructor(message: ISpecification) {
         const ical = require('node-ical');
-        const unescapedSrc = (message.src || "").replace(/\\r\\n/g, '\r\n');
-        const icalObject = ical.parseICS(unescapedSrc);
+        const decodedSrc = atob(message.src || "");
+        const icalObject = ical.parseICS(decodedSrc);
         this.events = Object.keys(icalObject)
             .filter(key => icalObject[key]['summary'] === this.freeEventTitle)
             .map(key =>
