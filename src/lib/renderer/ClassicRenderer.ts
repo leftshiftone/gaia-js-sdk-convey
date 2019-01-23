@@ -3,7 +3,6 @@ import {IRenderable} from '../api/IRenderable';
 import {Button} from '../renderable/button';
 import {Link} from '../renderable/link';
 import {Defaults} from '../support/Defaults';
-import {Submit} from '../renderable/submit';
 import {Suggestion} from '../renderable/suggestion';
 
 /**
@@ -43,9 +42,6 @@ export class ClassicRenderer extends AbstractRenderer {
     // noinspection JSMethodCanBeStatic
     private needsSeparator(renderable:IRenderable) {
         if (renderable instanceof Button) {
-            return false;
-        }
-        if (renderable instanceof Submit) {
             return false;
         }
         if (renderable instanceof Suggestion) {
