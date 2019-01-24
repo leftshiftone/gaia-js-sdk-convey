@@ -23,7 +23,7 @@
         const listener = new GaiaSDK.OffSwitchListener();
 
         let gaia = new GaiaSDK.Gaia(renderer, listener);
-        gaia.connect('ws://localhost:61616', '6413')
+        gaia.connect('ws://localhost:61616/mqtt', '6413')
             .then(connection => connection.reception());
     });
 </script>
