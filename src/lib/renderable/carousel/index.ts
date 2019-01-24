@@ -59,7 +59,7 @@ export class Carousel implements IRenderable {
 
         this.counter = i;
         slides[this.counter].classList.add('lto-active');
-        slides[this.counter].classList.replace('lto-passive', '');
+        slides[this.counter].classList.remove('lto-passive');
     }
 
     private touchStart = (e: any) => this.touchstartX = e.changedTouches[0].screenX;
