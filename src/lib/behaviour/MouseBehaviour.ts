@@ -25,7 +25,6 @@ export class MouseBehaviour implements IBehaviour {
 
             if (value.replace(/^\s+|\s+$/g, "") !== "") {
                 gateway.publish(ChannelType.TEXT, {type: "text", text: value});
-                console.log(value)
                 this.target2.value = "";
                 if(this.callback !== undefined) { this.callback() }
             }

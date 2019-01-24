@@ -79,6 +79,9 @@ export class MqttConnection {
         // noinspection SuspiciousInstanceOfGuard
         const payload = JSON.stringify({body: msg instanceof Array ? msg[0] : msg, header: this.header()});
         this.mqttClient.publish(destination, payload, this.mqttCallback(msg[0]));
+
+        const body = Object.assign(msg instanceof Array ? msg[0] : msg, {position: 'right', timestamp: new Date().getTime()});
+        this.renderer.render({type: "container", elements: [body]}).forEach(e => this.renderer.append(e));
     }
 
     /**
