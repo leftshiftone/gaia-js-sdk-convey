@@ -89,8 +89,8 @@ export class MqttConnection {
             this.subscribe(ChannelType.TEXT, () => {});
         }
         if (this.behaviourBind.length === 0) {
-            this.bind(new KeyboardBehaviour());
-            this.bind(new MouseBehaviour());
+            this.bind(new KeyboardBehaviour(this.renderer));
+            this.bind(new MouseBehaviour(this.renderer));
         }
         const payload = JSON.stringify({header: this.header(), body: {type: 'reception'}});
         this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.mqttCallback("reception"));
