@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'bold' markup element.
@@ -25,3 +26,5 @@ export class Bold implements IRenderable {
     }
 
 }
+
+Renderables.register("bold", Bold);

@@ -2,6 +2,7 @@ import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'block' markup element.
@@ -17,7 +18,7 @@ export class Block implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const block = document.createElement('div');
         block.classList.add('lto-block', "lto-" + position);
@@ -34,3 +35,5 @@ export class Block implements IRenderable {
         return block;
     }
 }
+
+Renderables.register("block", Block);

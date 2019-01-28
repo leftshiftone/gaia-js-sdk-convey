@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'headline' markup element.
@@ -26,3 +27,4 @@ export class Headline implements IRenderable {
     }
 
 }
+Renderables.register("headline", Headline);

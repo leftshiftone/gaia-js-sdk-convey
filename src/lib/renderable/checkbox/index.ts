@@ -1,6 +1,7 @@
 import node from '../../support/node';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'checkbox' markup language.
@@ -32,3 +33,4 @@ export class Checkbox implements IRenderable {
     }
 
 }
+Renderables.register("checkbox", Checkbox);

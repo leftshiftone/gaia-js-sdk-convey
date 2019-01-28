@@ -1,6 +1,7 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 export class Submit implements IRenderable {
 
@@ -80,3 +81,4 @@ export class Submit implements IRenderable {
     }
 
 }
+Renderables.register("submit", Submit);

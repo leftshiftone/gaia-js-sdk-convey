@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 // TODO: improve swipe feature: https://css-tricks.com/simple-swipe-with-vanilla-javascript/
 export class Carousel implements IRenderable {
@@ -88,3 +89,4 @@ export class Carousel implements IRenderable {
     }
 
 }
+Renderables.register("carousel", Carousel);

@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'calendar' markup element.
@@ -221,3 +222,4 @@ export class Calendar implements IRenderable {
     }
 
 }
+Renderables.register("calendar", Calendar);

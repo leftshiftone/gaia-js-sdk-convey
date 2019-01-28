@@ -1,6 +1,7 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import {CalendarEvent} from './calendar-event';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'datePicker' markup element.
@@ -183,3 +184,4 @@ export class DatePicker implements IRenderable {
         return this._currentStartDate;
     }
 }
+Renderables.register("datepicker", DatePicker);

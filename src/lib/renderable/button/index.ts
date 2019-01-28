@@ -1,6 +1,7 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'button' markup element.
@@ -60,3 +61,4 @@ export class Button implements IRenderable {
     public getPosition = () => this.spec.position || "left";
 
 }
+Renderables.register("button", Button);

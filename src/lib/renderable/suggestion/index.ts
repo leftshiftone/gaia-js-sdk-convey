@@ -1,6 +1,7 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'suggestion' markup element.
@@ -48,3 +49,4 @@ export class Suggestion implements IRenderable {
     }
 
 }
+Renderables.register("suggestion", Suggestion);

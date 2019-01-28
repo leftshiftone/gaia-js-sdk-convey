@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
 import {IRenderable} from '../../../api/IRenderable';
+import Renderables from '../../Renderables';
 
 export class Col implements IRenderable {
 
@@ -24,3 +25,4 @@ export class Col implements IRenderable {
     }
 
 }
+Renderables.register("col", Col);

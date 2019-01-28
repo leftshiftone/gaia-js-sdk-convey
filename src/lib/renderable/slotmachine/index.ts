@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'reel' markup element.
@@ -31,3 +32,4 @@ export class SlotMachine implements IRenderable {
     }
 
 }
+Renderables.register("slotmachine", SlotMachine);

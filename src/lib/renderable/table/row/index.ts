@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
 import {IRenderable} from '../../../api/IRenderable';
+import Renderables from '../../Renderables';
 
 /**
  * Implementation of the 'row' markup element.
@@ -27,3 +28,4 @@ export class Row implements IRenderable {
     }
 
 }
+Renderables.register("row", Row);

@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'spinner' markup element.
@@ -19,7 +20,7 @@ export class Spinner implements IRenderable {
         const position = this.spec.position || 'left';
         const spinner = document.createElement('input');
 
-        spinner.setAttribute("type", "number")
+        spinner.setAttribute("type", "number");
         spinner.setAttribute('value', this.spec.value || "");
         spinner.setAttribute('min', this.spec.min || "");
         spinner.setAttribute('max', this.spec.max || "");
@@ -28,15 +29,19 @@ export class Spinner implements IRenderable {
 
         spinner.addEventListener("change", () => {
             spinner.setAttribute('value', spinner.value);
-        })
+        });
 
         spinner.classList.add("lto-spinner", "lto-" + position);
         if (this.spec.class !== undefined) spinner.classList.add(this.spec.class);
 
         spinner.step = this.spec.step || "";
 
-        if (isNested) { spinner.classList.add("lto-nested") }
+        if (isNested) {
+            spinner.classList.add("lto-nested");
+        }
 
         return spinner;
     }
 }
+
+Renderables.register("spinner", Spinner);

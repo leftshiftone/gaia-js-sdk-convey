@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'break' markup element.
@@ -19,3 +20,4 @@ export class Break implements IRenderable {
     }
 
 }
+Renderables.register("break", Break);

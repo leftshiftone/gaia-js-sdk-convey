@@ -2,6 +2,7 @@ import {Timestamp} from '../timestamp';
 import {Icon} from '../icon';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'items' markup element.
@@ -42,3 +43,4 @@ export class Items implements IRenderable {
     }
 
 }
+Renderables.register("items", Items);

@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'reel' markup element.
@@ -19,7 +20,7 @@ export class Reel implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean): HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         this.reel.classList.add('lto-reel', "lto-" + position);
         if (this.spec.class !== undefined) this.reel.classList.add(this.spec.class);
@@ -60,9 +61,9 @@ export class Reel implements IRenderable {
     }
 
     public next() {
-        if((this.counter + 1) < this.reel.querySelectorAll("img").length) {
+        if ((this.counter + 1) < this.reel.querySelectorAll("img").length) {
             this.counter++;
-            this.reel.setAttribute("value", this.counter+"")
+            this.reel.setAttribute("value", this.counter + "");
         }
 
         const children = this.reel.querySelectorAll("img");
@@ -70,13 +71,13 @@ export class Reel implements IRenderable {
             child.classList.remove("lto-passive", "lto-active");
             child.classList.add("lto-passive");
         });
-        children[this.counter].classList.replace("lto-passive","lto-active");
+        children[this.counter].classList.replace("lto-passive", "lto-active");
     }
 
     public previous() {
-        if((this.counter - 1) >= 0) {
+        if ((this.counter - 1) >= 0) {
             this.counter--;
-            this.reel.setAttribute("value", this.counter+"")
+            this.reel.setAttribute("value", this.counter + "");
         }
 
         const children = this.reel.querySelectorAll("img");
@@ -84,7 +85,8 @@ export class Reel implements IRenderable {
             child.classList.remove("lto-passive", "lto-active");
             child.classList.add("lto-passive");
         });
-        children[this.counter].classList.replace("lto-passive","lto-active");
+        children[this.counter].classList.replace("lto-passive", "lto-active");
     }
 
 }
+Renderables.register("reel", Reel);

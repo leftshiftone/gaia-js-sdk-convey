@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'item' markup element.
@@ -25,3 +26,4 @@ export class Item implements IRenderable {
     }
 
 }
+Renderables.register("item", Item);

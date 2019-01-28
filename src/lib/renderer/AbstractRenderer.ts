@@ -1,4 +1,4 @@
-import {renderables} from '../renderable/Renderables';
+import Renderables from '../renderable/Renderables';
 import {IRenderer, ISpecification} from '../api/IRenderer';
 import {IRenderable} from '../api/IRenderable';
 
@@ -40,7 +40,7 @@ export abstract class AbstractRenderer implements IRenderer {
      */
     private getRenderable(message: ISpecification): IRenderable {
         console.debug('Element message of type ' + message.type);
-        const renderableClass = renderables[message.type.toUpperCase()];
+        const renderableClass = Renderables.resolve(message.type.toUpperCase());
         if (renderableClass === undefined) {
             console.error(`unable to render element of type "${message.type}"`);
         }

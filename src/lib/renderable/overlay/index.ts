@@ -29,7 +29,7 @@ export class Overlay implements IRenderable {
             if (div.parentElement) {
                 div.parentElement.removeChild(div);
             }
-        }, {once:true});
+        }, {once: true});
 
         this.renderable.render(renderer, true).querySelectorAll("*")
             .forEach(e => content.appendChild(e));

@@ -1,6 +1,7 @@
 import * as L from 'leaflet';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 export class Map implements IRenderable {
 
@@ -166,3 +167,4 @@ export class Map implements IRenderable {
     }
 
 }
+Renderables.register("map", Map);

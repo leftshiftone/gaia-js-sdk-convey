@@ -2,6 +2,7 @@ import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'table' markup element.
@@ -37,3 +38,4 @@ export class Table implements IRenderable {
     }
 
 }
+Renderables.register("table", Table);

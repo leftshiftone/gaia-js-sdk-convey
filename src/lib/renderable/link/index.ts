@@ -1,5 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
+import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'link' markup element.
@@ -27,3 +28,4 @@ export class Link implements IRenderable {
     }
 
 }
+Renderables.register("link", Link);

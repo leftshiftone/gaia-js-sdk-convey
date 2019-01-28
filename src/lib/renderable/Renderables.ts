@@ -1,29 +1,10 @@
-import {Block} from './block';
-import {Bold} from './bold';
-import {Button} from './button';
-import {Checkbox} from './checkbox';
-import {Col} from './table/col';
-import {Headline} from './headline';
-import {Image} from './image';
-import {Item} from './item';
-import {Items} from './items';
-import {Link} from './link';
-import {Map} from './map';
-import {Row} from './table/row';
-import {Submit} from './submit';
-import {Table} from './table';
-import {Text} from './text';
-import {Carousel} from './carousel';
-import {Break} from './break';
-import {Container} from './container';
-import {Slider} from "./slider";
-import {Suggestion} from "./suggestion";
-import {Spinner} from "./spinner";
-import {Calendar} from "./calendar";
-import {Reel} from "./reel";
-import {SlotMachine} from "./slotmachine";
-import {DatePicker} from "./datePicker";
-import {DateTimePicker} from "./dateTimePicker";
+export default class Renderables {
+
+    private static renderableMap = {};
+
+    public static register(name: string, renderable: any) {
+        this.renderableMap[name.toUpperCase()] = renderable;
+    }
 
 export const renderables: object = {
     BREAK: Break,
