@@ -15,26 +15,8 @@
   margin-right: 30px;
   color: #545454;
 }
-.lto-suggestion.lto-nested {
-  width: 50%;
-  margin-right: 10px;
-  border: solid white;
-  border-radius: 15px;
-  color: white;
-  padding: 5px;
-  animation: slide-up 0.4s ease;
-}
-.lto-suggestion.lto-nested.lto-right {
-  background: white;
-  border: 1px solid lightgray;
-}
-
 .lto-suggestion:hover {
   background: rgba(184, 185, 181, 0.4);
-}
-.lto-suggestion.lto--nested:hover {
-  background: white;
-  color: #2f4050;
 }
 .lto-suggestion:disabled {
   cursor: default;

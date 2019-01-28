@@ -1,4 +1,3 @@
-import {Icon} from '../icon';
 import {Timestamp} from '../timestamp';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
@@ -29,7 +28,6 @@ export class Block implements IRenderable {
         elements.forEach(e => e.forEach(x => block.appendChild(x)));
 
         if (isNested) {
-            block.appendChild(renderer.render(new Icon(position))[0]);
             block.classList.add('lto-nested');
         }
         return block;
