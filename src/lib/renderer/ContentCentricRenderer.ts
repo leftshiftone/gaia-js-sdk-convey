@@ -31,7 +31,7 @@ export class ContentCentricRenderer extends ClassicRenderer {
 
     private defaultBehaviour(renderable:IRenderable, containerType?:string) {
         if (!containerType) {
-            this.qualifier = ContentCentricRenderer.getQualifier(renderable);
+            this.qualifier = ContentCentricRenderer.getQualifier(renderable) || this.qualifier;
         }
         return super.renderElement(renderable, containerType);
     }
