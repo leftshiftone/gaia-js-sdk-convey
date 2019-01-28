@@ -1,28 +1,25 @@
 import Renderables from '../renderable/Renderables';
 import {IRenderer, ISpecification} from '../api/IRenderer';
 import {IRenderable} from '../api/IRenderable';
+import {IStackeable} from '../api/IStackeable';
 
 /**
  * Abstract renderer class.
  */
 export abstract class AbstractRenderer implements IRenderer {
 
-    private static CONTAINER_ELEMENTS = ["block", "carousel", "col", "items", "row", "table", "block", "reel", "slotmachine"];
+    protected readonly content: HTMLElement;
+    protected readonly suggest: HTMLElement;
 
-    protected static isNested(containerType?: string) {
-        return containerType === undefined ? false : AbstractRenderer.CONTAINER_ELEMENTS.indexOf(containerType) >= 0;
-    }
-
-    private readonly target:HTMLElement;
-
-    constructor(target:HTMLElement) {
-        this.target = target;
+    constructor(content: HTMLElement, suggest: HTMLElement) {
+        this.content = content;
+        this.suggest = suggest;
     }
 
     /**
      * {@inheritDoc}
      */
-    public render(message: ISpecification | IRenderable, containerType?:string): HTMLElement[] {
+    public render(message: ISpecification | IRenderable, containerType?: IStackeable): HTMLElement[] {
         if (message["render"] !== undefined) {
             return this.renderElement(message as IRenderable, containerType);
         }
@@ -30,7 +27,7 @@ export abstract class AbstractRenderer implements IRenderer {
         return this.renderElement(renderable, containerType);
     }
 
-    protected abstract renderElement(element: IRenderable, containerType?:string): HTMLElement[];
+    protected abstract renderElement(element: IRenderable, containerType?: IStackeable): HTMLElement[];
 
     // noinspection JSMethodCanBeStatic
     /**
@@ -47,6 +44,7 @@ export abstract class AbstractRenderer implements IRenderer {
         return new renderableClass(message) as IRenderable;
     }
 
-    public append = (element: HTMLElement) => this.target.appendChild(element);
+    public appendContent = (element: HTMLElement) => this.content.appendChild(element);
+    public appendSuggest = (element: HTMLElement) => this.suggest.appendChild(element);
 
 }

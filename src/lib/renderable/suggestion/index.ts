@@ -2,6 +2,7 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import EventStream from '../../event/EventStream';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
+import {split} from '../../support/Strings';
 
 /**
  * Implementation of the 'suggestion' markup element.
@@ -23,7 +24,7 @@ export class Suggestion implements IRenderable {
         button.setAttribute('name', this.spec.name || "");
 
         button.classList.add("lto-suggestion", "lto-" + position);
-        if (this.spec.class !== undefined) button.classList.add(this.spec.class);
+        split(this.spec.class).forEach((e:string) => button.classList.add(e));
 
         if (isNested) {
             button.classList.add("lto-nested");

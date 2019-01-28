@@ -31,7 +31,7 @@ export class MouseBehaviour implements IBehaviour {
                 this.target2.value = "";
 
                 const payload = {type:"text", text: value, position:"right"} as ISpecification;
-                this.renderer.render(payload).forEach(e => this.renderer.append(e));
+                this.renderer.render(payload).forEach(e => this.renderer.appendContent(e));
 
                 if (this.callback !== undefined) {
                     this.callback();

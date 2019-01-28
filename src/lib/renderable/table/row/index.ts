@@ -1,11 +1,12 @@
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
 import {IRenderable} from '../../../api/IRenderable';
 import Renderables from '../../Renderables';
+import {IStackeable} from '../../../api/IStackeable';
 
 /**
  * Implementation of the 'row' markup element.
  */
-export class Row implements IRenderable {
+export class Row implements IRenderable, IStackeable {
 
     public spec: ISpecification;
 
@@ -21,7 +22,7 @@ export class Row implements IRenderable {
         if (this.spec.class !== undefined) row.classList.add(this.spec.class);
         row.classList.add('lto-row');
 
-        const elements = (this.spec.elements || []).map(e => renderer.render(e, "row"));
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => row.appendChild(x)));
 
         return row;

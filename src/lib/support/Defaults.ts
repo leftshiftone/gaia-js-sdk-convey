@@ -21,4 +21,11 @@ export class Defaults {
         return document.getElementsByClassName("lto-content")[0] as HTMLButtonElement;
     }
 
+    public static suggest(): HTMLButtonElement {
+        if (document.getElementsByClassName("lto-suggest").length === 0) {
+            throw new Error("no default element with class 'lto-suggest' found");
+        }
+        return document.getElementsByClassName("lto-suggest")[0] as HTMLButtonElement;
+    }
+
 }

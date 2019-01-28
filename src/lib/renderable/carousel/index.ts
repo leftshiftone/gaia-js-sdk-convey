@@ -1,13 +1,14 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
+import {IStackeable} from '../../api/IStackeable';
+import EventStream from '../../event/EventStream';
 
-// TODO: improve swipe feature: https://css-tricks.com/simple-swipe-with-vanilla-javascript/
-export class Carousel implements IRenderable {
+export class Carousel implements IRenderable, IStackeable {
 
     public spec: ISpecification;
 
-    private count: number;
+    private count: number = 0;
     private counter: number = 0;
     private touchstartX: number = 0;
     private touchendX: number = 0;
@@ -25,8 +26,28 @@ export class Carousel implements IRenderable {
         carousel.classList.add('lto-carousel', 'lto-left');
         if (this.spec.class !== undefined) carousel.classList.add(this.spec.class);
 
-        const elements = (this.spec.elements || []).map(e => renderer.render(e, "carousel"));
-        elements.forEach(e => e.forEach(x => carousel.appendChild(x)));
+        (this.spec.elements || []).map((e) => {
+            renderer.render(e, this).forEach(x => carousel.appendChild(x));
+        });
+
+        for (let i = 0; i < this.count; i++) {
+            const block = carousel.children[i];
+
+            const attribute = document.createAttribute("data-counter");
+            attribute.value = i + "";
+            block.attributes.setNamedItem(attribute);
+
+            const suggestions = block.querySelectorAll(".lto-suggestion");
+            suggestions.forEach(suggestion => {
+                block.removeChild(suggestion);
+                suggestion.classList.remove("lto-nested");
+                suggestion.attributes.setNamedItem(attribute.cloneNode(true) as Attr);
+                if (i > 0) {
+                    suggestion.classList.add("lto-hide");
+                }
+                renderer.appendSuggest(suggestion as HTMLElement);
+            });
+        }
 
         if (carousel.children[this.counter]) {
             carousel.children[this.counter].classList.add('lto-active');
@@ -53,6 +74,8 @@ export class Carousel implements IRenderable {
     }
 
     private goto(i: number, e: any) {
+        EventStream.emit("GAIA::carousel", i);
+
         const carousel = e.target.closest('.lto-carousel');
         const slides = carousel.querySelectorAll('.lto-block');
 

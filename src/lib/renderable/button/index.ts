@@ -51,7 +51,7 @@ export class Button implements IRenderable {
 
                 // add right button
                 const newButton = Object.assign(button, {position: 'right', timestamp: new Date().getTime()});
-                renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.append(e));
+                renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.appendContent(e));
             };
             button.addEventListener('click', eventListener, {once: true});
         }

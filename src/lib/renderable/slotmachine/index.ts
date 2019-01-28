@@ -1,11 +1,12 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
+import {IStackeable} from '../../api/IStackeable';
 
 /**
  * Implementation of the 'reel' markup element.
  */
-export class SlotMachine implements IRenderable {
+export class SlotMachine implements IRenderable, IStackeable {
 
     private readonly spec: ISpecification;
 
@@ -21,7 +22,7 @@ export class SlotMachine implements IRenderable {
         const slotMachine = document.createElement("div");
         slotMachine.classList.add('lto-slotmachine', "lto-" + position);
         if (this.spec.class !== undefined) slotMachine.classList.add(this.spec.class);
-        const elements = (this.spec.elements || []).map(e => renderer.render(e, "slotmachine"));
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => slotMachine.appendChild(x)));
 
         if (isNested) {

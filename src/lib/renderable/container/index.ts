@@ -20,8 +20,14 @@ export class Container implements IRenderable {
         const div = document.createElement("div");
         div.classList.add("lto-container");
 
-        const elements = (this.spec.elements || []).map(e => renderer.render(e, "container"));
+        const elements = (this.spec.elements || []).map(e => renderer.render(e));
         elements.forEach(e => e.forEach(x => div.appendChild(x)));
+
+        const suggestions = div.querySelectorAll(".lto-suggestion");
+        suggestions.forEach(suggestion => {
+            div.removeChild(suggestion);
+            renderer.appendSuggest(suggestion as HTMLElement);
+        });
 
         return div;
     }

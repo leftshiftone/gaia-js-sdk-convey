@@ -1,11 +1,12 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
+import {IStackeable} from '../../api/IStackeable';
 
 /**
  * Implementation of the 'reel' markup element.
  */
-export class Reel implements IRenderable {
+export class Reel implements IRenderable, IStackeable {
 
     private readonly spec: ISpecification;
     private counter: number;
@@ -42,7 +43,7 @@ export class Reel implements IRenderable {
         separator.classList.add("lto-separator");
         this.reel.appendChild(separator);
 
-        const elements = (this.spec.elements || []).map(e => renderer.render(e, "reel"));
+        const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => this.reel.appendChild(x)));
 
         this.reel.appendChild(down);

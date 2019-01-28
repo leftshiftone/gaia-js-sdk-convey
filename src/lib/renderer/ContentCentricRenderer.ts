@@ -2,6 +2,8 @@ import {ClassicRenderer} from './ClassicRenderer';
 import {IRenderable} from '../api/IRenderable';
 import EventStream from '../event/EventStream';
 import {Overlay} from '../renderable/overlay';
+import {IStackeable} from '../api/IStackeable';
+import {Block} from '../renderable/block';
 
 /**
  * The content centric renderer tries to maximize the time a content is visible by updating
@@ -10,7 +12,7 @@ import {Overlay} from '../renderable/overlay';
 export class ContentCentricRenderer extends ClassicRenderer {
 
     private qualifier = null;
-    private behaviour:(renderable:IRenderable, type?:string) => HTMLElement[] = (r, t) => this.defaultBehaviour(r, t);
+    private behaviour:(renderable:IRenderable, type?:IStackeable) => HTMLElement[] = (r, t) => this.defaultBehaviour(r, t);
 
     constructor(container: HTMLElement) {
         super(container);
@@ -21,7 +23,7 @@ export class ContentCentricRenderer extends ClassicRenderer {
         });
     }
 
-    protected renderElement(renderable: IRenderable, containerType?: string): HTMLElement[] {
+    protected renderElement(renderable: IRenderable, containerType?: IStackeable): HTMLElement[] {
         return this.behaviour(renderable, containerType);
     }
 
@@ -29,7 +31,7 @@ export class ContentCentricRenderer extends ClassicRenderer {
         return (renderable["spec"] !== undefined) ? renderable["spec"].qualifier : null;
     }
 
-    private defaultBehaviour(renderable:IRenderable, containerType?:string) {
+    private defaultBehaviour(renderable:IRenderable, containerType?:IStackeable) {
         if (!containerType) {
             this.qualifier = ContentCentricRenderer.getQualifier(renderable) || this.qualifier;
         }
@@ -37,7 +39,7 @@ export class ContentCentricRenderer extends ClassicRenderer {
     }
 
     private suggestionBehaviour(qualifier?:string) {
-        return (renderable:IRenderable, containerType?:string) => {
+        return (renderable:IRenderable, containerType?:IStackeable) => {
             if (ContentCentricRenderer.getQualifier(renderable) === qualifier) {
                 const containers = document.getElementsByClassName("lto-container");
                 const containerZ = containers[containers.length - 1];
@@ -50,9 +52,9 @@ export class ContentCentricRenderer extends ClassicRenderer {
                 return super.renderElement(renderable, containerType);
             }
             if (!containerType) {
-                return super.renderElement(new Overlay(renderable), "block");
+                return super.renderElement(new Overlay(renderable), new Block({type:"block"}));
             }
-            return super.renderElement(renderable, "block");
+            return super.renderElement(renderable, new Block({type:"block"}));
         };
     }
 

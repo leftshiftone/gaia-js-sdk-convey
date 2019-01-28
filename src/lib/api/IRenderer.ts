@@ -1,8 +1,10 @@
 import {IRenderable} from './IRenderable';
+import {IStackeable} from './IStackeable';
 
 export interface IRenderer {
-    render(message: ISpecification | IRenderable, containerType?:string):HTMLElement[];
-    append(element: HTMLElement):void;
+    render(message: ISpecification | IRenderable, containerType?:IStackeable):HTMLElement[];
+    appendContent(element: HTMLElement):void;
+    appendSuggest(element: HTMLElement):void;
 }
 export interface ISpecification {
     type: string;
@@ -10,7 +12,7 @@ export interface ISpecification {
     position?: "left" | "right";
     text?:string;
     name?:string;
-    class?:string
+    class?:string;
     value?:string;
     source?:string;
     width?:string;

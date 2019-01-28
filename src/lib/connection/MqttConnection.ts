@@ -116,7 +116,7 @@ export class MqttConnection {
                     const payload = Object.assign(message, {position: 'left'});
 
                     this.listener.onMessage(payload);
-                    this.renderer.render(payload).forEach(e => this.renderer.append(e));
+                    this.renderer.render(payload).forEach(e => this.renderer.appendContent(e));
 
                     this.callback(channelType, message);
                     break;

@@ -3,11 +3,12 @@ import {Timestamp} from '../timestamp';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
+import {IStackeable} from '../../api/IStackeable';
 
 /**
  * Implementation of the 'table' markup element.
  */
-export class Table implements IRenderable {
+export class Table implements IRenderable, IStackeable {
 
     private readonly spec: ISpecification;
 
@@ -24,13 +25,13 @@ export class Table implements IRenderable {
 
         if (!isNested) {
             table.appendChild(Timestamp.render());
-            const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
+            const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
             elements.forEach(e => e.forEach(x => table.appendChild(x)));
 
             table.appendChild(new Icon(position).render());
         } else {
             table.classList.add("lto-nested");
-            const elements = (this.spec.elements || []).map(e => renderer.render(e, "table"));
+            const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
             elements.forEach(e => e.forEach(x => table.appendChild(x)));
         }
 
