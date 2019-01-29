@@ -12,7 +12,6 @@ import {Bold} from './lib/renderable/bold';
 import {Break} from './lib/renderable/break';
 import {Button} from './lib/renderable/button';
 import {Calendar} from './lib/renderable/calendar';
-import {Camera} from './lib/renderable/camera';
 import {Carousel} from './lib/renderable/carousel';
 import {Checkbox} from './lib/renderable/checkbox';
 import {Container} from './lib/renderable/container';
@@ -45,7 +44,6 @@ export default {
     Break,
     Button,
     Calendar,
-    Camera,
     Carousel,
     Checkbox,
     Container,
