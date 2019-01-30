@@ -54,6 +54,7 @@ export class Submit implements IRenderable {
             this.addValuesToAttributes(content, 'div[class=\'ical-event-input\']', attributes);
             this.addValuesToAttributes(content, 'input[type=\'number\']', attributes);
             this.addValuesToAttributes(content, 'div[class=\'lto-reel\']', attributes);
+            this.addValuesToAttributes(content, 'div[class=\'lto-map\']', attributes);
 
             if (Object.keys(attributes).length > 0) {
                 submit.disabled = true;

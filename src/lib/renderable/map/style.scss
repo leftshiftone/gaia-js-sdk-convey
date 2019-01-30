@@ -1,14 +1,19 @@
 .lto-map {
-  width: 100%;
+  width: 80%;
   height: 300px;
   border-radius: 20px;
-  padding-right: 10px;
-  padding-bottom: 10px;
   display: inline-block;
   transform: scale(1.0315);
   margin: 10px auto;
   mix-blend-mode: hard-light;
 }
+.lto-map.lto-nested {
+    width: 100%;
+    border-radius: 0;
+}
+
 .lto-map .leaflet-interactive {
   transition: all 0.3s ease-in-out;
+    width: 30px !important;
+    height: 30px !important;
 }

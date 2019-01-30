@@ -1,13 +1,15 @@
 import * as L from 'leaflet';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
-import Renderables from '../Renderables';
+import './leaflet.css';
+import Renderables from "../Renderables";
+import {Marker} from "leaflet";
 
 export class Map implements IRenderable {
 
     public map: any;
-    public markers: any;
-    public center: [number, number];
+    public markers: Array<[number, number]> = [[0,0]];
+    public center: [number, number] = [0,0];
     public zoom: number;
     public leafletSettings: any;
     public circle: any;
@@ -29,8 +31,9 @@ export class Map implements IRenderable {
         this.spec = spec;
         this.mapMarkerActiveUrl = spec.mapMarkerActiveUrl;
         this.mapMarkerInactiveUrl = spec.mapMarkerInactiveUrl;
+
         this.getJSON(spec.src);
-        this.center = [0,0];
+
     }
 
     public getJSON(src: string) {
@@ -97,37 +100,27 @@ export class Map implements IRenderable {
             this.circle.setRadius(radius);
         }
         this.numMarkers = 0;
+
+        const selected: Array<any> = [];
         this.mapMarkers.forEach((m: any) => {
             const mpos = m.getLatLng();
             const dist = Map.distance(mpos.lat, mpos.lng, position.lat, position.lng) / 1.05;
             if (dist <= radius) {
+                selected.push(m);
                 m.setIcon(this.mapMarkerActive);
-                this.numMarkers += 1;
             } else {
                 m.setIcon(this.mapMarkerInactive);
             }
         });
 
-         // const gaiaButtonElem = <HTMLElement>document.querySelector('.gaia-button-nested');
-         // const noMarkersElem = <HTMLElement>document.querySelector('.no-markers');
-         //
-         // if (this.numMarkers > 0) {
-         //     const numMarkersElem = <HTMLElement>document.querySelector('.num-markers');
-         //     if (numMarkersElem && gaiaButtonElem && noMarkersElem) {
-         //         numMarkersElem.innerHTML = String(this.numMarkers);
-         //         gaiaButtonElem.style.display = 'inherit';
-         //         noMarkersElem.style.display = 'None';
-         //     }
-         // } else {
-         //     gaiaButtonElem.style.display = 'None';
-         //     noMarkersElem.style.display = 'inherit';
-         // }
+        this.mapContainer.value = selected;
     }
 
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.mapContainer = document.createElement('div');
         this.mapContainer.classList.add('lto-map');
+        this.mapContainer.name = this.spec.name;
 
         const countMarkers = document.createElement('span');
         countMarkers.classList.add('num-markers');
@@ -137,28 +130,59 @@ export class Map implements IRenderable {
 
         this.mapContainer.appendChild(countMarkers);
         this.mapContainer.appendChild(noMarkers);
+        if(isNested) {
+            this.mapContainer.classList.add("lto-nested");
+        }
 
         setTimeout(() => {
-            const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+            const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
             const osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
             const osm = new L.TileLayer(osmUrl, {subdomains: ['a', 'b', 'c'], attribution: osmAttrib});
-            this.map = L.map(this.mapContainer, this.leafletSettings);
-            this.map.setView(this.center, this.zoom);
+            this.map = L.map(this.mapContainer, this.leafletSettings).setView(this.center, this.zoom);
             this.map.addLayer(osm);
             this.mapMarkerActive = L.icon({
-                iconUrl: 'http://icons.iconarchive.com/icons/graphicloads/100-flat/256/home-icon.png',
+                iconUrl: 'http://www.pngall.com/wp-content/uploads/2017/05/Map-Marker-Free-Download-PNG.png',
             });
             this.mapMarkerInactive = L.icon({
-                iconUrl: 'http://icons.iconarchive.com/icons/graphicloads/100-flat/256/home-icon.png',
+                iconUrl: 'https://cdn2.iconfinder.com/data/icons/navigation-location/512/Gps_locate_location_map_marker_navigate_navigation_pin_plan_road_route_travel_icon_-512.png',
             });
+
+            const mapMarkerSelected = L.icon({
+                iconUrl: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png'
+            });
+
+            let selected: Marker | null = null;
+
             this.mapMarkers = [];
-            this.markers.forEach((m: any) => {
-                const marker = L.marker(m, {icon: this.mapMarkerInactive});
-                marker.addTo(this.map);
-                this.mapMarkers.push(marker);
-            });
-            this.drawCircleAndMarkers();
-            this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
+            if(this.markers !== undefined) {
+                this.markers.forEach((data: any) => {
+                    data.forEach((m:any) => {
+                        const marker = L.marker(m.position, {icon: m.active ? this.mapMarkerActive : this.mapMarkerInactive, alt: m.meta !== undefined ? m.meta : {}});
+                        if(this.spec.exact) {
+                            if(m.active) {
+                                marker.on("click", () => {
+                                    if(selected !== null) {
+                                        selected.setIcon(this.mapMarkerActive);
+                                    }
+                                    selected = marker;
+                                    marker.setIcon(mapMarkerSelected);
+                                    this.mapContainer.value = marker;
+                                })
+                            }
+                        }
+                        this.mapMarkers.push(marker);
+                        marker.addTo(this.map);
+                    })
+
+                });
+            }
+
+            if(this.spec.exact === false) {
+                this.drawCircleAndMarkers();
+                this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
+            }
+
+
         }, 500);
 
         if (this.spec.class !== undefined) this.mapContainer.classList.add(this.spec.class);
@@ -167,4 +191,5 @@ export class Map implements IRenderable {
     }
 
 }
+
 Renderables.register("map", Map);

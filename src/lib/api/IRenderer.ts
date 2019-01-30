@@ -24,5 +24,6 @@ export interface ISpecification {
     step?:string;
     src?:string;
     horizontal?:string;
+    exact?:boolean;
     nerStrategies?:Map<string, any>;
 }
