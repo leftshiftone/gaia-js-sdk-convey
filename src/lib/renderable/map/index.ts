@@ -3,40 +3,36 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import './leaflet.css';
 import Renderables from "../Renderables";
-import {Marker} from "leaflet";
+import {Circle, Icon, Marker} from "leaflet";
 
 export class Map implements IRenderable {
 
     public map: any;
-    public markers: Array<[number, number]> = [[0,0]];
-    public center: [number, number] = [0,0];
-    public zoom: number;
-    public leafletSettings: any;
-    public circle: any;
-    public numMarkers: number = 0;
-    public mapMarkers: any;
-    public mapMarkerActiveUrl: string;
-    public mapMarkerInactiveUrl: string;
-    public mapMarkerActive: any;
-    public mapMarkerInactive: any;
-    public mapContainer: any;
-    public spec: ISpecification
+    public markers: Array<IMarker> = [];
+    public center: [number, number] = [0, 0];
+    public circle: Circle | null;
+    public mapMarkers: Array<Marker>;
+    public mapMarkerActive: Icon;
+    public mapMarkerInactive: Icon;
+    public mapContainer: HTMLDivElement;
+    public spec: ISpecification;
 
-    constructor(spec: any) {
-        this.zoom = 13;
-        this.leafletSettings = {
-            minZoom: 10,
-            maxZoom: 14,
-        };
+    constructor(spec: ISpecification) {
         this.spec = spec;
-        this.mapMarkerActiveUrl = spec.mapMarkerActiveUrl;
-        this.mapMarkerInactiveUrl = spec.mapMarkerInactiveUrl;
-
-        this.getJSON(spec.src);
-
+        this.mapContainer = document.createElement('div');
+        this.mapMarkerActive = L.icon({
+            iconUrl: 'http://www.pngall.com/wp-content/uploads/2017/05/Map-Marker-Free-Download-PNG.png',
+        });
+        this.mapMarkerInactive = L.icon({
+            iconUrl: 'https://cdn2.iconfinder.com/data/icons/navigation-location/512/Gps_locate_location_map_marker_navigate_navigation_pin_plan_road_route_travel_icon_-512.png',
+        });
+        this.mapMarkers = [];
+        this.circle = null;
+        const src = spec.src || "";
+        this.getJSONfromURL(src);
     }
 
-    public getJSON(src: string) {
+    public getJSONfromURL(src: string) {
         fetch(src).then(response =>
             response.json().then(data => {
                 this.markers = data.markers;
@@ -81,12 +77,21 @@ export class Map implements IRenderable {
                         bounds.getNorthEast().lng,
                         bounds.getNorthWest().lat,
                         bounds.getNorthWest().lng,
-                    ) / 2.15,
-                ),
-                2000,
-            ),
-            20000,
-        );
+                    ) / 2.15 ), 2000), 20000);
+    }
+
+    public drawCircle() {
+        const position = this.map.getCenter();
+        const radius = this.getRadius();
+        if (!this.circle) {
+            this.circle = L.circle([position.lat, position.lng], {radius});
+            this.circle.addTo(this.map);
+        } else {
+            this.circle.setLatLng(position);
+            this.circle.setRadius(radius);
+        }
+
+        this.mapContainer.setAttribute("value", JSON.stringify({position: this.circle!.getBounds().getCenter()}));
     }
 
     public drawCircleAndMarkers() {
@@ -99,10 +104,9 @@ export class Map implements IRenderable {
             this.circle.setLatLng(position);
             this.circle.setRadius(radius);
         }
-        this.numMarkers = 0;
 
         const selected: Array<any> = [];
-        this.mapMarkers.forEach((m: any) => {
+        this.mapMarkers.forEach((m: Marker) => {
             const mpos = m.getLatLng();
             const dist = Map.distance(mpos.lat, mpos.lng, position.lat, position.lng) / 1.05;
             if (dist <= radius) {
@@ -113,14 +117,17 @@ export class Map implements IRenderable {
             }
         });
 
-        this.mapContainer.value = selected;
+        let markers: Array<any> = [];
+        selected.forEach(m => {
+            markers.push(Map.getMarkerJSON(m));
+        });
+
+        this.mapContainer.setAttribute("value", JSON.stringify({markers: markers}));
     }
 
-
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        this.mapContainer = document.createElement('div');
         this.mapContainer.classList.add('lto-map');
-        this.mapContainer.name = this.spec.name;
+        this.mapContainer.setAttribute("name", this.spec.name || "lto-map");
 
         const countMarkers = document.createElement('span');
         countMarkers.classList.add('num-markers');
@@ -130,22 +137,21 @@ export class Map implements IRenderable {
 
         this.mapContainer.appendChild(countMarkers);
         this.mapContainer.appendChild(noMarkers);
-        if(isNested) {
+
+        if (isNested) {
             this.mapContainer.classList.add("lto-nested");
         }
 
         setTimeout(() => {
+            const zoom = 13;
+            const leafletSettings = {minZoom: 2, maxZoom: 14};
+
             const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
             const osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-            const osm = new L.TileLayer(osmUrl, {subdomains: ['a', 'b', 'c'], attribution: osmAttrib});
-            this.map = L.map(this.mapContainer, this.leafletSettings).setView(this.center, this.zoom);
+
+            const osm = L.tileLayer(osmUrl, {subdomains: ['a', 'b', 'c'], attribution: osmAttrib});
+            this.map = L.map(this.mapContainer, leafletSettings).setView(this.center, zoom);
             this.map.addLayer(osm);
-            this.mapMarkerActive = L.icon({
-                iconUrl: 'http://www.pngall.com/wp-content/uploads/2017/05/Map-Marker-Free-Download-PNG.png',
-            });
-            this.mapMarkerInactive = L.icon({
-                iconUrl: 'https://cdn2.iconfinder.com/data/icons/navigation-location/512/Gps_locate_location_map_marker_navigate_navigation_pin_plan_road_route_travel_icon_-512.png',
-            });
 
             const mapMarkerSelected = L.icon({
                 iconUrl: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png'
@@ -153,20 +159,19 @@ export class Map implements IRenderable {
 
             let selected: Marker | null = null;
 
-            this.mapMarkers = [];
-            if(this.markers !== undefined) {
+            if (this.markers !== undefined) {
                 this.markers.forEach((data: any) => {
-                    data.forEach((m:any) => {
+                    data.forEach((m: any) => {
                         const marker = L.marker(m.position, {icon: m.active ? this.mapMarkerActive : this.mapMarkerInactive, alt: m.meta !== undefined ? m.meta : {}});
-                        if(this.spec.exact) {
-                            if(m.active) {
+                        if (this.spec.exact) {
+                            if (m.active) {
                                 marker.on("click", () => {
-                                    if(selected !== null) {
+                                    if (selected !== null) {
                                         selected.setIcon(this.mapMarkerActive);
                                     }
                                     selected = marker;
                                     marker.setIcon(mapMarkerSelected);
-                                    this.mapContainer.value = marker;
+                                    this.mapContainer.setAttribute("value", JSON.stringify(Map.getMarkerJSON(marker)));
                                 })
                             }
                         }
@@ -175,11 +180,13 @@ export class Map implements IRenderable {
                     })
 
                 });
-            }
-
-            if(this.spec.exact === false) {
-                this.drawCircleAndMarkers();
-                this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
+                if (this.spec.exact === false) {
+                    this.drawCircleAndMarkers();
+                    this.map.addEventListener('moveend', this.drawCircleAndMarkers.bind(this));
+                }
+            } else {
+                this.drawCircle();
+                this.map.addEventListener('moveend', this.drawCircle.bind(this));
             }
 
 
@@ -190,6 +197,25 @@ export class Map implements IRenderable {
         return this.mapContainer;
     }
 
+    public static getMarkerJSON(marker: Marker) {
+        return {
+            position: {
+                lat: marker.getLatLng().lat,
+                lng: marker.getLatLng().lng,
+            },
+            meta: marker.options.alt
+        }
+    }
+
+}
+
+interface IMarker {
+    position: {
+        lat: number
+        lng: number
+    }
+    meta: object
+    active: boolean
 }
 
 Renderables.register("map", Map);

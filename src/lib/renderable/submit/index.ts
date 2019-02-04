@@ -50,11 +50,11 @@ export class Submit implements IRenderable {
                 }
             });
             this.addValuesToAttributes(content, 'input[type=\'range\']', attributes);
-            this.addValuesToAttributes(content, 'div[class=\'lto-input\']', attributes);
-            this.addValuesToAttributes(content, 'div[class=\'ical-event-input\']', attributes);
+            this.addValuesToAttributes(content, 'div.lto-input', attributes);
+            this.addValuesToAttributes(content, 'div.ical-event-input', attributes);
             this.addValuesToAttributes(content, 'input[type=\'number\']', attributes);
-            this.addValuesToAttributes(content, 'div[class=\'lto-reel\']', attributes);
-            this.addValuesToAttributes(content, 'div[class=\'lto-map\']', attributes);
+            this.addValuesToAttributes(content, 'div.lto-reel', attributes);
+            this.addValuesToAttributes(content, 'div.lto-map', attributes);
 
             if (Object.keys(attributes).length > 0) {
                 submit.disabled = true;
@@ -73,7 +73,7 @@ export class Submit implements IRenderable {
 
     private addElementValueToAttributes(element: any, attributes: any) {
         const name = element.getAttribute('name');
-        const value = element.getAttribute('value');
+        const value = JSON.parse(element.getAttribute('value'));
         if (attributes[name] !== undefined) {
             attributes[name].push(value);
         } else {
