@@ -18,7 +18,7 @@ export class Checkbox implements IRenderable {
      * {@inheritDoc}
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
-        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || ""});
+        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || "", value: this.spec.value || ""});
         const label = node('label').addClasses('lto-checkbox', "lto-" + (this.spec.position || "left"));
         if (this.spec.class !== undefined) checkbox.addClasses(this.spec.class);
 
