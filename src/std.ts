@@ -27,6 +27,8 @@ import {Spinner} from './lib/renderable/spinner';
 import {Submit} from './lib/renderable/submit';
 import {Suggestion} from './lib/renderable/suggestion';
 import {Table} from './lib/renderable/table';
+import {Col} from "./lib/renderable/table/col";
+import {Row} from "./lib/renderable/table/row";
 import {Text} from './lib/renderable/text';
 // export default Gaia class
 export default {
@@ -59,5 +61,7 @@ export default {
     Submit,
     Suggestion,
     Table,
-    Text
+    Text,
+    Row,
+    Col
 };
