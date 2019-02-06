@@ -1,0 +1,36 @@
+.lto-vis-sunburst #legend {
+    padding: 10px 0 0 3px;
+}
+.lto-vis-sunburst #legend > svg {
+    display: block;
+}
+.lto-vis-sunburst #legend > svg:last-of-type {
+    opacity: 0.2;
+}
+
+.lto-vis-sunburst #sequence text, .lto-vis-sunburst #legend text {
+    font-weight: 600;
+    fill: #fff;
+}
+
+.lto-vis-sunburst #chart {
+    position: relative;
+}
+
+.lto-vis-sunburst #chart path {
+    stroke: #fff;
+}
+
+.lto-vis-sunburst #explanation {
+    position: absolute;
+    top: 260px;
+    left: 305px;
+    width: 140px;
+    text-align: center;
+    color: #666;
+    z-index: -1;
+}
+
+.lto-vis-sunburst #percentage {
+    font-size: 2.5em;
+}

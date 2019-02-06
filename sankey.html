@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gaia-js-sdk-convey</title>
+    <script src="dist/gaia-js-sdk-convey-all.min.js"></script>
+    <link rel="stylesheet" href="dist/gaia-js-sdk-convey-all.min.css">
+</head>
+<body>
+
+<div class="lto-gaia" style="height:1000px">
+
+</div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sankey = new GaiaSDK.Sankey();
+        let gaia = document.getElementsByClassName("lto-gaia")[0];
+        gaia.appendChild(sankey.render());
+        sankey.init();
+    });
+</script>
+</html>
