@@ -1,0 +1,37 @@
+.lto-vis-stackedbar .outer {
+    width: 980px;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.lto-vis-stackedbar .inner {
+    width: 960px;
+    border: solid #d9d9d9 1px;
+}
+
+.lto-vis-stackedbar .controls {
+    float: right;
+    margin-top: 10px;
+    margin-right: 38px;
+}
+
+.lto-vis-stackedbar .bar {
+    fill: steelblue;
+}
+
+.lto-vis-stackedbar .axis {
+    font-size: 14px;
+}
+
+.lto-vis-stackedbar .tick  {
+    font-size: 8px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.lto-vis-stackedbar .axis path {
+    display: none;
+}
+
+.lto-vis-stackedbar .legend {
+    font-size: 11px;
+}

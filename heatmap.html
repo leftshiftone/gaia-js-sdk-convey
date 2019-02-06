@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gaia-js-sdk-convey</title>
+    <script src="dist/gaia-js-sdk-convey-all.min.js"></script>
+    <link rel="stylesheet" href="dist/gaia-js-sdk-convey-all.min.css">
+</head>
+<body>
+
+<div class="lto-gaia">
+
+</div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const heatmap = new GaiaSDK.Heatmap();
+        let gaia = document.getElementsByClassName("lto-gaia")[0];
+        gaia.appendChild(heatmap.render());
+        heatmap.init();
+    });
+</script>
+</html>

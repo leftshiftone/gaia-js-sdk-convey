@@ -1,0 +1,49 @@
+.lto-vis-heatmap {
+    padding: 20px 0 20px 0;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.lto-vis-heatmap .calibration {
+    margin-bottom: 15px;
+    width: 400px;
+}
+
+.lto-vis-heatmap .calibration .group {
+    display: inline-block;
+}
+
+.lto-vis-heatmap .calibration .description {
+    width: 108px;
+}
+
+.lto-vis-heatmap .calibration > .display-control label {
+    vertical-align: top;
+}
+
+.lto-vis-heatmap .calibration .description > label:last-child {
+    float: right;
+}
+
+.lto-vis-heatmap .calibration > .display-control {
+    float: right;
+}
+
+.lto-vis-heatmap .calibration > .display-control input[type='radio'] {
+    cursor: pointer;
+}
+
+.lto-vis-heatmap .heatmap .axis path {
+    display: none;
+}
+
+.lto-vis-heatmap .heatmap .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.lto-vis-heatmap .heatmap .axis text {
+    font-size: 12px;
+    fill: black;
+}

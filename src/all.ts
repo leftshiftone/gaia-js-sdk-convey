@@ -33,6 +33,11 @@ import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
 import {Text} from './lib/renderable/text';
 import './styles.scss';
+import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
+import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
+import {Sankey} from './lib/renderable/vis/sankey/Sankey';
+import Scatterplot from './lib/renderable/vis/scatterplot/Scatterplot';
+import Stackedbar from './lib/renderable/vis/stackedbar/Stackedbar';
 
 export default {
     ClassicRenderer,
@@ -69,5 +74,11 @@ export default {
     Text,
     DatePicker,
     DateTimePicker,
-    Map
+    Map,
+
+    Heatmap,
+    Sunburst,
+    Sankey,
+    Scatterplot,
+    Stackedbar
 };

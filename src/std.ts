@@ -30,6 +30,11 @@ import {Table} from './lib/renderable/table';
 import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
 import {Text} from './lib/renderable/text';
+import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
+import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
+import {Sankey} from './lib/renderable/vis/sankey/Sankey';
+import Scatterplot from './lib/renderable/vis/scatterplot/Scatterplot';
+import Stackedbar from './lib/renderable/vis/stackedbar/Stackedbar';
 // export default Gaia class
 export default {
     ClassicRenderer,
@@ -63,5 +68,11 @@ export default {
     Table,
     Text,
     Row,
-    Col
+    Col,
+
+    Heatmap,
+    Sunburst,
+    Sankey,
+    Scatterplot,
+    Stackedbar
 };
