@@ -25,7 +25,7 @@ export class Submit implements IRenderable {
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
-        const submit : HTMLButtonElement = document.createElement('button');
+        const submit: HTMLButtonElement = document.createElement('button');
 
         submit.classList.add("lto-submit", "lto-" + position);
         if (this.spec.class !== undefined) submit.classList.add(this.spec.class);
@@ -39,41 +39,54 @@ export class Submit implements IRenderable {
         const timestamp = this.spec.timestamp || "";
 
         submit.addEventListener('click', () => {
-            const attributes = {};
+            const attributes:Attr = {} as Attr;
 
             // FIXME: use generic class name e.g. message-content
             const content = Submit.closestByClass(submit, 'lto-block');
 
-            content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox: any) => {
+            content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox: HTMLInputElement) => {
                 if (checkbox.checked === true) {
-                    this.addElementValueToAttributes(checkbox, attributes);
+                    Submit.addElementValueToAttributes(checkbox, attributes);
                 }
             });
+
+            content.querySelectorAll('div.lto-map').forEach((map: HTMLElement) => {
+                if (map.getAttribute("value") !== null) {
+                    Submit.addElementValueToAttributes(map, attributes);
+                }
+            });
+
+            this.addValuesToAttributes(content, 'input[type=\'number\']', attributes);
             this.addValuesToAttributes(content, 'input[type=\'range\']', attributes);
             this.addValuesToAttributes(content, 'div.lto-input', attributes);
             this.addValuesToAttributes(content, 'div.ical-event-input', attributes);
-            this.addValuesToAttributes(content, 'input[type=\'number\']', attributes);
             this.addValuesToAttributes(content, 'div.lto-reel', attributes);
-            this.addValuesToAttributes(content, 'div.lto-map', attributes);
 
             if (Object.keys(attributes).length > 0) {
                 submit.disabled = true;
-                EventStream.emit("GAIA::publish", {timestamp, text, attributes:{type: 'submit', value : JSON.stringify(attributes)}, type: 'submit', position: 'right'});
+                EventStream.emit("GAIA::publish", {timestamp, text, attributes: {type: 'submit', value: JSON.stringify(attributes)}, type: 'submit', position: 'right'});
             }
         });
 
         return submit;
     }
 
-    private addValuesToAttributes(parentElement: any, selector: string, attributes: any) {
+    private addValuesToAttributes(parentElement: any, selector: string, attributes: Attr) {
         parentElement.querySelectorAll(selector).forEach((element: any) => {
-            this.addElementValueToAttributes(element, attributes);
+            Submit.addElementValueToAttributes(element, attributes);
         });
     }
 
-    private addElementValueToAttributes(element: any, attributes: any) {
+    private static addElementValueToAttributes(element: any, attributes: Attr) {
         const name = element.getAttribute('name');
-        const value = JSON.parse(element.getAttribute('value'));
+        let value;
+
+        // check if attribute value is valid JSON string
+        if (/^[\],:{}\s]*$/.test(element.getAttribute("value").replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+            value = JSON.parse(element.getAttribute('value'))
+        } else {
+            value = element.getAttribute('value');
+        }
         if (attributes[name] !== undefined) {
             attributes[name].push(value);
         } else {
@@ -82,4 +95,5 @@ export class Submit implements IRenderable {
     }
 
 }
+
 Renderables.register("submit", Submit);

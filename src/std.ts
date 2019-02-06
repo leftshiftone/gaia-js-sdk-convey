@@ -27,6 +27,8 @@ import {Spinner} from './lib/renderable/spinner';
 import {Submit} from './lib/renderable/submit';
 import {Suggestion} from './lib/renderable/suggestion';
 import {Table} from './lib/renderable/table';
+import {Col} from "./lib/renderable/table/col";
+import {Row} from "./lib/renderable/table/row";
 import {Text} from './lib/renderable/text';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
 import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
@@ -65,6 +67,8 @@ export default {
     Suggestion,
     Table,
     Text,
+    Row,
+    Col,
 
     Heatmap,
     Sunburst,

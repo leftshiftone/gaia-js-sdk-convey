@@ -18,8 +18,14 @@ export class Checkbox implements IRenderable {
      * {@inheritDoc}
      */
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
-        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || ""});
+        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || "", value: this.spec.value || ""});
         const label = node('label').addClasses('lto-checkbox', "lto-" + (this.spec.position || "left"));
+        console.log(this.spec)
+        if(this.spec.checked === "true") {
+            checkbox.toggle();
+            label.toggleClass('lto-toggle');
+        }
+
         if (this.spec.class !== undefined) checkbox.addClasses(this.spec.class);
 
         label.appendChild(checkbox);
