@@ -65,6 +65,17 @@ export class Submit implements IRenderable {
             if (Object.keys(attributes).length > 0) {
                 submit.disabled = true;
                 EventStream.emit("GAIA::publish", {timestamp, text, attributes: {type: 'submit', value: JSON.stringify(attributes)}, type: 'submit', position: 'right'});
+
+                const elements = document.querySelectorAll('.lto-button.lto-left');
+                elements.forEach(element => element.remove());
+
+                // remove left submits
+                const submits = document.querySelectorAll('.lto-submit.lto-left');
+                submits.forEach(element => element.remove());
+
+                // remove left suggestions
+                const suggestions = document.querySelectorAll('.lto-suggestion.lto-left');
+                suggestions.forEach(element => element.remove());
             }
         });
 
