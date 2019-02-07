@@ -39,10 +39,7 @@ export class GoogleMap {
                 zoom: 8,
                 minZoom: 7,
                 maxZoom: 12,
-                streetViewControl: false,
-                styles: [{
-                    "stylers": [{"lightness": -50}]
-                }]
+                streetViewControl: false
             });
 
             const ICON_ACTIVE = {

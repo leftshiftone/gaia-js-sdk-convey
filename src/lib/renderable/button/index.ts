@@ -20,8 +20,7 @@ export class Button implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const button = document.createElement('button');
-        console.log(this.spec);
-        console.log("button");
+
         button.setAttribute('name', this.spec.name || "");
         if (this.spec.class !== undefined) button.classList.add(this.spec.class);
         button.classList.add("lto-button", "lto-" + position);
@@ -59,8 +58,6 @@ export class Button implements IRenderable {
         }
         return button;
     }
-
-    public getPosition = () => this.spec.position || "left";
 
 }
 Renderables.register("button", Button);
