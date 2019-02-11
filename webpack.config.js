@@ -9,6 +9,7 @@ module.exports = (env, argv) => ({
     'gaia-js-sdk-convey-all': './src/all.ts',
     'gaia-js-sdk-convey-cal': './src/cal.ts',
     'gaia-js-sdk-convey-map': './src/map.ts',
+    'gaia-js-sdk-convey-vis': './src/vis.ts',
   },
   module: {
     rules: [
@@ -16,6 +17,15 @@ module.exports = (env, argv) => ({
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.csv$/,
+        loader: 'csv-loader',
+        options: {
+          dynamicTyping: true,
+          header: true,
+          skipEmptyLines: true,
+        },
       },
       {
         test: /\.(css|scss)$/,

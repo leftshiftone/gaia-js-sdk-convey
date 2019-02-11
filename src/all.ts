@@ -39,6 +39,14 @@ import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
 import {Sankey} from './lib/renderable/vis/sankey/Sankey';
 import Scatterplot from './lib/renderable/vis/scatterplot/Scatterplot';
 import Stackedbar from './lib/renderable/vis/stackedbar/Stackedbar';
+import {Doughnut} from './lib/renderable/vis/doughnut/Doughnut';
+import DoughnutOptions from './lib/renderable/vis/doughnut/DoughnutOptions';
+import {Line} from './lib/renderable/vis/line/Line';
+import LineOptions from './lib/renderable/vis/line/LineOptions';
+import {Bar} from './lib/renderable/vis/bar/Bar';
+import BarOptions from './lib/renderable/vis/bar/BarOptions';
+import HeatmapOptions from './lib/renderable/vis/heatmap/HeatmapOptions';
+import ScatterplotOptions from './lib/renderable/vis/scatterplot/ScatterplotOptions';
 
 export default {
     ClassicRenderer,
@@ -79,8 +87,16 @@ export default {
     Map,
 
     Heatmap,
+    HeatmapOptions,
     Sunburst,
     Sankey,
     Scatterplot,
-    Stackedbar
+    ScatterplotOptions,
+    Stackedbar,
+    Doughnut,
+    DoughnutOptions,
+    Line,
+    LineOptions,
+    Bar,
+    BarOptions
 };

@@ -17,8 +17,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         const heatmap = new GaiaSDK.Heatmap();
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        gaia.appendChild(heatmap.render());
-        heatmap.init();
+        const element = heatmap.render();
+        gaia.appendChild(element);
+        heatmap.init(element);
     });
 </script>
 </html>

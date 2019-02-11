@@ -2,8 +2,17 @@ import * as d3 from "d3";
 import data from "./data";
 // noinspection TsLint
 import d3tip from "d3-tip";
+import ScatterplotOptions from './ScatterplotOptions';
 
 export default class Scatterplot {
+
+    private width:number;
+    private height:number;
+
+    constructor(options:ScatterplotOptions = new ScatterplotOptions()) {
+        this.width = options.width;
+        this.height = options.height;
+    }
 
     public render() {
         const div = document.createElement("div");
@@ -12,12 +21,12 @@ export default class Scatterplot {
         return div;
     }
 
-    public init() {
-        const margin = {top: 50, right: 300, bottom: 50, left: 50};
-        const outerWidth = 1050;
-        const outerHeight = 500;
+    public init(element:HTMLElement) {
+        const margin = {top: 10, right: 10, bottom: 10, left: 10};
+        const outerWidth = this.width;
+        const outerHeight = this.height;
         const width = outerWidth - margin.left - margin.right;
-        const height = outerHeight - margin.top - margin.bottom;
+        const height = outerHeight - margin.top - margin.bottom - 20;
 
         const x = d3.scaleLinear().range([0, width]).nice();
         const y = d3.scaleLinear().range([height, 0]).nice();
@@ -31,8 +40,8 @@ export default class Scatterplot {
         let xMin = (d3.min(data, (d: any) => d[xCat]) as number);
         xMin = xMin > 0 ? 0 : xMin;
 
-        const yMax = (d3.max(data, (d) => d[yCat]) as number) * 1.05;
-        let yMin = (d3.min(data, (d) => d[yCat]) as number);
+        const yMax = (d3.max(data, (d:any) => d[yCat]) as number) * 1.05;
+        let yMin = (d3.min(data, (d:any) => d[yCat]) as number);
         yMin = yMin > 0 ? 0 : yMin;
 
         x.domain([xMin, xMax]);
@@ -49,12 +58,12 @@ export default class Scatterplot {
             .offset([-10, 0])
             .html((d: any) => xCat + ": " + d[xCat] + "<br>" + yCat + ": " + d[yCat]);
 
-        const svg = d3.select(".lto-vis-scatterplot")
+        const svg = d3.select(element)
             .append("svg")
             .attr("width", outerWidth)
             .attr("height", outerHeight)
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(20, 0)");
 
         svg.call(tooltip);
 
@@ -79,7 +88,7 @@ export default class Scatterplot {
             .append("text")
             .classed("label", true)
             .attr("transform", "rotate(-90)")
-            .attr("y", -margin.left)
+            .attr("y", 0)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text(yCat);
@@ -118,15 +127,15 @@ export default class Scatterplot {
             .data(color.domain())
             .enter().append("g")
             .classed("legend", true)
-            .attr("transform", (d, i) => "translate(0," + i * 20 + ")");
+            .attr("transform", (d, i) => "translate(" + (i * 75) + ", " + (height + 20) + ")");
 
         legend.append("circle")
             .attr("r", 3.5)
-            .attr("cx", width + 20)
+            .attr("cx", 20)
             .attr("fill", color);
 
         legend.append("text")
-            .attr("x", width + 26)
+            .attr("x", 26)
             .attr("dy", ".35em")
             .text((d) => d);
     }

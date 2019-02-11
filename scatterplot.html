@@ -17,8 +17,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         const scatterplot = new GaiaSDK.Scatterplot();
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        gaia.appendChild(scatterplot.render());
-        scatterplot.init();
+        const element = scatterplot.render();
+        gaia.appendChild(element);
+        scatterplot.init(element);
     });
 </script>
 </html>

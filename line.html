@@ -8,17 +8,18 @@
 </head>
 <body>
 
-<div class="lto-gaia">
+<div class="lto-gaia" style="height:1000px">
 
 </div>
 
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const sunburst = new GaiaSDK.Sunburst(500, 500);
+        const sankey = new GaiaSDK.Line(new GaiaSDK.LineOptions());
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        gaia.appendChild(sunburst.render());
-        sunburst.init();
+        const element = sankey.render();
+        gaia.appendChild(element);
+        sankey.init(element);
     });
 </script>
 </html>
