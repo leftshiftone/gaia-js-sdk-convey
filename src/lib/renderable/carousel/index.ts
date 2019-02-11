@@ -2,6 +2,7 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
+import EventStream from "../../event/EventStream";
 
 export class Carousel implements IRenderable, IStackeable {
 
@@ -42,7 +43,7 @@ export class Carousel implements IRenderable, IStackeable {
         previous.appendChild(document.createTextNode("<"));
 
         this.resetCells();
-        this.next(this.getCurrent());
+        this.init(this.getCurrent());
 
         for (let i = 0; i < this.cellContainer.children.length; i++) {
             const block = this.cellContainer.children[i];
@@ -69,10 +70,21 @@ export class Carousel implements IRenderable, IStackeable {
         return this.carousel;
     }
 
+    private init(current: number) {
+        this.resetCells();
+        EventStream.emit("GAIA::carousel", current);
+        this.cellContainer.children[current].classList.replace("lto-not-visible-item", "lto-center-item");
+        if (current + 1 < this.cellContainer.children.length) {
+            this.cellContainer.children[current + 1].classList.replace("lto-not-visible-item", "lto-next-item");
+        }
+        setTimeout(() => this.carousel.style.height = (this.cellContainer.children[current] as HTMLElement).scrollHeight + "px", 1);
+    }
+
     private next(current: number) {
+        EventStream.emit("GAIA::carousel", current);
         this.resetCells();
         current + 1 === this.cellContainer.children.length ? current = 0 : current++;
-
+        EventStream.emit("GAIA::carousel", current);
         if (current > 0) {
             this.cellContainer.children[current - 1].classList.replace("lto-not-visible-item", "lto-previous-item");
         }
@@ -86,6 +98,7 @@ export class Carousel implements IRenderable, IStackeable {
     private previous(current: number) {
         this.resetCells();
         current === 0 ? current = this.cellContainer.children.length - 1 : current--;
+        EventStream.emit("GAIA::carousel", current);
         if (current - 1 > -1) {
             this.cellContainer.children[current - 1].classList.replace("lto-not-visible-item", "lto-previous-item");
         }

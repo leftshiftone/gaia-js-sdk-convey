@@ -39,15 +39,13 @@ export class Submit implements IRenderable {
         const timestamp = this.spec.timestamp || "";
 
         submit.addEventListener('click', () => {
-            const attributes:Attr = {} as Attr;
+            const attributes: Attr = {} as Attr;
 
             // FIXME: use generic class name e.g. message-content
             const content = Submit.closestByClass(submit, 'lto-block');
 
             content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox: HTMLInputElement) => {
-                if (checkbox.checked === true) {
-                    Submit.addElementValueToAttributes(checkbox, attributes);
-                }
+                Submit.addElementValueToAttributes(checkbox, attributes);
             });
 
             content.querySelectorAll('div.lto-map').forEach((map: HTMLElement) => {

@@ -64,7 +64,7 @@ export class GoogleMap {
                     fillColor: '#FF0000',
                     fillOpacity: 0.35,
                     map: map,
-                    radius: 10000
+                    radius: 500
                 });
 
                 if (this.markers !== undefined) {
