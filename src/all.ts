@@ -23,6 +23,7 @@ import {Item} from './lib/renderable/item';
 import {Items} from './lib/renderable/items';
 import {Link} from './lib/renderable/link';
 import {Reel} from './lib/renderable/reel';
+import {ReelValue} from './lib/renderable/reelValue'
 import {Slider} from './lib/renderable/slider';
 import {SlotMachine} from './lib/renderable/slotmachine';
 import {Spinner} from './lib/renderable/spinner';
@@ -65,6 +66,7 @@ export default {
     Items,
     Link,
     Reel,
+    ReelValue,
     Slider,
     SlotMachine,
     Spinner,

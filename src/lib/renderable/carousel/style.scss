@@ -32,9 +32,11 @@
 }
 
 .lto-carousel-cell.lto-previous-item {
+    zoom: 90%;
     left: 0;
+    top: 20px;
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0.6;
 }
 
 .lto-carousel-cell.lto-center-item {
@@ -48,9 +50,11 @@
 }
 
 .lto-carousel-cell.lto-next-item {
+    zoom: 90%;
     right: 0;
+    top: 20px;
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0.6;
 }
 
 .lto-block.lto-nested.lto-carousel-cell.lto-not-visible-item {

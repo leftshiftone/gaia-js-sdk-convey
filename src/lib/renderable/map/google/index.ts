@@ -58,13 +58,13 @@ export class GoogleMap {
                 };
 
                 const circle = new google.maps.Circle({
-                    strokeColor: '#FF0000',
+                    strokeColor: '#6ebd87',
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
-                    fillColor: '#FF0000',
+                    fillColor: '#6ebd87',
                     fillOpacity: 0.35,
                     map: map,
-                    radius: 500
+                    radius: 2000
                 });
 
                 if (this.markers !== undefined) {
