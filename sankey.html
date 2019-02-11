@@ -15,7 +15,7 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const sankey = new GaiaSDK.Sankey();
+        const sankey = new GaiaSDK.Sankey(500, 300);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         gaia.appendChild(sankey.render());
         sankey.init();

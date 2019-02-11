@@ -6,11 +6,16 @@ import D3Support from '../D3Support';
 
 export class Sankey {
 
-    private width = 964;
-    private height = 600;
+    private width:number;
+    private height:number;
     private edgeColor = "path";
 
     private colorSchema = d3.scaleOrdinal(d3.schemeCategory10);
+
+    constructor(width:number, height:number) {
+        this.width = width;
+        this.height = height;
+    }
 
     public render() {
         const div = document.createElement("div");

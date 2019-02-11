@@ -7,7 +7,10 @@ export default class D3Support {
     public static getDayOfYear = (date: Date) => parseInt(D3Support.dayFormat(date), 10);
     public static getMonthAndDay = (date: Date) => D3Support.monthDayFormat(date);
 
-    public static initSvg(svg: d3.Selection<d3.BaseType, any, HTMLElement, any>, width: number, height: number, margin: any) {
+    public static initSvg(svg: d3.Selection<SVGSVGElement | null, {}, null, undefined>, width: number, height: number, margin: any) {
+        console.log("width: " + width);
+        console.log("height: " + height);
+
         return svg
             .attr('width', width)
             .attr('height', height)

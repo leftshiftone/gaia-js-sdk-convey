@@ -9,11 +9,12 @@ import {HtmlSelection} from '../D3Support';
  */
 export class Sunburst {
 
-    private width = 750;
-    private height = 600;
-    private radius = Math.min(this.width, this.height) / 2;
+    private width:number;
+    private height:number;
+    private radius:number;
     private totalSize: number = 0;
     private b = {w: 75, h: 30, s: 3, t: 10, r: 3};
+    private legend:boolean = false;
 
     private colors = {
         home: "#5687d1",
@@ -24,6 +25,13 @@ export class Sunburst {
         end: "#bbbbbb"
     };
 
+    constructor(width: number, height:number, legend:boolean) {
+        this.width = width;
+        this.height = height;
+        this.radius = Math.min(this.width, this.height) / 2;
+        this.legend = legend;
+    }
+
     public render(): HTMLElement {
         const div = document.createElement("div");
         div.classList.add("lto-vis-sunburst");
@@ -32,10 +40,14 @@ export class Sunburst {
             <div id="legend" />
         </div>
         <div id="chart">
-            <div id="explanation" style="visibility: hidden;">
+            <div id="explanation">
                 <span id="percentage" />
             </div>
         </div>`;
+            const explanation = div.querySelector("#explanation") as HTMLDivElement;
+            explanation.style.visibility = "hidden";
+            explanation.style.left = (this.radius - 70) + "px";
+            explanation.style.top = (this.radius - 20) + "px";
         return div;
     }
 
@@ -170,26 +182,28 @@ export class Sunburst {
     }
 
     private drawLegend() {
-        const legend = d3.select("#legend").append("svg:svg")
-            .attr("width", d3.keys(this.colors).length * (this.b.w + this.b.s))
-            .attr("height", this.b.h);
-        const g = legend.selectAll("g")
-            .data(d3.entries(this.colors))
-            .enter().append("svg:g")
-            .attr("transform", (d: any, i: any) => "translate(" + i * (this.b.w + this.b.s) + ", 0)");
+        if (this.legend) {
+            const legend = d3.select("#legend").append("svg:svg")
+                .attr("width", d3.keys(this.colors).length * (this.b.w + this.b.s))
+                .attr("height", this.b.h);
+            const g = legend.selectAll("g")
+                .data(d3.entries(this.colors))
+                .enter().append("svg:g")
+                .attr("transform", (d: any, i: any) => "translate(" + i * (this.b.w + this.b.s) + ", 0)");
 
-        g.append("svg:rect")
-            .attr("rx", this.b.r)
-            .attr("ry", this.b.r)
-            .attr("width", this.b.w)
-            .attr("height", this.b.h)
-            .style("fill", (d: any) => d.value);
-        g.append("svg:text")
-            .attr("x", this.b.w / 2)
-            .attr("y", this.b.h / 2)
-            .attr("dy", "0.35em")
-            .attr("text-anchor", "middle")
-            .text((d: any) => d.key);
+            g.append("svg:rect")
+                .attr("rx", this.b.r)
+                .attr("ry", this.b.r)
+                .attr("width", this.b.w)
+                .attr("height", this.b.h)
+                .style("fill", (d: any) => d.value);
+            g.append("svg:text")
+                .attr("x", this.b.w / 2)
+                .attr("y", this.b.h / 2)
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "middle")
+                .text((d: any) => d.key);
+        }
     }
 
 }

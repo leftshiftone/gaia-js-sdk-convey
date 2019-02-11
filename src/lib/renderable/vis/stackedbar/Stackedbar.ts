@@ -6,10 +6,18 @@ import "./Stackedbar.scss";
 
 export default class Stackedbar {
 
+    private width: number;
+    private height: number;
+
+    constructor(width:number, height:number) {
+        this.width = width;
+        this.height = height;
+    }
+
     public render() {
         const div = document.createElement("div");
         div.classList.add("lto-vis-stackedbar");
-        div.innerHTML = `<svg width="960" height="500"></svg>`;
+        div.innerHTML = `<svg width=${this.width} height=${this.height}></svg>`;
 
         return div;
     }
@@ -37,7 +45,7 @@ export default class Stackedbar {
         const stack = d3.stack().keys(columns);
 
         // @ts-ignore
-        layers = stack(data).map((layer:any) => layer.map((e:any, i:any) => {
+        layers = stack(data).map((layer: any) => layer.map((e: any, i: any) => {
             // console.log("###");
             // console.log(layer.key);
 
@@ -179,16 +187,16 @@ export default class Stackedbar {
  * transition the y-axis changes to the bar heights, and then transition the
  * x-axis changes to the bar widths.
  */
-    private transitionStacked(x:ScaleBand<string>, y:ScaleLinear<number, number>,
-                              rect:d3.Selection<BaseType, any, any, any>, yStackMax:number) {
+    private transitionStacked(x: ScaleBand<string>, y: ScaleLinear<number, number>,
+                              rect: d3.Selection<BaseType, any, any, any>, yStackMax: number) {
         y.domain([0, yStackMax]);
         rect.transition()
             .duration(500)
-            .delay((d:any, i:any) => i)
-            .attr("y", (d:any) => y(d.y0 + d.y))
-            .attr("height", (d:any) => y(d.y0) - y(d.y0 + d.y))
+            .delay((d: any, i: any) => i)
+            .attr("y", (d: any) => y(d.y0 + d.y))
+            .attr("height", (d: any) => y(d.y0) - y(d.y0 + d.y))
             .transition()
-            .attr("x", (d:any) => x(d.type) as number)
+            .attr("x", (d: any) => x(d.type) as number)
             .attr("width", x.bandwidth());
     }
 

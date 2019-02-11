@@ -15,7 +15,7 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const stackedbar = new GaiaSDK.Stackedbar();
+        const stackedbar = new GaiaSDK.Stackedbar(300, 300);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         gaia.appendChild(stackedbar.render());
         stackedbar.init();
