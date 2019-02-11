@@ -9,7 +9,7 @@ import {IStackeable} from '../../api/IStackeable';
 export class ReelValue implements IRenderable, IStackeable {
 
     private readonly spec: ISpecification;
-    private reelValue: HTMLDivElement;
+    private readonly reelValue: HTMLDivElement;
 
     constructor(message: ISpecification) {
         this.spec = message;
@@ -24,12 +24,6 @@ export class ReelValue implements IRenderable, IStackeable {
         this.reelValue.classList.add('lto-reel-value', "lto-" + position);
         if (this.spec.class !== undefined) this.reelValue.classList.add(this.spec.class);
 
-        this.reelValue.setAttribute("value", this.spec.value || "");
-        this.reelValue.setAttribute("name", "name");
-
-        const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
-        elements.forEach(e => e.forEach(x => this.reelValue.appendChild(x)));
-
         switch(this.spec.valuetype) {
             case 'img': this.appendImage(); break;
             case 'digit': this.appendDigit(); break;
@@ -37,6 +31,7 @@ export class ReelValue implements IRenderable, IStackeable {
             default: this.reelValue.appendChild(document.createTextNode(this.spec.value || ""))
         }
 
+        this.reelValue.setAttribute("value", this.spec.value || "");
 
         if (isNested) { this.reelValue.classList.add('lto-nested') }
 
@@ -48,20 +43,18 @@ export class ReelValue implements IRenderable, IStackeable {
         img.classList.add("lto-image", "lto-left", "lto-nested");
         img.src = this.spec.value || "";
         this.reelValue.appendChild(img);
-        this.reelValue.setAttribute("value", this.spec.value || "");
     }
 
     private appendDigit() {
         this.reelValue.appendChild(document.createTextNode(this.spec.value || ""));
         this.reelValue.classList.add("lto-reel-digit");
-        this.reelValue.setAttribute("value", this.spec.value || "");
     }
 
     private appendChar() {
         this.reelValue.appendChild(document.createTextNode(this.spec.value || ""));
         this.reelValue.classList.add("lto-reel-char");
-        this.reelValue.setAttribute("value", this.spec.value || "");
     }
 
 }
+
 Renderables.register("reelValue", ReelValue);
