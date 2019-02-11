@@ -20,6 +20,7 @@ export class Button implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const button = document.createElement('button');
+
         button.setAttribute('name', this.spec.name || "");
         if (this.spec.class !== undefined) button.classList.add(this.spec.class);
         button.classList.add("lto-button", "lto-" + position);
@@ -50,15 +51,13 @@ export class Button implements IRenderable {
                 suggestions.forEach(element => element.remove());
 
                 // add right button
-                const newButton = Object.assign(button, {position: 'right', timestamp: new Date().getTime()});
+                const newButton = Object.assign(button, {class: this.spec.class, position: 'right', timestamp: new Date().getTime()});
                 renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.appendContent(e));
             };
             button.addEventListener('click', eventListener, {once: true});
         }
         return button;
     }
-
-    public getPosition = () => this.spec.position || "left";
 
 }
 Renderables.register("button", Button);

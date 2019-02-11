@@ -1,47 +1,89 @@
+.lto-previous, .lto-next {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: #1E223F;
+    z-index: 20;
+    top: 40%;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    cursor: pointer;
+}
+
+.lto-next {
+    right: 15px;
+}
+
+.lto-previous {
+    left: 15px;
+}
+
+.lto-block.lto-nested.lto-carousel-cell {
+    display: inline-block;
+    height: fit-content;
+    width: fit-content !important;
+    position: absolute;
+    border: 1px solid #1E223F !important;
+    -webkit-animation: fadein 2s;
+    animation: fadein 2s;
+    border-radius: 15px;
+}
+
+.lto-carousel-cell.lto-previous-item {
+    zoom: 90%;
+    left: 0;
+    top: 20px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.lto-carousel-cell.lto-center-item {
+    -webkit-animation: none;
+    animation: none;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 10;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.lto-carousel-cell.lto-next-item {
+    zoom: 90%;
+    right: 0;
+    top: 20px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.lto-block.lto-nested.lto-carousel-cell.lto-not-visible-item {
+    display: none;
+    pointer-events: none;
+}
+
 .lto-carousel {
-  max-width: 80%;
-  min-width: 30%;
-  background: white;
-  border: 1px solid #1E223F;
-  border-radius: 15px;
-  color: #1E223F;
-  transition: transform .5s ease-out;
-  margin-bottom: 30px;
+    max-width: 80%;
+    min-width: 30%;
+    height: 80vh;
+    overflow-y: hidden;
     position: relative;
 }
-.lto-carousel .lto-button-group {
-  margin-left: auto;
-  margin-right: auto;
-  display: table;
-    position: absolute;
-    left:50%;
-    bottom:0;
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
-.lto-carousel .lto-goto {
-  border: none;
-  background: #1E223F;
-  height: 16px;
-  width: 16px;
-  border-radius: 8px;
-  color: #1E223F;
-  margin: 3px;
-}
-.lto-goto:focus {
-    outline: 0 !important;
-}
-.lto-carousel .lto-goto:hover {
-  background: lightgrey;
-}
-.lto-carousel > .lto-block {
-  z-index: 1;
-  display: none;
-  -webkit-transition: opacity 1s;
-  -moz-transition: opacity 1s;
-  -o-transition: opacity 1s;
-  transition: opacity 1s;
-  width: auto;
-}
-.lto-carousel > .lto-active {
-  display: block;
-  z-index: 2;
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

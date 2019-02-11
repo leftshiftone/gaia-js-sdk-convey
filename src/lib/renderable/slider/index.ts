@@ -21,12 +21,13 @@ export class Slider implements IRenderable {
         const slider = document.createElement('input');
 
         slider.setAttribute("type", "range");
-        slider.setAttribute('value', this.spec.value || "");
-        slider.setAttribute('min', this.spec.min || "");
         slider.setAttribute('max', this.spec.max || "");
         slider.setAttribute('step', this.spec.step || "");
         slider.setAttribute('name', this.spec.name || "");
-
+        // @ts-ignore
+        slider.setAttribute('value', isNaN(this.spec.value) ? "" : this.spec.value);
+        // @ts-ignore
+        slider.setAttribute('min', isNaN(this.spec.min) ? "" : this.spec.min);
         slider.addEventListener('change', () => {
             slider.setAttribute('value', slider.value);
         });

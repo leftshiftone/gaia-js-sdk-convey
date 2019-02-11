@@ -1,8 +1,8 @@
 .lto-reel {
     background: white;
     max-width: 80%;
-    min-width: 30%;
-    border: 1px solid #1E223F;
+    min-width: 10%;
+    float:left;
     border-radius: 15px;
     color: #1E223F;
     margin: 0 auto 30px;
@@ -11,17 +11,30 @@
     text-align: center;
 }
 
-.lto-reel.lto-nested {
+.lto-gaia .lto-reel.lto-nested {
     background: white;
-    max-width: 30%;
+    max-width: 100%;
     border: none;
     padding: 10px;
     display: block;
+    float:left;
     text-align: center;
 }
+
 .lto-up {
     top: 0
 }
+
 .lto-down {
     bottom: 0;
+}
+
+.lto-active,
+.lto-image.lto-active {
+    display: inline-block;
+}
+
+.lto-passive,
+.lto-image.lto-passive {
+    display: none;
 }
