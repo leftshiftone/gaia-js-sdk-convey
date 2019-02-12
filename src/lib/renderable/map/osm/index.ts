@@ -2,14 +2,14 @@ import * as L from 'leaflet';
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
 import {IRenderable} from '../../../api/IRenderable';
 import './leaflet.css';
-import {Circle, Icon, Marker} from "leaflet";
+import {Circle, Icon, LatLngLiteral, Marker} from "leaflet";
 import {IMarker} from "../IMarker";
 
 export class OsmMap implements IRenderable {
 
     public map: any;
     public markers: Array<IMarker> = [];
-    public center: [number, number] = [0, 0];
+    public center: LatLngLiteral;
     public circle: Circle | null;
     public mapMarkers: Array<Marker>;
     public mapMarkerActive: Icon;
@@ -26,6 +26,7 @@ export class OsmMap implements IRenderable {
         this.mapMarkerInactive = L.icon({
             iconUrl: 'https://cdn2.iconfinder.com/data/icons/navigation-location/512/Gps_locate_location_map_marker_navigate_navigation_pin_plan_road_route_travel_icon_-512.png',
         });
+        this.center = {lng: 0, lat: 0};
         this.mapMarkers = [];
         this.circle = null;
         const src = spec.src || "";
@@ -36,7 +37,14 @@ export class OsmMap implements IRenderable {
         fetch(src).then(response =>
             response.json().then(data => {
                 this.markers = data.markers;
-                this.center = data.center;
+                if(this.spec.centerlat=== undefined || this.spec.centerlng === undefined){
+                    this.center = data.center;
+                } else {
+                    this.center = {
+                        lat: this.spec.centerlat,
+                        lng: this.spec.centerlng
+                    }
+                }
             }));
     }
 

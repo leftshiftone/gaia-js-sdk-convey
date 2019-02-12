@@ -10,8 +10,8 @@ export class Reel implements IRenderable, IStackeable {
 
     private readonly spec: ISpecification;
     private counter: number;
-    private reel: HTMLDivElement;
-    private container: HTMLDivElement;
+    private readonly reel: HTMLDivElement;
+    private readonly container: HTMLDivElement;
 
     constructor(message: ISpecification) {
         this.spec = message;
@@ -30,16 +30,18 @@ export class Reel implements IRenderable, IStackeable {
 
         this.reel.setAttribute("name", this.spec.name || "");
 
-        const up = document.createElement("input");
-        up.setAttribute("type", "button");
-        up.setAttribute("value", "up");
-        up.classList.add("lto-button");
+        const up = document.createElement("div");
+        const upSpan = document.createElement("span");
+        upSpan.appendChild(document.createTextNode("up"));
+        up.appendChild(upSpan);
+        up.classList.add("lto-up");
         up.addEventListener("click", () => this.next());
 
-        const down = document.createElement("input");
-        down.setAttribute("type", "button");
-        down.setAttribute("value", "down");
-        down.classList.add("lto-button");
+        const down = document.createElement("div");
+        const downSpan = document.createElement("span");
+        downSpan.appendChild(document.createTextNode("down"));
+        down.appendChild(downSpan);
+        down.classList.add("lto-down");
         down.addEventListener("click", () => this.previous());
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));

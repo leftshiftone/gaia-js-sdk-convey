@@ -28,5 +28,7 @@ export interface ISpecification {
     checked?:string;
     maptype?:string;
     valuetype?:string;
+    centerlat?:number;
+    centerlng?:number;
     nerStrategies?:Map<string, any>;
 }

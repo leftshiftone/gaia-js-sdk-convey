@@ -39,8 +39,13 @@ export class Carousel implements IRenderable, IStackeable {
         next.classList.add("lto-next");
         previous.classList.add("lto-previous");
 
-        next.appendChild(document.createTextNode(">"));
-        previous.appendChild(document.createTextNode("<"));
+        const nextSpan = document.createElement("span");
+        nextSpan.appendChild(document.createTextNode(">"));
+        next.appendChild(nextSpan);
+
+        const previousSpan = document.createElement("span");
+        previousSpan.appendChild(document.createTextNode("<"));
+        previous.appendChild(previousSpan);
 
         this.resetCells();
         this.init(this.getCurrent());

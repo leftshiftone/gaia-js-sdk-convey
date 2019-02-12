@@ -34,6 +34,7 @@ export class Text implements IRenderable {
             return div;
         }
         const text = document.createElement('div');
+        if (this.spec.class !== undefined) text.classList.add(this.spec.class);
         text.appendChild(document.createTextNode(this.spec.text || ""));
 
         return text;

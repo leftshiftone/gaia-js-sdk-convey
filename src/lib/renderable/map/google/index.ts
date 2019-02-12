@@ -20,7 +20,14 @@ export class GoogleMap {
         fetch(src).then(response =>
             response.json().then(data => {
                 this.markers = data.markers;
-                this.center = data.center;
+                if(this.spec.centerlat === undefined || this.spec.centerlng === undefined) {
+                    this.center = data.center;
+                } else {
+                    this.center = {
+                        lng: this.spec.centerlng,
+                        lat: this.spec.centerlat
+                    }
+                }
             }));
     }
 

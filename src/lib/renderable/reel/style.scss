@@ -1,17 +1,17 @@
-.lto-reel {
+.lto-gaia .lto-reel.lto-left {
     background: white;
     max-width: 80%;
     min-width: 10%;
     float:left;
     border-radius: 15px;
     color: #1E223F;
-    margin: 0 auto 30px;
+    margin: 0 auto;
     padding: 10px;
     display: inline-block;
     text-align: center;
 }
 
-.lto-gaia .lto-reel.lto-nested {
+.lto-gaia .lto-reel.lto-nested.lto-left {
     background: white;
     max-width: 100%;
     border: none;
@@ -27,6 +27,20 @@
 
 .lto-down {
     bottom: 0;
+}
+
+.lto-up,
+.lto-down {
+    border-radius: 15px;
+    clear:both;
+    padding: 5px 20px;
+    margin: 10px;
+    background: white;
+    color: #989898;
+    border: solid 1px lightgray;
+    animation: slide-up 0.4s ease;
+    cursor: pointer;
+    outline: 0 !important;
 }
 
 .lto-active,
