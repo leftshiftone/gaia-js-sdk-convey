@@ -23,9 +23,9 @@
 .lto-block.lto-nested.lto-carousel-cell {
     display: inline-block;
     height: fit-content;
-    width: fit-content !important;
+    width: fit-content;
     position: absolute;
-    border: 1px solid #1E223F !important;
+    border: 1px solid #1E223F;
     -webkit-animation: fadein 2s;
     animation: fadein 2s;
     border-radius: 15px;

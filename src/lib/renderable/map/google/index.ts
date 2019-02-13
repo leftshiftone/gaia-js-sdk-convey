@@ -45,10 +45,10 @@ export class GoogleMap {
             GoogleMapsLoader.load((google: GoogleMapsLoader.google) => {
                 const map = new google.maps.Map(document.getElementsByClassName("lto-map").item(0), {
                     center: this.center,
-                    zoom: 8,
+                    zoom: 12,
                     minZoom: 7,
-                    maxZoom: 12,
-                    streetViewControl: false
+                    maxZoom: 14,
+                    streetViewControl: false,
                 });
 
                 const ICON_ACTIVE = {

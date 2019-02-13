@@ -19,11 +19,13 @@ export class Spinner implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const spinner = document.createElement('input');
-
         spinner.setAttribute("type", "number");
-        spinner.setAttribute('value', this.spec.value || "");
-        spinner.setAttribute('min', this.spec.min || "");
-        spinner.setAttribute('max', this.spec.max || "");
+        // @ts-ignore
+        spinner.setAttribute('value', isNaN(this.spec.value) ? "" : this.spec.value);
+        // @ts-ignore
+        spinner.setAttribute('min', isNaN(this.spec.min) ? "" : this.spec.min);
+        // @ts-ignore
+        spinner.setAttribute('max', isNaN(this.spec.max) ? "" : this.spec.max);
         spinner.setAttribute('step', this.spec.step || "");
         spinner.setAttribute('name', this.spec.name || "");
 
