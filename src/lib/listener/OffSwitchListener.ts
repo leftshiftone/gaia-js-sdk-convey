@@ -1,5 +1,6 @@
 import {IListener} from '../api/IListener';
 import {Defaults} from '../support/Defaults';
+import {ISpecification} from "../api/IRenderer";
 
 /**
  * Off switch listener implementation.
@@ -38,19 +39,21 @@ export class OffSwitchListener implements IListener {
     /**
      * {@inheritDoc}
      */
-    public onMessage(data: any): void {
-        this.txt.disabled = false;
-        this.btn.disabled = false;
+    public onMessage(data: ISpecification): void {
+        this.txt.disabled = this.switchOff(data);
+        this.btn.disabled = this.switchOff(data);
     }
 
-  //  protected switchOff(data:ISpecification):boolean {
-  //      if ((data.nerStrategies || new Map<string, any>()).has("email")) {
-  //          return false;
-  //      }
-  //      if ((data.nerStrategies || new Map<string, any>()).has("text")) {
-  //          return false;
-  //      }
-  //      return true;
-  //  }
+    public switchOff(data:ISpecification):boolean {
+        this.txt.classList.remove("lto-off");
+        this.btn.classList.remove("lto-off");
+        if(data.nerStrategies === undefined) {
+            console.log(this.txt)
+            console.log(this.btn)
+            this.txt.classList.add("lto-off");
+            this.btn.classList.add("lto-off");
+            return true
+        } else return false
+    }
 
 }

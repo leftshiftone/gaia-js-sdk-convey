@@ -135,6 +135,9 @@ export class OsmMap implements IRenderable {
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.mapContainer.classList.add('lto-map');
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => this.mapContainer.classList.add(e));
+        }
         this.mapContainer.setAttribute("name", this.spec.name || "lto-map");
 
         const countMarkers = document.createElement('span');

@@ -37,7 +37,9 @@ export class Calendar implements IRenderable {
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const calendarContainer = document.createElement('div');
-        if (this.spec.class !== undefined) calendarContainer.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => calendarContainer.classList.add(e));
+        }
         const position = this.spec.position || 'left';
         this.input.setAttribute("name", this.spec.name + "");
         if (isNested) { calendarContainer.classList.add("lto-nested") }

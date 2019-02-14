@@ -22,7 +22,9 @@ export class Button implements IRenderable {
         const button = document.createElement('button');
 
         button.setAttribute('name', this.spec.name || "");
-        if (this.spec.class !== undefined) button.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => button.classList.add(e));
+        }
         button.classList.add("lto-button", "lto-" + position);
         if (isNested) {
             button.classList.add("lto-nested");

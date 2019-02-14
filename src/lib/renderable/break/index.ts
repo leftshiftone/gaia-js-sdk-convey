@@ -15,7 +15,9 @@ export class Break implements IRenderable {
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const br = document.createElement('br');
-        if (this.spec.class !== undefined) br.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => br.classList.add(e));
+        }
         return br;
     }
 

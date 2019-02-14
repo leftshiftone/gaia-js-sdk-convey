@@ -20,7 +20,9 @@ export class Table implements IRenderable, IStackeable {
         const table = document.createElement('table');
         const position = this.spec.position || 'left';
 
-        if (this.spec.class !== undefined) table.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => table.classList.add(e));
+        }
         table.classList.add('lto-table', "lto-" + position);
 
         if (!isNested) {

@@ -26,8 +26,9 @@ export class Reel implements IRenderable, IStackeable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         this.reel.classList.add('lto-reel', "lto-" + position);
-        if (this.spec.class !== undefined) this.reel.classList.add(this.spec.class);
-
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => this.reel.classList.add(e));
+        }
         this.reel.setAttribute("name", this.spec.name || "");
 
         const up = document.createElement("div");

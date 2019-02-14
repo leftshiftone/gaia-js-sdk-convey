@@ -22,7 +22,9 @@ export class ReelValue implements IRenderable, IStackeable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         this.reelValue.classList.add('lto-reel-value', "lto-" + position);
-        if (this.spec.class !== undefined) this.reelValue.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => this.reelValue.classList.add(e));
+        }
 
         switch(this.spec.valuetype) {
             case 'img': this.appendImage(); break;

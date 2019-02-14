@@ -34,7 +34,9 @@ export class Spinner implements IRenderable {
         });
 
         spinner.classList.add("lto-spinner", "lto-" + position);
-        if (this.spec.class !== undefined) spinner.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => spinner.classList.add(e));
+        }
 
         spinner.step = this.spec.step || "";
 

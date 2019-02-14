@@ -30,12 +30,21 @@ export class Slider implements IRenderable {
         slider.setAttribute('step', this.spec.step || "");
         slider.setAttribute('name', this.spec.name || "");
 
-        slider.addEventListener('change', () => {
+        const value = document.createElement('div');
+        value.classList.add("lto-slider-value");
+
+        value.innerHTML = slider.value;
+
+        slider.addEventListener("input" || "change", () => {
             slider.setAttribute('value', slider.value);
+            value.innerHTML = slider.value;
         });
 
         slider.classList.add("lto-slider", "lto-" + position);
-        if (this.spec.class !== undefined) slider.classList.add(this.spec.class);
+
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => slider.classList.add(e));
+        }
 
         if (!this.spec.horizontal) {
             slider.style.transform = "rotate(90deg)";
@@ -47,9 +56,14 @@ export class Slider implements IRenderable {
             slider.classList.add("lto-nested");
         }
 
+        const container = document.createElement("div");
+
         slider.appendChild(document.createTextNode(this.spec.text || ""));
 
-        return slider;
+        container.appendChild(value);
+        container.appendChild(slider);
+
+        return container;
     }
 }
 

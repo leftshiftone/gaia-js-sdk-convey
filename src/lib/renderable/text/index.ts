@@ -23,7 +23,9 @@ export class Text implements IRenderable {
             const position = this.spec.position || 'left';
             const text = document.createElement('div');
             text.classList.add('lto-text', "lto-" + position);
-            if (this.spec.class !== undefined) text.classList.add(this.spec.class);
+            if(this.spec.class !== undefined) {
+                this.spec.class.split(" ").forEach(e => text.classList.add(e));
+            }
             text.appendChild(Timestamp.render());
             text.appendChild(document.createTextNode(this.spec.text || ""));
 
@@ -34,7 +36,9 @@ export class Text implements IRenderable {
             return div;
         }
         const text = document.createElement('div');
-        if (this.spec.class !== undefined) text.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => text.classList.add(e));
+        }
         text.appendChild(document.createTextNode(this.spec.text || ""));
 
         return text;

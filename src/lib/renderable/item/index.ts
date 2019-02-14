@@ -19,7 +19,9 @@ export class Item implements IRenderable {
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         const item = document.createElement('li');
         item.classList.add('lto-item');
-        if (this.spec.class !== undefined) item.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => item.classList.add(e));
+        }
         item.appendChild(document.createTextNode(this.spec.text || ""));
 
         return item;

@@ -35,6 +35,9 @@ export class GoogleMap {
 
         const container = document.createElement("div");
         container.classList.add("lto-map");
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => container.classList.add(e));
+        }
         if(isNested) { container.classList.add("lto-nested") }
         container.setAttribute("name", this.spec.name || "");
 

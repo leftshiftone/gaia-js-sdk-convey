@@ -9,10 +9,6 @@
     }
 }
 
-* {
-    font-family: open sans, Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-
 .lto-gaia {
     margin-left: auto;
     margin-right: auto;
@@ -128,4 +124,9 @@
     box-shadow: none;
 
     font-size: 19px;
+}
+
+.lto-invoker.lto-off,
+.lto-textbox.lto-off {
+    display: none;
 }

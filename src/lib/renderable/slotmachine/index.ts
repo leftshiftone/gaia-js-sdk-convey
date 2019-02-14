@@ -21,7 +21,9 @@ export class SlotMachine implements IRenderable, IStackeable {
         const position = this.spec.position || 'left';
         const slotMachine = document.createElement("div");
         slotMachine.classList.add('lto-slotmachine', "lto-" + position);
-        if (this.spec.class !== undefined) slotMachine.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => slotMachine.classList.add(e));
+        }
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => slotMachine.appendChild(x)));
 

@@ -16,7 +16,9 @@ export class Col implements IRenderable, IStackeable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const col = document.createElement('td');
-        if (this.spec.class !== undefined) col.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => col.classList.add(e));
+        }
         col.classList.add('lto-col');
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));

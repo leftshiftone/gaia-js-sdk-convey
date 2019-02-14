@@ -5,6 +5,7 @@
     height: 25px;
     background: #d3d3d3;
     outline: none;
+    display: block;
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
@@ -28,4 +29,12 @@
 
 .lto-slider:hover {
     opacity: 1;
+}
+
+.lto-slider-value {
+    font-size: 50px;
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    display: block;
 }

@@ -28,7 +28,9 @@ export class Submit implements IRenderable {
         const submit: HTMLButtonElement = document.createElement('button');
 
         submit.classList.add("lto-submit", "lto-" + position);
-        if (this.spec.class !== undefined) submit.classList.add(this.spec.class);
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => submit.classList.add(e));
+        }
 
         if (isNested) {
             submit.classList.add("lto-nested");
@@ -54,8 +56,8 @@ export class Submit implements IRenderable {
                 }
             });
 
-            this.addValuesToAttributes(content, 'input[type=\'number\']', attributes);
-            this.addValuesToAttributes(content, 'input[type=\'range\']', attributes);
+            this.addValuesToAttributes(content, 'input.lto-spinner', attributes);
+            this.addValuesToAttributes(content, 'input.lto-slider', attributes);
             this.addValuesToAttributes(content, 'div.lto-input', attributes);
             this.addValuesToAttributes(content, 'div.ical-event-input', attributes);
             this.addValuesToAttributes(content, 'div.lto-reel', attributes);
