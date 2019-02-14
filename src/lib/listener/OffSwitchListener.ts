@@ -48,8 +48,6 @@ export class OffSwitchListener implements IListener {
         this.txt.classList.remove("lto-off");
         this.btn.classList.remove("lto-off");
         if(data.nerStrategies === undefined) {
-            console.log(this.txt)
-            console.log(this.btn)
             this.txt.classList.add("lto-off");
             this.btn.classList.add("lto-off");
             return true
