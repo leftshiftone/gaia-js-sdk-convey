@@ -1,8 +1,10 @@
 export default {
     name: "root",
-    children: [{
+    children: [
+        {
         name: "account",
-        children: [{
+        children: [
+            {
             name: "account",
             children: [{
                 name: "account",
@@ -4839,7 +4841,8 @@ export default {
                 }]
             }]
         }]
-    }, {
+    },
+        {
         name: "home",
         children: [{
             name: "account",
@@ -10803,7 +10806,8 @@ export default {
                 }]
             }]
         }]
-    }, {
+    },
+        {
         name: "other",
         children: [{
             name: "account",

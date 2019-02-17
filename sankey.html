@@ -15,10 +15,11 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const sankey = new GaiaSDK.Sankey(500, 300);
+        const sankey = new GaiaSDK.Sankey();
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        gaia.appendChild(sankey.render());
-        sankey.init();
+        const element = sankey.render();
+        gaia.appendChild(element);
+        sankey.init(element);
     });
 </script>
 </html>
