@@ -4,9 +4,6 @@
 .lto-vis-sunburst #legend > svg {
     display: block;
 }
-.lto-vis-sunburst #legend > svg:last-of-type {
-    opacity: 0.2;
-}
 
 .lto-vis-sunburst #sequence text, .lto-vis-sunburst #legend text {
     font-weight: 600;

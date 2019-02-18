@@ -23,7 +23,7 @@ import {Item} from './lib/renderable/item';
 import {Items} from './lib/renderable/items';
 import {Link} from './lib/renderable/link';
 import {Reel} from './lib/renderable/reel';
-import {ReelValue} from './lib/renderable/reelValue'
+import {ReelValue} from './lib/renderable/reelValue';
 import {Slider} from './lib/renderable/slider';
 import {SlotMachine} from './lib/renderable/slotmachine';
 import {Spinner} from './lib/renderable/spinner';
@@ -47,6 +47,9 @@ import {Bar} from './lib/renderable/vis/bar/Bar';
 import BarOptions from './lib/renderable/vis/bar/BarOptions';
 import HeatmapOptions from './lib/renderable/vis/heatmap/HeatmapOptions';
 import ScatterplotOptions from './lib/renderable/vis/scatterplot/ScatterplotOptions';
+import StackedbarOptions from './lib/renderable/vis/stackedbar/StackedbarOptions';
+import SunburstOptions from './lib/renderable/vis/sunburst/SunburstOptions';
+import SankeyOptions from './lib/renderable/vis/sankey/SankeyOptions';
 
 export default {
     ClassicRenderer,
@@ -89,10 +92,13 @@ export default {
     Heatmap,
     HeatmapOptions,
     Sunburst,
+    SunburstOptions,
     Sankey,
+    SankeyOptions,
     Scatterplot,
     ScatterplotOptions,
     Stackedbar,
+    StackedbarOptions,
     Doughnut,
     DoughnutOptions,
     Line,

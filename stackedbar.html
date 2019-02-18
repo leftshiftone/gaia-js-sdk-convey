@@ -15,10 +15,11 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const stackedbar = new GaiaSDK.Stackedbar(300, 300);
+        const stackedbar = new GaiaSDK.Stackedbar();
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        gaia.appendChild(stackedbar.render());
-        stackedbar.init();
+        const element = stackedbar.render();
+        gaia.appendChild(element);
+        stackedbar.init(element);
     });
 </script>
 </html>

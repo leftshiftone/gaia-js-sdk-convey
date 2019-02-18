@@ -15,10 +15,11 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const sunburst = new GaiaSDK.Sunburst(500, 500);
+        const sunburst = new GaiaSDK.Sunburst();
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        gaia.appendChild(sunburst.render());
-        sunburst.init();
+        const element = sunburst.render();
+        gaia.appendChild(element);
+        sunburst.init(element);
     });
 </script>
 </html>

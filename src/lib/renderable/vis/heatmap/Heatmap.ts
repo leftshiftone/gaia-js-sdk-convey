@@ -1,6 +1,4 @@
 import * as d3 from 'd3';
-// noinspection TsLint
-import dataTs from "./data";
 import "./Heatmap.scss";
 import D3Support from '../D3Support';
 import HeatmapOptions from './HeatmapOptions';
@@ -10,6 +8,7 @@ import HeatmapOptions from './HeatmapOptions';
  */
 export class Heatmap {
 
+    private options:HeatmapOptions;
     private itemSizeX:number;
     private itemSizeY:number;
     private cellSizeX:number;
@@ -20,6 +19,7 @@ export class Heatmap {
     private colorCalibration:string[];
 
     constructor(options:HeatmapOptions = new HeatmapOptions()) {
+        this.options = options;
         this.width = options.itemSizeX * 25 + this.margin.top;
         this.height = options.itemSizeY * 25 + this.margin.left;
         this.itemSizeX = options.itemSizeX;
@@ -48,24 +48,26 @@ export class Heatmap {
         const svg = d3.select(element.querySelector("svg"));
         const heatmap = D3Support.initSvg(svg, this.width, this.height, this.margin);
 
-        const data = dataTs;
-        data.forEach((valueObj: any) => {
-            valueObj['date'] = new Date(valueObj['timestamp']);
-            const day = valueObj['day'] = D3Support.getMonthAndDay(valueObj.date);
+        this.options.data.then(data => {
+            data.forEach((valueObj: any) => {
+                valueObj['date'] = new Date(valueObj['timestamp']);
+                const day = valueObj['day'] = D3Support.getMonthAndDay(valueObj.date);
 
-            const dayData = dailyValueExtent[day] = (dailyValueExtent[day] || [1000, -1]);
-            const pmValue = valueObj['value'];
-            dayData[0] = d3.min([dayData[0], pmValue]);
-            dayData[1] = d3.max([dayData[1], pmValue]);
+                const dayData = dailyValueExtent[day] = (dailyValueExtent[day] || [1000, -1]);
+                const pmValue = valueObj['value'];
+                dayData[0] = d3.min([dayData[0], pmValue]);
+                dayData[1] = d3.max([dayData[1], pmValue]);
+            });
+
+            const dateExtent = d3.extent(data, (d: any) => d.date);
+            // @ts-ignore
+            const dayOffset = D3Support.getDayOfYear(dateExtent[0]);
+            this.renderAxis(dateExtent, svg, this.margin);
+            const rect = this.renderRects(heatmap.selectAll('rect'), data, dayOffset);
+            this.renderColor(true, dayOffset, dailyValueExtent, rect);
+
+            d3.select(self.frameElement).style('height', '600px');
         });
-
-        const dateExtent = d3.extent(data, (d: any) => d.date);
-        const dayOffset = D3Support.getDayOfYear(dateExtent[0]);
-        this.renderAxis(dateExtent, svg, this.margin);
-        const rect = this.renderRects(heatmap.selectAll('rect'), data, dayOffset);
-        this.renderColor(true, dayOffset, dailyValueExtent, rect);
-
-        d3.select(self.frameElement).style('height', '600px');
     }
 
     private renderAxis(dateExtent: any[], svg: d3.Selection<SVGSVGElement | null, {}, null, undefined>, margin: any) {
