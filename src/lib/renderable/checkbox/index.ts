@@ -30,7 +30,7 @@ export class Checkbox implements IRenderable {
             label.toggleClass('lto-toggle');
         }
 
-        if (this.spec.class !== undefined) checkbox.addClasses(this.spec.class);
+        if (this.spec.class !== undefined) label.addClasses(this.spec.class);
 
         label.appendChild(checkbox);
         label.appendChild(this.spec.text || "");

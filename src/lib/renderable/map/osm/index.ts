@@ -30,22 +30,43 @@ export class OpenStreetMap implements IRenderable {
         this.mapMarkers = [];
         this.circle = null;
         const src = spec.src || "";
-        this.getJSONfromURL(src);
+        this.getMarkersAndCenter(src);
     }
 
-    public getJSONfromURL(src: string) {
-        fetch(src).then(response =>
-            response.json().then(data => {
-                this.markers = data.markers;
-                if(this.spec.centerlat=== undefined || this.spec.centerlng === undefined){
-                    this.center = data.center;
-                } else {
-                    this.center = {
-                        lat: this.spec.centerlat,
-                        lng: this.spec.centerlng
+    public getMarkersAndCenter(src: string | undefined) {
+        if (src !== undefined) {
+            fetch(src).then(response =>
+                response.json().then(data => {
+                    this.markers = data.markers;
+                    if(this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
+                        this.center = {
+                            lng: this.spec.centerLng,
+                            lat: this.spec.centerLat
+                        }
+                    } else if (this.spec.centerBrowserLocation) {
+                        this.getBrowserLocation().then((center: LatLngLiteral) => this.center = center)
+                    } else {
+                        this.center = data.center;
                     }
+                }));
+        } else {
+            if(this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
+                this.center = {
+                    lng: this.spec.centerLng,
+                    lat: this.spec.centerLat
                 }
-            }));
+            } else if (this.spec.centerBrowserLocation) {
+                this.getBrowserLocation().then((center: LatLngLiteral) => this.center = center)
+            } else {
+                this.center = {lat: 0, lng: 0};
+            }
+        }
+    }
+
+    public getBrowserLocation(): Promise<LatLngLiteral> {
+        return new Promise<LatLngLiteral>((resolve) => navigator.geolocation.getCurrentPosition((loc: Position) =>
+            resolve({lat: loc.coords.latitude, lng: loc.coords.longitude})
+        ))
     }
 
     public static distance(lat1: number, lon1: number, lat2: number, lon2: number): number {
