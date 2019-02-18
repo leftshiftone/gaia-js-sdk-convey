@@ -7,7 +7,7 @@
         "lng": [number]
     }
      "markers": [
-        [{
+        {
             "position": {
                 "lat": [number]
                 "lng": [number]
@@ -16,7 +16,7 @@
                 "any": [any]
             },
             "active": [boolean]
-        }]
+        }
      ]  
 }
 ```
@@ -25,6 +25,8 @@
 `center` defines the start point of view
 
 #### markers
+`markers` array of marker objects
+
 ##### position
 `position` defines the position of the marker
 

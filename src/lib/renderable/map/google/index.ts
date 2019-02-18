@@ -42,7 +42,7 @@ export class GoogleMap {
         container.setAttribute("name", this.spec.name || "");
 
         GoogleMapsLoader.LANGUAGE = "de";
-        GoogleMapsLoader.KEY = "AIzaSyDBWbYLJkXygR90IoTTjbFOC832thRCAyQ";
+        GoogleMapsLoader.KEY = "AIzaSyAHelY0O97K0Ug-_GcCXAXd1D6xpdKh1j0";
 
         setTimeout(() => {
             GoogleMapsLoader.load((google: GoogleMapsLoader.google) => {
@@ -52,6 +52,7 @@ export class GoogleMap {
                     minZoom: 7,
                     maxZoom: 14,
                     streetViewControl: false,
+                    mapTypeControl: false
                 });
 
                 const ICON_ACTIVE = {
@@ -83,13 +84,13 @@ export class GoogleMap {
 
                     this.markers.forEach((marker: IMarker) => {
                         const m = new google.maps.Marker({
-                            position: marker[0].position,
+                            position: marker.position,
                             map: map,
-                            icon: marker[0].active ? ICON_ACTIVE : ICON_INACTIVE,
+                            icon: marker.active ? ICON_ACTIVE : ICON_INACTIVE,
                         });
 
-                        m.set("meta", marker[0].meta);
-                        _markers.push([m, marker[0].active])
+                        m.set("meta", marker.meta);
+                        _markers.push([m, marker.active])
                     });
 
                     if(this.spec.exact) {
