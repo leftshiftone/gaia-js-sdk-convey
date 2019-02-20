@@ -4,7 +4,7 @@ import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
 
 /**
- * Implementation of the 'reel' markup element.
+ * Implementation of the 'slot machine' markup element.
  */
 export class SlotMachine implements IRenderable, IStackeable {
 
@@ -21,7 +21,7 @@ export class SlotMachine implements IRenderable, IStackeable {
         const position = this.spec.position || 'left';
         const slotMachine = document.createElement("div");
         slotMachine.classList.add('lto-slotmachine', "lto-" + position);
-        if(this.spec.class !== undefined) {
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => slotMachine.classList.add(e));
         }
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
