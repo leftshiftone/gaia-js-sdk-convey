@@ -5,7 +5,7 @@ import './leaflet.css';
 import {Circle, Icon, LatLngLiteral, Marker} from "leaflet";
 import {IMarker} from "../IMarker";
 
-export class OsmMap implements IRenderable {
+export class OpenStreetMap implements IRenderable {
 
     public map: any;
     public markers: Array<IMarker> = [];
@@ -30,22 +30,43 @@ export class OsmMap implements IRenderable {
         this.mapMarkers = [];
         this.circle = null;
         const src = spec.src || "";
-        this.getJSONfromURL(src);
+        this.getMarkersAndCenter(src);
     }
 
-    public getJSONfromURL(src: string) {
-        fetch(src).then(response =>
-            response.json().then(data => {
-                this.markers = data.markers;
-                if(this.spec.centerlat=== undefined || this.spec.centerlng === undefined){
-                    this.center = data.center;
-                } else {
-                    this.center = {
-                        lat: this.spec.centerlat,
-                        lng: this.spec.centerlng
+    public getMarkersAndCenter(src: string | undefined) {
+        if (src !== undefined) {
+            fetch(src).then(response =>
+                response.json().then(data => {
+                    this.markers = data.markers;
+                    if(this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
+                        this.center = {
+                            lng: this.spec.centerLng,
+                            lat: this.spec.centerLat
+                        }
+                    } else if (this.spec.centerBrowserLocation) {
+                        this.getBrowserLocation().then((center: LatLngLiteral) => this.center = center)
+                    } else {
+                        this.center = data.center;
                     }
+                }));
+        } else {
+            if(this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
+                this.center = {
+                    lng: this.spec.centerLng,
+                    lat: this.spec.centerLat
                 }
-            }));
+            } else if (this.spec.centerBrowserLocation) {
+                this.getBrowserLocation().then((center: LatLngLiteral) => this.center = center)
+            } else {
+                this.center = {lat: 0, lng: 0};
+            }
+        }
+    }
+
+    public getBrowserLocation(): Promise<LatLngLiteral> {
+        return new Promise<LatLngLiteral>((resolve) => navigator.geolocation.getCurrentPosition((loc: Position) =>
+            resolve({lat: loc.coords.latitude, lng: loc.coords.longitude})
+        ))
     }
 
     public static distance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -74,13 +95,13 @@ export class OsmMap implements IRenderable {
         return Math.min(
             Math.max(
                 Math.min(
-                    OsmMap.distance(
+                    OpenStreetMap.distance(
                         bounds.getNorthEast().lat,
                         bounds.getNorthEast().lng,
                         bounds.getSouthEast().lat,
                         bounds.getSouthEast().lng,
                     ) / 2.15,
-                    OsmMap.distance(
+                    OpenStreetMap.distance(
                         bounds.getNorthEast().lat,
                         bounds.getNorthEast().lng,
                         bounds.getNorthWest().lat,
@@ -116,7 +137,7 @@ export class OsmMap implements IRenderable {
         const selected: Array<any> = [];
         this.mapMarkers.forEach((m: Marker) => {
             const mpos = m.getLatLng();
-            const dist = OsmMap.distance(mpos.lat, mpos.lng, position.lat, position.lng) / 1.05;
+            const dist = OpenStreetMap.distance(mpos.lat, mpos.lng, position.lat, position.lng) / 1.05;
             if (dist <= radius) {
                 selected.push(m);
                 m.setIcon(this.mapMarkerActive);
@@ -127,7 +148,7 @@ export class OsmMap implements IRenderable {
 
         let markers: Array<any> = [];
         selected.forEach(m => {
-            markers.push(OsmMap.getMarkerJSON(m));
+            markers.push(OpenStreetMap.getMarkerJSON(m));
         });
 
         this.mapContainer.setAttribute("value", JSON.stringify({markers: markers}));
@@ -158,7 +179,7 @@ export class OsmMap implements IRenderable {
             const leafletSettings = {minZoom: 2, maxZoom: 14};
 
             const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
-            const osmAttrib = 'OsmMap data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+            const osmAttrib = 'OpenStreetMap data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 
             const osm = L.tileLayer(osmUrl, {subdomains: ['a', 'b', 'c'], attribution: osmAttrib});
             this.map = L.map(this.mapContainer, leafletSettings).setView(this.center, zoom);
@@ -171,8 +192,7 @@ export class OsmMap implements IRenderable {
             let selected: Marker | null = null;
 
             if (this.markers !== undefined) {
-                this.markers.forEach((data: any) => {
-                    data.forEach((m: any) => {
+                this.markers.forEach((m: any) => {
                         const marker = L.marker(m.position, {icon: m.active ? this.mapMarkerActive : this.mapMarkerInactive, alt: m.meta !== undefined ? m.meta : {}});
                         if (this.spec.exact) {
                             if (m.active) {
@@ -182,14 +202,12 @@ export class OsmMap implements IRenderable {
                                     }
                                     selected = marker;
                                     marker.setIcon(mapMarkerSelected);
-                                    this.mapContainer.setAttribute("value", JSON.stringify(OsmMap.getMarkerJSON(marker)));
+                                    this.mapContainer.setAttribute("value", JSON.stringify(OpenStreetMap.getMarkerJSON(marker)));
                                 })
                             }
                         }
                         this.mapMarkers.push(marker);
                         marker.addTo(this.map);
-                    })
-
                 });
                 if (this.spec.exact === false) {
                     this.drawCircleAndMarkers();

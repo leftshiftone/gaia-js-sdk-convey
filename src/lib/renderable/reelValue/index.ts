@@ -26,7 +26,7 @@ export class ReelValue implements IRenderable, IStackeable {
             this.spec.class.split(" ").forEach(e => this.reelValue.classList.add(e));
         }
 
-        switch(this.spec.valuetype) {
+        switch(this.spec.valueType) {
             case 'img': this.appendImage(); break;
             case 'digit': this.appendDigit(); break;
             case 'char': this.appendChar(); break;

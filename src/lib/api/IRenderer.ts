@@ -26,9 +26,10 @@ export interface ISpecification {
     horizontal?:string;
     exact?:boolean;
     checked?:string;
-    maptype?:string;
-    valuetype?:string;
-    centerlat?:number;
-    centerlng?:number;
+    mapType?:string;
+    valueType?:string;
+    centerLat?:number;
+    centerLng?:number;
+    centerBrowserLocation?:boolean
     nerStrategies?:Map<string, any>;
 }
