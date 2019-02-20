@@ -1,0 +1,22 @@
+.lto-form {
+    background: white;
+    max-width: 80%;
+    min-width: 30%;
+    border: 1px solid #1E223F;
+    border-radius: 15px;
+    color: #1E223F;
+    display: inline-block;
+    margin: 0 auto 30px;
+    padding: 10px;
+}
+
+.lto-form.lto-nested {
+    width: auto;
+    transition: none;
+    border: none;
+}
+
+.lto-form.active {
+    border: none;
+    transition: none;
+}

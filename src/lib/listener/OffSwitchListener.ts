@@ -51,7 +51,10 @@ export class OffSwitchListener implements IListener {
             this.txt.classList.add("lto-off");
             this.btn.classList.add("lto-off");
             return true
-        } else return false
+        } else {
+            this.txt.focus();
+            return false
+        }
     }
 
 }

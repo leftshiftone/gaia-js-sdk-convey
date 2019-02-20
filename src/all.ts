@@ -33,6 +33,10 @@ import {Table} from './lib/renderable/table';
 import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
 import {Text} from './lib/renderable/text';
+import {Form} from "./lib/renderable/form";
+import {Email} from "./lib/renderable/email";
+import {Phone} from "./lib/renderable/phone";
+import {TextInput} from "./lib/renderable/textInput";
 import './styles.scss';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
 import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
@@ -88,6 +92,10 @@ export default {
     DatePicker,
     DateTimePicker,
     Map,
+    Form,
+    Email,
+    Phone,
+    TextInput,
 
     Heatmap,
     HeatmapOptions,

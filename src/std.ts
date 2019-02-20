@@ -24,6 +24,10 @@ import {Reel} from './lib/renderable/reel';
 import {Slider} from './lib/renderable/slider';
 import {SlotMachine} from './lib/renderable/slotmachine';
 import {Spinner} from './lib/renderable/spinner';
+import {Form} from "./lib/renderable/form";
+import {Email} from "./lib/renderable/email";
+import {Phone} from "./lib/renderable/phone";
+import {TextInput} from "./lib/renderable/textInput";
 import {Submit} from './lib/renderable/submit';
 import {Suggestion} from './lib/renderable/suggestion';
 import {Table} from './lib/renderable/table';
@@ -58,6 +62,10 @@ export default {
     Image,
     Item,
     Items,
+    Form,
+    Email,
+    TextInput,
+    Phone,
     Link,
     Reel,
     Slider,
