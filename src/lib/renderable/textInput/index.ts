@@ -21,24 +21,19 @@ export class TextInput implements IRenderable {
         const textInput = document.createElement('input');
         textInput.setAttribute("type", "text");
         textInput.setAttribute('name', this.spec.name || "");
-        textInput.setAttribute('required', this.spec.required !== undefined ? this.spec.required.toString() : "true");
         textInput.setAttribute('placeholder', this.spec.placeholder || "");
-        if(this.spec.regex !== undefined) {
-            textInput.setAttribute('pattern', this.spec.regex);
-        }
-
-        textInput.addEventListener("change", () => {
-            if(textInput.checkValidity()) {
-                textInput.setAttribute('value', textInput.value);
-            }
-        });
-
         textInput.classList.add("lto-textInput", "lto-" + position);
         if (isNested) {textInput.classList.add("lto-nested")}
 
         if(this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => textInput.classList.add(e));
         }
+
+        if(this.spec.regex !== undefined) textInput.pattern = this.spec.regex;
+
+        textInput.required = Boolean(this.spec.required);
+
+        textInput.addEventListener("change", () => textInput.setAttribute('value', textInput.value))
 
         return textInput;
     }

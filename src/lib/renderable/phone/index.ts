@@ -20,24 +20,18 @@ export class Phone implements IRenderable {
         const position = this.spec.position || 'left';
         const phone = document.createElement('input');
         phone.setAttribute("type", "tel");
-
-        phone.setAttribute('name', this.spec.name || "");
-        phone.setAttribute('required', this.spec.required !== undefined ? this.spec.required.toString() : "true");
         phone.setAttribute('placeholder', this.spec.placeholder || "");
-        phone.setAttribute('pattern', "^[0-9-+s()]*$");
-
-        phone.addEventListener("change", () => {
-            if(phone.checkValidity()) {
-                phone.setAttribute('value', phone.value);
-            }
-        });
-
+        phone.setAttribute('name', this.spec.name || "");
         phone.classList.add("lto-phone", "lto-" + position);
         if (isNested) {phone.classList.add("lto-nested")}
 
-        if(this.spec.class !== undefined) {
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => phone.classList.add(e));
         }
+
+        phone.required = Boolean(this.spec.required);
+
+        phone.addEventListener("change", () => phone.setAttribute('value', phone.value));
 
         return phone;
     }

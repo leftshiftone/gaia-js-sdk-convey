@@ -31,8 +31,7 @@ export class Submit implements IRenderable {
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
-        const submit: HTMLInputElement = document.createElement('input');
-        submit.setAttribute("type", "submit");
+        const submit: HTMLButtonElement = document.createElement('button');
 
         submit.classList.add("lto-submit", "lto-" + position);
         if (this.spec.class !== undefined) {
@@ -63,7 +62,14 @@ export class Submit implements IRenderable {
                     }
                 });
 
-                this.addValuesToAttributes(content, 'input.lto-textInput', attributes);
+                content.querySelectorAll('input.lto-textInput').forEach((element: HTMLInputElement) => {
+                    if (element.getAttribute("value") !== null) {
+                        if ((element as HTMLInputElement).checkValidity()) {
+                            Submit.addElementValueToAttributes(element, attributes);
+                        }
+                    }
+                });
+
                 this.addValuesToAttributes(content, 'input.lto-spinner', attributes);
                 this.addValuesToAttributes(content, 'input.lto-slider', attributes);
                 this.addValuesToAttributes(content, 'div.lto-input', attributes);
@@ -73,20 +79,29 @@ export class Submit implements IRenderable {
                 const form = content as HTMLFormElement;
                 const values: Array<any> = [];
                 let allowed = true;
-                if (form.getAttribute("name") !== "") {
-                    form.querySelectorAll("input.lto-email, input.lto-phone, input.lto-textInput").forEach(element => {
-                        const value = element.getAttribute("value");
-                        const name = element.getAttribute("name");
-                        value !== null ? values.push({[name as string]: value}) : allowed = false
-                    });
-                    if (allowed) {
+
+                form.querySelectorAll("input.lto-email, input.lto-phone, input.lto-textInput").forEach(element => {
+                    const value = element.getAttribute("value");
+                    const name = element.getAttribute("name");
+                    if ((element as HTMLInputElement).required) {
+                        if (value !== null)
+                            (element as HTMLInputElement).checkValidity() ? values.push({[name as string]: value}) : allowed = false;
+                        else allowed = false
+                    } else {
+                        if (value !== null) {
+                            (element as HTMLInputElement).checkValidity() ? values.push({[name as string]: value}) : allowed = false;
+                        }
+                    }
+                });
+                if (allowed) {
+                    if (form.getAttribute("name") !== "") {
                         form.setAttribute("value", JSON.stringify(values));
                         Submit.addElementValueToAttributes(form, attributes)
+                    } else {
+                        this.addValuesToAttributes(content, 'input.lto-phone', attributes);
+                        this.addValuesToAttributes(content, 'input.lto-email', attributes);
+                        this.addValuesToAttributes(content, 'input.lto-textInput', attributes);
                     }
-                } else {
-                    this.addValuesToAttributes(content, 'input.lto-phone', attributes);
-                    this.addValuesToAttributes(content, 'input.lto-email', attributes);
-                    this.addValuesToAttributes(content, 'input.lto-textInput', attributes);
                 }
             }
 
@@ -121,7 +136,7 @@ export class Submit implements IRenderable {
     private static addElementValueToAttributes(element: any, attributes: Attr) {
         const name = element.getAttribute('name');
         let value = element.getAttribute("value");
-        if(value !== null) {
+        if (value !== null) {
             // check if attribute value is valid JSON string
             if (/^[\],:{}\s]*$/.test(value.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
                 value = JSON.parse(value)
