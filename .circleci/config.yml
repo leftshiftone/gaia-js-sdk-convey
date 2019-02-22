@@ -85,18 +85,21 @@ workflows:
     jobs:
       - build
       - release-major:
+          context: npm
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^release-major$/
       - release-minor:
+          context: npm
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^release-minor$/
       - release-patch:
+          context: npm
           filters:
             branches:
               ignore: /.*/
