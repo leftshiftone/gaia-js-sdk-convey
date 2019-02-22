@@ -1,95 +1,100 @@
 {
-  "non-interactive": true,
-  "dry-run": false,
-  "verbose": false,
-  "pkgFiles": [
-    "package.json"
-  ],
-  "increment": "patch",
-  "preReleaseId": null,
-  "buildCommand": false,
-  "safeBump": true,
-  "beforeChangelogCommand": false,
-  "changelogCommand": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]",
-  "requireCleanWorkingDir": true,
-  "requireUpstream": true,
-  "src": {
-    "commit": true,
-    "commitMessage": "Release ${version}",
-    "commitArgs": "",
-    "tag": true,
-    "tagName": "v${version}",
-    "tagAnnotation": "Release ${version}",
-    "tagArgs": "",
-    "push": true,
-    "pushArgs": "",
-    "pushRepo": "origin",
-    "beforeStartCommand": false,
-    "afterReleaseCommand": false,
-    "addUntrackedFiles": false
-  },
-  "npm": {
-    "publish": true,
-    "publishPath": ".",
-    "tag": "latest",
-    "private": false,
-    "access": null,
-    "otp": null
-  },
-  "github": {
-    "release": true,
-    "releaseName": "Release ${version}",
-    "preRelease": false,
-    "draft": false,
-    "tokenRef": "GITHUB_TOKEN",
-    "assets": ["dist/*.css", "dist/*.js"],
-    "host": null,
-    "timeout": 0,
-    "proxy": false
-  },
-  "dist": {
-    "repo": false,
-    "stageDir": ".stage",
-    "baseDir": "dist",
-    "files": [
-      "**/*"
+    "non-interactive": true,
+    "dry-run": false,
+    "verbose": false,
+    "pkgFiles": [
+        "package.json"
     ],
-    "pkgFiles": null,
-    "commit": true,
-    "commitMessage": "Release ${version}",
-    "commitArgs": "",
-    "tag": true,
-    "tagName": "v${version}",
-    "tagAnnotation": "Release ${version}",
-    "tagArgs": "",
-    "push": true,
-    "pushArgs": "",
-    "beforeStageCommand": false,
-    "afterReleaseCommand": false,
-    "addUntrackedFiles": false,
-    "github": {
-      "release": false
+    "increment": "patch",
+    "preReleaseId": null,
+    "scripts": {
+        "buildCommand": false,
+        "afterBump": false,
+        "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]",
+        "beforeStartCommand": false,
+        "afterReleaseCommand": false
+    },
+    "git": {
+        "requireCleanWorkingDir": true,
+        "requireUpstream": true,
+        "commit": true,
+        "commitMessage": "Release ${version}",
+        "commitArgs": "",
+        "tag": true,
+        "tagName": "v${version}",
+        "tagAnnotation": "Release ${version}",
+        "tagArgs": "",
+        "push": true,
+        "pushArgs": "",
+        "pushRepo": "origin",
+        "addUntrackedFiles": false
     },
     "npm": {
-      "publish": false
-    }
-  },
-  "prompt": {
-    "src": {
-      "status": false,
-      "commit": true,
-      "tag": true,
-      "push": true,
-      "release": true,
-      "publish": true
+        "publish": true,
+        "publishPath": ".",
+        "tag": "latest",
+        "private": false,
+        "access": null,
+        "otp": null
+    },
+    "github": {
+        "release": true,
+        "releaseName": "Release ${version}",
+        "preRelease": false,
+        "draft": false,
+        "tokenRef": "GITHUB_TOKEN",
+        "assets": [
+            "dist/*.css",
+            "dist/*.js"
+        ],
+        "host": null,
+        "timeout": 0,
+        "proxy": false
     },
     "dist": {
-      "status": false,
-      "commit": true,
-      "tag": false,
-      "push": true,
-      "release": false,
-      "publish": false
+        "repo": false,
+        "stageDir": ".stage",
+        "baseDir": "dist",
+        "files": [
+            "**/*"
+        ],
+        "pkgFiles": null,
+        "git": {
+            "commit": true,
+            "commitMessage": "Release ${version}",
+            "commitArgs": "",
+            "tag": true,
+            "tagName": "v${version}",
+            "tagAnnotation": "Release ${version}",
+            "tagArgs": "",
+            "push": true,
+            "pushArgs": "",
+            "addUntrackedFiles": false
+        },
+        "scripts": {
+            "beforeStageCommand": false,
+            "afterReleaseCommand": false
+        },
+        "github": {
+            "release": false
+        },
+        "npm": {
+            "publish": false
+        }
+    },
+    "prompt": {
+        "commit": true,
+        "tag": true,
+        "push": true,
+        "release": true,
+        "publish": true,
+        "dist": {
+            "status": false,
+            "commit": true,
+            "tag": false,
+            "push": true,
+            "release": false,
+            "publish": false
+        }
     }
-  }
 }
