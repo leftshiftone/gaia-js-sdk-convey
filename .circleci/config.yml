@@ -34,7 +34,7 @@ jobs:
       - run: yarn build
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
-      - run: npm release:major
+      - run: npm run release:major
   release-minor:
     working_directory: ~/repo
     docker:
@@ -57,7 +57,7 @@ jobs:
       - run: yarn build
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - run: npm release:minor
+      - run: npm run release:minor
   release-patch:
     working_directory: ~/repo
     docker:
@@ -80,7 +80,7 @@ jobs:
       - run: yarn build
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - run: npm release:patch
+      - run: npm run release:patch
 
 workflows:
   version: 2
