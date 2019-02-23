@@ -7,12 +7,12 @@ jobs:
       - checkout
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn install
+      - run: npm install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn build
+      - run: npm run build
   release-major:
     docker:
       - image: circleci/node:lts-browsers
@@ -23,18 +23,18 @@ jobs:
       - checkout
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
       - run: git checkout master && git pull --tags
-      - run: yarn cleanup-release:major
+      - run: npm run cleanup-release:major
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn install
+      - run: npm install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn build
+      - run: npm run build
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
-      - run: yarn release:major
+      - run: npm run release:major
   release-minor:
     working_directory: ~/repo
     docker:
@@ -46,18 +46,18 @@ jobs:
       - checkout
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
       - run: git checkout master && git pull --tags
-      - run: yarn cleanup-release:minor
+      - run: npm run cleanup-release:minor
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn install
+      - run: npm run install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn build
+      - run: npm run build
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - run: yarn release:minor
+      - run: npm run release:minor
   release-patch:
     working_directory: ~/repo
     docker:
@@ -69,18 +69,18 @@ jobs:
       - checkout
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
       - run: git pull --tags
-      - run: yarn cleanup-release:patch
+      - run: npm run cleanup-release:patch
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn install
+      - run: npm install
       - save_cache:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run: yarn build
+      - run: npm run build
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - run: yarn release:patch
+      - run: npm run release:patch
 
 workflows:
   version: 2
