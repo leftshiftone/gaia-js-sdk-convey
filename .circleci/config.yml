@@ -49,7 +49,7 @@ jobs:
       - run: npm run cleanup-release:minor
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
-      - run: npm run install
+      - run: npm install
       - save_cache:
           paths:
             - ./node_modules
