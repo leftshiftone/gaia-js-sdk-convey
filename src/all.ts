@@ -54,6 +54,8 @@ import ScatterplotOptions from './lib/renderable/vis/scatterplot/ScatterplotOpti
 import StackedbarOptions from './lib/renderable/vis/stackedbar/StackedbarOptions';
 import SunburstOptions from './lib/renderable/vis/sunburst/SunburstOptions';
 import SankeyOptions from './lib/renderable/vis/sankey/SankeyOptions';
+import {Graph} from './lib/renderable/vis/graph/Graph';
+import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 
 export default {
     ClassicRenderer,
@@ -112,5 +114,7 @@ export default {
     Line,
     LineOptions,
     Bar,
-    BarOptions
+    BarOptions,
+    Graph,
+    GraphOptions
 };
