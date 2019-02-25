@@ -6,7 +6,6 @@ jobs:
     steps:
       - run:
           name: Webhook completed
-          when: always
           command: |
               curl $BUILD_STATUS_URL?flow=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   build:
