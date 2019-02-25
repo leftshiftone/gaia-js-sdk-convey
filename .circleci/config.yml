@@ -1,9 +1,22 @@
-version: 2
+version: 2.1
 jobs:
+  webhook-completed:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - run:
+          name: Webhook completed
+          when: always
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   build:
     docker:
       - image: circleci/node:lts-browsers
     steps:
+      - run:
+          name: Webhook created
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
       - checkout
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -13,10 +26,19 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
+      - run:
+          name: Webhook completed
+          when: on_fail
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-major:
     docker:
       - image: circleci/node:lts-browsers
     steps:
+      - run:
+          name: Webhook created
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
       - add_ssh_keys:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
@@ -35,11 +57,20 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
       - run: npm run release:major
+      - run:
+          name: Webhook completed
+          when: on_fail
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-minor:
     working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
+      - run:
+          name: Webhook created
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
       - add_ssh_keys:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
@@ -58,11 +89,20 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:minor
+      - run:
+          name: Webhook completed
+          when: on_fail
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-patch:
     working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
+      - run:
+          name: Webhook created
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
       - add_ssh_keys:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
@@ -81,30 +121,53 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:patch
+      - run:
+          name: Webhook completed
+          when: on_fail
+          command: |
+              curl $BUILD_STATUS_URL?flow=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
 
 workflows:
   version: 2
-  test:
+  build:
     jobs:
       - build
-      - release-major:
+      - webhook-completed:
+          requires:
+            - build
+  release-major:
+    jobs:
+      - release:
           context: npm
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^release-major$/
-      - release-minor:
+      - webhook-completed:
+          requires:
+            - release
+  release-minor:
+    jobs:
+      - release:
           context: npm
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^release-minor$/
-      - release-patch:
+      - webhook-completed:
+          requires:
+            - release
+  release-patch:
+    jobs:
+      - release:
           context: npm
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^release-patch$/
+      - webhook-completed:
+          requires:
+            - release
