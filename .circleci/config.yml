@@ -137,7 +137,7 @@ workflows:
             - build
   release-major:
     jobs:
-      - release:
+      - release-major:
           context: npm
           filters:
             branches:
@@ -149,7 +149,7 @@ workflows:
             - release
   release-minor:
     jobs:
-      - release:
+      - release-minor:
           context: npm
           filters:
             branches:
@@ -161,7 +161,7 @@ workflows:
             - release
   release-patch:
     jobs:
-      - release:
+      - release-patch:
           context: npm
           filters:
             branches:
