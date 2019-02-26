@@ -53,6 +53,7 @@ module.exports = (env, argv) => ({
     filename: 'dist/[name].min.js',
     path: __dirname,
   },
+  externals: ['google-maps', 'leaflet', 'node-ical'],
   plugins: [
     new StyleLintPlugin({
       files: ['src/**/*.scss'],
