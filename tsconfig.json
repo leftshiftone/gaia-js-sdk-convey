@@ -6,7 +6,6 @@
     "allowJs": false,
     "moduleResolution": "node",
     "rootDir": "./src",
-    "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -16,6 +15,7 @@
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es5", "es2015.promise", "dom", "es2015"],
-    "declaration": true
+    "declaration": true,
+    "declarationDir": "types"
   }
 }
