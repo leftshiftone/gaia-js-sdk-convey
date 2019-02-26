@@ -1,6 +1,6 @@
 {
     "name": "gaia-js-sdk-convey",
-    "version": "0.2.4",
+    "version": "0.4.0",
     "description": "JavaScript connector to the GAIA ecosystem.",
     "main": "dist/gaia-js-sdk-convey-all.min.js",
     "dependencies": {
@@ -45,7 +45,7 @@
         "node-sass": "^4.9.3",
         "node-sass-utils": "^1.1.2",
         "optimize-css-assets-webpack-plugin": "^5.0.0",
-        "release-it": "^8.2.0",
+        "release-it": "^9.8.3",
         "sass-loader": "^7.1.0",
         "sinon": "^7.2.3",
         "style-loader": "^0.22.1",
@@ -61,7 +61,7 @@
         "uglifyjs-webpack-plugin": "^1.3.0",
         "webpack": "^4.16.5",
         "webpack-cli": "^3.1.0",
-        "webpack-dev-server": "^3.1.5",
+        "webpack-dev-server": "^3.1.11",
         "webpack-node-externals": "^1.7.2"
     },
     "scripts": {
@@ -70,11 +70,11 @@
         "webpack:dev-build": "webpack --mode=development",
         "build": "npm run test && npm run webpack:build",
         "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
-        "trigger-release:major": "git tag release-major && git push --tags && git tag -d release-major",
+        "trigger-release:major": "git pull --tags && git tag release-major && git push --tags && git tag -d release-major",
         "cleanup-release:major": "git tag -d release-major && git push -d origin release-major",
-        "trigger-release:minor": "git tag release-minor && git push --tags && git tag -d release-minor",
+        "trigger-release:minor": "git pull --tags && git tag release-minor && git push --tags && git tag -d release-minor",
         "cleanup-release:minor": "git tag -d release-minor && git push -d origin release-minor",
-        "trigger-release:patch": "git tag release-patch && git push --tags && git tag -d release-patch",
+        "trigger-release:patch": "git pull --tags && git tag release-patch && git push --tags && git tag -d release-patch",
         "cleanup-release:patch": "git tag -d release-patch && git push -d origin release-patch",
         "release:major": "release-it major",
         "release:minor": "release-it minor",
