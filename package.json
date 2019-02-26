@@ -2,7 +2,7 @@
     "name": "gaia-js-sdk-convey",
     "version": "0.4.0",
     "description": "JavaScript connector to the GAIA ecosystem.",
-    "main": "dist/gaia-js-sdk-convey-all.min.js",
+    "main": "dist/gaia-sdk-convey.js",
     "dependencies": {
         "d3": "^5.8.0",
         "d3-sankey": "^0.7.1",
@@ -62,7 +62,16 @@
         "webpack": "^4.16.5",
         "webpack-cli": "^3.1.0",
         "webpack-dev-server": "^3.1.11",
-        "webpack-node-externals": "^1.7.2"
+        "webpack-node-externals": "^1.7.2",
+        "jest-junit": "5.1.0",
+        "sonarqube-scanner": "2.1.2"
+    },
+    "jest-junit": {
+        "suiteName": "Frontend Tests",
+        "suiteNameTemplate": "{filename}",
+        "output": "./test-results/test/TEST-Frontend.xml",
+        "classNameTemplate": "{classname}-{title}",
+        "titleTemplate": "{classname}-{title}"
     },
     "scripts": {
         "webpack:dev": "webpack-dev-server --open --mode=development",
@@ -70,6 +79,7 @@
         "webpack:dev-build": "webpack --mode=development",
         "build": "npm run test && npm run webpack:build",
         "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
+        "sonarqube": "jest --env=jsdom --coverage && sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN",
         "trigger-release:major": "git pull --tags && git tag release-major && git push --tags && git tag -d release-major",
         "cleanup-release:major": "git tag -d release-major && git push -d origin release-major",
         "trigger-release:minor": "git pull --tags && git tag release-minor && git push --tags && git tag -d release-minor",
