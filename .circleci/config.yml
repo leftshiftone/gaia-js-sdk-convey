@@ -103,7 +103,6 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
       - run: npm run release:major
-      - run: git push origin --tags
       - run:
           name: Webhook completed
           when: on_fail
@@ -134,7 +133,6 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:minor
-      - run: git push origin --tags
       - run:
           name: Webhook completed
           when: on_fail
@@ -164,7 +162,6 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:patch
-      - run: git push origin --tags
       - run:
           name: Webhook completed
           when: on_fail
