@@ -12,7 +12,7 @@
         "afterBump": "yarn build",
         "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]",
         "beforeStartCommand": false,
-        "afterReleaseCommand": "git push origin v${version}"
+        "afterReleaseCommand": false
     },
     "git": {
         "requireCleanWorkingDir": true,
