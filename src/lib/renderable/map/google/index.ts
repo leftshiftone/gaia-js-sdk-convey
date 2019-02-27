@@ -1,7 +1,9 @@
 import {IRenderer, ISpecification} from "../../../api/IRenderer";
-import GoogleMapsLoader = require('google-maps');
-import LatLngLiteral = google.maps.LatLngLiteral;
+import * as GoogleMapsLoader from 'google-maps';
 import {IMarker} from "../IMarker";
+import Properties from "../../Properties";
+
+type LatLngLiteral = google.maps.LatLngLiteral;
 
 export class GoogleMap {
 
@@ -64,8 +66,10 @@ export class GoogleMap {
         }
         container.setAttribute("name", this.spec.name || "");
 
+        // @ts-ignore
         GoogleMapsLoader.LANGUAGE = "de";
-        GoogleMapsLoader.KEY = "AIzaSyAHelY0O97K0Ug-_GcCXAXd1D6xpdKh1j0";
+        // @ts-ignore
+        GoogleMapsLoader.KEY = Properties.resolve("GOOGLE_MAPS_API_KEY");
 
         setTimeout(() => {
             GoogleMapsLoader.load((google: GoogleMapsLoader.google) => {
@@ -124,7 +128,10 @@ export class GoogleMap {
                                     if (selectedMarker !== undefined) {
                                         selectedMarker.setIcon(ICON_ACTIVE)
                                     }
-                                    setValueToContainer({position: marker[0].getPosition(), meta: marker[0].get("meta")});
+                                    setValueToContainer({
+                                        position: marker[0].getPosition(),
+                                        meta: marker[0].get("meta")
+                                    });
                                     marker[0].setIcon(ICON_SELECTED);
                                     selectedMarker = marker[0];
                                 })
