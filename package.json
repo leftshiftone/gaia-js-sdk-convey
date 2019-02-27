@@ -1,9 +1,8 @@
 {
     "name": "gaia-js-sdk-convey",
-    "version": "0.4.0",
+    "version": "0.6.0",
     "description": "JavaScript connector to the GAIA ecosystem.",
-    "main": "dist/gaia-sdk-convey.js",
-    "bundleDependencies": [],
+    "main": "dist/gaia-js-sdk-convey-all.min.js",
     "dependencies": {
         "d3": "^5.8.0",
         "d3-sankey": "^0.7.1",

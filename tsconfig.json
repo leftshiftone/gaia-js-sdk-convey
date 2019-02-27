@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "module": "es6",
+    "module": "es2015",
+    "module": "commonjs",
     "target": "es5",
-    "sourceMap": true,
+    "sourceMap": false,
     "allowJs": false,
     "moduleResolution": "node",
     "rootDir": "./src",
+    "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -15,7 +17,6 @@
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es5", "es2015.promise", "dom", "es2015"],
-    "declaration": true,
-    "declarationDir": "types"
+    "declaration": false
   }
 }

@@ -1,10 +1,16 @@
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const { resolve } = require('path');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = (env, argv) => ({
-  entry: './src/all.ts',
+  entry: {
+    'gaia-js-sdk-convey-std': './src/std.ts',
+    'gaia-js-sdk-convey-all': './src/all.ts',
+    'gaia-js-sdk-convey-cal': './src/cal.ts',
+    'gaia-js-sdk-convey-map': './src/map.ts',
+    'gaia-js-sdk-convey-vis': './src/vis.ts',
+  },
   module: {
     rules: [
       {
@@ -44,13 +50,16 @@ module.exports = (env, argv) => ({
     library: 'GaiaSDK',
     libraryTarget: 'umd',
     libraryExport: 'default',
-    path: resolve(__dirname, 'dist'),
-    filename: 'gaia-sdk-convey.js',
+    filename: 'dist/[name].min.js',
+    path: __dirname,
   },
-  externals: ['d3', 'mqtt', 'leaflet', 'google-maps', 'node-ical'],
+  externals: ['google-maps', 'leaflet', 'node-ical'],
   plugins: [
+    new StyleLintPlugin({
+      files: ['src/**/*.scss'],
+    }),
     new MiniCssExtractPlugin({
-      filename: 'css/gaia-sdk-convey.min.css',
+      filename: 'dist/[name].min.css',
     }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.min\.css$/g,
@@ -65,5 +74,10 @@ module.exports = (env, argv) => ({
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: chunk => !chunk.name.endsWith('-all'),
+    },
   },
 });
