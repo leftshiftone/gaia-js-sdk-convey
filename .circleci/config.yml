@@ -90,8 +90,8 @@ jobs:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
-      - run: yarn cleanup-release:major
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: yarn cleanup-release:major
       - run: git checkout master && git pull --tags
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -121,8 +121,8 @@ jobs:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
-      - run: yarn cleanup-release:minor
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: yarn cleanup-release:minor
       - run: git checkout master && git pull --tags
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -152,8 +152,8 @@ jobs:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
       - checkout
-      - run: yarn cleanup-release:patch
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
+      - run: yarn cleanup-release:patch
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn install
@@ -209,7 +209,7 @@ workflows:
           context: npm
           filters:
             branches:
-              ignore: /.*/
+              only: /^release\/\d\.\d\.x$/
             tags:
               only: /^release-patch$/
       - webhook-completed:
