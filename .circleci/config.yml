@@ -30,6 +30,54 @@ jobs:
           when: on_fail
           command: |
               curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+  code-analytics:
+    docker:
+      - image: circleci/node:lts-browsers
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Vienna"
+    steps:
+      - run:
+          name: Webhook created
+          command: |
+            curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+      - checkout
+      - restore_cache:
+          key: cache-node-{{ checksum "package.json" }}
+      - run: yarn sonarqube
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-node-{{ checksum "package.json" }}
+      - run:
+          name: Webhook completed
+          when: on_fail
+          command: |
+            curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+  dependency-updates:
+    docker:
+      - image: circleci/node:lts-browsers
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Vienna"
+    steps:
+      - run:
+          name: Webhook created
+          command: |
+            curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+      - checkout
+      - run: yarn global add ndc
+      - restore_cache:
+          key: cache-node-{{ checksum "package.json" }}
+      - run: yarn install
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-node-{{ checksum "package.json" }}
+      - run: ndc --stats --export $BUILD_STATUS\?flow\=depsNdc\&repositoryName\=$CIRCLE_PROJECT_REPONAME\&repositoryBranch\=$CIRCLE_BRANCH\&buildNumber\=$CIRCLE_BUILD_NUM
+      - run:
+          name: Webhook completed
+          when: on_fail
+          command: |
+            curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-major:
     docker:
       - image: circleci/node:lts-browsers
@@ -62,7 +110,6 @@ jobs:
           command: |
               curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-minor:
-    working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
@@ -94,7 +141,6 @@ jobs:
           command: |
               curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-patch:
-    working_directory: ~/repo
     docker:
       - image: circleci/node:lts-browsers
     steps:
@@ -170,3 +216,31 @@ workflows:
       - webhook-completed:
           requires:
             - release-patch
+  code-analytics:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - code-analytics:
+          context: leftshiftone-sonar
+      - webhook-completed:
+          requires:
+            - code-analytics
+  dependency-updates:
+    triggers:
+      - schedule:
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - dependency-updates:
+          context: leftshiftone-sonar
+      - webhook-completed:
+          requires:
+            - dependency-updates
