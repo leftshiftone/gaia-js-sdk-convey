@@ -18,33 +18,28 @@ export class Slider implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
-        const slider = document.createElement('input');
+        const slider = document.createElement("input");
+        slider.type="range";
+        //@ts-ignore
+        slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
+        //@ts-ignore
+        slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
+        //@ts-ignore
+        slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
+        slider.step = this.spec.step || "";
+        slider.name = this.spec.name || "";
 
-        slider.setAttribute("type", "range");
-        // @ts-ignore
-        slider.setAttribute('value', isNaN(this.spec.value) ? "" : this.spec.value);
-        // @ts-ignore
-        slider.setAttribute('min', isNaN(this.spec.min) ? "" : this.spec.min);
-        // @ts-ignore
-        slider.setAttribute('max', isNaN(this.spec.max) ? "" : this.spec.max);
-        slider.setAttribute('step', this.spec.step || "");
-        slider.setAttribute('name', this.spec.name || "");
-
-        const value = document.createElement('div');
+        const value = document.createElement("div");
         value.classList.add("lto-slider-value");
 
         value.innerHTML = slider.value;
 
-        slider.addEventListener("input" || "change", () => {
+        slider.oninput = () => {
             slider.setAttribute('value', slider.value);
             value.innerHTML = slider.value;
-        });
+        };
 
         slider.classList.add("lto-slider", "lto-" + position);
-
-        if(this.spec.class !== undefined) {
-            this.spec.class.split(" ").forEach(e => slider.classList.add(e));
-        }
 
         if (!this.spec.horizontal) {
             slider.style.transform = "rotate(90deg)";
@@ -52,11 +47,13 @@ export class Slider implements IRenderable {
 
         slider.step = this.spec.step || "";
 
-        if (isNested) {
-            slider.classList.add("lto-nested");
-        }
+        if (isNested) { slider.classList.add("lto-nested") }
 
         const container = document.createElement("div");
+        container.classList.add("lto-slider-container");
+        if(this.spec.class !== undefined) {
+            this.spec.class.split(" ").forEach(e => container.classList.add(e));
+        }
 
         slider.appendChild(document.createTextNode(this.spec.text || ""));
 
