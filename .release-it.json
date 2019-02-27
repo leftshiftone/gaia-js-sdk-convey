@@ -1,7 +1,7 @@
 {
     "non-interactive": true,
     "dry-run": false,
-    "verbose": true,
+    "verbose": false,
     "pkgFiles": [
         "package.json"
     ],
@@ -9,10 +9,10 @@
     "preReleaseId": null,
     "scripts": {
         "buildCommand": false,
-        "afterBump": false,
+        "afterBump": "yarn build",
         "changelog": "git log --pretty=format:\"* %s (%h)\" [REV_RANGE]",
         "beforeStartCommand": false,
-        "afterReleaseCommand": false
+        "afterReleaseCommand": "git push origin v${version}"
     },
     "git": {
         "requireCleanWorkingDir": true,
@@ -24,8 +24,8 @@
         "tagName": "v${version}",
         "tagAnnotation": "Release ${version}",
         "tagArgs": "",
-        "push": true,
-        "pushArgs": "v${version}",
+        "push": false,
+        "pushArgs": "",
         "pushRepo": "origin",
         "addUntrackedFiles": false
     },
@@ -67,8 +67,8 @@
             "tagName": "v${version}",
             "tagAnnotation": "Release ${version}",
             "tagArgs": "",
-            "push": true,
-            "pushArgs": "origin v${version}",
+            "push": false,
+            "pushArgs": "",
             "addUntrackedFiles": false
         },
         "scripts": {
