@@ -25,7 +25,7 @@
         "tagAnnotation": "Release ${version}",
         "tagArgs": "",
         "push": true,
-        "pushArgs": "",
+        "pushArgs": "v${version}",
         "pushRepo": "origin",
         "addUntrackedFiles": false
     },
