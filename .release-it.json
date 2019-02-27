@@ -68,7 +68,7 @@
             "tagAnnotation": "Release ${version}",
             "tagArgs": "",
             "push": true,
-            "pushArgs": "",
+            "pushArgs": "origin v${version}",
             "addUntrackedFiles": false
         },
         "scripts": {
