@@ -209,7 +209,7 @@ workflows:
           context: npm
           filters:
             branches:
-              only: /^release\/\d\.\d\.x$/
+              ignore: /.*/
             tags:
               only: /^release-patch$/
       - webhook-completed:
