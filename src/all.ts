@@ -1,8 +1,8 @@
 import {DatePicker} from './lib/renderable/datePicker';
 import {DateTimePicker} from './lib/renderable/dateTimePicker';
-import Renderables from './lib/renderable/Renderables'
-import Properties from './lib/renderable/Properties'
-import EventStream from './lib/event/EventStream'
+import Renderables from './lib/renderable/Renderables';
+import Properties from './lib/renderable/Properties';
+import EventStream from './lib/event/EventStream';
 import {Map} from './lib/renderable/map';
 import {ClassicRenderer} from './lib/renderer/ClassicRenderer';
 import {ContentCentricRenderer} from './lib/renderer/ContentCentricRenderer';
@@ -59,6 +59,9 @@ import SunburstOptions from './lib/renderable/vis/sunburst/SunburstOptions';
 import SankeyOptions from './lib/renderable/vis/sankey/SankeyOptions';
 import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
+import {ThreeDBar} from './lib/renderable/vis/3dbar/ThreeDBar';
+import ThreeDBarOptions from './lib/renderable/vis/3dbar/ThreeDBarOptions';
+import {Camera} from './lib/renderable/camera';
 
 export default {
     ClassicRenderer,
@@ -104,6 +107,7 @@ export default {
     Email,
     Phone,
     TextInput,
+    Camera,
 
     Heatmap,
     HeatmapOptions,
@@ -122,5 +126,7 @@ export default {
     Bar,
     BarOptions,
     Graph,
-    GraphOptions
+    GraphOptions,
+    ThreeDBar,
+    ThreeDBarOptions,
 };

@@ -22,8 +22,8 @@ export class Image implements IRenderable {
         image.setAttribute('alt', this.spec.text || "");
         image.setAttribute('width', this.spec.width || "auto");
         image.setAttribute('height', this.spec.height || "auto");
-        image.classList.add('lto-image', "lto-" + this.spec.position || 'left');
-        if(this.spec.class !== undefined) {
+        image.classList.add('lto-image', "lto-" + (this.spec.position || 'left'));
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => image.classList.add(e));
         }
 
