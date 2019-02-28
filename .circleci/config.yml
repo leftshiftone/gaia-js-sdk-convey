@@ -64,7 +64,7 @@ jobs:
           command: |
             curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
       - checkout
-      - run: yarn global add ndc
+      - run: yarn add --dev ndc
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn install
@@ -72,7 +72,7 @@ jobs:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
-      - run: ndc --stats --export $BUILD_STATUS\?flow\=depsNdc\&repositoryName\=$CIRCLE_PROJECT_REPONAME\&repositoryBranch\=$CIRCLE_BRANCH\&buildNumber\=$CIRCLE_BUILD_NUM
+      - run: yarn ndc --stats --export $BUILD_STATUS_URL\?flow\=depsNdc\&repositoryName\=$CIRCLE_PROJECT_REPONAME\&repositoryBranch\=$CIRCLE_BRANCH\&buildNumber\=$CIRCLE_BUILD_NUM
       - run:
           name: Webhook completed
           when: on_fail
