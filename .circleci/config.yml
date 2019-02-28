@@ -29,7 +29,7 @@ jobs:
           name: Webhook completed
           when: on_fail
           command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   code-analytics:
     docker:
       - image: circleci/node:lts-browsers
@@ -52,7 +52,7 @@ jobs:
           name: Webhook completed
           when: on_fail
           command: |
-            curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+            curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   dependency-updates:
     docker:
       - image: circleci/node:lts-browsers
@@ -77,7 +77,7 @@ jobs:
           name: Webhook completed
           when: on_fail
           command: |
-            curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+            curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-major:
     docker:
       - image: circleci/node:lts-browsers
@@ -107,7 +107,7 @@ jobs:
           name: Webhook completed
           when: on_fail
           command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-minor:
     docker:
       - image: circleci/node:lts-browsers
@@ -137,7 +137,7 @@ jobs:
           name: Webhook completed
           when: on_fail
           command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
   release-patch:
     docker:
       - image: circleci/node:lts-browsers
@@ -166,7 +166,7 @@ jobs:
           name: Webhook completed
           when: on_fail
           command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
+              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i
 
 workflows:
   version: 2
