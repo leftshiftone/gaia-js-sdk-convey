@@ -59,8 +59,6 @@ import SunburstOptions from './lib/renderable/vis/sunburst/SunburstOptions';
 import SankeyOptions from './lib/renderable/vis/sankey/SankeyOptions';
 import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
-import {ThreeDBar} from './lib/renderable/vis/3dbar/ThreeDBar';
-import ThreeDBarOptions from './lib/renderable/vis/3dbar/ThreeDBarOptions';
 import {Camera} from './lib/renderable/camera';
 
 export default {
@@ -127,6 +125,4 @@ export default {
     BarOptions,
     Graph,
     GraphOptions,
-    ThreeDBar,
-    ThreeDBarOptions,
 };
