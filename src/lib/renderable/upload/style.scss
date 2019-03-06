@@ -1,0 +1,32 @@
+.lto-drop-area.lto-left{
+    width: 100%;
+    min-height: 200px;
+    border: 2px dashed #1E223F;
+    text-align: center;
+}
+
+.lto-upload input[type=file] {
+    display: none;
+}
+
+.lto-upload {
+    left: 50%;
+    top: 50px;
+    font-size: 18px;
+    color: #1E223F;
+    position: relative;
+}
+
+.lto-upload:hover {
+    text-decoration: underline;
+}
+
+.lto-upload-error-label,
+.lto-upload-file-label,
+.lto-upload-text-label {
+    margin:2px;
+}
+
+.lto-upload-error-label {
+    color:red;
+}

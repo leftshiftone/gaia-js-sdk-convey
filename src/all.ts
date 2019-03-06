@@ -38,6 +38,7 @@ import {Row} from "./lib/renderable/table/row";
 import {Text} from './lib/renderable/text';
 import {Form} from "./lib/renderable/form";
 import {Email} from "./lib/renderable/email";
+import {Upload} from "./lib/renderable/upload";
 import {Phone} from "./lib/renderable/phone";
 import {TextInput} from "./lib/renderable/textInput";
 import './styles.scss';
@@ -74,6 +75,7 @@ export default {
     Properties,
     EventStream,
     // Renderables
+    Upload,
     Row,
     Col,
     Block,

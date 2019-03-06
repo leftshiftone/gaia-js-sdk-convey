@@ -32,30 +32,24 @@ export class ClassicRenderer extends AbstractRenderer {
         }
 
         setTimeout(() => {
-            if (this.content != null) {
+            if (this.content != null)
                 this.content.scrollTop = this.content.scrollHeight;
-            }
         }, 1);
-
 
         return array;
     }
 
     // noinspection JSMethodCanBeStatic
-    private needsSeparator(renderable: IRenderable) {
-        if (renderable instanceof Button) {
-            return false;
+    private needsSeparator(renderable: IRenderable): boolean {
+        switch (renderable.constructor) {
+            case Button: return false;
+            case Suggestion: return false;
+            case Link: return false;
+            default: return true;
         }
-        if (renderable instanceof Suggestion) {
-            return false;
-        }
-        if (renderable instanceof Link) {
-            return false;
-        }
-        return true;
     }
 
-    private handleCarousel(args:any[]) {
+    private handleCarousel(args: any[]) {
         const suggestions = this.suggest.querySelectorAll(".lto-suggestion");
         suggestions.forEach(suggestion => {
             suggestion.classList.remove("lto-hide");
