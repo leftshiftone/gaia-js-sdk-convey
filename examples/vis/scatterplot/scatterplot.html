@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <script src="dist/gaia-js-sdk-convey-all.min.js"></script>
-    <link rel="stylesheet" href="dist/gaia-js-sdk-convey-all.min.css">
+    <script src="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.js"></script>
+    <script src="scatterplot.js"></script>
+    <link rel="stylesheet" href="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.css">
 </head>
 <body>
 
@@ -15,7 +16,11 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const scatterplot = new GaiaSDK.Scatterplot();
+        const options = new GaiaSDK.ScatterplotOptions();
+        options.data = Promise.resolve([]);
+
+        const scatterplot = new GaiaSDK.Scatterplot(options);
+
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         const element = scatterplot.render();
         gaia.appendChild(element);

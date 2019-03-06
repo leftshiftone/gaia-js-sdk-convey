@@ -20,7 +20,7 @@ export class Line {
     public render(): HTMLElement {
         const div = document.createElement("div");
         div.classList.add("lto-vis-line");
-        div.innerHTML = `<svg width="${this.options.width}" height="${this.options.height}" viewBox="0,0,${this.options.width},${this.options.height}" />`;
+        div.innerHTML = `<svg width="${this.options.width}" height="${this.options.height}" />`;
         return div;
     }
 
@@ -41,25 +41,22 @@ export class Line {
                 .domain([0, d3.max(data.series, d => d3.max(d.values))]).nice()
                 .range([this.options.height - this.options.margin.bottom, this.options.margin.top]);
 
-            // @ts-ignore
             svg.append("g").call(this.xAxis(x));
-            // @ts-ignore
             svg.append("g").call(this.yAxis(y, data));
-            // @ts-ignore
             svg.append("g").call(this.grid(x));
 
+            let counter = 0;
             const path = svg.append("g")
-                .attr("fill", "none")
-                .attr("stroke", "rgb(0, 200, 220)")
-                .attr("stroke-width", 1.5)
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
+                .attr("class", () => "lto-vis-lines")
                 .selectAll("path")
                 .data(data.series)
                 // @ts-ignore
                 .join("path")
                 .style("mix-blend-mode", "color-dodge")
-                .attr("d", (d: any) => line(d.values));
+                .attr("class", () => "lto-vis-line-" + counter++)
+                .attr("d", (d: any) => line(d.values))
+                .style("stroke-dasharray", (d:any, e:any, f:any) => Math.max.apply(null, f.map((e:any) => e.getTotalLength())))
+                .style("stroke-dashoffset", (d:any, e:any, f:any) => Math.max.apply(null, f.map((e:any) => e.getTotalLength())));
 
             svg.call(this.hover(x, y, data), path);
         });
@@ -122,6 +119,8 @@ export class Line {
             }
 
             function entered() {
+                path.style("stroke-dasharray", null);
+                path.style("stroke-dashoffset", null);
                 path.style("mix-blend-mode", null).attr("stroke", "#ddd");
                 dot.attr("display", null);
             }
@@ -136,11 +135,11 @@ export class Line {
     private grid(x: any) {
         return (g: d3.Selection<SVGGElement, {}, null, any>) => {
             g.append("path")
-                .attr("class", "grid")
+                .attr("class", "lto-grid")
                 .attr("stroke", "gray")
                 .attr("d", `M ${this.options.margin.left} ${this.options.height / 3} L ${this.options.width - this.options.margin.right} ${this.options.height / 3} Z`);
             g.append("path")
-                .attr("class", "grid")
+                .attr("class", "lto-grid")
                 .attr("stroke", "gray")
                 .attr("d", `M ${this.options.margin.left} ${this.options.height / 3 * 2} L ${this.options.width - this.options.margin.right} ${this.options.height / 3 * 2} Z`);
         };

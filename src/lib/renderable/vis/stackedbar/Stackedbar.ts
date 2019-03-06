@@ -122,14 +122,14 @@ export default class Stackedbar {
                 .attr("class", "axis axis--x")
                 .attr("text-anchor", "middle")
                 .attr("transform", "translate(" + (width / 2) + "," + (height + 60) + ")")
-                .text("Time (Hour)");
+                .text(this.options.textX);
 
             svg.append("text")
                 .attr("class", "axis axis--y")
                 .attr("text-anchor", "middle")
                 .attr("transform", "translate(0," + (height / 2) + ")rotate(-90)")
                 .attr("dy", "20.0")
-                .text("Events");
+                .text(this.options.textY);
 
             if (this.options.legend) {
                 const legend = g.selectAll(".legend")

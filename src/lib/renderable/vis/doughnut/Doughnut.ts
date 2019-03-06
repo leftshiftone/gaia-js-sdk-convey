@@ -4,18 +4,16 @@ import * as d3 from "d3";
 import DoughnutOptions from './DoughnutOptions';
 
 /**
- * Implementation of the 'heatmap' markup element.
+ * Implementation of the 'doughnut' markup element.
  */
 export class Doughnut {
 
     private options: DoughnutOptions;
     private radius: number;
-    private color: d3.ScaleOrdinal<any, any>;
 
     constructor(options: DoughnutOptions = new DoughnutOptions()) {
         this.options = options;
         this.radius = Math.min(options.width, options.height) / 2;
-        this.color = d3.scaleOrdinal().range(options.color);
     }
 
     /**
@@ -33,12 +31,11 @@ export class Doughnut {
     public init(element: HTMLElement) {
         const svg = d3.select(element.querySelector("svg")).append("g");
 
-        svg.append("g").attr("class", "slices");
-        svg.append("g").attr("class", "labels");
-        svg.append("g").attr("class", "lines");
+        svg.append("g").attr("class", "lto-vis-slices");
+        svg.append("g").attr("class", "lto-vis-labels");
+        svg.append("g").attr("class", "lto-vis-lines");
 
         svg.attr("transform", "translate(" + ((this.options.width / 2) + 100) + "," + this.options.height / 2 + ")");
-
         this.options.data.then(e => this.change(e, svg, element));
     }
 
@@ -48,16 +45,13 @@ export class Doughnut {
 
         const pie = d3.pie().sort(null).value((d: any) => d.value);
         const key = (d: any) => d.data.label;
-        /* ------- PIE SLICES -------*/
-        const slice = svg.select(".slices").selectAll("path.slice").data(pie(data), key);
+        const slice = svg.select(".lto-vis-slices").selectAll("path.lto-vis-slice").data(pie(data), key);
 
         let _current: any;
-
+        let counter = 0;
         slice.enter()
             .insert("path")
-            .style("fill", (d: any) => this.color(d.data.label) as string)
-            .attr("class", "slice")
-            // @ts-ignore
+            .attr("class", () => "lto-vis-slice lto-vis-slice-" + counter++)
             .merge(slice)
             .transition().duration(1000)
             .attrTween("d", (d: any) => {
@@ -70,7 +64,7 @@ export class Doughnut {
         slice.exit().remove();
         const $this = this;
 
-        const text = svg.select(".labels").selectAll("text").data(pie(data), key);
+        const text = svg.select(".lto-vis-labels").selectAll("text").data(pie(data), key);
 
         const midAngle = (d: any) => d.startAngle + (d.endAngle - d.startAngle) / 2;
 
@@ -78,7 +72,6 @@ export class Doughnut {
             .append("text")
             .attr("dy", ".35em")
             .text((d: any) => d.data.label)
-            // @ts-ignore
             .merge(text)
             .transition().duration(1000)
             .attrTween("transform", (d: any) => {
@@ -104,12 +97,13 @@ export class Doughnut {
 
         text.exit().remove();
 
-        const polyline = svg.select(".lines").selectAll("polyline").data(pie(data), key);
+        const polyline = svg.select(".lto-vis-lines").selectAll("polyline").data(pie(data), key);
 
+        counter = 0;
         polyline.enter()
             .append("polyline")
-            .style("stroke", (d: any) => this.color(d.data.label) as string)
-            // @ts-ignore
+            .attr("class", () => "lto-vis-polyline lto-vis-slice-" + counter++)
+            // .style("stroke", (d: any) => this.color(d.data.label) as string)
             .merge(polyline)
             .transition().duration(1000)
             .attrTween("points", (d: any) => {
@@ -128,7 +122,7 @@ export class Doughnut {
 
         setTimeout(() => {
             const registry = {};
-            element.querySelectorAll(".labels text").forEach(text => {
+            element.querySelectorAll(".lto-vis-labels text").forEach(text => {
                 const x = Math.floor((text as SVGTextElement).transform.animVal.getItem(0).matrix.e);
                 const y = Math.floor((text as SVGTextElement).transform.animVal.getItem(0).matrix.f);
 
