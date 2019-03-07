@@ -1,4 +1,3 @@
-const nodeExternals = require('webpack-node-externals');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
@@ -43,7 +42,7 @@ module.exports = (env, argv) => ({
     filename: 'dist/[name].min.js',
     path: __dirname,
   },
-  externals: [nodeExternals()],
+  externals: ['google-maps', 'leaflet', 'node-ical'],
   plugins: [
     new StyleLintPlugin({
       files: ['src/**/*.scss'],
