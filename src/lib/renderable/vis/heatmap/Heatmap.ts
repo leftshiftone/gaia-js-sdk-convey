@@ -4,7 +4,7 @@ import D3Support from '../D3Support';
 import HeatmapOptions from './HeatmapOptions';
 
 /**
- * Implementation of the 'headmap' markup element.
+ * Implementation of the 'heatmap' markup element.
  */
 export class Heatmap {
 
@@ -64,7 +64,7 @@ export class Heatmap {
             const dayOffset = D3Support.getDayOfYear(dateExtent[0]);
             this.renderAxis(dateExtent, svg, this.margin);
             const rect = this.renderRects(heatmap.selectAll('rect'), data, dayOffset);
-            this.renderColor(true, dayOffset, dailyValueExtent, rect);
+            this.renderColor(dayOffset, dailyValueExtent, rect);
 
             d3.select(self.frameElement).style('height', '600px');
         });
@@ -90,7 +90,7 @@ export class Heatmap {
             .call(yAxis);
     }
 
-    private renderColor(renderByCount:boolean, dayOffset:number, dailyValueExtent:any, rect:d3.Selection<SVGRectElement, any, any, any>) {
+    private renderColor(dayOffset:number, dailyValueExtent:any, rect:d3.Selection<SVGRectElement, any, any, any>) {
         rect.filter((d: any) => (d.value >= 0))
             .transition()
             .delay((d: any) => (D3Support.getDayOfYear(d.date) - dayOffset) * 15)
@@ -98,7 +98,7 @@ export class Heatmap {
             .attrTween('fill', (d: any, i: any, a: any) => {
                 const colorIndex = d3.scaleQuantize()
                     .range([0, 1, 2, 3, 4, 5])
-                    .domain((renderByCount ? [0, 500] : dailyValueExtent[d.day]));
+                    .domain((this.options.colorGroup !== "auto" ? this.options.colorGroup : dailyValueExtent[d.day]));
 
                 return d3.interpolate(a, this.colorCalibration[colorIndex(d.value)]);
             });

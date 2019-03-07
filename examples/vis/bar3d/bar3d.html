@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gaia-js-sdk-convey</title>
+    <script src="../../../dist/bundle/gaia-js-sdk-convey-vis-bundle.min.js"></script>
+    <script src="./bar3d.js"></script>
+    <link rel="stylesheet" href="../../../dist/gaia-js-sdk-convey-vis.min.css">
+</head>
+<body>
+
+<div class="lto-gaia">
+
+</div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const options = new GaiaSDK.Bar3DOptions();
+        options.width = 1000;
+        options.height = 1000;
+        options.data = Promise.resolve(window.data);
+        options.scale = 20;
+        options.gridStroke = "black";
+        options.gridFill = "cyan";
+        options.legendColor = "cyan";
+
+        const graph = new GaiaSDK.Bar3D(options);
+        let gaia = document.getElementsByClassName("lto-gaia")[0];
+        const element = graph.render();
+        gaia.appendChild(element);
+        graph.init(element);
+    });
+</script>
+</html>

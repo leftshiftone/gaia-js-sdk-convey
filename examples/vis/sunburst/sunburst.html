@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <script src="dist/gaia-js-sdk-convey-all.min.js"></script>
-    <link rel="stylesheet" href="dist/gaia-js-sdk-convey-all.min.css">
+    <script src="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.js"></script>
+    <script src="sunburst.js"></script>
+    <link rel="stylesheet" href="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.css">
 </head>
 <body>
 
@@ -15,7 +16,10 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const sunburst = new GaiaSDK.Sunburst();
+        const options = new GaiaSDK.SunburstOptions();
+        options.data = Promise.resolve(window.data);
+
+        const sunburst = new GaiaSDK.Sunburst(options);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         const element = sunburst.render();
         gaia.appendChild(element);

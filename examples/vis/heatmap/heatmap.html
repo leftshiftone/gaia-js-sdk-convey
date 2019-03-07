@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <script src="dist/gaia-js-sdk-convey-all.min.js"></script>
-    <link rel="stylesheet" href="dist/gaia-js-sdk-convey-all.min.css">
+    <script src="../../../dist/bundle/gaia-js-sdk-convey-vis-bundle.min.js"></script>
+    <script src="heatmap.js"></script>
+    <link rel="stylesheet" href="../../../dist/gaia-js-sdk-convey-all.min.css">
 </head>
 <body>
 
@@ -15,7 +16,10 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const heatmap = new GaiaSDK.Heatmap();
+        const options = new GaiaSDK.HeatmapOptions();
+        options.data = Promise.resolve(window.data);
+
+        const heatmap = new GaiaSDK.Heatmap(options);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         const element = heatmap.render();
         gaia.appendChild(element);

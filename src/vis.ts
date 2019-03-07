@@ -17,7 +17,9 @@ import {Bar} from './lib/renderable/vis/bar/Bar';
 import BarOptions from './lib/renderable/vis/bar/BarOptions';
 import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
-// export default Gaia class
+import {Bar3D} from './lib/renderable/vis/bar3d/Bar3D';
+import Bar3DOptions from './lib/renderable/vis/bar3d/Bar3DOptions';
+
 export default {
     Heatmap,
     HeatmapOptions,
@@ -36,5 +38,7 @@ export default {
     Bar,
     BarOptions,
     Graph,
-    GraphOptions
+    GraphOptions,
+    Bar3D,
+    Bar3DOptions
 };

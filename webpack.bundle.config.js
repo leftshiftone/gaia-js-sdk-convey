@@ -38,18 +38,19 @@ module.exports = (env, argv) => ({
     extensions: ['.ts', '.js'],
   },
   output: {
-    library: '',
-    libraryTarget: 'commonjs',
-    filename: 'dist/[name].min.js',
+    library: 'GaiaSDK',
+    libraryTarget: 'umd',
+    libraryExport: 'default',
+    filename: 'dist/bundle/[name]-bundle.min.js',
     path: __dirname,
   },
-  externals: [nodeExternals()],
+    externals: ['google-maps', 'leaflet', 'node-ical'],
   plugins: [
     new StyleLintPlugin({
       files: ['src/**/*.scss'],
     }),
     new MiniCssExtractPlugin({
-      filename: 'dist/[name].min.css',
+      filename: 'dist/bundle/[name]-bundle.min.css',
     }),
   ],
 });

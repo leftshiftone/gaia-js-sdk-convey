@@ -2,18 +2,57 @@
     width: 100%;
     height: 100%;
 }
-
-.lto-vis-doughnut path.slice {
+.lto-vis-lines {
+    stroke: black;
+}
+.lto-vis-doughnut path.lto-vis-slice {
     stroke-width: 2px;
 }
-
 .lto-vis-doughnut polyline {
     opacity: .3;
-    stroke: black;
     stroke-width: 2px;
     fill: none;
 }
-
 .lto-vis-doughnut text {
     font-size: 0.75em;
+}
+.lto-vis-slice-0 {
+    fill: #83e5e5;
+    stroke: #008d8d;
+}
+.lto-vis-slice-1 {
+    fill: #30c4c4;
+    stroke: #008d8d;
+}
+.lto-vis-slice-2 {
+    fill: #008d8d;
+    stroke: #008d8d;
+}
+.lto-vis-slice-3 {
+    fill: #0fb5b5;
+    stroke: #0fb5b5;
+}
+.lto-vis-slice-4 {
+    fill: #53d4d4;
+    stroke: #53d4d4;
+}
+.lto-vis-slice-5 {
+    fill: #83e5e5;
+    stroke: #83e5e5;
+}
+.lto-vis-slice-6 {
+    fill: #30c4c4;
+    stroke: #30c4c4;
+}
+.lto-vis-slice-7 {
+    fill: #008d8d;
+    stroke: #008d8d;
+}
+.lto-vis-slice-8 {
+    fill: #0fb5b5;
+    stroke: #0fb5b5;
+}
+.lto-vis-slice-9 {
+    fill: #53d4d4;
+    stroke: #53d4d4;
 }

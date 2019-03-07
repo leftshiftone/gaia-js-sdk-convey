@@ -76,8 +76,10 @@
     "scripts": {
         "webpack:dev": "webpack-dev-server --open --mode=development",
         "webpack:build": "webpack --mode=production",
+        "webpack:bundle": "webpack --config webpack.bundle.config.js --mode=production",
         "webpack:dev-build": "webpack --mode=development",
         "build": "npm run test && npm run webpack:build",
+        "bundle": "npm run test && npm run webpack:bundle",
         "lint": "stylelint src/**/*.scss && tslint src/**/*.ts && eslint *.js",
         "sonarqube": "jest --env=jsdom --coverage && sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN",
         "trigger-release:major": "git pull --tags && git tag release-major && git push --tags && git tag -d release-major",
