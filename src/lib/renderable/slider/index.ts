@@ -11,7 +11,6 @@ export class Slider implements IRenderable {
 
     constructor(spec: ISpecification) {
         this.spec = spec;
-        console.log("hallo");
     }
 
     /**
