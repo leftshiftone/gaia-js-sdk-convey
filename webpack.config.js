@@ -1,5 +1,4 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = (env, argv) => ({
   entry: {
@@ -23,7 +22,6 @@ module.exports = (env, argv) => ({
           argv.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: 'css-loader',
-            options: { minimize: true },
           },
           {
             loader: 'sass-loader',
@@ -44,9 +42,6 @@ module.exports = (env, argv) => ({
   },
   externals: ['google-maps', 'leaflet', 'node-ical'],
   plugins: [
-    new StyleLintPlugin({
-      files: ['src/**/*.scss'],
-    }),
     new MiniCssExtractPlugin({
       filename: 'dist/[name].min.css',
     }),
