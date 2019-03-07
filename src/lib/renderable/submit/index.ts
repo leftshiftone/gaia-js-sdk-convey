@@ -3,26 +3,9 @@ import EventStream from '../../event/EventStream';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import Properties from "../Properties";
+import {closestByClass} from "../../support/Elements";
 
 export class Submit implements IRenderable {
-
-    // TODO: move to utility class
-    public static closestByClass(element: any, clazz: Array<string>) {
-        let el = element;
-        let b = false;
-        while (!b) {
-            el = el.parentNode as HTMLElement;
-            if (!el || !el.classList) {
-                return null;
-            }
-            clazz.forEach(e => {
-                    if (el.classList.contains(e))
-                        b = true
-                }
-            )
-        }
-        return el;
-    }
 
     private readonly spec: ISpecification;
 
@@ -46,13 +29,12 @@ export class Submit implements IRenderable {
 
         const text = this.spec.text || "";
         const timestamp = this.spec.timestamp || "";
-
         if (this.spec.storeInContext) {
             submit.addEventListener('click', () => {
                 const attributes: Attr = {} as Attr;
 
                 // FIXME: use generic class name e.g. message-content
-                const content = Submit.closestByClass(submit, ['lto-block', 'lto-form']);
+                const content = closestByClass(submit, ['lto-block', 'lto-form']);
                 if (content.classList.contains("lto-block")) {
                     content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox: HTMLInputElement) => {
                         Submit.addElementValueToAttributes(checkbox, attributes);
@@ -84,23 +66,25 @@ export class Submit implements IRenderable {
                     let allowed = true;
 
                     form.querySelectorAll("input.lto-email, div.lto-drop-area, input.lto-phone, input.lto-textInput").forEach(element => {
-                            const value = element.getAttribute("value");
-                            const name = element.getAttribute("name");
-                            // check if element is type of input
-                            if (element.tagName === "input") {
-                                // is element required?
-                                if ((element as HTMLInputElement).required) {
-                                    if (value !== null)
-                                        (element as HTMLInputElement).checkValidity() ? values.push({[name as string]: value}) : allowed = false;
-                                    else allowed = false
-                                } else
-                                    if (value !== null)
-                                        (element as HTMLInputElement).checkValidity() ? values.push({[name as string]: value}) : allowed = false;
-                            } else {
-                                value !== null ? values.push({[name as string]: value}) : allowed = false;
+                        const value = element.getAttribute("value");
+                        const name = element.getAttribute("name");
+
+                        // check if element is type of input
+                        if (element instanceof HTMLInputElement) {
+                            // is element required?
+                            if ((element as HTMLInputElement).required) {
+                                value !== null ?
+                                    (element as HTMLInputElement).checkValidity() ?
+                                        values.push({[name as string]: value}) :
+                                        allowed = false :
+                                    allowed = false;
+                            } else if (value !== null) {
+                                (element as HTMLInputElement).checkValidity() ? values.push({[name as string]: value}) : allowed = false;
                             }
+                        } else {
+                            value !== null ? values.push({[name as string]: value}) : allowed = false;
                         }
-                    );
+                    });
                     if (allowed) {
                         if (form.getAttribute("name") !== "") {
                             form.setAttribute("value", JSON.stringify(values));
@@ -137,7 +121,7 @@ export class Submit implements IRenderable {
                 const DEFAULT_HEADER = {"Content-Type": "application/json"};
                 const DEFAULT_METHOD = "POST";
 
-                const content = Submit.closestByClass(submit, ['lto-block', 'lto-form']);
+                const content = closestByClass(submit, ['lto-block', 'lto-form']);
 
                 content.querySelectorAll("div.lto-drop-area").forEach((element: HTMLElement) => {
                     const name = element.getAttribute("name");
@@ -151,15 +135,17 @@ export class Submit implements IRenderable {
                                 method: method,
                                 headers: headers,
                                 body: value
-                            }).then(response =>
-                                EventStream.emit("GAIA::publish", {
-                                    timestamp, text,
-                                    attributes: {type: 'submit', value: {[name as string]: response.statusText}},
-                                    type: 'submit',
-                                    position: 'right'
-                                })
+                            }).then(response => {
+                                    EventStream.emit("GAIA::publish", {
+                                        timestamp, text,
+                                        attributes: {type: 'submit', value: {[name as string]: response.statusText}},
+                                        type: 'submit',
+                                        position: 'right'
+                                    });
+                                    content.style.pointerEvents = "none"
+                                }
                             ).catch(reason => console.error("ERROR: " + reason));
-                    else console.error("ERROR: destination is not defined")
+                        else console.error("ERROR: destination is not defined")
                 })
             })
         }
