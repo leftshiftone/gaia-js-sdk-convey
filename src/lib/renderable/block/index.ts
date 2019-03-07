@@ -22,6 +22,7 @@ export class Block implements IRenderable, IStackeable {
         const position = this.spec.position || 'left';
         const block = document.createElement('div');
         block.classList.add('lto-block', "lto-" + position);
+        block.setAttribute("name", this.spec.name || "");
 
         if(this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => block.classList.add(e));

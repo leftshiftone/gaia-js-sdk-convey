@@ -8,6 +8,7 @@ import {OffSwitchListener} from './lib/listener/OffSwitchListener';
 import {Defaults} from './lib/support/Defaults';
 import './styles.scss';
 import {Block} from './lib/renderable/block';
+import {Cards} from "./lib/renderable/cards";
 import {Bold} from './lib/renderable/bold';
 import {Break} from './lib/renderable/break';
 import {Button} from './lib/renderable/button';
@@ -79,6 +80,7 @@ export default {
     Text,
     Row,
     Col,
+    Cards,
 
     Heatmap,
     Sunburst,

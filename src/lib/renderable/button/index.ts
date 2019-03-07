@@ -22,7 +22,7 @@ export class Button implements IRenderable {
         const button = document.createElement('button');
 
         button.setAttribute('name', this.spec.name || "");
-        if(this.spec.class !== undefined) {
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => button.classList.add(e));
         }
         button.classList.add("lto-button", "lto-" + position);
@@ -37,8 +37,8 @@ export class Button implements IRenderable {
                 const name = this.spec.name || "";
                 const value = this.spec.value || "";
 
-                const button = {text, type: 'button', attributes: {name, value, type: 'button'}};
-                EventStream.emit("GAIA::publish", button);
+                const buttonObject = {text, type: 'button', attributes: {name, value, type: 'button'}};
+                EventStream.emit("GAIA::publish", buttonObject);
 
                 // remove left buttons
                 const elements = document.querySelectorAll('.lto-button.lto-left');
@@ -53,7 +53,7 @@ export class Button implements IRenderable {
                 suggestions.forEach(element => element.remove());
 
                 // add right button
-                const newButton = Object.assign(button, {class: this.spec.class, position: 'right', timestamp: new Date().getTime()});
+                const newButton = Object.assign(buttonObject, {class: this.spec.class, position: 'right', timestamp: new Date().getTime()});
                 renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.appendContent(e));
             };
             button.addEventListener('click', eventListener, {once: true});
@@ -62,4 +62,5 @@ export class Button implements IRenderable {
     }
 
 }
+
 Renderables.register("button", Button);

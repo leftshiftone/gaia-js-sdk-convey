@@ -41,6 +41,7 @@ import {Email} from "./lib/renderable/email";
 import {Upload} from "./lib/renderable/upload";
 import {Phone} from "./lib/renderable/phone";
 import {TextInput} from "./lib/renderable/textInput";
+import {Cards} from "./lib/renderable/cards";
 import './styles.scss';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
 import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
@@ -108,6 +109,7 @@ export default {
     Phone,
     TextInput,
     Camera,
+    Cards,
 
     Heatmap,
     HeatmapOptions,

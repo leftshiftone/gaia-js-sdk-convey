@@ -3,13 +3,21 @@
   min-width: 30%;
   margin-top: 5px;
   animation: slide-up 0.4s ease;
-  background: white;
+  background: transparent;
   color: #1E223F;
   border: 1px solid #1E223F;
   border-radius: 20px;
   padding: 20px 10px 10px;
   display: inline-block;
   margin-bottom: 30px;
+}
+.lto-text.lto-nested {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+    border:none;
+    padding:0;
+    margin-bottom:10px;
 }
 .lto-text.lto-right {
   background: #1E223F;

@@ -40,4 +40,6 @@ export interface ISpecification {
     maxSize?:number
     storeInContext?:boolean
     destination?:string
+    countdownInSec?:number
+    values?:Array<string>
 }

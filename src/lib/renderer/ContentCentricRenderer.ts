@@ -15,8 +15,8 @@ export class ContentCentricRenderer extends ClassicRenderer {
     private qualifier = null;
     private behaviour: (renderable: IRenderable, type?: IStackeable) => HTMLElement[] = (r, t) => this.defaultBehaviour(r, t);
 
-    constructor(container: HTMLElement) {
-        super(container);
+    constructor(content: HTMLElement, suggest: HTMLElement) {
+        super(content, suggest);
         EventStream.addListener("GAIA::publish", (e) => {
             if (e[0].type === "suggestion") {
                 this.behaviour = this.suggestionBehaviour(this.qualifier || "");

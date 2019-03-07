@@ -11,6 +11,7 @@ export class Slider implements IRenderable {
 
     constructor(spec: ISpecification) {
         this.spec = spec;
+        console.log("hallo");
     }
 
     /**
@@ -21,39 +22,57 @@ export class Slider implements IRenderable {
         const slider = document.createElement("input");
         const minLabel = document.createElement("span");
         const maxLabel = document.createElement("span");
+        const values: Map<number, string> = new Map([]);
 
         slider.type="range";
-        //@ts-ignore
-        slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
-        //@ts-ignore
-        slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
-        //@ts-ignore
-        slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
-        slider.step = this.spec.step || "";
         slider.name = this.spec.name || "";
 
         minLabel.classList.add("lto-slider-min");
         maxLabel.classList.add("lto-slider-max");
-        minLabel.innerText = slider.min;
-        maxLabel.innerText = slider.max;
 
         const value = document.createElement("div");
         value.classList.add("lto-slider-value");
 
-        value.innerHTML = slider.value;
-        slider.setAttribute('value', slider.value);
+        if(this.spec.values !== undefined) {
+            slider.max = (this.spec.values.length - 1).toString();
+            slider.min = "0";
+            slider.value = this.spec.value || "0";
+            slider.step = "1";
+            this.spec.values.forEach(value => values.set(this.spec.values!.indexOf(value), value));
 
-        slider.oninput = () => {
-            slider.setAttribute('value', slider.value);
+            minLabel.innerText = values.get(+slider.min)!.toString();
+            maxLabel.innerText = values.get(+slider.max)!.toString();
+
+            value.innerHTML = values.get(+slider.value)!;
+            slider.setAttribute('value', values.get(+slider.value)!);
+
+            slider.oninput = () => {
+                slider.setAttribute('value', values.get(+slider.value)!);
+                value.innerHTML = values.get(+slider.value)!;
+            };
+        } else {
+            //@ts-ignore
+            slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
+            //@ts-ignore
+            slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
+            //@ts-ignore
+            slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
+            slider.step = this.spec.step || "";
+            minLabel.innerText = slider.min;
+            maxLabel.innerText = slider.max;
+
             value.innerHTML = slider.value;
-        };
+            slider.setAttribute('value',slider.value);
+            slider.oninput = () => {
+                slider.setAttribute('value', slider.value);
+                value.innerHTML = slider.value;
+            };
+        }
 
         slider.classList.add("lto-slider", "lto-" + position);
 
         if (!this.spec.horizontal)
             slider.style.transform = "rotate(90deg)";
-
-        slider.step = this.spec.step || "";
 
         if (isNested)
             slider.classList.add("lto-nested");
