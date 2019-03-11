@@ -100,6 +100,8 @@ export class Submit implements IRenderable {
 
                 if (Object.keys(attributes).length > 0) {
                     submit.disabled = true;
+                    content.style.pointerEvents = "none";
+
                     EventStream.emit("GAIA::publish", {timestamp, text, attributes: {type: 'submit', value: JSON.stringify(attributes)}, type: 'submit', position: 'right'});
 
                     const elements = document.querySelectorAll('.lto-button.lto-left');
@@ -112,8 +114,6 @@ export class Submit implements IRenderable {
                     // remove left suggestions
                     const suggestions = document.querySelectorAll('.lto-suggestion.lto-left');
                     suggestions.forEach(element => element.remove());
-
-                    content.style.pointerEvents = "none"
                 }
             });
         } else {

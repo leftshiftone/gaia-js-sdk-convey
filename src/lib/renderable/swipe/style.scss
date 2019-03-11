@@ -16,7 +16,7 @@ $imgSize: 10rem;
 $red: red;
 $green: green;
 
-.lto-cards {
+.lto-swipe {
     position: relative;
     min-width: 30%;
     min-height: 500px;
@@ -86,10 +86,10 @@ $green: green;
         border-top-right-radius: 1.5rem;
     }
 
-    &.m-reject {
+    &.lto-card-reject {
         background: $red;
     }
-    &.m-like {
+    &.lto-card-like {
         background: $green;
 
         &:after {

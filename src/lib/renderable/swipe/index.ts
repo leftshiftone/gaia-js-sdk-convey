@@ -5,14 +5,14 @@ import {IStackeable} from '../../api/IStackeable';
 import EventStream from "../../event/EventStream";
 
 /**
- * Implementation of the 'cards' markup element.
+ * Implementation of the 'swipe' markup element.
  */
-export class Cards implements IRenderable, IStackeable {
+export class Swipe implements IRenderable, IStackeable {
 
     private card: HTMLElement;
     private cardReject: HTMLElement;
     private cardLike: HTMLElement;
-    private readonly cards: HTMLElement;
+    private readonly swipe: HTMLElement;
     private readonly spec: ISpecification;
     private animating: boolean = false;
     private deg: number = 0;
@@ -26,7 +26,7 @@ export class Cards implements IRenderable, IStackeable {
     constructor(message: ISpecification) {
         this.spec = message;
         this.numOfCards = this.spec.elements!.length;
-        this.cards = document.createElement('div');
+        this.swipe = document.createElement('div');
         this.cardLike = document.createElement('div');
         this.cardReject = document.createElement('div');
         this.card = document.createElement('div');
@@ -38,27 +38,27 @@ export class Cards implements IRenderable, IStackeable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
 
-        this.cards.setAttribute("name", this.spec.name || "");
-        this.cards.classList.add('lto-cards', "lto-" + position);
+        this.swipe.setAttribute("name", this.spec.name || "");
+        this.swipe.classList.add('lto-swipe', "lto-" + position);
 
         if (this.spec.class !== undefined)
-            this.spec.class.split(" ").forEach(e => this.cards.classList.add(e));
+            this.spec.class.split(" ").forEach(e => this.swipe.classList.add(e));
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(e => {
             const card = document.createElement("div");
             card.classList.add("lto-card");
             card.appendChild(e);
-            card.innerHTML += `<div class="lto-card-choice m-reject"></div><div class="lto-card-choice m-like"></div><div class="lto-card-drag"></div>`;
-            this.cards.appendChild(card)
+            card.innerHTML += `<div class="lto-card-choice lto-card-reject"></div><div class="lto-card-choice lto-card-like"></div><div class="lto-card-drag"></div>`;
+            this.swipe.appendChild(card)
         }));
 
-        this.cards.querySelectorAll(".lto-card:not(.inactive)").forEach(c => {
+        this.swipe.querySelectorAll(".lto-card:not(.inactive)").forEach(c => {
             (c as HTMLElement).onmousedown = e => {
                 if (this.animating) return;
                 this.card = c as HTMLElement;
-                this.cardReject = c.querySelectorAll(".lto-card-choice.m-reject").item(0) as HTMLElement;
-                this.cardLike = c.querySelectorAll(".lto-card-choice.m-like").item(0) as HTMLElement;
+                this.cardReject = c.querySelectorAll(".lto-card-choice.lto-card-reject").item(0) as HTMLElement;
+                this.cardLike = c.querySelectorAll(".lto-card-choice.lto-card-like").item(0) as HTMLElement;
                 const startX = e.pageX;
 
                 document.onmousemove = (e) => {
@@ -75,11 +75,12 @@ export class Cards implements IRenderable, IStackeable {
                     this.release()
                 }
             };
+
             (c as HTMLElement).ontouchstart = e => {
                 if (this.animating) return;
                 this.card = c as HTMLElement;
-                this.cardReject = c.querySelectorAll(".lto-card-choice.m-reject").item(0) as HTMLElement;
-                this.cardLike = c.querySelectorAll(".lto-card-choice.m-like").item(0) as HTMLElement;
+                this.cardReject = c.querySelectorAll(".lto-card-choice.lto-card-reject").item(0) as HTMLElement;
+                this.cardLike = c.querySelectorAll(".lto-card-choice.lto-card-like").item(0) as HTMLElement;
                 const startX = e.touches[0].pageX;
 
                 document.ontouchmove = (e) => {
@@ -99,12 +100,12 @@ export class Cards implements IRenderable, IStackeable {
         });
 
         if (isNested)
-            this.cards.classList.add('lto-nested');
+            this.swipe.classList.add('lto-nested');
 
         if (this.spec.countdownInSec !== 0)
             setTimeout(() => this.publish(), this.spec.countdownInSec as number * 1000);
 
-        return this.cards;
+        return this.swipe;
     }
 
     public pullChange() {
@@ -157,7 +158,7 @@ export class Cards implements IRenderable, IStackeable {
 
     public publish() {
         if (!this.isPublished) {
-            this.cards.style.pointerEvents = "none";
+            this.swipe.style.pointerEvents = "none";
             EventStream.emit("GAIA::publish", {
                 timestamp: "",
                 text: "",
@@ -170,4 +171,4 @@ export class Cards implements IRenderable, IStackeable {
     }
 }
 
-Renderables.register("cards", Cards);
+Renderables.register("swipe", Swipe);
