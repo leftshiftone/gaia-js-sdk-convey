@@ -51,7 +51,7 @@ $green: green;
     }
 }
 
-.lto-card-choice {
+.lto-choice {
     position: absolute;
     left: 0;
     top: 0;
@@ -86,10 +86,10 @@ $green: green;
         border-top-right-radius: 1.5rem;
     }
 
-    &.lto-card-reject {
+    &.lto-choice-left {
         background: $red;
     }
-    &.lto-card-like {
+    &.lto-choice-right {
         background: $green;
 
         &:after {

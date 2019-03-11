@@ -10,8 +10,8 @@ import EventStream from "../../event/EventStream";
 export class Swipe implements IRenderable, IStackeable {
 
     private card: HTMLElement;
-    private cardReject: HTMLElement;
-    private cardLike: HTMLElement;
+    private choiceLeft: HTMLElement;
+    private choiceRight: HTMLElement;
     private readonly swipe: HTMLElement;
     private readonly spec: ISpecification;
     private animating: boolean = false;
@@ -27,8 +27,8 @@ export class Swipe implements IRenderable, IStackeable {
         this.spec = message;
         this.numOfCards = this.spec.elements!.length;
         this.swipe = document.createElement('div');
-        this.cardLike = document.createElement('div');
-        this.cardReject = document.createElement('div');
+        this.choiceRight = document.createElement('div');
+        this.choiceLeft = document.createElement('div');
         this.card = document.createElement('div');
     }
 
@@ -47,9 +47,16 @@ export class Swipe implements IRenderable, IStackeable {
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(e => {
             const card = document.createElement("div");
-            card.classList.add("lto-card");
+            const choiceRight = document.createElement('div');
+            const choiceLeft = document.createElement('div');
+
+            card.className = "lto-card";
+            choiceRight.className = "lto-choice lto-choice-right";
+            choiceLeft.className = "lto-choice lto-choice-left";
+
             card.appendChild(e);
-            card.innerHTML += `<div class="lto-card-choice lto-card-reject"></div><div class="lto-card-choice lto-card-like"></div><div class="lto-card-drag"></div>`;
+            card.appendChild(choiceRight);
+            card.appendChild(choiceLeft);
             this.swipe.appendChild(card)
         }));
 
@@ -57,8 +64,8 @@ export class Swipe implements IRenderable, IStackeable {
             (c as HTMLElement).onmousedown = e => {
                 if (this.animating) return;
                 this.card = c as HTMLElement;
-                this.cardReject = c.querySelectorAll(".lto-card-choice.lto-card-reject").item(0) as HTMLElement;
-                this.cardLike = c.querySelectorAll(".lto-card-choice.lto-card-like").item(0) as HTMLElement;
+                this.choiceLeft = c.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
+                this.choiceRight = c.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
                 const startX = e.pageX;
 
                 document.onmousemove = (e) => {
@@ -79,8 +86,8 @@ export class Swipe implements IRenderable, IStackeable {
             (c as HTMLElement).ontouchstart = e => {
                 if (this.animating) return;
                 this.card = c as HTMLElement;
-                this.cardReject = c.querySelectorAll(".lto-card-choice.lto-card-reject").item(0) as HTMLElement;
-                this.cardLike = c.querySelectorAll(".lto-card-choice.lto-card-like").item(0) as HTMLElement;
+                this.choiceLeft = c.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
+                this.choiceRight = c.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
                 const startX = e.touches[0].pageX;
 
                 document.ontouchmove = (e) => {
@@ -108,20 +115,20 @@ export class Swipe implements IRenderable, IStackeable {
         return this.swipe;
     }
 
-    public pullChange() {
+    public pullChange(): void {
         this.animating = true;
         this.deg = this.pullDeltaX / 10;
         this.card.style.transform = "translateX(" + this.pullDeltaX + "px) rotate(" + this.deg + "deg)";
 
         const opacity = this.pullDeltaX / 100;
-        const rejectOpacity = (opacity >= 0) ? 0 : Math.abs(opacity);
-        const likeOpacity = (opacity <= 0) ? 0 : opacity;
+        const leftOpacity = (opacity >= 0) ? 0 : Math.abs(opacity);
+        const rightOpacity = (opacity <= 0) ? 0 : opacity;
 
-        this.cardReject.style.opacity = rejectOpacity.toString();
-        this.cardLike.style.opacity = likeOpacity.toString();
+        this.choiceLeft.style.opacity = leftOpacity.toString();
+        this.choiceRight.style.opacity = rightOpacity.toString();
     };
 
-    private release() {
+    private release(): void {
         const name = this.card.getElementsByClassName("lto-block").item(0).getAttribute("name") as string;
         if (this.pullDeltaX >= this.decisionVal) {
             this.value.push({[name]: true});
@@ -149,14 +156,14 @@ export class Swipe implements IRenderable, IStackeable {
         setTimeout(() => {
             this.card.setAttribute("style", "");
             this.card.classList.remove("reset");
-            this.card.querySelectorAll(".lto-card-choice").forEach(e => e.setAttribute("style", ""));
+            this.card.querySelectorAll(".lto-choice").forEach(e => e.setAttribute("style", ""));
             this.pullDeltaX = 0;
             this.animating = false;
         }, 300);
     };
 
 
-    public publish() {
+    public publish(): void {
         if (!this.isPublished) {
             this.swipe.style.pointerEvents = "none";
             EventStream.emit("GAIA::publish", {
