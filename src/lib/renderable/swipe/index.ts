@@ -22,6 +22,7 @@ export class Swipe implements IRenderable, IStackeable {
     private decisionVal: number = 80;
     private isPublished: boolean = false;
     private value: Array<any> = [];
+    private startX: number = 0;
 
     constructor(message: ISpecification) {
         this.spec = message;
@@ -32,9 +33,6 @@ export class Swipe implements IRenderable, IStackeable {
         this.card = document.createElement('div');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
 
@@ -45,7 +43,7 @@ export class Swipe implements IRenderable, IStackeable {
             this.spec.class.split(" ").forEach(e => this.swipe.classList.add(e));
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
-        elements.forEach(e => e.forEach(e => {
+        elements.forEach(e => e.forEach(block => {
             const card = document.createElement("div");
             const choiceRight = document.createElement('div');
             const choiceLeft = document.createElement('div');
@@ -53,57 +51,36 @@ export class Swipe implements IRenderable, IStackeable {
             card.className = "lto-card";
             choiceRight.className = "lto-choice lto-choice-right";
             choiceLeft.className = "lto-choice lto-choice-left";
+            block.style.userSelect = "none";
 
-            card.appendChild(e);
+            card.appendChild(block);
             card.appendChild(choiceRight);
             card.appendChild(choiceLeft);
             this.swipe.appendChild(card)
         }));
 
-        this.swipe.querySelectorAll(".lto-card:not(.inactive)").forEach(c => {
-            (c as HTMLElement).onmousedown = e => {
+        this.swipe.querySelectorAll(".lto-card:not(.lto-inactive)").forEach(card => {
+            card.addEventListener("mousedown", (e:any) => {
                 if (this.animating) return;
-                this.card = c as HTMLElement;
-                this.choiceLeft = c.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
-                this.choiceRight = c.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
-                const startX = e.pageX;
+                this.card = card as HTMLElement;
+                this.choiceLeft = card.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
+                this.choiceRight = card.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
+                this.startX = e.pageX;
 
-                document.onmousemove = (e) => {
-                    const x = e.pageX;
-                    this.pullDeltaX = (x - startX);
-                    if (!this.pullDeltaX) return;
-                    this.pullChange();
-                };
+                document.addEventListener("mousemove", this.mousemove);
+                document.addEventListener("mouseup", this.end);
+            });
 
-                document.onmouseup = () => {
-                    document.onmousemove = () => undefined;
-                    document.onmouseup = () => undefined;
-                    if (!this.pullDeltaX) return;
-                    this.release()
-                }
-            };
-
-            (c as HTMLElement).ontouchstart = e => {
+            card.addEventListener("touchstart", e => {
                 if (this.animating) return;
-                this.card = c as HTMLElement;
-                this.choiceLeft = c.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
-                this.choiceRight = c.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
-                const startX = e.touches[0].pageX;
+                this.card = card as HTMLElement;
+                this.choiceLeft = card.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
+                this.choiceRight = card.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
+                this.startX = e.touches[0].pageX;
 
-                document.ontouchmove = (e) => {
-                    const x = e.touches[0].pageX;
-                    this.pullDeltaX = (x - startX);
-                    if (!this.pullDeltaX) return;
-                    this.pullChange();
-                };
-
-                document.ontouchend = () => {
-                    document.ontouchend = () => undefined;
-                    document.ontouchmove = () => undefined;
-                    if (!this.pullDeltaX) return;
-                    this.release()
-                }
-            }
+                document.addEventListener("touchmove", this.touchmove);
+                document.addEventListener("touchend", this.end);
+            });
         });
 
         if (isNested)
@@ -132,36 +109,35 @@ export class Swipe implements IRenderable, IStackeable {
         const name = this.card.getElementsByClassName("lto-block").item(0).getAttribute("name") as string;
         if (this.pullDeltaX >= this.decisionVal) {
             this.value.push({[name]: true});
-            this.card.classList.add("to-right");
+            this.card.classList.add("lto-to-right");
         } else if (this.pullDeltaX <= this.decisionVal * -1) {
             this.value.push({[name]: false});
-            this.card.classList.add("to-left");
+            this.card.classList.add("lto-to-left");
         }
 
         if (Math.abs(this.pullDeltaX) >= this.decisionVal) {
-            this.card.classList.add("inactive");
+            this.card.classList.add("lto-inactive");
 
             setTimeout(() => {
-                this.card.classList.add("below");
-                this.card.classList.remove("inactive", "to-left", "to-right");
+                this.card.classList.add("lto-below");
+                this.card.classList.remove("lto-inactive", "lto-to-left", "lto-to-right");
                 this.cardsCounter++;
                 if (this.cardsCounter === this.numOfCards)
                     this.publish()
-            }, 300);
+            }, 100);
         }
 
         if (Math.abs(this.pullDeltaX) < this.decisionVal)
-            this.card.classList.add("reset");
+            this.card.classList.add("lto-reset");
 
         setTimeout(() => {
             this.card.setAttribute("style", "");
-            this.card.classList.remove("reset");
+            this.card.classList.remove("lto-reset");
             this.card.querySelectorAll(".lto-choice").forEach(e => e.setAttribute("style", ""));
             this.pullDeltaX = 0;
             this.animating = false;
-        }, 300);
+        }, 100);
     };
-
 
     public publish(): void {
         if (!this.isPublished) {
@@ -176,6 +152,30 @@ export class Swipe implements IRenderable, IStackeable {
             this.isPublished = true;
         }
     }
+
+    private mousemove = (e:MouseEvent) => {
+        const x = e.pageX;
+        this.pullDeltaX = (x - this.startX);
+        if (!this.pullDeltaX) return;
+        this.pullChange();
+    };
+
+    private touchmove = (e:TouchEvent) => {
+        const x = e.touches[0].pageX;
+        this.pullDeltaX = (x - this.startX);
+        if (!this.pullDeltaX) return;
+        this.pullChange();
+    };
+
+    private end = () => {
+        document.removeEventListener("mousemove", this.mousemove);
+        document.removeEventListener("touchmove", this.touchmove);
+        document.removeEventListener("mouseup", this.end);
+        document.removeEventListener("touchend", this.end);
+        if (!this.pullDeltaX) return;
+        this.release()
+    };
+
 }
 
 Renderables.register("swipe", Swipe);

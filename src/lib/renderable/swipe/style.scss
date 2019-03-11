@@ -25,6 +25,7 @@ $green: green;
     background: #F6F6F5;
     overflow: hidden;
 }
+
 .lto-card {
     z-index: 2;
     position: absolute;
@@ -34,20 +35,30 @@ $green: green;
     height: 100%;
     transform-origin: 50% 100%;
 
-    &.inactive {
+    &.lto-inactive {
         transition: transform 0.3s;
     }
 
-    &.to-left {
+    &.lto-to-left {
         transform: translateX(-30rem) rotate(-30deg) !important;
     }
 
-    &.to-right {
+    &.lto-to-right {
         transform: translate(30rem) rotate(30deg) !important;
     }
 
-    &.below {
+    &.lto-below {
         z-index: 1;
+    }
+
+    &.lto-reset {
+        transition: transform 0.3s;
+        transform: translateX(0) !important;
+
+        &.lto-card-choice {
+            transition: opacity 0.3s;
+            opacity: 0 !important;
+        }
     }
 }
 
@@ -59,36 +70,10 @@ $green: green;
     height: 100%;
     opacity: 0;
 
-    &:before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 2rem;
-        height: 2rem;
-        margin-left: -1rem;
-        color: #fff;
-        border-radius: 50%;
-        box-shadow: -2rem -3rem #fff, 2rem -3rem #fff;
-    }
-
-    &:after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 4rem;
-        height: 1.5rem;
-        margin-left: -2rem;
-        border: 0.6rem solid #fff;
-        border-bottom: none;
-        border-top-left-radius: 1.5rem;
-        border-top-right-radius: 1.5rem;
-    }
-
     &.lto-choice-left {
         background: $red;
     }
+
     &.lto-choice-right {
         background: $green;
 
@@ -96,14 +81,4 @@ $green: green;
             transform: scaleY(-1);
         }
     }
-}
-
-.lto-card.reset {
-    transition: transform 0.3s;
-    transform: translateX(0) !important;
-}
-
-.lto-card.reset .lto-card-choice {
-    transition: opacity 0.3s;
-    opacity: 0 !important;
 }
