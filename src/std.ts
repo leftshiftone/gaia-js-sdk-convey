@@ -35,6 +35,7 @@ import {Suggestion} from './lib/renderable/suggestion';
 import {Table} from './lib/renderable/table';
 import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
+import {ReelValue} from "./lib/renderable/reelValue";
 import {Text} from './lib/renderable/text';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
 import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
@@ -81,6 +82,7 @@ export default {
     Row,
     Col,
     Swipe,
+    ReelValue,
 
     Heatmap,
     Sunburst,
