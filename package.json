@@ -1,7 +1,7 @@
 {
     "name": "gaia-js-sdk-convey",
     "version": "0.6.0",
-    "description": "JavaScript connector to the GAIA ecosystem.",
+    "description": "JavaScript connector to the G.A.I.A. ecosystem.",
     "main": "dist/gaia-js-sdk-convey-all.min.js",
     "dependencies": {
         "d3": "^5.8.0",
@@ -46,7 +46,7 @@
         "tslint-config-airbnb": "^5.10.0",
         "tslint-loader": "^3.6.0",
         "typescript": "^3.0.1",
-        "webpack": "^4.16.5",
+        "webpack": "^4.29.6",
         "webpack-cli": "^3.1.0",
         "webpack-dev-server": "^3.1.11",
         "webpack-node-externals": "^1.7.2"
@@ -87,6 +87,7 @@
         "assistant",
         "bot",
         "gaia",
+        "g.a.i.a.",
         "leftshiftone"
     ],
     "author": "Leftshift One Software GmbH <core-devs@leftshift.one>",
