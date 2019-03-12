@@ -16,6 +16,7 @@
 
 .lto-vis-sunburst #chart path {
     stroke: #fff;
+    opacity: 0;
 }
 
 .lto-vis-sunburst #explanation {
@@ -30,4 +31,21 @@
 
 .lto-vis-sunburst #percentage {
     font-size: 2.5em;
+}
+.lto-vis-sunburst {
+    & .lto-vis-A {
+        fill: #30c4c4;
+    }
+    & .lto-vis-B {
+        fill: #008d8d;
+    }
+    & .lto-vis-C {
+        fill: #0fb5b5;
+    }
+    & .lto-vis-D {
+        fill: #53d4d4;
+    }
+    & .lto-vis-E {
+        fill: #83e5e5;
+    }
 }

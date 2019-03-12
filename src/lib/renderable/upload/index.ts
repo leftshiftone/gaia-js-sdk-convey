@@ -41,26 +41,27 @@ export class Upload implements IRenderable {
             dropArea.classList.add("lto-nested");
         }
 
-        if (this.spec.class !== undefined)
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => {
                 uploadLabel.classList.add(e);
                 dropArea.classList.add(e);
             });
-
+        }
         dropArea.ondragover = (ev) => ev.preventDefault();
 
         dropArea.ondrop = (ev) => {
             ev.preventDefault();
 
+            // @ts-ignore
             const file = ev.dataTransfer.items ? ev.dataTransfer.items[0].getAsFile() : ev.dataTransfer.files[0];
 
             if (file) {
                 const fileExtension = file.name.split(".").pop();
                 let extensionAllowed = false;
-                if(this.spec.accept !== undefined) {
+                if (this.spec.accept !== undefined) {
                     const allowedExtensions = this.spec.accept!.replace(/\s/g, '').split(",");
                     allowedExtensions.forEach(e => {
-                        if (e === "." + fileExtension) extensionAllowed = true
+                        if (e === "." + fileExtension) extensionAllowed = true;
                     });
                 } else extensionAllowed = true;
 
@@ -78,7 +79,7 @@ export class Upload implements IRenderable {
         };
 
         upload.onchange = () => {
-            if (upload.files)
+            if (upload.files) {
                 if (upload.files[0].size <= this.spec.maxSize! * 1024 * 1024) {
                     fileSpan.innerText = upload.files[0].name;
                     errorSpan.innerText = "";
@@ -89,6 +90,7 @@ export class Upload implements IRenderable {
                     errorSpan.innerText = "file not valid";
                     fileSpan.innerText = "";
                 }
+            }
         };
 
         uploadLabel.appendChild(upload);

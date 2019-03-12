@@ -5,7 +5,7 @@
     <title>gaia-js-sdk-convey</title>
     <script src="../../../dist/bundle/gaia-js-sdk-convey-vis-bundle.min.js"></script>
     <script src="./bar3d.js"></script>
-    <link rel="stylesheet" href="../../../dist/gaia-js-sdk-convey-vis.min.css">
+    <link rel="stylesheet" href="../../../dist/bundle/gaia-js-sdk-convey-vis-bundle.min.css">
 </head>
 <body>
 
@@ -24,12 +24,19 @@
         options.gridStroke = "black";
         options.gridFill = "cyan";
         options.legendColor = "cyan";
+        options.textX = () => "asdfasdfasdf";
+        options.textZ = () => "asdfasdfasdf";
 
-        const graph = new GaiaSDK.Bar3D(options);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
-        const element = graph.render();
+        const bar3d = new GaiaSDK.Bar3D(options);
+        const element = bar3d.render();
         gaia.appendChild(element);
-        graph.init(element);
+        bar3d.init(element);
+
+        const bar3d2 = new GaiaSDK.Bar3D(options);
+        const element2 = bar3d.render();
+        gaia.appendChild(element2);
+        bar3d2.init(element2);
     });
 </script>
 </html>

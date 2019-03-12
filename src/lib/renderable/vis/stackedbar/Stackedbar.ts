@@ -1,13 +1,13 @@
-// noinspection TsLint
 import * as d3 from "d3";
 import {BaseType, ScaleBand, ScaleLinear} from "d3";
-// noinspection TsLint
 import "./Stackedbar.scss";
 import StackedbarOptions from './StackedbarOptions';
+import {getDigit, getLetter} from '../../../support/Strings';
 
 export default class Stackedbar {
 
-    private options: StackedbarOptions;
+    private readonly options: StackedbarOptions;
+    private readonly idMap: Map<string, number> = new Map<string, number>();
 
     constructor(options: StackedbarOptions = new StackedbarOptions()) {
         this.options = options;
@@ -32,20 +32,17 @@ export default class Stackedbar {
             const x = d3.scaleBand().rangeRound([0, width]).padding(0.1).align(0.1);
             const y = d3.scaleLinear().rangeRound([height, 0]);
 
-            const colorScale = d3.scaleOrdinal(this.options.color);
             let layers;
             let rect;
 
-            /*
-             * Create request for CSV-data, and then process the response.
-             */
-            // data.sort((a: any, b: any) => b.total - a.total);
+            if (this.options.sort) {
+                data.sort((a: any, b: any) => b.total - a.total);
+            }
 
             const columns: Array<string> = this.getLabels(data);
             const numStates = data.length;
             const stack = d3.stack().keys(columns);
 
-            // @ts-ignore
             layers = stack(data).map((layer: any) => layer.map((e: any, i: any) => {
                 return {
                     type: e.data.type,
@@ -58,7 +55,6 @@ export default class Stackedbar {
                 let y0 = 0;
                 for (let ag = 0; ag < columns.length; ++ag) {
                     const e = layers[ag][s];
-                    // @ts-ignore
                     e.y0 = y0;
                     y0 += e.y;
                 }
@@ -76,17 +72,13 @@ export default class Stackedbar {
             x.domain(data.map((d: any) => d.type));
             // @ts-ignore
             y.domain([0, d3.max(data, (d: any) => this.sumup(d))]).nice();
-            colorScale.domain(columns);
             /*
              * Render the bars.
              */
             g.selectAll(".serie")
                 .data(layers)
                 .enter().append("g")
-                .attr("class", "serie")
-                .attr("fill", (d: any) => {
-                    return colorScale(d[0].column);
-                })
+                .attr("class", (d: any) => `serie lto-vis-${getDigit(this.idMap, d[0].column)} lto-vis-${getLetter(this.idMap, d[0].column)}`)
                 .selectAll("rect")
                 .data((d: any) => d)
                 .enter().append("rect")
@@ -95,9 +87,7 @@ export default class Stackedbar {
                 .attr("width", x.bandwidth())
                 .attr("height", 0);
             rect = g.selectAll("rect");
-            /*
-             * Initial animation to gradually "grow" the bars from the x-axis.
-             */
+            // Initial animation to gradually "grow" the bars from the x-axis.
             rect.transition()
                 .delay((d, i) => i)
                 .attr("y", (d: any) => y(d.y0 + d.y))
@@ -115,15 +105,13 @@ export default class Stackedbar {
                 .attr("class", "axis axis--x")
                 .attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(x));
-            /*
-             * Add labels to the axes.
-             */
+
+            // Add labels to the axes.
             svg.append("text")
                 .attr("class", "axis axis--x")
                 .attr("text-anchor", "middle")
                 .attr("transform", "translate(" + (width / 2) + "," + (height + 60) + ")")
                 .text(this.options.textX);
-
             svg.append("text")
                 .attr("class", "axis axis--y")
                 .attr("text-anchor", "middle")
@@ -141,7 +129,7 @@ export default class Stackedbar {
                     .attr("x", 0)
                     .attr("width", 18)
                     .attr("height", 18)
-                    .attr("fill", colorScale);
+                    .attr("class", (d: any) => `serie lto-vis-${getDigit(this.idMap, d[0].column)} lto-vis-${getLetter(this.idMap, d[0].column)}`);
                 legend.append("text")
                     .attr("x", 20)
                     .attr("y", 9)
@@ -155,10 +143,10 @@ export default class Stackedbar {
     }
 
     /*
- * Reset the domain for the y-axis scaling to maximum of the population totals,
- * transition the y-axis changes to the bar heights, and then transition the
- * x-axis changes to the bar widths.
- */
+     * Reset the domain for the y-axis scaling to maximum of the population totals,
+     * transition the y-axis changes to the bar heights, and then transition the
+     * x-axis changes to the bar widths.
+     */
     private transitionStacked(x: ScaleBand<string>, y: ScaleLinear<number, number>,
                               rect: d3.Selection<BaseType, any, any, any>, yStackMax: number) {
         y.domain([0, yStackMax]);
@@ -184,7 +172,6 @@ export default class Stackedbar {
 
     private getLabels(data: [any]): Array<string> {
         const labels: Array<string> = [];
-
         data.forEach(e => {
             e.labels.forEach((key: string) => {
                 if (key !== "type") {
@@ -194,7 +181,6 @@ export default class Stackedbar {
                 }
             });
         });
-
         return labels;
     }
 

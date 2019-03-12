@@ -42,29 +42,9 @@ export class Bar3D {
 
     public init(element: HTMLElement) {
         this.options.data.then(data => {
-            const grid3d = d3_3d._3d()
-                .shape('GRID', 20)
-                .origin(this.options.origin(this.options.width, this.options.height))
-                .rotateY(this.options.startAngle)
-                .rotateX(-this.options.startAngle)
-                .scale(this.options.scale);
-
-            const point3d = d3_3d._3d()
-                .shape("LINE")
-                .x((d: any) => d.x)
-                .y((d: any) => d.y)
-                .z((d: any) => d.z)
-                .origin(this.options.origin(this.options.width, this.options.height))
-                .rotateY(this.options.startAngle)
-                .rotateX(-this.options.startAngle)
-                .scale(this.options.scale);
-
-            const yScale3d = d3_3d._3d()
-                .shape('LINE_STRIP')
-                .origin(this.options.origin(this.options.width, this.options.height))
-                .rotateY(this.options.startAngle)
-                .rotateX(-this.options.startAngle)
-                .scale(this.options.scale);
+            const grid3d = this.init3DElement("GRID", 20);
+            const point3d = this.init3DElement("LINE");
+            const yScale3d = this.init3DElement("LINE_STRIP");
 
             const svg: any = d3.select(element.querySelector("svg"));
             svg.call(d3.drag()
@@ -80,26 +60,34 @@ export class Bar3D {
                 point3d(this.scatter),
                 yScale3d([this.yLine])
             ];
-
             this.processData(barData, this.options.duration, svg, grid3d, yScale3d);
         });
     }
 
+    private init3DElement(shape: string, coords?:number) {
+        const element = d3_3d._3d()
+            .shape(shape, coords)
+            .origin(this.options.origin(this.options.width, this.options.height))
+            .rotateY(this.options.startAngle)
+            .rotateX(-this.options.startAngle)
+            .scale(this.options.scale);
+
+        if (shape === "LINE") {
+            element
+                .x((d: any) => d.x)
+                .y((d: any) => d.y)
+                .z((d: any) => d.z);
+        }
+        return element;
+    }
+
     private processData(data: any, duration: any, svg: any, grid3d: any, yScale3d: any) {
         const xGrid = svg.selectAll('path.grid').data(data[0], (d: any) => d.id);
-        const color = d3.scaleOrdinal(this.options.color);
 
-        xGrid
-            .enter()
+        xGrid.enter()
             .append('path')
-            .attr('class', '_3d grid')
+            .attr('class', (d: any) => '_3d grid ' + (d.ccw ? "ccw" : ""))
             .merge(xGrid)
-            .attr('stroke', this.options.gridStroke)
-            .attr('stroke-width', 0.3)
-            .attr('stroke-linecap', 'round')
-            .attr('stroke-linejoin', 'round')
-            .attr('fill', (d: any) => d.ccw ? this.options.gridFill : '#717171')
-            .attr('fill-opacity', 0.9)
             .attr('d', grid3d.draw);
         xGrid.exit().remove();
 
@@ -107,7 +95,7 @@ export class Bar3D {
         lines
             .enter()
             .append('line')
-            .attr('class', '_3d')
+            .attr('class', (d:any) => '_3d lto-vis-' + this.options.toGroup(Math.abs(d[0].y as number)))
             .attr('opacity', 0)
             .attr('x1', (d: any) => d[0].projected.x)
             .attr('y1', (d: any) => d[0].projected.y)
@@ -115,9 +103,6 @@ export class Bar3D {
             .attr('y2', (d: any) => d[1].projected.y)
             .merge(lines)
             .transition().duration(duration)
-        // @ts-ignore
-            .attr('stroke', (d: any) => color(this.options.toGroup(d[0].y)))
-            .attr('stroke-width', this.options.strokeWidth)
             .attr('opacity', 1)
             .attr('x1', (d: any) => d[0].projected.x)
             .attr('y1', (d: any) => d[0].projected.y)
@@ -126,19 +111,39 @@ export class Bar3D {
         lines.exit().remove();
 
         const yScale = svg.selectAll('path.yScale').data(data[2]);
-        yScale
-            .enter()
+        yScale.enter()
             .append('path')
-            .attr('class', '_3d yScale')
+            .attr('class', '_3d yScale legend')
             .merge(yScale)
-            .attr('stroke', this.options.legendColor)
-            .attr('stroke-width', .5)
             .attr('d', yScale3d.draw);
         yScale.exit().remove();
 
-        const yText = svg.selectAll('text.yText').data(data[2][0]);
-        yText
-            .enter()
+        this.renderLegendX(svg, data[0]);
+        this.renderLegendY(svg, data[2][0]);
+        this.renderLegendZ(svg, data[0]);
+
+        d3.selectAll('._3d').sort(d3_3d._3d().sort);
+    }
+
+    private renderLegendX(svg: any, data: any) {
+        const array = data.filter((e:any) => e[0]["2"] === 9).map((e:any) => e[0]);
+
+        const xText = svg.selectAll('text.xText').data(array);
+        xText.enter()
+            .append('text')
+            .attr('class', '_3d xText')
+            .attr('dx', '.3em')
+            .merge(xText)
+            .each((d: any) => d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z})
+            .attr('x', (d: any) => d.projected.x)
+            .attr('y', (d: any) => d.projected.y)
+            .text(this.options.textX);
+        xText.exit().remove();
+    }
+
+    private renderLegendY(svg: any, data: any) {
+        const yText = svg.selectAll('text.yText').data(data);
+        yText.enter()
             .append('text')
             .attr('class', '_3d yText')
             .attr('dx', '.3em')
@@ -146,11 +151,25 @@ export class Bar3D {
             .each((d: any) => d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z})
             .attr('x', (d: any) => d.projected.x)
             .attr('y', (d: any) => d.projected.y)
-            .attr('fill', this.options.legendColor)
             .text(this.options.textY);
         yText.exit().remove();
+    }
 
-        d3.selectAll('._3d').sort(d3_3d._3d().sort);
+    private renderLegendZ(svg: any, data: any) {
+        const array = data.filter((e:any) => e[0]["0"] === 9).map((e:any) => e[0]);
+
+        const zText = svg.selectAll('text.zText').data(array);
+        zText
+            .enter()
+            .append('text')
+            .attr('class', '_3d zText')
+            .attr('dx', '.3em')
+            .merge(zText)
+            .each((d: any) => d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z})
+            .attr('x', (d: any) => d.projected.x)
+            .attr('y', (d: any) => d.projected.y)
+            .text(this.options.textZ);
+        zText.exit().remove();
     }
 
     private dragStart() {

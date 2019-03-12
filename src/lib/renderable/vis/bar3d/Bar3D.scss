@@ -2,5 +2,41 @@
     & line {
         stroke-linecap: round;
         stroke-linejoin: round;
+        stroke-width: 3px;
+    }
+    & text {
+        fill: cyan;
+    }
+    & .grid {
+        stroke-width: 0.3px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill-opacity: 0.9;
+        stroke: black;
+        &.ccw {
+            fill: cyan;
+        }
+        &:not(.ccw) {
+            fill: lightgrey;
+        }
+    }
+    & .lto-vis-0 {
+        stroke: #30c4c4;
+    }
+    & .lto-vis-1 {
+        stroke: #008d8d;
+    }
+    & .lto-vis-2 {
+        stroke: #0fb5b5;
+    }
+    & .lto-vis-3 {
+        stroke: #53d4d4;
+    }
+    & .lto-vis-4 {
+        stroke: #83e5e5;
+    }
+    & .legend {
+        stroke: cyan;
+        stroke-width: 0.5px;
     }
 }

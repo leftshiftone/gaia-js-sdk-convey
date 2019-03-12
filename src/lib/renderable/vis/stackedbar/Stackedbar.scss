@@ -35,3 +35,21 @@
 .lto-vis-stackedbar .legend {
     font-size: 11px;
 }
+
+.lto-vis-stackedbar {
+    & .lto-vis-A {
+        fill: #30c4c4;
+    }
+    & .lto-vis-B {
+        fill: #008d8d;
+    }
+    & .lto-vis-C {
+        fill: #0fb5b5;
+    }
+    & .lto-vis-D {
+        fill: #53d4d4;
+    }
+    & .lto-vis-E {
+        fill: #83e5e5;
+    }
+}

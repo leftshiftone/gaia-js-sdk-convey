@@ -24,7 +24,7 @@ export class Line {
         return div;
     }
 
-    public init(element:HTMLElement) {
+    public init(element: HTMLElement) {
         this.options.data.then(data => {
             const svg = d3.select(element.querySelector("svg"));
 
@@ -55,8 +55,8 @@ export class Line {
                 .style("mix-blend-mode", "color-dodge")
                 .attr("class", () => "lto-vis-line-" + counter++)
                 .attr("d", (d: any) => line(d.values))
-                .style("stroke-dasharray", (d:any, e:any, f:any) => Math.max.apply(null, f.map((e:any) => e.getTotalLength())))
-                .style("stroke-dashoffset", (d:any, e:any, f:any) => Math.max.apply(null, f.map((e:any) => e.getTotalLength())));
+                .style("stroke-dasharray", (d: any, e: any, f: any) => Math.max.apply(null, f.map((e: any) => e.getTotalLength())))
+                .style("stroke-dashoffset", (d: any, e: any, f: any) => Math.max.apply(null, f.map((e: any) => e.getTotalLength())));
 
             svg.call(this.hover(x, y, data), path);
         });
@@ -68,19 +68,32 @@ export class Line {
             .call(d3.axisBottom(x).ticks(this.options.width / 80).tickSizeOuter(0));
     }
 
-    private yAxis(y: any, data:any) {
-        return (g: d3.Selection<SVGGElement, {}, null, any>) => g
-            .attr("transform", `translate(${this.options.margin.left},0)`)
-            .call(d3.axisLeft(y))
-            .call(g => g.select(".domain").remove())
-            .call(g => g.select(".tick:last-of-type text").clone()
-                .attr("x", 3)
-                .attr("text-anchor", "start")
-                .attr("font-weight", "bold")
-                .text(data.y));
+    private yAxis(y: any, data: any) {
+        return (g: d3.Selection<SVGGElement, {}, null, any>) => {
+            g
+                .attr("transform", `translate(${this.options.margin.left},0)`)
+                .call(d3.axisLeft(y))
+                .call(g => g.select(".domain").remove())
+                .call(g => g.select(".tick:last-of-type text").clone()
+                    .attr("x", 3)
+                    .attr("class", "lto-vis-text-0")
+                    .attr("text-anchor", "start")
+                    .attr("font-weight", "bold")
+                    .text(data.y));
+            if (data.y2) {
+                g.call(g => g.select(".tick:last-of-type text").clone()
+                    .attr("x", 3)
+                    .attr("y", 15)
+                    .attr("class", "lto-vis-text-1")
+                    .attr("text-anchor", "start")
+                    .attr("font-weight", "bold")
+                    .text(data.y2));
+            }
+            return g;
+        };
     }
 
-    private hover(x: any, y: any, data:any) {
+    private hover(x: any, y: any, data: any) {
         return (svg: any, path: any) => {
             svg.style("position", "relative");
 
@@ -112,7 +125,7 @@ export class Line {
                 const i1 = d3.bisectLeft(data.dates, xm, 1);
                 const i0 = i1 - 1;
                 const i = xm - data.dates[i0] > data.dates[i1] - xm ? i1 : i0;
-                const s = data.series.reduce((a:any, b:any) => Math.abs(a.values[i] - ym) < Math.abs(b.values[i] - ym) ? a : b);
+                const s = data.series.reduce((a: any, b: any) => Math.abs(a.values[i] - ym) < Math.abs(b.values[i] - ym) ? a : b);
                 path.attr("stroke", (d: any) => d === s ? null : "#ddd").filter((d: any) => d === s).raise();
                 dot.attr("transform", `translate(${x(data.dates[i])},${y(s.values[i])})`);
                 dot.select("text").text(s.name);

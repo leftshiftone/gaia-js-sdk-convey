@@ -2,6 +2,7 @@
 import "./Doughnut.scss";
 import * as d3 from "d3";
 import DoughnutOptions from './DoughnutOptions';
+import {getDigit, getLetter} from '../../../support/Strings';
 
 /**
  * Implementation of the 'doughnut' markup element.
@@ -10,6 +11,8 @@ export class Doughnut {
 
     private options: DoughnutOptions;
     private radius: number;
+
+    private readonly idMap: Map<string, number> = new Map<string, number>();
 
     constructor(options: DoughnutOptions = new DoughnutOptions()) {
         this.options = options;
@@ -48,10 +51,9 @@ export class Doughnut {
         const slice = svg.select(".lto-vis-slices").selectAll("path.lto-vis-slice").data(pie(data), key);
 
         let _current: any;
-        let counter = 0;
         slice.enter()
             .insert("path")
-            .attr("class", () => "lto-vis-slice lto-vis-slice-" + counter++)
+            .attr("class", (d: any) => `lto-vis-${getDigit(this.idMap, d.data.label)} lto-vis-${getLetter(this.idMap, d.data.label)}`)
             .merge(slice)
             .transition().duration(1000)
             .attrTween("d", (d: any) => {
@@ -99,11 +101,9 @@ export class Doughnut {
 
         const polyline = svg.select(".lto-vis-lines").selectAll("polyline").data(pie(data), key);
 
-        counter = 0;
         polyline.enter()
             .append("polyline")
-            .attr("class", () => "lto-vis-polyline lto-vis-slice-" + counter++)
-            // .style("stroke", (d: any) => this.color(d.data.label) as string)
+            .attr("class", (d: any) => `lto-vis-${getDigit(this.idMap, d.data.label)} lto-vis-${getLetter(this.idMap, d.data.label)}`)
             .merge(polyline)
             .transition().duration(1000)
             .attrTween("points", (d: any) => {

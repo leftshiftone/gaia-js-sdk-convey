@@ -16,7 +16,7 @@ export class Heatmap {
     private width:number;
     private height:number;
     private margin = {top: 20, right: 20, bottom: 20, left: 25};
-    private colorCalibration:string[];
+    // private colorCalibration:string[];
 
     constructor(options:HeatmapOptions = new HeatmapOptions()) {
         this.options = options;
@@ -26,7 +26,7 @@ export class Heatmap {
         this.itemSizeY = options.itemSizeY;
         this.cellSizeX = options.itemSizeX - 1;
         this.cellSizeY = options.itemSizeY - 1;
-        this.colorCalibration = options.color;
+        // this.colorCalibration = options.color;
     }
 
 
@@ -95,13 +95,20 @@ export class Heatmap {
             .transition()
             .delay((d: any) => (D3Support.getDayOfYear(d.date) - dayOffset) * 15)
             .duration(500)
-            .attrTween('fill', (d: any, i: any, a: any) => {
+            .attr('class', (d: any) => {
                 const colorIndex = d3.scaleQuantize()
                     .range([0, 1, 2, 3, 4, 5])
                     .domain((this.options.colorGroup !== "auto" ? this.options.colorGroup : dailyValueExtent[d.day]));
 
-                return d3.interpolate(a, this.colorCalibration[colorIndex(d.value)]);
+                return "lto-vis-color-" + colorIndex(d.value);
             });
+            // .attrTween('fill', (d: any, i: any, a: any) => {
+            //     const colorIndex = d3.scaleQuantize()
+            //         .range([0, 1, 2, 3, 4, 5])
+            //         .domain((this.options.colorGroup !== "auto" ? this.options.colorGroup : dailyValueExtent[d.day]));
+            //
+            //     return d3.interpolate(a, this.colorCalibration[colorIndex(d.value)]);
+            // });
     }
 
     private renderRects(rect:d3.Selection<d3.BaseType, any, SVGGElement, any>, data:any, dayOffset:number) {

@@ -1,45 +1,37 @@
 import "./Sunburst.scss";
-// noinspection TsLint
-// noinspection TsLint
 import * as d3 from "d3";
 import {Arc, PartitionLayout} from "d3";
 import {HtmlSelection} from '../D3Support';
 import SunburstOptions from './SunburstOptions';
+import {getDigit, getLetter} from "../../../support/Strings";
 
 /**
  * Implementation of the 'sunburst' vis markup element.
  */
 export class Sunburst {
 
-    private options: SunburstOptions;
-    private radius: number;
+    private readonly options: SunburstOptions;
+    private readonly radius: number;
+    private readonly idMap: Map<string, number> = new Map<string, number>();
     private totalSize: number = 0;
-
-    private color:d3.ScaleOrdinal<any, any>;
 
     constructor(options: SunburstOptions = new SunburstOptions()) {
         this.options = options;
         this.radius = Math.min(options.width, options.height - 50) / 2;
-        this.color = d3.scaleOrdinal().range(options.color);
     }
 
+    // noinspection JSMethodCanBeStatic
     public render(): HTMLElement {
         const div = document.createElement("div");
         div.classList.add("lto-vis-sunburst");
         div.innerHTML = `
-        <div>
             <div id="chart">
                 <section id="legend" />
-            </div>
-        </div>`;
-        // const explanation = div.querySelector("#explanation") as HTMLDivElement;
-        // explanation.style.visibility = "hidden";
-        // explanation.style.left = (this.radius - 20) + "px";
-        // explanation.style.top = (this.radius - 20) + "px";
+            </div>`;
         return div;
     }
 
-    public init(element:HTMLElement) {
+    public init(element: HTMLElement) {
         this.options.data.then(data => {
             const vis = d3.select(element.querySelector("#chart")).append("svg:svg")
                 .attr("width", this.options.width)
@@ -53,42 +45,43 @@ export class Sunburst {
             const arc = d3.arc()
                 .startAngle((d: any) => d.x0)
                 .endAngle((d: any) => d.x1)
-                .innerRadius((d: any) => Math.sqrt(d.y0))
-                .outerRadius((d: any) => Math.sqrt(d.y1));
-
+                .innerRadius((d: any) => Math.sqrt(d["y0"]))
+                .outerRadius((d: any) => Math.sqrt(d["y1"]));
             // @ts-ignore
             this.createVisualization(data, vis, partition, arc, element);
         });
     }
 
-    private createVisualization(json: any, vis: HtmlSelection, partition: PartitionLayout<{}>, arc: Arc<any, any>, element:HTMLElement) {
+    private createVisualization(data: any, vis: HtmlSelection, partition: PartitionLayout<{}>, arc: Arc<any, any>, element: HTMLElement) {
         this.initializeBreadcrumbTrail(element);
-        this.drawLegend();
 
         // Bounding circle underneath the sunburst, to make it easier to detect when the mouse leaves the parent g.
         vis.append("svg:circle").attr("r", this.radius).style("opacity", 0);
 
-        const root = d3.hierarchy(json)
+        const root = d3.hierarchy(data)
             .sum((d) => d.size)
             .sort((a: any, b: any) => b.value - a.value);
 
         const nodes = partition(root).descendants().filter((d) => (d.x1 - d.x0 > 0.005));
 
-        const path = vis.data([json]).selectAll("path")
+        const path = vis.data([data]).selectAll("path")
             .data(nodes)
             .enter().append("svg:path")
             .attr("display", (d) => d.depth ? null : "none")
             .attr("d", arc)
+            .attr("class", (d: any) => `lto-vis-${getDigit(this.idMap, d.data.name)} lto-vis-${getLetter(this.idMap, d.data.name)}`)
             .attr("fill-rule", "evenodd")
-            .style("fill", (d: any) => this.color(d.data.name) as string)
-            .style("opacity", 1)
             .on("mouseover", (d) => this.mouseover(d, vis, this.totalSize, element));
+        path
+            .transition()
+            .duration(1000)
+            .style("opacity", 1);
 
-        d3.select("#container").on("mouseleave", (d) => this.mouseleave(d, vis, element));
+        d3.select("#container").on("mouseleave", this.mouseleave);
         this.totalSize = path.datum().value as number;
     }
 
-    private initializeBreadcrumbTrail(element:HTMLElement) {
+    private initializeBreadcrumbTrail(element: HTMLElement) {
         const trail = d3.select(element.querySelector("#legend")).append("svg:svg")
             .attr("width", this.options.width)
             .attr("height", 20)
@@ -98,21 +91,18 @@ export class Sunburst {
             .style("fill", "#000");
     }
 
-    private mouseleave(d: any, vis: HtmlSelection, element:HTMLElement) {
+    // noinspection JSMethodCanBeStatic
+    private mouseleave() {
         d3.select(".lto-vis-sunburst #trail").style("visibility", "hidden");
-
-        // d3.selectAll(".lto-vis-sunburst path").on("mouseover", null);
         d3.selectAll(".lto-vis-sunburst path")
             .transition()
             .duration(1000)
             .style("opacity", 1)
             .on("end", () => {
-                // vis.selectAll("path").on("mouseover", (x: any) => this.mouseover(x, vis, this.totalSize, element));
             });
-        // d3.select("#explanation").style("visibility", "hidden");
     }
 
-    private mouseover(d: any, vis: HtmlSelection, totalSize: number, element:HTMLElement) {
+    private mouseover(d: any, vis: HtmlSelection, totalSize: number, element: HTMLElement) {
         const percentage = parseFloat((100 * d.value / totalSize).toPrecision(3));
         const percentageString = (percentage < 0.1) ? "< 0.1%" : percentage + "%";
 
@@ -126,6 +116,7 @@ export class Sunburst {
             .style("opacity", 1);
     }
 
+    // noinspection JSUnusedLocalSymbols
     private breadcrumbPoints(d: any, i: any) {
         const points = [];
         points.push("0,0");
@@ -139,7 +130,7 @@ export class Sunburst {
         return points.join(" ");
     }
 
-    private updateBreadcrumbs(nodeArray: any, percentageString: string, element:HTMLElement) {
+    private updateBreadcrumbs(nodeArray: any, percentageString: string, element: HTMLElement) {
         const trail = d3.select(element.querySelector("#trail"))
             .selectAll("g")
             .data(nodeArray, (d: any) => d.data.name + d.depth);
@@ -149,7 +140,7 @@ export class Sunburst {
         const entering = trail.enter().append("svg:g");
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints.bind(this))
-            .style("fill", (d: any) => this.color(d.data.name) as string);
+            .attr("class", (d: any) => `lto-vis-${getDigit(this.idMap, d.data.name)} lto-vis-${getLetter(this.idMap, d.data.name)}`);
 
         entering.append("svg:text")
             .attr("x", (this.options.b.w + this.options.b.t) / 2)
@@ -167,31 +158,6 @@ export class Sunburst {
             .text(percentageString);
 
         d3.select(".lto-vis-sunburst #trail").style("visibility", "");
-    }
-
-    private drawLegend() {
-        if (this.options.legend) {
-            const legend = d3.select("#legend").append("svg:svg")
-                .attr("width", d3.keys(this.color).length * (this.options.b.w + this.options.b.s))
-                .attr("height", this.options.b.h);
-            const g = legend.selectAll("g")
-                .data(d3.entries(this.color))
-                .enter().append("svg:g")
-                .attr("transform", (d: any, i: any) => "translate(" + i * (this.options.b.w + this.options.b.s) + ", 0)");
-
-            g.append("svg:rect")
-                .attr("rx", this.options.b.r)
-                .attr("ry", this.options.b.r)
-                .attr("width", this.options.b.w)
-                .attr("height", this.options.b.h)
-                .style("fill", (d: any) => d.value);
-            g.append("svg:text")
-                .attr("x", this.options.b.w / 2)
-                .attr("y", this.options.b.h / 2)
-                .attr("dy", "0.35em")
-                .attr("text-anchor", "middle")
-                .text((d: any) => d.key);
-        }
     }
 
 }
