@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <link rel="stylesheet" href="dist/bundle/gaia-js-sdk-convey-all-bundle.min.css">
-    <script src="dist/bundle/gaia-js-sdk-convey-all-bundle.min.js"></script>
+    <link rel="stylesheet" href="dist/bundle/gaia-js-sdk-convey-std-bundle.min.css">
+    <script src="dist/bundle/gaia-js-sdk-convey-std-bundle.min.js"></script>
 </head>
 <body>
 
@@ -24,8 +24,16 @@
         const listener = new GaiaSDK.OffSwitchListener();
 
         let gaia = new GaiaSDK.Gaia(renderer, listener);
-        gaia.connect('ws://localhost:61616/mqtt', '6413')
-            .then(connection => connection.reception());
+        gaia.connect('wss://beta.gaia.leftshift.one/mqtt', 'e198738a-5042-47a0-93f7-19329fc48a88')
+            .then(connection => {
+                connection.subscribe(GaiaSDK.ChannelType.CONTEXT, (payload) => {
+                    console.log("Context: " + JSON.stringify(payload))
+                });
+                connection.subscribe(GaiaSDK.ChannelType.NOTIFICATION, (payload) => {
+                    console.log("Notification: " + JSON.stringify(payload))
+                });
+                connection.reception();
+            });
     });
 </script>
 </html>
