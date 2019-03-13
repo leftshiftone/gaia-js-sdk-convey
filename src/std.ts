@@ -42,6 +42,9 @@ import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
 import {Sankey} from './lib/renderable/vis/sankey/Sankey';
 import Scatterplot from './lib/renderable/vis/scatterplot/Scatterplot';
 import Stackedbar from './lib/renderable/vis/stackedbar/Stackedbar';
+import Renderables from "./lib/renderable/Renderables";
+import Properties from "./lib/renderable/Properties";
+import EventStream from "./lib/event/EventStream";
 // export default Gaia class
 export default {
     ClassicRenderer,
@@ -52,7 +55,9 @@ export default {
     ChannelType,
     OffSwitchListener,
     Defaults,
-    // Renderables
+    Renderables,
+    Properties,
+    EventStream,
     Block,
     Bold,
     Break,
