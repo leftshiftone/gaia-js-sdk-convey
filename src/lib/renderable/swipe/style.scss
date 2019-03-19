@@ -7,10 +7,10 @@
 $w: 30.6rem;
 $h: 54rem;
 $headerH: 6rem;
-$cardW: 24rem;
-$cardH: 32rem;
-$cardTopH: 20.5rem;
-$cardBtmH: $cardH - $cardTopH;
+$itemW: 24rem;
+$itemH: 32rem;
+$itemTopH: 20.5rem;
+$itemBtmH: $itemH - $itemTopH;
 $imgSize: 10rem;
 
 $red: red;
@@ -26,7 +26,7 @@ $green: green;
     overflow: hidden;
 }
 
-.lto-card {
+.lto-item {
     z-index: 2;
     position: absolute;
     left: 0;
@@ -55,7 +55,7 @@ $green: green;
         transition: transform 0.3s;
         transform: translateX(0) !important;
 
-        &.lto-card-choice {
+        &.lto-choice {
             transition: opacity 0.3s;
             opacity: 0 !important;
         }
