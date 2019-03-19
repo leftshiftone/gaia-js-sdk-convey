@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import {BaseType, ScaleBand, ScaleLinear} from "d3";
-import "./Stackedbar.scss";
 import StackedbarOptions from './StackedbarOptions';
 import {getDigit, getLetter} from '../../../support/Strings';
 

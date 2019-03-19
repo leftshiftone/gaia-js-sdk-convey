@@ -1,5 +1,4 @@
 // noinspection TsLint
-import "./Line.scss";
 import LineOptions from './LineOptions';
 import * as d3 from "d3";
 
@@ -29,7 +28,7 @@ export class Line {
             const svg = d3.select(element.querySelector("svg"));
 
             const dates = data.dates.map((e: number) => new Date(e));
-            const line = d3.line().defined((d: any) => !isNaN(d)).x((d, i) => x(data.dates[i])).y(d => y(d));
+            const line = d3.line().defined(this.options.isDefined).x((d, i) => x(data.dates[i])).y(d => y(d));
 
             const x = d3.scaleTime()
             // @ts-ignore
@@ -54,7 +53,12 @@ export class Line {
                 .join("path")
                 .style("mix-blend-mode", "color-dodge")
                 .attr("class", () => "lto-vis-line-" + counter++)
-                .attr("d", (d: any) => line(d.values))
+                .attr("d", (d: any) => {
+                    const _line = line(d.values);
+                    // console.log("LINE");
+                    // console.log(_line);
+                    return _line;
+                })
                 .style("stroke-dasharray", (d: any, e: any, f: any) => Math.max.apply(null, f.map((e: any) => e.getTotalLength())))
                 .style("stroke-dashoffset", (d: any, e: any, f: any) => Math.max.apply(null, f.map((e: any) => e.getTotalLength())));
 

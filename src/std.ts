@@ -6,7 +6,6 @@ import {KeyboardBehaviour} from './lib/behaviour/KeyboardBehaviour';
 import {ChannelType} from './lib/support/ChannelType';
 import {OffSwitchListener} from './lib/listener/OffSwitchListener';
 import {Defaults} from './lib/support/Defaults';
-import './styles.scss';
 import {Block} from './lib/renderable/block';
 import {Swipe} from './lib/renderable/swipe';
 import {Bold} from './lib/renderable/bold';
@@ -46,7 +45,7 @@ import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
 // export default Gaia class
-export default {
+export {
     ClassicRenderer,
     ContentCentricRenderer,
     Gaia,

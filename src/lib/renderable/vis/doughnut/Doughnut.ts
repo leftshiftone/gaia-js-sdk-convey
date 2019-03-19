@@ -1,5 +1,4 @@
 // noinspection TsLint
-import "./Doughnut.scss";
 import * as d3 from "d3";
 import DoughnutOptions from './DoughnutOptions';
 import {getDigit, getLetter} from '../../../support/Strings';

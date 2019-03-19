@@ -22,6 +22,7 @@
         "no-increment-decrement":false,
         "prefer-array-literal":false,
         "eofline":false,
-        "no-duplicate-imports":false
+        "no-duplicate-imports":false,
+        "import-name":false
     }
 }

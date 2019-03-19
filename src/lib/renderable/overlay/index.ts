@@ -1,6 +1,5 @@
 import {IRenderer} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
-import "./style.scss";
 
 /**
  * Implementation of the 'overlay' markup element.

@@ -42,7 +42,6 @@ import {Upload} from "./lib/renderable/upload";
 import {Phone} from "./lib/renderable/phone";
 import {TextInput} from "./lib/renderable/textInput";
 import {Swipe} from "./lib/renderable/swipe";
-import './styles.scss';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
 import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
 import {Sankey} from './lib/renderable/vis/sankey/Sankey';
@@ -63,7 +62,7 @@ import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Camera} from './lib/renderable/camera';
 
-export default {
+export {
     ClassicRenderer,
     ContentCentricRenderer,
     Gaia,

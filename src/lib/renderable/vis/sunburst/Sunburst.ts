@@ -1,4 +1,3 @@
-import "./Sunburst.scss";
 import * as d3 from "d3";
 import {Arc, PartitionLayout} from "d3";
 import {HtmlSelection} from '../D3Support';

@@ -1,4 +1,4 @@
-export default [
+window.data = [
     {name: "A", value: 0.08167},
     {name: "B", value: 0.01492},
     {name: "C", value: 0.02782},

@@ -1,22 +1,33 @@
 {
-  "compilerOptions": {
-    "module": "es2015",
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": false,
-    "allowJs": false,
-    "moduleResolution": "node",
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strict": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "allowSyntheticDefaultImports": true,
-    "lib": ["es5", "es2015.promise", "dom", "es2015"],
-    "declaration": false
-  }
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "sourceMap": true,
+        "allowJs": false,
+        "moduleResolution": "node",
+        "rootDir": "./src",
+        "outDir": "./dist/lib",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strict": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "allowSyntheticDefaultImports": true,
+        "lib": [
+            "es5",
+            "es2015.promise",
+            "dom",
+            "es2015"
+        ],
+        "declaration": true
+    },
+    "files": [
+        "./src/all.ts",
+        "./src/vis.ts",
+        "./src/std.ts"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false
 }

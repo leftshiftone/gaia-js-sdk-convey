@@ -12,9 +12,15 @@ module.exports = (env, argv) => ({
     module: {
         rules: [
             {
-                test: /\.ts?$/,
-                use: 'ts-loader',
+                test: /\.tsx?$/,
+                loader: 'awesome-typescript-loader',
                 exclude: /node_modules/,
+                query: {
+                    // we don't want any declaration file in the bundles
+                    // folder since it wouldn't be of any use ans the source
+                    // map already include everything for debugging
+                    declaration: false,
+                }
             },
             {
                 test: /\.(css|scss)$/,
@@ -29,18 +35,23 @@ module.exports = (env, argv) => ({
         ],
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.tsx', '.scss'],
     },
+    // Activate source maps for the bundles in order to preserve the original
+    // source when the user debugs the application
+    devtool: 'source-map',
     output: {
-        library: '',
-        libraryTarget: 'commonjs',
-        filename: 'dist/[name].min.js',
+        library: 'gaia-js-sdk-convey',
+        globalObject: 'typeof self !== "undefined" ? self : this',
+        libraryTarget: 'umd',
+        filename: 'dist/[name].js',
         path: __dirname,
+        umdNamedDefine: true
     },
     externals: [nodeExternals()],
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'dist/[name].min.css',
+            filename: 'dist/[name].css',
         }),
     ],
 });

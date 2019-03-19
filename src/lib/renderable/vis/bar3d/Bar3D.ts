@@ -3,7 +3,6 @@ import {range} from "d3";
 // @ts-ignore
 import * as d3_3d from "d3-3d";
 import Bar3DOptions from './Bar3DOptions';
-import "./Bar3D.scss";
 
 /**
  * Implementation of the '3d bar' markup element.

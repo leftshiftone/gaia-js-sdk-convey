@@ -1,4 +1,3 @@
-import './styles.scss';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
 import {Sunburst} from './lib/renderable/vis/sunburst/Sunburst';
 import {Sankey} from './lib/renderable/vis/sankey/Sankey';
@@ -20,7 +19,18 @@ import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Bar3D} from './lib/renderable/vis/bar3d/Bar3D';
 import Bar3DOptions from './lib/renderable/vis/bar3d/Bar3DOptions';
 
-export default {
+// check environment (nextjs)
+if (typeof document !== "undefined") {
+    require("./lib/renderable/vis/bar3d/Bar3D.scss");
+    require("./lib/renderable/vis/doughnut/Doughnut.scss");
+    require("./lib/renderable/vis/heatmap/Heatmap.scss");
+    require("./lib/renderable/vis/line/Line.scss");
+    require("./lib/renderable/vis/scatterplot/Scatterplot.scss");
+    require("./lib/renderable/vis/stackedbar/Stackedbar.scss");
+    require("./lib/renderable/vis/sunburst/Sunburst.scss");
+}
+
+export {
     Heatmap,
     HeatmapOptions,
     Sunburst,

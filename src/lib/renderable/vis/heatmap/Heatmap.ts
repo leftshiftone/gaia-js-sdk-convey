@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import "./Heatmap.scss";
 import D3Support from '../D3Support';
 import HeatmapOptions from './HeatmapOptions';
 
