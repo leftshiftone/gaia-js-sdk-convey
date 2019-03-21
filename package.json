@@ -2,7 +2,7 @@
     "name": "gaia-js-sdk-convey",
     "version": "0.9.0",
     "description": "JavaScript connector to the G.A.I.A. ecosystem.",
-    "main": "dist/lib/vis.js",
+    "main": "dist/lib/all.js",
     "dependencies": {
         "d3": "^5.8.0",
         "d3-3d": "^0.0.9",

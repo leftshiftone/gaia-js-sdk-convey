@@ -62,6 +62,42 @@ import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Camera} from './lib/renderable/camera';
 
+if (typeof document !== "undefined") {
+    require("./lib/renderable/bold/style.scss");
+    require("./lib/renderable/block/style.scss");
+    require("./lib/renderable/button/style.scss");
+    require("./lib/renderable/carousel/style.scss");
+    require("./lib/renderable/calendar/style.scss");
+    require("./lib/renderable/camera/style.scss");
+    require("./lib/renderable/checkbox/style.scss");
+    require("./lib/renderable/datePicker/style.scss");
+    require("./lib/renderable/dateTimePicker/style.scss");
+    require("./lib/renderable/form/style.scss");
+    require("./lib/renderable/icon/style.scss");
+    require("./lib/renderable/image/style.scss");
+    require("./lib/renderable/items/style.scss");
+    require("./lib/renderable/link/style.scss");
+    require("./lib/renderable/map/style.scss");
+    require("./lib/renderable/reelValue/style.scss");
+    require("./lib/renderable/reel/style.scss");
+    require("./lib/renderable/submit/style.scss");
+    require("./lib/renderable/swipe/style.scss");
+    require("./lib/renderable/slider/style.scss");
+    require("./lib/renderable/slotmachine/style.scss");
+    require("./lib/renderable/text/style.scss");
+    require("./lib/renderable/table/style.scss");
+    require("./lib/renderable/timestamp/style.scss");
+    require("./lib/renderable/upload/style.scss");
+
+    require("./lib/renderable/vis/bar3d/Bar3D.scss");
+    require("./lib/renderable/vis/doughnut/Doughnut.scss");
+    require("./lib/renderable/vis/heatmap/Heatmap.scss");
+    require("./lib/renderable/vis/line/Line.scss");
+    require("./lib/renderable/vis/scatterplot/Scatterplot.scss");
+    require("./lib/renderable/vis/stackedbar/Stackedbar.scss");
+    require("./lib/renderable/vis/sunburst/Sunburst.scss");
+}
+
 export {
     ClassicRenderer,
     ContentCentricRenderer,
