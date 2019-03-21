@@ -1,6 +1,9 @@
-.lto-camera > video {
-    display: none;
-}
-.lto-camera > img {
-    display: none;
+$snapWidth: 100px;
+$snapHeight: 100px;
+
+.lto-snap {
+    width: $snapWidth;
+    height: $snapHeight;
+    border-radius: 100%;
+    border: 1px solid #1E223F;
 }

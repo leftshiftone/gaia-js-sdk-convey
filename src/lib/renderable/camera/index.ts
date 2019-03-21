@@ -18,8 +18,14 @@ export class Camera implements IRenderable, IStackeable {
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
+        // container
         const div = document.createElement("div");
         div.classList.add("lto-camera");
+        div.setAttribute("name", this.spec.name || "");
+
+        // snap
+        const snap = document.createElement("div");
+        snap.classList.add("lto-snap");
 
         // video
         const video = document.createElement("video") as HTMLVideoElement;
@@ -38,16 +44,18 @@ export class Camera implements IRenderable, IStackeable {
 
         div.appendChild(video);
         div.appendChild(canvas);
+        div.appendChild(snap);
 
         this.initCamera(div);
 
         return div;
     }
 
-    private initCamera(div:HTMLDivElement) {
+    private initCamera(div: HTMLDivElement) {
         const video = div.querySelector("video") as HTMLVideoElement;
         const canvas = div.querySelector("canvas") as HTMLCanvasElement;
         const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+        const snap = div.querySelector(".lto-snap") as HTMLDivElement;
 
         // init video
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -62,6 +70,14 @@ export class Camera implements IRenderable, IStackeable {
         // init overlay
         const images = div.querySelectorAll<HTMLImageElement>("img");
 
+        // init snapshot
+        snap.onclick = () => {
+            context.drawImage(video, 0, 0, 640, 480);
+
+            // TODO replace "abc" with context.canvas.toDataURL()
+            div.setAttribute("value", "abc");
+        };
+
         // init canvas
         this.draw(video, context, images);
     }
@@ -73,11 +89,6 @@ export class Camera implements IRenderable, IStackeable {
         setTimeout(this.draw, 20, video, context, images);
     }
 
-    // private snapshot() {
-    //     document.getElementById("snap").addEventListener("click", function() {
-    //         context.drawImage(video, 0, 0, 640, 480);
-    //     });
-    // }
-
 }
+
 Renderables.register("camera", Camera);

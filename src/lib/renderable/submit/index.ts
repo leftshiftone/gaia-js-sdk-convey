@@ -55,6 +55,7 @@ export class Submit implements IRenderable {
                     });
 
                     this.addValuesToAttributes(content, 'input.lto-spinner', attributes);
+                    this.addValuesToAttributes(content, 'div.lto-camera', attributes);
                     this.addValuesToAttributes(content, 'div.lto-drop-area', attributes);
                     this.addValuesToAttributes(content, 'input.lto-slider', attributes);
                     this.addValuesToAttributes(content, 'div.lto-input', attributes);
@@ -162,18 +163,17 @@ export class Submit implements IRenderable {
     private static addElementValueToAttributes(element: any, attributes: Attr) {
         const name = element.getAttribute('name');
         let value = element.getAttribute("value");
+
         if (value !== null) {
             // check if attribute value is valid JSON string
             if (/^[\],:{}\s]*$/.test(value.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
                 value = JSON.parse(value)
             }
-            if (attributes[name] !== undefined) {
-                attributes[name].push(value);
-            } else {
-                attributes[name] = [value];
-            }
-        }
 
+            attributes[name] !== undefined ?
+                attributes[name].push(value) :
+                attributes[name] = [value]
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import {ChannelType} from './lib/support/ChannelType';
 import {OffSwitchListener} from './lib/listener/OffSwitchListener';
 import {Defaults} from './lib/support/Defaults';
 import {Block} from './lib/renderable/block';
+import {Camera} from "./lib/renderable/camera";
 import {Swipe} from './lib/renderable/swipe';
 import {Bold} from './lib/renderable/bold';
 import {Break} from './lib/renderable/break';
@@ -72,6 +73,7 @@ export {
     Items,
     Form,
     Email,
+    Camera,
     TextInput,
     Phone,
     Link,
