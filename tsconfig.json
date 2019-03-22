@@ -26,7 +26,8 @@
     "files": [
         "./src/all.ts",
         "./src/vis.ts",
-        "./src/std.ts"
+        "./src/std.ts",
+        "./src/aud.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false

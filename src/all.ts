@@ -9,6 +9,7 @@ import {ContentCentricRenderer} from './lib/renderer/ContentCentricRenderer';
 import {Gaia} from './lib/Gaia';
 import {MouseBehaviour} from './lib/behaviour/MouseBehaviour';
 import {KeyboardBehaviour} from './lib/behaviour/KeyboardBehaviour';
+import {VoiceBehaviour} from './lib/behaviour/VoiceBehaviour';
 import {ChannelType} from './lib/support/ChannelType';
 import {OffSwitchListener} from './lib/listener/OffSwitchListener';
 import {Defaults} from './lib/support/Defaults';
@@ -61,6 +62,9 @@ import SankeyOptions from './lib/renderable/vis/sankey/SankeyOptions';
 import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Camera} from './lib/renderable/camera';
+import {BufferedAudioPlayer} from "./lib/audio/player/BufferedAudioPlayer";
+import {WebRTCRecorder} from "./lib/audio/recorder/WebRTCRecorder";
+
 
 if (typeof document !== "undefined") {
     require("./lib/renderable/bold/style.scss");
@@ -104,6 +108,7 @@ export {
     Gaia,
     MouseBehaviour,
     KeyboardBehaviour,
+    VoiceBehaviour,
     ChannelType,
     OffSwitchListener,
     Defaults,
@@ -164,4 +169,6 @@ export {
     BarOptions,
     Graph,
     GraphOptions,
+    BufferedAudioPlayer,
+    WebRTCRecorder
 };

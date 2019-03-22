@@ -8,6 +8,7 @@ module.exports = (env, argv) => ({
         'gaia-js-sdk-convey-cal': './src/cal.ts',
         'gaia-js-sdk-convey-map': './src/map.ts',
         'gaia-js-sdk-convey-vis': './src/vis.ts',
+        'gaia-js-sdk-convey-aud': './src/aud.ts'
     },
     module: {
         rules: [
