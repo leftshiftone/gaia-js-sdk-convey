@@ -41,14 +41,14 @@ module.exports = (env, argv) => ({
     // source when the user debugs the application
     devtool: 'source-map',
     output: {
-        library: 'gaia-js-sdk-convey',
-        globalObject: 'typeof self !== "undefined" ? self : this',
+        library: 'GaiaConvey',
         libraryTarget: 'umd',
         filename: 'dist/[name].js',
         path: __dirname,
         umdNamedDefine: true
     },
-    externals: [nodeExternals()],
+    // externals: [nodeExternals()],
+    externals: ['google-maps', 'leaflet', 'node-ical'],
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'dist/[name].css',

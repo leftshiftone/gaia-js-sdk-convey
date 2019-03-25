@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <script src="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.js"></script>
     <script src="graph.js"></script>
-    <link rel="stylesheet" href="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.css">
+    <script src="../../../dist/gaia-js-sdk-convey-vis.js"></script>
+    <link rel="stylesheet" href="../../../dist/gaia-js-sdk-convey-vis.css">
+    <link rel="stylesheet" href="graph.css">
 </head>
 <body>
 
@@ -16,14 +17,14 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const options = new GaiaSDK.GraphOptions();
+        const options = new GaiaConvey.GraphOptions();
         options.width = 1000;
         options.height = 1000;
         options.radius = 15;
         options.distance = 100;
         options.data = Promise.resolve(window.data);
 
-        const graph = new GaiaSDK.Graph(options);
+        const graph = new GaiaConvey.Graph(options);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         const element = graph.render();
         gaia.appendChild(element);

@@ -39,9 +39,9 @@ export class Swipe implements IRenderable, IStackeable {
         this.swipe.setAttribute("name", this.spec.name || "");
         this.swipe.classList.add('lto-swipe', "lto-" + position);
 
-        if (this.spec.class !== undefined)
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => this.swipe.classList.add(e));
-
+        }
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(block => {
             const item = document.createElement("div");
@@ -56,7 +56,7 @@ export class Swipe implements IRenderable, IStackeable {
             item.appendChild(block);
             item.appendChild(choiceRight);
             item.appendChild(choiceLeft);
-            this.swipe.appendChild(item)
+            this.swipe.appendChild(item);
         }));
 
         this.swipe.querySelectorAll(".lto-item:not(.lto-inactive)").forEach(item => {
@@ -76,6 +76,7 @@ export class Swipe implements IRenderable, IStackeable {
                 this.item = item as HTMLElement;
                 this.choiceLeft = item.querySelectorAll(".lto-choice.lto-choice-left").item(0) as HTMLElement;
                 this.choiceRight = item.querySelectorAll(".lto-choice.lto-choice-right").item(0) as HTMLElement;
+                // @ts-ignore
                 this.startX = e.touches[0].pageX;
 
                 document.addEventListener("touchmove", this.touchmove);
@@ -83,12 +84,12 @@ export class Swipe implements IRenderable, IStackeable {
             });
         });
 
-        if (isNested)
+        if (isNested) {
             this.swipe.classList.add('lto-nested');
-
-        if (this.spec.countdownInSec !== 0)
+        }
+        if (this.spec.countdownInSec !== 0) {
             setTimeout(() => this.publish(), this.spec.countdownInSec as number * 1000);
-
+        }
         return this.swipe;
     }
 
@@ -103,9 +104,10 @@ export class Swipe implements IRenderable, IStackeable {
 
         this.choiceLeft.style.opacity = leftOpacity.toString();
         this.choiceRight.style.opacity = rightOpacity.toString();
-    };
+    }
 
     private release(): void {
+        // @ts-ignore
         const name = this.item.getElementsByClassName("lto-block").item(0).getAttribute("name") as string;
         if (this.pullDeltaX >= this.decisionVal) {
             this.value.push({[name]: true});
@@ -122,14 +124,15 @@ export class Swipe implements IRenderable, IStackeable {
                 this.item.classList.add("lto-below");
                 this.item.classList.remove("lto-inactive", "lto-to-left", "lto-to-right");
                 this.itemCounter++;
-                if (this.itemCounter === this.numOfCards)
-                    this.publish()
+                if (this.itemCounter === this.numOfCards) {
+                    this.publish();
+                }
             }, 100);
         }
 
-        if (Math.abs(this.pullDeltaX) < this.decisionVal)
+        if (Math.abs(this.pullDeltaX) < this.decisionVal) {
             this.item.classList.add("lto-reset");
-
+        }
         setTimeout(() => {
             this.item.setAttribute("style", "");
             this.item.classList.remove("lto-reset");
@@ -137,7 +140,7 @@ export class Swipe implements IRenderable, IStackeable {
             this.pullDeltaX = 0;
             this.animating = false;
         }, 100);
-    };
+    }
 
     public publish(): void {
         if (!this.isPublished) {
@@ -158,14 +161,14 @@ export class Swipe implements IRenderable, IStackeable {
         this.pullDeltaX = (x - this.startX);
         if (!this.pullDeltaX) return;
         this.pullChange();
-    };
+    }
 
     private touchmove = (e:TouchEvent) => {
         const x = e.touches[0].pageX;
         this.pullDeltaX = (x - this.startX);
         if (!this.pullDeltaX) return;
         this.pullChange();
-    };
+    }
 
     private end = () => {
         document.removeEventListener("mousemove", this.mousemove);
@@ -173,8 +176,8 @@ export class Swipe implements IRenderable, IStackeable {
         document.removeEventListener("mouseup", this.end);
         document.removeEventListener("touchend", this.end);
         if (!this.pullDeltaX) return;
-        this.release()
-    };
+        this.release();
+    }
 
 }
 

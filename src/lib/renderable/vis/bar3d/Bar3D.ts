@@ -1,7 +1,5 @@
 import * as d3 from "d3";
 import {range} from "d3";
-// @ts-ignore
-import * as d3_3d from "d3-3d";
 import Bar3DOptions from './Bar3DOptions';
 
 /**
@@ -64,6 +62,7 @@ export class Bar3D {
     }
 
     private init3DElement(shape: string, coords?:number) {
+        const d3_3d = require("d3-3d");
         const element = d3_3d._3d()
             .shape(shape, coords)
             .origin(this.options.origin(this.options.width, this.options.height))
@@ -121,6 +120,7 @@ export class Bar3D {
         this.renderLegendY(svg, data[2][0]);
         this.renderLegendZ(svg, data[0]);
 
+        const d3_3d = require("d3-3d");
         d3.selectAll('._3d').sort(d3_3d._3d().sort);
     }
 

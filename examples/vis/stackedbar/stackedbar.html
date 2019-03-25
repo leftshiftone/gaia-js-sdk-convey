@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
     <script src="stackedbar.js"></script>
-    <script src="../../../dist/bundle/gaia-js-sdk-convey-vis-bundle.min.js"></script>
-    <link rel="stylesheet" href="../../../dist/bundle/gaia-js-sdk-convey-vis-bundle.min.css">
+    <script src="../../../dist/gaia-js-sdk-convey-vis.js"></script>
+    <link rel="stylesheet" href="../../../dist/gaia-js-sdk-convey-vis.css">
 </head>
 <body>
 
@@ -16,12 +16,12 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const options = new GaiaSDK.StackedbarOptions();
+        const options = new GaiaConvey.StackedbarOptions();
         options.data = Promise.resolve(window.data);
         options.textX = "Time (Hour)";
         options.textY = "Events";
 
-        const stackedbar = new GaiaSDK.Stackedbar(options);
+        const stackedbar = new GaiaConvey.Stackedbar(options);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         const element = stackedbar.render();
         gaia.appendChild(element);
