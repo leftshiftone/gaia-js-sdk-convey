@@ -63,6 +63,8 @@ import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Camera} from './lib/renderable/camera';
 
 if (typeof document !== "undefined") {
+    require("./lib/styles.scss");
+
     require("./lib/renderable/bold/style.scss");
     require("./lib/renderable/block/style.scss");
     require("./lib/renderable/button/style.scss");

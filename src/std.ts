@@ -47,6 +47,8 @@ import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
 
 if (typeof document !== "undefined") {
+    require("./lib/styles.scss");
+
     require("./lib/renderable/bold/style.scss");
     require("./lib/renderable/block/style.scss");
     require("./lib/renderable/button/style.scss");

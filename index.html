@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <link rel="stylesheet" href="dist/bundle/gaia-js-sdk-convey-std-bundle.min.css">
-    <script src="dist/bundle/gaia-js-sdk-convey-std-bundle.min.js"></script>
+    <link rel="stylesheet" href="dist/gaia-js-sdk-convey-std.css">
+    <script src="dist/gaia-js-sdk-convey-std.js"></script>
 </head>
 <body>
 
@@ -20,18 +20,14 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const renderer = new GaiaSDK.ContentCentricRenderer();
-        const listener = new GaiaSDK.OffSwitchListener();
+        const renderer = new GaiaConvey.ContentCentricRenderer();
+        const listener = new GaiaConvey.OffSwitchListener();
 
-        let gaia = new GaiaSDK.Gaia(renderer, listener);
+        let gaia = new GaiaConvey.Gaia(renderer, listener);
         gaia.connect('ws://localhost:61616/mqtt', 'e198738a-5042-47a0-93f7-19329fc48a88')
             .then(connection => {
-                connection.subscribe(GaiaSDK.ChannelType.CONTEXT, (payload) => {
-                    console.log("Context: " + JSON.stringify(payload))
-                });
-                connection.subscribe(GaiaSDK.ChannelType.NOTIFICATION, (payload) => {
-                    console.log("Notification: " + JSON.stringify(payload))
-                });
+                connection.subscribe(GaiaConvey.ChannelType.CONTEXT, (payload) => console.log("Context: " + JSON.stringify(payload)));
+                connection.subscribe(GaiaConvey.ChannelType.NOTIFICATION, (payload) => console.log("Notification: " + JSON.stringify(payload)));
                 connection.reception();
             });
     });
