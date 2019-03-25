@@ -98,7 +98,6 @@ export class Upload implements IRenderable {
         dropArea.appendChild(uploadLabel);
         dropArea.appendChild(fileSpan);
         dropArea.appendChild(errorSpan);
-        dropArea.appendChild(errorSpan);
 
         return dropArea;
     }

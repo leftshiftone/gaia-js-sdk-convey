@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 // noinspection TsLint
-import {sankey, SankeyGraph, sankeyLinkHorizontal} from "d3-sankey";
 import D3Support from '../D3Support';
 import SankeyOptions from './SankeyOptions';
 
@@ -24,6 +23,8 @@ export class Sankey {
     }
 
     public init(element:HTMLElement) {
+        const d3Sankey = require("d3-sankey");
+
         this.options.data.then(data => {
             const svg = d3.select(element).append("svg:svg")
                 .attr("width", this.options.width)
@@ -71,7 +72,7 @@ export class Sankey {
             }
 
             link.append("path")
-                .attr("d", sankeyLinkHorizontal())
+                .attr("d", d3Sankey.sankeyLinkHorizontal())
                 .attr("stroke", (d: any) => this.edgeColor === "path" ? `url(#${d.uid.id})`
                     : this.edgeColor === "input" ? this.color(d.source.name)
                         : this.color(d.target.name))
@@ -93,8 +94,9 @@ export class Sankey {
         });
     }
 
-    private sankey(data: SankeyGraph<{ name: string }, {}>) {
-        return sankey()
+    private sankey(data: any) {
+        const d3Sankey = require("d3-sankey");
+        return d3Sankey.sankey()
             .nodeWidth(15)
             .nodePadding(10)
             .extent([[1, 1], [this.options.width - 1, this.options.height - 5]])(data);

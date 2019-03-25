@@ -47,6 +47,8 @@ import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
 
 if (typeof document !== "undefined") {
+    require("./lib/styles.scss");
+
     require("./lib/renderable/bold/style.scss");
     require("./lib/renderable/block/style.scss");
     require("./lib/renderable/button/style.scss");
@@ -65,6 +67,7 @@ if (typeof document !== "undefined") {
     require("./lib/renderable/swipe/style.scss");
     require("./lib/renderable/slider/style.scss");
     require("./lib/renderable/slotmachine/style.scss");
+    require("./lib/renderable/suggestion/style.scss");
     require("./lib/renderable/text/style.scss");
     require("./lib/renderable/table/style.scss");
     require("./lib/renderable/timestamp/style.scss");

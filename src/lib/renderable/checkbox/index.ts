@@ -20,8 +20,7 @@ export class Checkbox implements IRenderable {
     public render(renderer:IRenderer, isNested:boolean):HTMLElement {
         let isChecked: boolean = this.spec.checked === "true";
         const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || "", value: JSON.stringify({
-                value: this.spec.value,
-                checked: isChecked
+                [this.spec.value || ""]: isChecked
             })});
         const label = node('label').addClasses('lto-checkbox', "lto-" + (this.spec.position || "left"));
 

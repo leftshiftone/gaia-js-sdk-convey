@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
-    <script src="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.js"></script>
     <script src="doughnut.js"></script>
-    <link rel="stylesheet" href="../../../dist/bundle/gaia-js-sdk-convey-all-bundle.min.css">
+    <script src="../../../dist/gaia-js-sdk-convey-vis.js"></script>
+    <link rel="stylesheet" href="../../../dist/gaia-js-sdk-convey-vis.css">
 </head>
 <body>
 
@@ -16,10 +16,10 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const options = new GaiaSDK.DoughnutOptions();
+        const options = new GaiaConvey.DoughnutOptions();
         options.data = Promise.resolve(window.data);
 
-        const doughnut = new GaiaSDK.Doughnut(options);
+        const doughnut = new GaiaConvey.Doughnut(options);
         let gaia = document.getElementsByClassName("lto-gaia")[0];
         const element = doughnut.render();
         gaia.appendChild(element);

@@ -67,6 +67,8 @@ import {WebRTCRecorder} from "./lib/audio/recorder/WebRTCRecorder";
 
 
 if (typeof document !== "undefined") {
+    require("./lib/styles.scss");
+
     require("./lib/renderable/bold/style.scss");
     require("./lib/renderable/block/style.scss");
     require("./lib/renderable/button/style.scss");
@@ -85,6 +87,7 @@ if (typeof document !== "undefined") {
     require("./lib/renderable/reelValue/style.scss");
     require("./lib/renderable/reel/style.scss");
     require("./lib/renderable/submit/style.scss");
+    require("./lib/renderable/suggestion/style.scss");
     require("./lib/renderable/swipe/style.scss");
     require("./lib/renderable/slider/style.scss");
     require("./lib/renderable/slotmachine/style.scss");
