@@ -24,7 +24,7 @@
         const listener = new GaiaSDK.OffSwitchListener();
 
         let gaia = new GaiaSDK.Gaia(renderer, listener);
-        gaia.connect('wss://beta.gaia.leftshift.one/mqtt', 'e198738a-5042-47a0-93f7-19329fc48a88')
+        gaia.connect('ws://localhost:61616/mqtt', 'e198738a-5042-47a0-93f7-19329fc48a88')
             .then(connection => {
                 connection.subscribe(GaiaSDK.ChannelType.CONTEXT, (payload) => {
                     console.log("Context: " + JSON.stringify(payload))
