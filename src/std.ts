@@ -67,6 +67,7 @@ if (typeof document !== "undefined") {
     require("./lib/renderable/swipe/style.scss");
     require("./lib/renderable/slider/style.scss");
     require("./lib/renderable/slotmachine/style.scss");
+    require("./lib/renderable/suggestion/style.scss");
     require("./lib/renderable/text/style.scss");
     require("./lib/renderable/table/style.scss");
     require("./lib/renderable/timestamp/style.scss");

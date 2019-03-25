@@ -83,6 +83,7 @@ if (typeof document !== "undefined") {
     require("./lib/renderable/reelValue/style.scss");
     require("./lib/renderable/reel/style.scss");
     require("./lib/renderable/submit/style.scss");
+    require("./lib/renderable/suggestion/style.scss");
     require("./lib/renderable/swipe/style.scss");
     require("./lib/renderable/slider/style.scss");
     require("./lib/renderable/slotmachine/style.scss");
