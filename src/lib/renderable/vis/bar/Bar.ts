@@ -36,6 +36,7 @@ export class Bar {
                 .data(data)
                 // @ts-ignore
                 .join("rect")
+                //@ts-ignore
                 .attr("x", (d: any) => x(d.name))
                 .attr("y", (d: any) => y(d.value))
                 .attr("height", (d: any) => y(0) - y(d.value))

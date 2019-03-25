@@ -51,6 +51,7 @@ export class Graph {
                 .join("circle")
                 .attr("r", this.options.radius)
                 .attr("class", (d: any) => "lto-node lto-node-" + d.group)
+                //@ts-ignore
                 .call(this.drag(simulation));
 
             node.append("title").text((d: any) => d.group);
@@ -65,6 +66,7 @@ export class Graph {
                 .attr("y", (d: any) => d.cy + (this.options.radius + (this.options.fontSize * 0.7)))
                 .text((d: any) => d.id)
                 .attr("class", (d: any) => "lto-node-text lto-node-test-" + d.group)
+                //@ts-ignore
                 .call(this.drag(simulation));
 
             simulation.on("tick", () => {
