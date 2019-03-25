@@ -1,6 +1,6 @@
 /**
  * @author benjamin.krenn@leftshift.one - 3/14/19.
- * @since 0.1.0
+ * @since 0.12.0
  */
 import {AudioPlayer} from "./AudioPlayer";
 import {MutableQueue} from "./queue/MutableQueue";
@@ -17,7 +17,7 @@ import {Base64ToArrayBufferConverter} from "./Base64ToArrayBufferConverter";
  *
  *
  * @author benjamin.krenn@leftshift.one
- * @since 0.3.0
+ * @since 0.12.0
  */
 export class BufferedAudioPlayer implements AudioPlayer {
 

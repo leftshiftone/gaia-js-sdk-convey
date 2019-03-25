@@ -1,6 +1,6 @@
 /**
  * @author benjamin.krenn@leftshift.one - 3/14/19.
- * @since 0.1.0
+ * @since 0.12.0
  */
 export class Base64ToArrayBufferConverter {
     /**

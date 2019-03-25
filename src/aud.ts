@@ -6,6 +6,8 @@ import EventStream from "./lib/event/EventStream";
 import {VoiceBehaviour} from "./lib/behaviour/VoiceBehaviour";
 import {WebRTCRecorder} from "./lib/audio/recorder/WebRTCRecorder";
 import {BufferedAudioPlayer} from "./lib/audio/player/BufferedAudioPlayer";
+import {NoopRenderer} from "./lib/renderer/NoopRenderer";
+import {DefaultListener} from "./lib/listener/DefaultListener";
 
 export {
     Gaia,
@@ -15,5 +17,7 @@ export {
     EventStream,
     VoiceBehaviour,
     WebRTCRecorder,
-    BufferedAudioPlayer
+    BufferedAudioPlayer,
+    NoopRenderer,
+    DefaultListener
 };

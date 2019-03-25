@@ -5,7 +5,7 @@
  * to the outbound audio channel.
  *
  * @author benjamin.krenn@leftshift.one - 3/11/19.
- * @since 0.7.0
+ * @since 0.11.0
  */
 import {IBehaviour} from "../api/IBehaviour";
 import {MqttConnection} from "../connection/MqttConnection";

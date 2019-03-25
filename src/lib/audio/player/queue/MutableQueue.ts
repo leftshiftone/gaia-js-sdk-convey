@@ -4,7 +4,7 @@ import {Queue} from "./Queue";
  * Unbounded queue backed by a mutable javascript array.
  *
  * @author benjamin.krenn@leftshift.one - 3/14/19.
- * @since 0.1.0
+ * @since 0.12.0
  */
 export class MutableQueue<T> implements Queue<T> {
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>gaia-js-sdk-convey</title>
     <link rel="stylesheet" href="dist/gaia-js-sdk-convey-all.css">
-    <script src="dist/gaia-js-sdk-convey-all.js"></script>
+    <script src="dist/gaia-js-sdk-convey-aud.js"></script>
 </head>
 <body>
 
@@ -14,24 +14,28 @@
     <div>
         <textarea title="" class="lto-textbox"></textarea>
         <button class="lto-invoker"></button>
+        <button id="lto-recorder">Record</button>
     </div>
 </div>
 
 </body>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const renderer = new GaiaSDK.ContentCentricRenderer();
-        const listener = new GaiaSDK.OffSwitchListener();
 
-        let gaia = new GaiaSDK.Gaia(renderer, listener);
-        gaia.connect('ws://localhost:61616', 'e198738a-5042-47a0-93f7-19329fc48a88')
+    document.addEventListener('DOMContentLoaded', function () {
+        const renderer = new GaiaConvey.NoopRenderer();
+        const listener = new GaiaConvey.DefaultListener();
+
+        // for audio support VoiceBehaviour must be bound to the MQTT connection. VoiceBehaviour requires a dedicated button
+        // element to start/stop recording on mousedown/mouseup
+        const recordButton = document.getElementById("lto-recorder");
+        const voiceBehaviour = new GaiaConvey.VoiceBehaviour(recordButton);
+
+        let gaia = new GaiaConvey.Gaia(renderer, listener);
+        gaia.connect('ws://localhost:61616/mqtt', 'e198738a-5042-47a0-93f7-19329fc48a88')
             .then(connection => {
-                connection.subscribe(GaiaSDK.ChannelType.CONTEXT, (payload) => {
-                    console.log("Context: " + JSON.stringify(payload))
-                });
-                connection.subscribe(GaiaSDK.ChannelType.NOTIFICATION, (payload) => {
-                    console.log("Notification: " + JSON.stringify(payload))
-                });
+                voiceBehaviour.bind(connection);
+                connection.subscribe(GaiaConvey.ChannelType.CONTEXT, (payload) => console.log("Context: " + JSON.stringify(payload)));
+                connection.subscribe(GaiaConvey.ChannelType.NOTIFICATION, (payload) => console.log("Notification: " + JSON.stringify(payload)));
                 connection.reception();
             });
     });

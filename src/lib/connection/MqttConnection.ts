@@ -124,7 +124,8 @@ export class MqttConnection {
                     this.callback(channelType, message);
                     break;
                 case ChannelType.AUDIO:
-                    break; // TODO Implementation
+                    this.callback(channelType, message);
+                    break;
                 case ChannelType.NOTIFICATION:
                     break; // TODO Implementation
                 default :
