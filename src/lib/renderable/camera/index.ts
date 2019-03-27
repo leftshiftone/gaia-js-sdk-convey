@@ -65,11 +65,11 @@ export class Camera implements IRenderable, IStackeable {
                     video.srcObject = stream;
                     video.play();
                 }).catch((e) => {
-                console.error(e.name + ": " + e.message);
-                EventStream.emit("GAIA::publish", {
-                    attributes: {type: 'submit', value: JSON.stringify({[this.spec.name || "camera"]: "denied"})},
-                    type: 'submit'
-                });
+                    console.error(e.name + ": " + e.message);
+                    EventStream.emit("GAIA::publish", {
+                        attributes: {type: 'submit', value: JSON.stringify({[this.spec.name || "camera"]: "denied"})},
+                        type: 'submit'
+                    });
             });
         }
 

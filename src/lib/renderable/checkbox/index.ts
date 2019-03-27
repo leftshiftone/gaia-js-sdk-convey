@@ -8,7 +8,7 @@ import Renderables from '../Renderables';
  */
 export class Checkbox implements IRenderable {
 
-    private readonly spec:ISpecification;
+    private readonly spec: ISpecification;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -17,14 +17,16 @@ export class Checkbox implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         let isChecked: boolean = this.spec.checked === "true";
-        const checkbox = node('input').addAttributes({type: 'checkbox', name: this.spec.name || "", value: JSON.stringify({
+        const checkbox = node('input').addAttributes({
+            type: 'checkbox', name: this.spec.name || "", value: JSON.stringify({
                 [this.spec.value || ""]: isChecked
-            })});
+            })
+        });
         const label = node('label').addClasses('lto-checkbox', "lto-" + (this.spec.position || "left"));
 
-        if(this.spec.checked === "true") {
+        if (this.spec.checked === "true") {
             checkbox.toggle();
             label.toggleClass('lto-toggle');
         }
@@ -37,11 +39,12 @@ export class Checkbox implements IRenderable {
             isChecked = !isChecked;
             checkbox.toggle();
             label.toggleClass('lto-toggle');
-            checkbox.addAttributes({value: JSON.stringify({value: this.spec.value, checked: isChecked})})
+            checkbox.addAttributes({value: JSON.stringify({[this.spec.value || ""]: isChecked})})
         });
 
         return label.unwrap();
     }
 
 }
+
 Renderables.register("checkbox", Checkbox);
