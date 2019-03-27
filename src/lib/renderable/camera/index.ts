@@ -2,6 +2,7 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
+import EventStream from "../../event/EventStream";
 
 /**
  * Implementation of the 'camera' markup element.
@@ -59,12 +60,17 @@ export class Camera implements IRenderable, IStackeable {
 
         // init video
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({video: true})
                 .then(stream => {
                     video.srcObject = stream;
                     video.play();
-                })
-                .catch((e) => console.log(e.name + ": " + e.message));
+                }).catch((e) => {
+                console.error(e.name + ": " + e.message);
+                EventStream.emit("GAIA::publish", {
+                    attributes: {type: 'submit', value: JSON.stringify({[this.spec.name || "camera"]: "denied"})},
+                    type: 'submit'
+                });
+            });
         }
 
         // init overlay
@@ -82,7 +88,7 @@ export class Camera implements IRenderable, IStackeable {
         this.draw(video, context, images);
     }
 
-    private draw(video:HTMLVideoElement, context:CanvasRenderingContext2D, images:NodeListOf<HTMLImageElement>) {
+    private draw(video: HTMLVideoElement, context: CanvasRenderingContext2D, images: NodeListOf<HTMLImageElement>) {
         context.drawImage(video, 0, 0, 640, 480);
         images.forEach(image => context.drawImage(image, 0, 0, 640, 480));
 
