@@ -24,7 +24,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         const renderer = new GaiaConvey.NoopRenderer();
         const listener = new GaiaConvey.DefaultListener();
-
         // for audio support VoiceBehaviour must be bound to the MQTT connection. VoiceBehaviour requires a dedicated button
         // element to start/stop recording on mousedown/mouseup
         const recordButton = document.getElementById("lto-recorder");
@@ -36,6 +35,7 @@
                 voiceBehaviour.bind(connection);
                 connection.subscribe(GaiaConvey.ChannelType.CONTEXT, (payload) => console.log("Context: " + JSON.stringify(payload)));
                 connection.subscribe(GaiaConvey.ChannelType.NOTIFICATION, (payload) => console.log("Notification: " + JSON.stringify(payload)));
+                connection.subscribe(GaiaConvey.ChannelType.LOG, (message) => console.log(`log message: ${JSON.stringify(message)}`))
                 connection.reception();
             });
     });
