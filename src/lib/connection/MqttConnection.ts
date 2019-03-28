@@ -105,8 +105,6 @@ export class MqttConnection {
     private callback = (type: ChannelType, msg: object) => (this.callbacks.get(type) || console.warn)(msg);
 
     private onMessage(topic: string, msg: string) {
-        console.debug('Received message ' + msg + ' from topic ' + topic);
-
         const channelType: ChannelType = ChannelType.match(topic);
         const message = JSON.parse(msg);
 
@@ -132,7 +130,7 @@ export class MqttConnection {
                     this.callback(channelType, message);
                     break;
                 default :
-                    console.debug(`No such channel ${channelType} defined`);
+                    console.error(`No such channel ${channelType} defined`);
             }
         }
     }
