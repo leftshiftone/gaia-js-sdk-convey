@@ -9,35 +9,13 @@
     }
 }
 
-.lto-gaia {
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
-}
-
-.lto-right {
-    float: right;
-    border: solid 1px lightgray;
-    color: #545454;
-}
-
-.lto-left {
-    float: left;
-}
-
-.lto-separator {
-    clear: both;
-}
-
 // scrollbar
 // *********
 .lto-content {
     margin: 0 auto;
-    background: white;
     padding-right: 5px;
     padding-left: 5px;
     padding-top: 5px;
-    height: 65vh;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
@@ -45,6 +23,9 @@
     scroll-behavior: smooth;
 }
 
+
+// Scrollbar
+// *********
 .lto-content::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -77,6 +58,8 @@
     background: white;
 }
 
+
+
 // icon
 // ****
 .lto-icon.lto-left {
@@ -88,45 +71,27 @@
 
 .lto-icon.lto-right {
     position: relative;
-    background: #1E223F;
     animation: slide-up 0.4s ease;
     border-radius: 50px;
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
-.lto-invoker {
-    font-size: 25px;
-    height: 65px;
-    width: 65px;
-    resize: none;
-    border-radius: 50%;
-    border: 1px solid #1E223F;
-    color: #1E223F;
-    background: white;
-    background-size: cover;
-    float: right;
-}
+.lto-gaia {
+    @import "renderable/**/*.scss";
 
-.lto-textbox {
-    background-color: white;
-    width: 90%;
-    height: auto;
-    resize: none;
-    padding: 10px;
-    float: left;
-    border-radius: 15px;
-    border: 1px solid #1E223F;
-    overflow: auto;
-    outline: none;
-
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-
-    font-size: 19px;
-}
-
-.lto-invoker.lto-off,
-.lto-textbox.lto-off {
-    display: none;
+    .lto-off {
+        display: none;
+    }
+    .lto-right {
+        float: right;
+    }
+    .lto-left {
+        float: left;
+    }
+    .lto-separator {
+        clear: both;
+    }
+    .lto-container {
+        padding-bottom: 10px;
+    }
 }

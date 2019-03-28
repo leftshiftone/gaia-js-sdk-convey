@@ -1,33 +1,24 @@
 .lto-submit {
-  border-radius: 5px;
-  padding: 5px;
-  margin: 5px 50px;
-  background: white;
-  animation: slide-up 0.4s ease;
-  border: 1px solid lightgray;
-  color: black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 50px;
+    animation: slide-up 0.4s ease;
+    border: none;
 }
-.lto-submit:hover {
-  font-weight: bold;
+
+.lto-submit:focus {
+    outline: 0;
 }
+
 .lto-submit.lto-right {
-  background: white;
-  border: 1px solid lightgray;
-  display: none;
+    display: none;
 }
+
 .lto-submit.lto-nested {
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  padding: 5px;
-  margin: 5px 50px;
-  background: white;
-  color: black;
-  animation: slide-up 0.4s ease;
-  width: calc(100% - 100px);
-  font-size: 20px;
-}
-.lto-submit.lto-nested.lto-right {
-  background: white;
-  border: 1px solid lightgray;
-  display: none;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 50px;
+    animation: slide-up 0.4s ease;
+    width: calc(100% - 100px);
+    font-size: 20px;
 }

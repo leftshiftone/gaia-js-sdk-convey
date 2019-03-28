@@ -5,6 +5,7 @@ import Renderables from '../Renderables';
 /**
  * Implementation of the 'textInput' markup element.
  */
+// FIXME: rename to text
 export class TextInput implements IRenderable {
 
     private readonly spec: ISpecification;

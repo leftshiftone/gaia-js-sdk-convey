@@ -1,8 +1,5 @@
 .lto-checkbox {
-  background: #fff;
-  border: 1px solid #1E223F;
   width: auto;
-  color: grey;
   animation: slide-up 0.4s ease;
   -webkit-animation: slide-up .4s ease;
   cursor: pointer;
@@ -10,18 +7,6 @@
   border-radius: 100px;
   padding: 5px 20px;
 }
-.lto-checkbox.lto-toggle {
-  color: dimgrey;
-  background-color: #00ffc8;
-  border-color: #00ffc8;
-  font-weight: bold;
-}
 .lto-checkbox > input {
   display: none;
-}
-.lto-checkbox .lto-toggle, .lto-checkbox .lto-toggle:hover {
-  font-weight: bold;
-}
-.lto-checkbox + div {
-  height: 10px;
 }

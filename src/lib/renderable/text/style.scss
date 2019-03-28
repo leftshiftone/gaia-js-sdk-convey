@@ -1,15 +1,10 @@
 .lto-text {
   max-width: 75%;
   min-width: 30%;
-  margin-top: 5px;
   animation: slide-up 0.4s ease;
-  background: transparent;
-  color: #1E223F;
-  border: 1px solid #1E223F;
   border-radius: 20px;
-  padding: 20px 10px 10px;
+  padding: 10px;
   display: inline-block;
-  margin-bottom: 30px;
 }
 .lto-text.lto-nested {
     width: 100%;
@@ -20,9 +15,6 @@
     margin-bottom:10px;
 }
 .lto-text.lto-right {
-  background: #1E223F;
-  color: white;
-  border: 1px solid lightgray;
   margin-left: 30px;
   bottom: 40px;
 }

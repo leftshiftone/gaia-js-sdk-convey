@@ -3,7 +3,6 @@
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    background-color: #1E223F;
     z-index: 20;
     top: 40%;
     text-align: center;
@@ -25,7 +24,6 @@
     height: fit-content;
     width: fit-content;
     position: absolute;
-    border: 1px solid #1E223F;
     -webkit-animation: fadein 2s;
     animation: fadein 2s;
     border-radius: 15px;
@@ -46,7 +44,6 @@
     right: 0;
     margin: auto;
     z-index: 10;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .lto-carousel-cell.lto-next-item {
