@@ -39,7 +39,7 @@ export class MqttConnection {
     /**
      * Disconnects from the mqtt connection.
      */
-    public disconnect = () => this.mqttClient.end(false, this.listener.onDisconnected);
+    public disconnect = () => this.mqttClient.end(false, () => this.listener.onDisconnected());
 
     /**
      * Subscribes to the given destination.
@@ -128,8 +128,11 @@ export class MqttConnection {
                     break;
                 case ChannelType.NOTIFICATION:
                     break; // TODO Implementation
+                case ChannelType.LOG:
+                    this.callback(channelType, message);
+                    break;
                 default :
-                    console.debug("No such channel " + channelType + "defined");
+                    console.debug(`No such channel ${channelType} defined`);
             }
         }
     }

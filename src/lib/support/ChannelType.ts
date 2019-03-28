@@ -2,7 +2,8 @@ export enum ChannelType {
     NOTIFICATION = "NOTIFICATION",
     CONTEXT = "CONTEXT",
     TEXT = "TEXT",
-    AUDIO = "AUDIO"
+    AUDIO = "AUDIO",
+    LOG = "LOG"
 }
 
 export namespace ChannelType {
