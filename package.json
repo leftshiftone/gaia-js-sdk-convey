@@ -65,7 +65,7 @@
         "titleTemplate": "{classname}-{title}"
     },
     "scripts": {
-        "copy-scss": "copyfiles -u 1 ./src/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/*.scss ./dist/lib-esm",
+        "copy-scss": "copyfiles -u 1 ./src/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/*.scss ./dist/lib-esm && copyfiles -u 1 ./src/**/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/**/*.scss ./dist/lib-esm && copyfiles -u 1 ./src/**/**/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/**/**/*.scss ./dist/lib-esm && copyfiles -u 1 ./src/**/**/**/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/**/**/**/*.scss ./dist/lib-esm",
         "webpack:dev": "webpack-dev-server --open --mode=development",
         "webpack:build": "webpack --mode=production",
         "webpack:dev-build": "webpack --mode=development",
