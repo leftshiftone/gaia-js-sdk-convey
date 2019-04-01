@@ -82,7 +82,7 @@
         "trigger-release:patch": "git pull --tags && git tag release-patch && git push --tags && git tag -d release-patch",
         "cleanup-release:patch": "git tag -d release-patch && git push -d origin release-patch",
         "release:major": "release-it major",
-        "release:minor": "release-it minor",
+        "release:minor": "release-it minor --no-requireCleanWorkingDir",
         "release:patch": "release-it patch --no-git.requireUpstream",
         "test": "jest"
     },
