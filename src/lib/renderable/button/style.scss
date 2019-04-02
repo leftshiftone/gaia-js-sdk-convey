@@ -1,42 +1,28 @@
 .lto-button {
-  border-radius: 15px;
-  padding: 5px 20px;
-  margin: 10px;
-  background: white;
-  color: #989898;
-  border: solid 1px lightgray;
-  animation: slide-up 0.4s ease;
-  cursor: pointer;
+    border-radius: 15px;
+    padding: 5px 20px;
+    margin: 10px;
+    animation: slide-up 0.4s ease;
+    cursor: pointer;
+    border: none;
 }
+
 .lto-button:focus {
-    outline:0 !important;
+    outline: 0 !important;
 }
+
 .lto-button.lto-right {
-  border: 1px solid lightgray;
-  background: #eeeeee;
-  margin-right: 30px;
-  color: #545454;
+    margin-right: 30px;
 }
+
 .lto-gaia .lto-button.lto-left.lto-nested {
-  width: 50%;
-  margin-right: 10px;
-  border: solid white;
-  border-radius: 15px;
-  color: #989898;
-  padding: 5px;
-  animation: slide-up 0.4s ease;
+    width: 50%;
+    margin-right: 10px;
+    border-radius: 15px;
+    padding: 5px;
+    animation: slide-up 0.4s ease;
 }
-.lto-button.lto-nested.lto-right {
-  background: white;
-  border: 1px solid lightgray;
-}
-.lto-button:hover {
-  background: rgba(184, 185, 181, 0.4);
-}
-.lto-button.lto-nested:hover {
-  background: white;
-  color: #2f4050;
-}
+
 .lto-button:disabled {
-  cursor: default;
+    cursor: default;
 }

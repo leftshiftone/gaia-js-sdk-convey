@@ -1,8 +1,8 @@
 {
     "name": "gaia-js-sdk-convey",
-    "version": "0.14.0",
+    "version": "0.16.0",
     "description": "JavaScript connector to the G.A.I.A. ecosystem.",
-    "main": "dist/lib/all.js",
+    "main": "dist/lib/std.js",
     "dependencies": {
         "d3": "^5.8.0",
         "d3-3d": "^0.0.9",
@@ -82,7 +82,7 @@
         "trigger-release:patch": "git pull --tags && git tag release-patch && git push --tags && git tag -d release-patch",
         "cleanup-release:patch": "git tag -d release-patch && git push -d origin release-patch",
         "release:major": "release-it major",
-        "release:minor": "release-it minor",
+        "release:minor": "release-it minor --no-requireCleanWorkingDir",
         "release:patch": "release-it patch --no-git.requireUpstream",
         "test": "jest"
     },

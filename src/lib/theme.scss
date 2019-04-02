@@ -1,0 +1,28 @@
+.lto-invoker {
+    font-size: 25px;
+    height: 65px;
+    width: 65px;
+    resize: none;
+    border-radius: 50%;
+    background: white;
+    background-size: cover;
+    float: right;
+}
+
+.lto-textbox {
+    background-color: white;
+    width: 90%;
+    height: auto;
+    resize: none;
+    padding: 10px;
+    float: left;
+    border-radius: 15px;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    font-size: 19px;
+}

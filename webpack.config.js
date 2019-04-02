@@ -1,14 +1,13 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const nodeExternals = require('webpack-node-externals');
 
 module.exports = (env, argv) => ({
     entry: {
-        'gaia-js-sdk-convey-std': './src/std.ts',
-        'gaia-js-sdk-convey-all': './src/all.ts',
-        'gaia-js-sdk-convey-cal': './src/cal.ts',
-        'gaia-js-sdk-convey-map': './src/map.ts',
-        'gaia-js-sdk-convey-vis': './src/vis.ts',
-        'gaia-js-sdk-convey-aud': './src/aud.ts'
+        'gaia-js-sdk-convey-std': './src/std.wpk.ts',
+        'gaia-js-sdk-convey-all': './src/all.wpk.ts',
+        'gaia-js-sdk-convey-cal': './src/cal.wpk.ts',
+        'gaia-js-sdk-convey-map': './src/map.wpk.ts',
+        'gaia-js-sdk-convey-vis': './src/vis.wpk.ts',
+        'gaia-js-sdk-convey-aud': './src/aud.wpk.ts',
     },
     module: {
         rules: [
@@ -48,7 +47,6 @@ module.exports = (env, argv) => ({
         path: __dirname,
         umdNamedDefine: true
     },
-    // externals: [nodeExternals()],
     externals: ['google-maps', 'leaflet', 'node-ical'],
     plugins: [
         new MiniCssExtractPlugin({

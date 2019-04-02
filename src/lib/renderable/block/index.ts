@@ -1,8 +1,8 @@
-import {Timestamp} from '../timestamp';
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
+import {Timestamp} from '../timestamp';
 
 /**
  * Implementation of the 'block' markup element.
@@ -24,7 +24,7 @@ export class Block implements IRenderable, IStackeable {
         block.classList.add('lto-block', "lto-" + position);
         block.setAttribute("name", this.spec.name || "");
 
-        if(this.spec.class !== undefined) {
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => block.classList.add(e));
         }
 
