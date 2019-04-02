@@ -84,7 +84,7 @@ export class MqttConnection {
     /**
      * Initial request to make the system aware that the user is listening.
      */
-    public reception() {
+    public reception(attributes: object) {
         if (this.subscriptions.indexOf(ChannelType.TEXT) < 0) {
             this.subscribe(ChannelType.TEXT, () => {});
         }
@@ -92,7 +92,7 @@ export class MqttConnection {
             this.bind(new KeyboardBehaviour(this.renderer));
             this.bind(new MouseBehaviour(this.renderer));
         }
-        const payload = JSON.stringify({header: this.header(), body: {type: 'reception'}});
+        const payload = JSON.stringify({header: this.header(), body: {type: 'reception', attributes: attributes}});
         this.mqttClient.publish(this.outgoing(ChannelType.TEXT), payload, this.mqttCallback("reception"));
     }
 
@@ -125,7 +125,8 @@ export class MqttConnection {
                     this.callback(channelType, message);
                     break;
                 case ChannelType.NOTIFICATION:
-                    break; // TODO Implementation
+                    this.callback(channelType, message);
+                    break;
                 case ChannelType.LOG:
                     this.callback(channelType, message);
                     break;
