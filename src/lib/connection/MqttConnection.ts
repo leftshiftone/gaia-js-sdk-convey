@@ -84,7 +84,7 @@ export class MqttConnection {
     /**
      * Initial request to make the system aware that the user is listening.
      */
-    public reception(attributes: object) {
+    public reception(attributes?: object) {
         if (this.subscriptions.indexOf(ChannelType.TEXT) < 0) {
             this.subscribe(ChannelType.TEXT, () => {});
         }
