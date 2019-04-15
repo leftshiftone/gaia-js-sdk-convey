@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gaia-js-sdk-convey</title>
+    <link rel="stylesheet" href="../../dist/gaia-js-sdk-convey-std.css">
+    <script src="../../dist/gaia-js-sdk-convey-std.js"></script>
+</head>
+<style>
+    .lto-block {
+        background: lightblue !important;
+        border: 5px solid red !important;
+    }
+</style>
+<body>
+<div class="lto-gaia">
+    <div class="lto-content"></div>
+    <div class="lto-suggest"></div>
+</div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const specification = {
+            name: "swipe",
+            countdownInSec: 0,
+            elements: [
+                {
+                    type: "block",
+                    name: "block1",
+                    elements: [{
+                        type: "text",
+                        text: "text1"
+                    }]
+                }, {
+                    type: "block",
+                    name: "block2",
+                    elements: [{
+                        type: "text",
+                        text: "text2"
+                    }]
+                }, {
+                    type: "block",
+                    name: "block3",
+                    elements: [{
+                        type: "text",
+                        text: "text3"
+                    }]
+                },
+            ]
+        };
+        const renderer = new GaiaConvey.ClassicRenderer();
+        const swipe = new GaiaConvey.Selection(specification);
+
+        const element = swipe.render(renderer, false);
+
+        document.getElementsByClassName("lto-content").item(0).appendChild(element);
+        document.getElementsByClassName("lto-swipe").item(0).style.pointerEvents = "all";
+    });
+</script>
+</html>

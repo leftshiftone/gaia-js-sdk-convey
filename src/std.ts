@@ -8,7 +8,7 @@ import {OffSwitchListener} from './lib/listener/OffSwitchListener';
 import {Defaults} from './lib/support/Defaults';
 import {Block} from './lib/renderable/block';
 import {Camera} from "./lib/renderable/camera";
-import {Swipe} from './lib/renderable/swipe';
+import {Selection} from './lib/renderable/selection';
 import {Bold} from './lib/renderable/bold';
 import {Break} from './lib/renderable/break';
 import {Button} from './lib/renderable/button';
@@ -82,6 +82,6 @@ export {
     Text,
     Row,
     Col,
-    Swipe,
+    Selection,
     ReelValue,
 };
