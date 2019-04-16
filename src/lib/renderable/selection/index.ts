@@ -5,7 +5,7 @@ import {IStackeable} from '../../api/IStackeable';
 import EventStream from "../../event/EventStream";
 
 /**
- * Implementation of the 'swipe' markup element.
+ * Implementation of the 'selection' markup element.
  */
 export class Selection implements IRenderable, IStackeable {
 
@@ -84,4 +84,4 @@ export class Selection implements IRenderable, IStackeable {
     }
 }
 
-Renderables.register("swipe", Selection);
+Renderables.register("selection", Selection);
