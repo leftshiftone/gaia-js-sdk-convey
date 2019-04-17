@@ -21,6 +21,7 @@ export class MqttConnection {
     private readonly identityId: string;
     private readonly userId: string;
     private readonly mqttClient: mqtt.MqttClient;
+    private readonly removeFromEventStream: () => void;
 
     constructor(url: string, identityId: string, renderer: IRenderer, listener: IListener) {
         this.listener = listener;
@@ -33,13 +34,16 @@ export class MqttConnection {
         this.mqttClient.on('connect', this.listener.onConnected);
         this.mqttClient.on('message', this.onMessage.bind(this));
 
-        EventStream.addListener("GAIA::publish", this.publish.bind(this, ChannelType.TEXT));
+        this.removeFromEventStream = EventStream.addListener("GAIA::publish", this.publish.bind(this, ChannelType.TEXT)).remove;
     }
 
     /**
      * Disconnects from the mqtt connection.
      */
-    public disconnect = () => this.mqttClient.end(false, () => this.listener.onDisconnected());
+    public disconnect = () => {
+        this.removeFromEventStream();
+        return this.mqttClient.end(false, () => this.listener.onDisconnected());
+    }
 
     /**
      * Subscribes to the given destination.
@@ -86,7 +90,8 @@ export class MqttConnection {
      */
     public reception(attributes?: object) {
         if (this.subscriptions.indexOf(ChannelType.TEXT) < 0) {
-            this.subscribe(ChannelType.TEXT, () => {});
+            this.subscribe(ChannelType.TEXT, () => {
+            });
         }
         if (this.behaviourBind.length === 0) {
             this.bind(new KeyboardBehaviour(this.renderer));

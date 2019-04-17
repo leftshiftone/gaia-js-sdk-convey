@@ -43,9 +43,9 @@ export default class EventStream {
 
         return {
             remove: () => {
-                const index = this.theListeners[name].findIndex(e => e === listener);
+                const index = this.theListeners[eventType].findIndex(e => e === listener);
                 if (index >= 0) {
-                    this.theListeners[name] = this.theListeners[name].splice(index, 1);
+                    this.theListeners[eventType].splice(index, 1);
                 }
             }
         };
