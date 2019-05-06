@@ -56,7 +56,7 @@ export class Upload implements IRenderable {
             const file = ev.dataTransfer.items ? ev.dataTransfer.items[0].getAsFile() : ev.dataTransfer.files[0];
 
             if (file) {
-                const fileExtension = file.name.split(".").pop();
+                const fileExtension = file.name.split(".")[1];
                 let extensionAllowed = false;
                 if (this.spec.accept !== undefined) {
                     const allowedExtensions = this.spec.accept!.replace(/\s/g, '').split(",");
@@ -69,7 +69,14 @@ export class Upload implements IRenderable {
                     fileSpan.innerText = file.name;
                     errorSpan.innerText = "";
                     this.getBase64(file)
-                        .then(data => dropArea.setAttribute("value", data.toString()))
+                        .then(data => {
+                            dropArea.setAttribute("value",JSON.stringify({
+                                data: data.toString().split(",")[1],
+                                fileExtension: fileExtension,
+                                fileName: file.name,
+                                mimeType: data.toString().split(";")[0].split(":")[1]
+                            }))
+                        })
                         .catch(reason => console.error("ERROR: " + reason));
                 } else {
                     errorSpan.innerText = "file not valid";
@@ -84,7 +91,12 @@ export class Upload implements IRenderable {
                     fileSpan.innerText = upload.files[0].name;
                     errorSpan.innerText = "";
                     this.getBase64(upload.files[0])
-                        .then(data => dropArea.setAttribute("value", data.toString()))
+                        .then(data => dropArea.setAttribute("value", JSON.stringify({
+                            data: data.toString().split(",")[1],
+                            fileExtension: upload.files![0].name.split(".")[1],
+                            fileName: upload.files![0].name,
+                            mimeType: data.toString().split(";")[0].split(":")[1]
+                        })))
                         .catch(reason => console.error("ERROR: " + reason));
                 } else {
                     errorSpan.innerText = "file not valid";
