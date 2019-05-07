@@ -32,8 +32,17 @@ export class ClassicRenderer extends AbstractRenderer {
         }
 
         setTimeout(() => {
-            if (this.content != null)
-                this.content.scrollTop = this.content.scrollHeight;
+            if (this.content != null) {
+                if (this.scrollStrategy === "bottom") {
+                    this.bottomScrollStrategy(this.content);
+                }
+                else if (this.scrollStrategy === "container") {
+                    this.containerScrollStrategy(this.content);
+                }
+                else {
+                    this.scrollStrategy(this.content)
+                }
+            }
         }, 1);
 
         return array;
@@ -42,10 +51,14 @@ export class ClassicRenderer extends AbstractRenderer {
     // noinspection JSMethodCanBeStatic
     private needsSeparator(renderable: IRenderable): boolean {
         switch (renderable.constructor) {
-            case Button: return false;
-            case Suggestion: return false;
-            case Link: return false;
-            default: return true;
+            case Button:
+                return false;
+            case Suggestion:
+                return false;
+            case Link:
+                return false;
+            default:
+                return true;
         }
     }
 
@@ -59,5 +72,30 @@ export class ClassicRenderer extends AbstractRenderer {
             }
         });
     }
+
+    /**
+     * The bottom scroll strategy autoscrolls to the bottom of the content element.
+     *
+     * @param e
+     */
+    private bottomScrollStrategy = (e:HTMLElement) => e.scrollTop = e.scrollHeight;
+
+    /**
+     * The container scroll strategy autoscrolls to the last renderable with a .lto-container class.
+     *
+     * @param e
+     */
+    private containerScrollStrategy = (e:HTMLElement) => {
+        let list = e.querySelectorAll(".lto-container");
+        let item = list.item(list.length - 1) as HTMLElement;
+
+        item.scrollIntoView()
+    };
+
+    /**
+     * The scroll strategy is used to define the manner of scroll automation
+     * after the rendering of a renderable.
+     */
+    protected scrollStrategy: "bottom" | "container" | ((e:HTMLElement) => void) = this.bottomScrollStrategy;
 
 }
