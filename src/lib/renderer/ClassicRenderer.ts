@@ -35,11 +35,9 @@ export class ClassicRenderer extends AbstractRenderer {
             if (this.content != null) {
                 if (this.scrollStrategy === "bottom") {
                     this.bottomScrollStrategy(this.content);
-                }
-                else if (this.scrollStrategy === "container") {
+                } else if (this.scrollStrategy === "container") {
                     this.containerScrollStrategy(this.content);
-                }
-                else {
+                } else {
                     this.scrollStrategy(this.content)
                 }
             }
@@ -78,14 +76,14 @@ export class ClassicRenderer extends AbstractRenderer {
      *
      * @param e
      */
-    private bottomScrollStrategy = (e:HTMLElement) => e.scrollTop = e.scrollHeight;
+    private bottomScrollStrategy = (e: HTMLElement) => e.scrollTop = e.scrollHeight;
 
     /**
      * The container scroll strategy autoscrolls to the last renderable with a .lto-container class.
      *
      * @param e
      */
-    private containerScrollStrategy = (e:HTMLElement) => {
+    private containerScrollStrategy = (e: HTMLElement) => {
         let list = e.querySelectorAll(".lto-container");
         let item = list.item(list.length - 1) as HTMLElement;
 
@@ -96,6 +94,6 @@ export class ClassicRenderer extends AbstractRenderer {
      * The scroll strategy is used to define the manner of scroll automation
      * after the rendering of a renderable.
      */
-    protected scrollStrategy: "bottom" | "container" | ((e:HTMLElement) => void) = this.bottomScrollStrategy;
+    public scrollStrategy: "bottom" | "container" | ((e: HTMLElement) => void) = this.bottomScrollStrategy;
 
 }
