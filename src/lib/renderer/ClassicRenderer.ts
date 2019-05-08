@@ -87,7 +87,7 @@ export class ClassicRenderer extends AbstractRenderer {
         let list = e.querySelectorAll(".lto-container");
         let item = list.item(list.length - 1) as HTMLElement;
 
-        item.scrollIntoView()
+        item.scrollIntoView({behavior: "smooth"})
     };
 
     /**
