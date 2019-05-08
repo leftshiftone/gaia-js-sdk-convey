@@ -37,6 +37,7 @@ import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
 import {ReelValue} from "./lib/renderable/reelValue";
 import {Text} from './lib/renderable/text';
+import {MultipleChoice} from "./lib/renderable/choice";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
@@ -84,4 +85,5 @@ export {
     Col,
     Selection,
     ReelValue,
+    MultipleChoice,
 };
