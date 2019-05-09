@@ -37,6 +37,7 @@ export abstract class Choice implements IRenderable {
         const label = node("label");
         label.appendChild(this.spec.text || "");
         label.appendChild(input);
+        input.onClick(() => label.toggleClass("lto-toggle"));
         choiceNode.appendChild(label);
 
         return choiceNode.unwrap();
