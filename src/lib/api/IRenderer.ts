@@ -43,4 +43,5 @@ export interface ISpecification {
     countdownInSec?:number;
     values?:Array<string>;
     sieve?: boolean;
+    selected?: boolean;
 }
