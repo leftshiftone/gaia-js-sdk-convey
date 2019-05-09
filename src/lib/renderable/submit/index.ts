@@ -4,6 +4,8 @@ import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import Properties from "../Properties";
 import {closestByClass} from "../../support/Elements";
+import {ChoiceHandler} from "./ChoiceHandler";
+import {ChoiceContainer} from "../choice/ChoiceContainer";
 
 export class Submit implements IRenderable {
 
@@ -35,18 +37,25 @@ export class Submit implements IRenderable {
 
                 // FIXME: use generic class name e.g. message-content
                 const content = closestByClass(submit, ['lto-block', 'lto-form']);
-                if (content.classList.contains("lto-block")) {
-                    content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox: HTMLInputElement) => {
-                        Submit.addElementValueToAttributes(checkbox, attributes);
-                    });
 
-                    content.querySelectorAll('div.lto-map').forEach((map: HTMLElement) => {
+                if (content.classList.contains("lto-block")) {
+
+                    const choiceContainers = content.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
+                    if (choiceContainers.length > 0) {
+                        Object.assign(attributes, ChoiceHandler.handle(choiceContainers));
+                    } else {
+                        content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox) => {
+                            Submit.addElementValueToAttributes(checkbox, attributes);
+                        });
+                    }
+
+                    content.querySelectorAll('div.lto-map').forEach((map) => {
                         if (map.getAttribute("value") !== null) {
                             Submit.addElementValueToAttributes(map, attributes);
                         }
                     });
 
-                    content.querySelectorAll('input.lto-textInput').forEach((element: HTMLInputElement) => {
+                    content.querySelectorAll('input.lto-textInput').forEach((element) => {
                         if (element.getAttribute("value") !== null) {
                             if ((element as HTMLInputElement).checkValidity()) {
                                 Submit.addElementValueToAttributes(element, attributes);
@@ -89,7 +98,7 @@ export class Submit implements IRenderable {
                     if (allowed) {
                         if (form.getAttribute("name") !== "") {
                             form.setAttribute("value", JSON.stringify(values));
-                            Submit.addElementValueToAttributes(form, attributes)
+                            Submit.addElementValueToAttributes(form, attributes);
                         } else {
                             this.addValuesToAttributes(content, 'div.lto-drop-area', attributes);
                             this.addValuesToAttributes(content, 'input.lto-phone', attributes);
@@ -103,7 +112,13 @@ export class Submit implements IRenderable {
                     submit.disabled = true;
                     content.style.pointerEvents = "none";
 
-                    EventStream.emit("GAIA::publish", {timestamp, text, attributes: {type: 'submit', value: JSON.stringify(attributes)}, type: 'submit', position: 'right'});
+                    EventStream.emit("GAIA::publish", {
+                        timestamp,
+                        text,
+                        attributes: {type: 'submit', value: JSON.stringify(attributes)},
+                        type: 'submit',
+                        position: 'right'
+                    });
 
                     const elements = document.querySelectorAll('.lto-button.lto-left');
                     elements.forEach(element => element.remove());
@@ -124,14 +139,14 @@ export class Submit implements IRenderable {
 
                 const content = closestByClass(submit, ['lto-block', 'lto-form']);
 
-                content.querySelectorAll("div.lto-drop-area").forEach((element: HTMLElement) => {
+                content.querySelectorAll("div.lto-drop-area").forEach((element) => {
                     const name = element.getAttribute("name");
                     const value = element.getAttribute("value");
                     const method = Properties.resolve("SUBMIT_" + name + "_HTTP_METHOD") || DEFAULT_METHOD;
                     const headers = Properties.resolve("SUBMIT_" + name + "_HEADERS") || DEFAULT_HEADER;
 
-                    if (value !== null)
-                        if (this.spec.destination)
+                    if (value !== null) {
+                        if (this.spec.destination) {
                             fetch(this.spec.destination, {
                                 method: method,
                                 headers: headers,
@@ -143,12 +158,15 @@ export class Submit implements IRenderable {
                                         type: 'submit',
                                         position: 'right'
                                     });
-                                    content.style.pointerEvents = "none"
+                                    content.style.pointerEvents = "none";
                                 }
                             ).catch(reason => console.error("ERROR: " + reason));
-                        else console.error("ERROR: destination is not defined")
-                })
-            })
+                        } else {
+                            console.error("ERROR: destination is not defined");
+                        }
+                    }
+                });
+            });
         }
 
         return submit;
@@ -167,12 +185,12 @@ export class Submit implements IRenderable {
         if (value !== null) {
             // check if attribute value is valid JSON string
             if (/^[\],:{}\s]*$/.test(value.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-                value = JSON.parse(value)
+                value = JSON.parse(value);
             }
 
             attributes[name] !== undefined ?
                 attributes[name].push(value) :
-                attributes[name] = [value]
+                attributes[name] = [value];
         }
     }
 
