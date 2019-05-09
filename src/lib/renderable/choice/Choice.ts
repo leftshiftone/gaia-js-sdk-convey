@@ -37,7 +37,19 @@ export abstract class Choice implements IRenderable {
         const label = node("label");
         label.appendChild(this.spec.text || "");
         label.appendChild(input);
-        input.onClick(() => label.toggleClass("lto-toggle"));
+        if(this.inputType() === "radio") {
+            input.unwrap().addEventListener("input", () => {
+                label.unwrap().parentElement!.parentElement!.querySelectorAll('input[name='+input.unwrap().getAttribute("name")+']').forEach(e => {
+                    e.parentElement!.classList.remove("lto-toggle");
+                });
+                label.addClasses("lto-toggle");
+            })
+        } else {
+            input.unwrap().addEventListener("input", () => {
+                label.toggleClass("lto-toggle");
+            });
+        }
+
         choiceNode.appendChild(label);
 
         return choiceNode.unwrap();

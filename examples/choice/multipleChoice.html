@@ -22,10 +22,10 @@
             ],
             "name": "name",
             "sieve": true,
-            "type": "singlechoice"
+            "type": "multiplechoice"
         };
-        const singleChoice = new GaiaConvey.SingleChoice(obj);
-        const element = singleChoice.render(renderer, false);
+        const multipleChoice = new GaiaConvey.MultipleChoice(obj);
+        const element = multipleChoice.render(renderer, false);
 
         document.getElementsByClassName("lto-content").item(0).appendChild(element);
     });
