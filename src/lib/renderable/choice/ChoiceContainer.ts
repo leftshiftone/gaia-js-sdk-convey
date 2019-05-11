@@ -15,7 +15,7 @@ export abstract class ChoiceContainer implements IStackeable {
         this.spec = spec;
     }
 
-    render(renderer: IRenderer, isNested: boolean): HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const container = node("div");
         this.spec.class ?
             container.addClasses(ChoiceContainer.CSS_BASE_CLASS, this.cssClassName(), this.spec.class)
@@ -44,11 +44,15 @@ export abstract class ChoiceContainer implements IStackeable {
      */
     abstract mutatedChoiceType(): string;
 
+    /**
+     * Attached to class list of the container element
+     */
     abstract cssClassName(): string;
 
     /**
      * Mutates the type of a choice element.
-     * This is required to differ between radio buttons and checkboxes
+     * This is required to differ between radio buttons and checkboxes and should not be considered as
+     * a good solution.
      */
     private mutateType(spec: ISpecification): ISpecification {
         if (spec.type === "choice") {
