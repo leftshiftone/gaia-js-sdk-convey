@@ -24,7 +24,7 @@ export class WebRTCRecorder implements AudioRecorder {
             const r = await this.recordRTC;
             r.startRecording();
         } catch (e) {
-            console.error(`could not initialize audio context: ${e}`);
+            console.error(`could not initialize audio context: ${e.message}`);
         }
     }
 
@@ -47,8 +47,12 @@ export class WebRTCRecorder implements AudioRecorder {
      * Initializes the browser audio context
      */
     private static async initializeAudioContext(): Promise<any> {
-        const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
-        return new RecordRTC.RecordRTCPromisesHandler(stream, WebRTCRecorder.rtcConfig());
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
+            return new RecordRTC.RecordRTCPromisesHandler(stream, WebRTCRecorder.rtcConfig());
+        } catch (e) {
+            throw new Error(`could not initialize audio context: ${e.message}`);
+        }
     }
 
     /**
@@ -76,5 +80,4 @@ export class WebRTCRecorder implements AudioRecorder {
             numberOfAudioChannels: 1
         };
     }
-
 }

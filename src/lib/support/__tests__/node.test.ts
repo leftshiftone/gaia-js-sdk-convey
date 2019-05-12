@@ -29,6 +29,17 @@ describe('NodeTest', () => {
         expect(spy.calledTwice).toBeTruthy();
     });
 
+    it("addDataAttributes()", () => {
+        const mocked = { dataset: {}};
+        const node = wrap(mocked as HTMLElement);
+        node.addDataAttributes({
+            test: "abc",
+            x: "y"
+        });
+        expect(mocked.dataset["test"]).toBe("abc");
+        expect(mocked.dataset["x"]).toBe("y");
+    });
+
     it('addClasses()', () => {
         const node = { classList: { add: (str: string) => undefined } };
         const spy = sinon.spy(node.classList, 'add');

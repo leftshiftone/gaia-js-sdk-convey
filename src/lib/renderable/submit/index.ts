@@ -4,7 +4,7 @@ import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import Properties from "../Properties";
 import {closestByClass} from "../../support/Elements";
-import {ChoiceHandler} from "./ChoiceHandler";
+import {ChoiceAggregator} from "./ChoiceAggregator";
 import {ChoiceContainer} from "../choice/ChoiceContainer";
 
 export class Submit implements IRenderable {
@@ -42,7 +42,7 @@ export class Submit implements IRenderable {
 
                     const choiceContainers = content.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
                     if (choiceContainers.length > 0) {
-                        Object.assign(attributes, ChoiceHandler.handle(choiceContainers));
+                        Object.assign(attributes, ChoiceAggregator.aggregate(choiceContainers));
                     } else {
                         content.querySelectorAll('input[type=\'checkbox\']').forEach((checkbox) => {
                             Submit.addElementValueToAttributes(checkbox, attributes);
