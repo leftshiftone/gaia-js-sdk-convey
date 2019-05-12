@@ -48,7 +48,7 @@ export class Selection implements IRenderable, IStackeable {
         this.selection.querySelectorAll(".lto-block.lto-selection-item").forEach(block => {
             block.addEventListener("click", ev => {
                 //@ts-ignore
-                if(ev.target.getAttribute("class") === "lto-selection-left") {
+                if (ev.target.getAttribute("class") === "lto-selection-left") {
                     block.classList.add("lto-animate-left");
                     this.values.push({[block.getAttribute("name") || ""]: "left"});
                 } else {
@@ -58,16 +58,23 @@ export class Selection implements IRenderable, IStackeable {
 
                 setTimeout(() => (block as HTMLElement).style.display = "none", 300);
 
-                if (++publishedBlocks === this.numOfBlocks)
+                if (++publishedBlocks === this.numOfBlocks) {
+                    this.setFinished();
                     this.publish();
+                }
             })
         });
 
-        if (isNested)
+        if (isNested) {
             this.selection.classList.add('lto-nested');
+        }
 
-        if (this.spec.countdownInSec !== 0)
-            setTimeout(() => this.publish(), this.spec.countdownInSec as number * 1000);
+        if (this.spec.countdownInSec !== 0) {
+            setTimeout(() => {
+                this.setFinished();
+                this.publish()
+            }, this.spec.countdownInSec as number * 1000);
+        }
 
         return this.selection;
     }
@@ -81,6 +88,10 @@ export class Selection implements IRenderable, IStackeable {
             });
             this.isPublished = true;
         }
+    }
+
+    private setFinished() {
+        this.selection.classList.add("lto-selection-finished");
     }
 }
 
