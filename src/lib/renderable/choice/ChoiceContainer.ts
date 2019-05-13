@@ -1,6 +1,7 @@
 import {IStackeable} from "../../api/IStackeable";
 import {IRenderer, ISpecification} from "../../api/IRenderer";
 import node from "../../support/node";
+import {ChoiceMutator} from "./ChoiceMutator";
 
 /**
  * Abstract choice container can be either multiple choice or single choice
@@ -28,8 +29,10 @@ export abstract class ChoiceContainer implements IStackeable {
         });
 
         const children = this.spec.elements || [];
+
+        ChoiceMutator.mutate(children, this.mutatedChoiceType());
+
         children
-            .map(child => this.mutateType(child))
             .map(child => renderer.render(child, this))
             .map(renderedChild => ChoiceContainer.unwrap(renderedChild))
             .filter((renderedChild: HTMLElement | undefined) => renderedChild !== undefined)
@@ -49,19 +52,7 @@ export abstract class ChoiceContainer implements IStackeable {
      */
     abstract cssClassName(): string;
 
-    /**
-     * Mutates the type of a choice element.
-     * This is required to differ between radio buttons and checkboxes and should not be considered as
-     * a good solution.
-     */
-    private mutateType(spec: ISpecification): ISpecification {
-        if (spec.type === "choice") {
-            const clone = Object.assign({}, spec);
-            clone["type"] = this.mutatedChoiceType();
-            return clone as ISpecification;
-        }
-        return spec;
-    }
+
 
     private static unwrap(e: HTMLElement[]): HTMLElement | undefined {
         return (e != null && e.length) ? e[0] : undefined;
