@@ -78,10 +78,8 @@ export class Camera implements IRenderable, IStackeable {
 
         // init snapshot
         snap.onclick = () => {
-            context.drawImage(video, 0, 0, 640, 480);
-
-            // TODO replace "abc" with context.canvas.toDataURL()
-            div.setAttribute("value", "abc");
+            context.drawImage(video,0, 0, video.width, video.height);
+            div.setAttribute("value", context.canvas.toDataURL());
         };
 
         // init canvas
