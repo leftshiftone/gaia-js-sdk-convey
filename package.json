@@ -1,6 +1,6 @@
 {
     "name": "gaia-js-sdk-convey",
-    "version": "0.28.0",
+    "version": "0.29.0",
     "description": "JavaScript connector to the G.A.I.A. ecosystem.",
     "main": "dist/lib/std.js",
     "dependencies": {
