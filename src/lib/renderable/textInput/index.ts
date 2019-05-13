@@ -18,23 +18,26 @@ export class TextInput implements IRenderable {
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        const position = this.spec.position || 'left';
-        const textInput = document.createElement('input');
+        const position = this.spec.position || "left";
+        const textInput = document.createElement("input");
         textInput.setAttribute("type", "text");
-        textInput.setAttribute('name', this.spec.name || "");
-        textInput.setAttribute('placeholder', this.spec.placeholder || "");
+        textInput.setAttribute("name", this.spec.name || "");
+        textInput.setAttribute("placeholder", this.spec.placeholder || "");
+        textInput.setAttribute("value", this.spec.value || "");
         textInput.classList.add("lto-textInput", "lto-" + position);
-        if (isNested) {textInput.classList.add("lto-nested")}
+        if (isNested) {
+            textInput.classList.add("lto-nested")
+        }
 
-        if(this.spec.class !== undefined) {
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => textInput.classList.add(e));
         }
 
-        if(this.spec.regex !== undefined) textInput.pattern = this.spec.regex;
+        if (this.spec.regex !== undefined) textInput.pattern = this.spec.regex;
 
         textInput.required = Boolean(this.spec.required);
 
-        textInput.addEventListener("change", () => textInput.setAttribute('value', textInput.value))
+        textInput.addEventListener("change", () => textInput.setAttribute("value", textInput.value));
 
         return textInput;
     }
