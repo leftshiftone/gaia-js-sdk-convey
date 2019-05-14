@@ -32,7 +32,6 @@ export class Camera implements IRenderable, IStackeable {
         wrapper.appendChild(error);
 
         const video = document.createElement("video") as HTMLVideoElement;
-        video.classList.add("lto-active");
         video.autoplay = true;
         wrapper.appendChild(video);
 
@@ -73,12 +72,20 @@ export class Camera implements IRenderable, IStackeable {
                         canvas.height = settings.imageHeight!;
                     });
                     video.srcObject = this.mediaStream;
+
+                    if (!video.classList.contains("lto-active")) {
+                        video.classList.add("lto-active");
+                    }
+                    canvas.classList.remove("lto-active");
                 })
                 .catch(error => {
                     console.error(error);
+                    video.classList.remove("lto-active");
+                    canvas.classList.remove("lto-active");
                     const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
                     errorWrapper.style.display = "block";
                     wrapper.classList.add("lto-not-available");
+                    Camera.deactivateClick(wrapper.querySelector(".lto-take-photo") as HTMLDivElement);
                     this.activateResetButton(wrapper);
                 });
         }
@@ -91,11 +98,15 @@ export class Camera implements IRenderable, IStackeable {
             .then(imageBitmap => {
                 this.drawCanvas(canvas, imageBitmap);
             })
-            .finally(() => this.stopCamera())
+            .finally(() => this.stopCamera(wrapper))
             .catch(error => console.error(error))
     }
 
-    private stopCamera() {
+    private stopCamera(wrapper: HTMLDivElement) {
+        const video = wrapper.querySelector("video") as HTMLVideoElement;
+        video.classList.remove("lto-active");
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+        canvas.classList.add("lto-active");
         this.mediaStream!.getTracks().forEach(track => track.stop());
     }
 
@@ -138,9 +149,6 @@ export class Camera implements IRenderable, IStackeable {
             wrapper.setAttribute("value", canvas.toDataURL());
             this.activateResetButton(wrapper);
             Camera.deactivateClick(photoButton);
-            canvas.classList.toggle("lto-active");
-            const video = wrapper.querySelector("video") as HTMLVideoElement;
-            video.classList.toggle("lto-active");
         };
         photoButton.classList.toggle("lto-disabled");
     }
@@ -155,9 +163,6 @@ export class Camera implements IRenderable, IStackeable {
             canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
             this.activatePhotoButton(wrapper);
             Camera.deactivateClick(resetButton);
-            canvas.classList.toggle("lto-active");
-            const video = wrapper.querySelector("video") as HTMLVideoElement;
-            video.classList.toggle("lto-active");
         };
         resetButton.classList.toggle("lto-disabled");
     }
