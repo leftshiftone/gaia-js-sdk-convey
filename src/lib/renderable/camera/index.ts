@@ -7,12 +7,14 @@ import {IStackeable} from '../../api/IStackeable';
  * Implementation of the 'camera' markup element.
  */
 export class Camera implements IRenderable, IStackeable {
+    private readonly maxCanvasSize: number;
     private readonly spec: ISpecification;
 
     private mediaStream: MediaStream | null = null;
     private imageCapture: ImageCapture | null = null;
 
     constructor(message: ISpecification) {
+        this.maxCanvasSize = 640;
         this.spec = message;
     }
 
@@ -24,28 +26,29 @@ export class Camera implements IRenderable, IStackeable {
         wrapper.classList.add("lto-camera");
         wrapper.setAttribute("name", this.spec.name || "");
 
+        const error = document.createElement("div");
+        error.classList.add("lto-error");
+        error.style.display = "none";
+        wrapper.appendChild(error);
+
         const video = document.createElement("video") as HTMLVideoElement;
-        video.width = 480;
-        video.height = 480;
+        video.classList.add("lto-active");
         video.autoplay = true;
+        wrapper.appendChild(video);
 
         const canvas = document.createElement("canvas") as HTMLCanvasElement;
-        canvas.width = 480;
-        canvas.height = 480;
-
-        const resetButton = document.createElement("div");
-        resetButton.classList.add("lto-reset-photo", "lto-disabled");
+        wrapper.appendChild(canvas);
 
         const photoButton = document.createElement("div");
         photoButton.classList.add("lto-take-photo", "lto-disabled");
+        wrapper.appendChild(photoButton);
+
+        const resetButton = document.createElement("div");
+        resetButton.classList.add("lto-reset-photo", "lto-disabled");
+        wrapper.appendChild(resetButton);
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => wrapper.appendChild(x)));
-
-        wrapper.appendChild(video);
-        wrapper.appendChild(canvas);
-        wrapper.appendChild(photoButton);
-        wrapper.appendChild(resetButton);
 
         this.initCamera(wrapper);
         this.activatePhotoButton(wrapper);
@@ -53,40 +56,53 @@ export class Camera implements IRenderable, IStackeable {
         return wrapper;
     }
 
-    private initCamera(div: HTMLDivElement) {
-        const video = div.querySelector("video") as HTMLVideoElement;
+    private initCamera(wrapper: HTMLDivElement) {
+        const video = wrapper.querySelector("video") as HTMLVideoElement;
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
 
+        wrapper.classList.remove("lto-not-available");
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({video: true})
                 .then(mediaStream => {
                     this.mediaStream = mediaStream;
-                    video.srcObject = mediaStream;
                     this.imageCapture = new ImageCapture(mediaStream.getVideoTracks()[0]);
+                    this.imageCapture.getPhotoSettings().then(settings => {
+                        video.width = settings.imageWidth!;
+                        video.height = settings.imageHeight!;
+                        canvas.width = settings.imageWidth!;
+                        canvas.height = settings.imageHeight!;
+                    });
+                    video.srcObject = this.mediaStream;
                 })
-                .catch(error => console.error(error));
+                .catch(error => {
+                    console.error(error);
+                    const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
+                    errorWrapper.style.display = "block";
+                    wrapper.classList.add("lto-not-available");
+                    this.activateResetButton(wrapper);
+                });
         }
     }
 
-    private takePhoto(div: HTMLDivElement) {
-        const canvas = div.querySelector("canvas") as HTMLCanvasElement;
+    private takePhoto(wrapper: HTMLDivElement) {
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
         this.imageCapture!.takePhoto()
             .then(blob => createImageBitmap(blob))
             .then(imageBitmap => {
-                Camera.drawCanvas(canvas, imageBitmap);
+                this.drawCanvas(canvas, imageBitmap);
             })
-            .finally(() => this.stopCamera(div))
+            .finally(() => this.stopCamera())
             .catch(error => console.error(error))
     }
 
-    private stopCamera(div: HTMLDivElement) {
+    private stopCamera() {
         this.mediaStream!.getTracks().forEach(track => track.stop());
     }
 
-    private static drawCanvas(canvas: HTMLCanvasElement, image: ImageBitmap) {
-        canvas.width = Number(getComputedStyle(canvas).width!.split("px")[0]);
-        canvas.height = Number(getComputedStyle(canvas).height!.split("px")[0]);
-        const ratio = Math.min(canvas.width / image.width, canvas.height / image.height);
+    private drawCanvas(canvas: HTMLCanvasElement, image: ImageBitmap) {
+        this.sizeCanvasAccordingToImage(canvas, image);
 
+        const ratio = Math.min(canvas.width / image.width, canvas.height / image.height);
         const scaledWidth = image.width * ratio;
         const scaledHeight = image.height * ratio;
 
@@ -96,26 +112,52 @@ export class Camera implements IRenderable, IStackeable {
         canvas.getContext("2d")!.drawImage(image, 0, 0, image.width, image.height, x, y, scaledWidth, scaledHeight);
     }
 
-    private activatePhotoButton(wrapperElement: HTMLDivElement) {
-        const photoButton = wrapperElement.querySelector(".lto-take-photo") as HTMLDivElement;
+    private sizeCanvasAccordingToImage(canvas: HTMLCanvasElement, image: ImageBitmap) {
+        console.info("Computed Canvas Width: " + Number(getComputedStyle(canvas).width!.split("px")[0]));
+        console.info("Computed Canvas Height: " + Number(getComputedStyle(canvas).height!.split("px")[0]));
+
+        let isLandscape = image.width > image.height;
+        const imageRatio = image.width / image.height;
+        if (isLandscape && image.width > this.maxCanvasSize) {
+            canvas.width = this.maxCanvasSize;
+            canvas.height = this.maxCanvasSize / imageRatio;
+        } else if (!isLandscape && image.height > this.maxCanvasSize) {
+            canvas.width = this.maxCanvasSize * imageRatio;
+            canvas.height = this.maxCanvasSize
+        } else {
+            canvas.width = image.width;
+            canvas.height = image.height;
+        }
+    }
+
+    private activatePhotoButton(wrapper: HTMLDivElement) {
+        const photoButton = wrapper.querySelector(".lto-take-photo") as HTMLDivElement;
         photoButton.onclick = () => {
-            this.takePhoto(wrapperElement);
-            const canvas = wrapperElement.querySelector("canvas") as HTMLCanvasElement;
-            wrapperElement.setAttribute("value", canvas.toDataURL());
-            this.activateResetButton(wrapperElement);
+            this.takePhoto(wrapper);
+            const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+            wrapper.setAttribute("value", canvas.toDataURL());
+            this.activateResetButton(wrapper);
             Camera.deactivateClick(photoButton);
+            canvas.classList.toggle("lto-active");
+            const video = wrapper.querySelector("video") as HTMLVideoElement;
+            video.classList.toggle("lto-active");
         };
         photoButton.classList.toggle("lto-disabled");
     }
 
-    private activateResetButton(wrapperElement: HTMLDivElement) {
-        const resetButton = wrapperElement.querySelector(".lto-reset-photo") as HTMLDivElement;
+    private activateResetButton(wrapper: HTMLDivElement) {
+        const resetButton = wrapper.querySelector(".lto-reset-photo") as HTMLDivElement;
         resetButton.onclick = () => {
-            this.initCamera(wrapperElement);
-            const canvas = wrapperElement.querySelector("canvas") as HTMLCanvasElement;
+            const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
+            errorWrapper.style.display = "none";
+            this.initCamera(wrapper);
+            const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
             canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
-            this.activatePhotoButton(wrapperElement);
+            this.activatePhotoButton(wrapper);
             Camera.deactivateClick(resetButton);
+            canvas.classList.toggle("lto-active");
+            const video = wrapper.querySelector("video") as HTMLVideoElement;
+            video.classList.toggle("lto-active");
         };
         resetButton.classList.toggle("lto-disabled");
     }
