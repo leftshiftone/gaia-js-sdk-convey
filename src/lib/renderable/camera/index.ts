@@ -2,14 +2,15 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
-import EventStream from "../../event/EventStream";
 
 /**
  * Implementation of the 'camera' markup element.
  */
 export class Camera implements IRenderable, IStackeable {
-
     private readonly spec: ISpecification;
+
+    private mediaStream: MediaStream | null = null;
+    private imageCapture: ImageCapture | null = null;
 
     constructor(message: ISpecification) {
         this.spec = message;
@@ -19,80 +20,110 @@ export class Camera implements IRenderable, IStackeable {
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        // container
-        const div = document.createElement("div");
-        div.classList.add("lto-camera");
-        div.setAttribute("name", this.spec.name || "");
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("lto-camera");
+        wrapper.setAttribute("name", this.spec.name || "");
 
-        // snap
-        const snap = document.createElement("div");
-        snap.classList.add("lto-snap");
-
-        // video
         const video = document.createElement("video") as HTMLVideoElement;
-        video.width = 640;
+        video.width = 480;
         video.height = 480;
         video.autoplay = true;
 
-        // canvas
         const canvas = document.createElement("canvas") as HTMLCanvasElement;
-        canvas.width = 640;
+        canvas.width = 480;
         canvas.height = 480;
 
-        // overlay images
+        const resetButton = document.createElement("div");
+        resetButton.classList.add("lto-reset-photo", "lto-disabled");
+
+        const photoButton = document.createElement("div");
+        photoButton.classList.add("lto-take-photo", "lto-disabled");
+
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
-        elements.forEach(e => e.forEach(x => div.appendChild(x)));
+        elements.forEach(e => e.forEach(x => wrapper.appendChild(x)));
 
-        div.appendChild(video);
-        div.appendChild(canvas);
-        div.appendChild(snap);
+        wrapper.appendChild(video);
+        wrapper.appendChild(canvas);
+        wrapper.appendChild(photoButton);
+        wrapper.appendChild(resetButton);
 
-        this.initCamera(div);
+        this.initCamera(wrapper);
+        this.activatePhotoButton(wrapper);
 
-        return div;
+        return wrapper;
     }
 
     private initCamera(div: HTMLDivElement) {
         const video = div.querySelector("video") as HTMLVideoElement;
-        const canvas = div.querySelector("canvas") as HTMLCanvasElement;
-        const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-        const snap = div.querySelector(".lto-snap") as HTMLDivElement;
 
-        // init video
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({video: true})
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.play();
-                }).catch((e) => {
-                    console.error(e.name + ": " + e.message);
-                    EventStream.emit("GAIA::publish", {
-                        attributes: {type: 'submit', value: JSON.stringify({[this.spec.name || "camera"]: "denied"})},
-                        type: 'submit'
-                    });
-            });
+                .then(mediaStream => {
+                    this.mediaStream = mediaStream;
+                    video.srcObject = mediaStream;
+                    this.imageCapture = new ImageCapture(mediaStream.getVideoTracks()[0]);
+                })
+                .catch(error => console.error(error));
         }
+    }
 
-        // init overlay
-        const images = div.querySelectorAll<HTMLImageElement>("img");
+    private takePhoto(div: HTMLDivElement) {
+        const canvas = div.querySelector("canvas") as HTMLCanvasElement;
+        this.imageCapture!.takePhoto()
+            .then(blob => createImageBitmap(blob))
+            .then(imageBitmap => {
+                Camera.drawCanvas(canvas, imageBitmap);
+            })
+            .finally(() => this.stopCamera(div))
+            .catch(error => console.error(error))
+    }
 
-        // init snapshot
-        snap.onclick = () => {
-            context.drawImage(video,0, 0, video.width, video.height);
-            div.setAttribute("value", context.canvas.toDataURL());
+    private stopCamera(div: HTMLDivElement) {
+        this.mediaStream!.getTracks().forEach(track => track.stop());
+    }
+
+    private static drawCanvas(canvas: HTMLCanvasElement, image: ImageBitmap) {
+        canvas.width = Number(getComputedStyle(canvas).width!.split("px")[0]);
+        canvas.height = Number(getComputedStyle(canvas).height!.split("px")[0]);
+        const ratio = Math.min(canvas.width / image.width, canvas.height / image.height);
+
+        const scaledWidth = image.width * ratio;
+        const scaledHeight = image.height * ratio;
+
+        const x = (canvas.width - scaledWidth) / 2;
+        const y = (canvas.height - scaledHeight) / 2;
+        canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.getContext("2d")!.drawImage(image, 0, 0, image.width, image.height, x, y, scaledWidth, scaledHeight);
+    }
+
+    private activatePhotoButton(wrapperElement: HTMLDivElement) {
+        const photoButton = wrapperElement.querySelector(".lto-take-photo") as HTMLDivElement;
+        photoButton.onclick = () => {
+            this.takePhoto(wrapperElement);
+            const canvas = wrapperElement.querySelector("canvas") as HTMLCanvasElement;
+            wrapperElement.setAttribute("value", canvas.toDataURL());
+            this.activateResetButton(wrapperElement);
+            Camera.deactivateClick(photoButton);
         };
-
-        // init canvas
-        this.draw(video, context, images);
+        photoButton.classList.toggle("lto-disabled");
     }
 
-    private draw(video: HTMLVideoElement, context: CanvasRenderingContext2D, images: NodeListOf<HTMLImageElement>) {
-        context.drawImage(video, 0, 0, 640, 480);
-        images.forEach(image => context.drawImage(image, 0, 0, 640, 480));
-
-        setTimeout(this.draw, 20, video, context, images);
+    private activateResetButton(wrapperElement: HTMLDivElement) {
+        const resetButton = wrapperElement.querySelector(".lto-reset-photo") as HTMLDivElement;
+        resetButton.onclick = () => {
+            this.initCamera(wrapperElement);
+            const canvas = wrapperElement.querySelector("canvas") as HTMLCanvasElement;
+            canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+            this.activatePhotoButton(wrapperElement);
+            Camera.deactivateClick(resetButton);
+        };
+        resetButton.classList.toggle("lto-disabled");
     }
 
+    private static deactivateClick(element: HTMLDivElement) {
+        element.onclick = null;
+        element.classList.toggle("lto-disabled");
+    }
 }
 
 Renderables.register("camera", Camera);

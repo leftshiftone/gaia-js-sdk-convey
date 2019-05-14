@@ -30,6 +30,8 @@
         "@types/mqtt": "^2.5.0",
         "@types/node": "^11.11.6",
         "@types/sinon": "^7.0.10",
+        "@types/w3c-image-capture": "^1.0.2",
+        "@types/webrtc": "^0.0.25",
         "awesome-typescript-loader": "^5.2.1",
         "copyfiles": "^2.1.0",
         "css-loader": "^2.1.1",

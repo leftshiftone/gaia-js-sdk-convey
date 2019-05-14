@@ -1,8 +1,9 @@
-$snapWidth: 100px;
-$snapHeight: 100px;
+$buttonWidth: 100px;
+$buttonHeight: 100px;
 
-.lto-snap {
-    width: $snapWidth;
-    height: $snapHeight;
+.lto-take-photo,
+.lto-reset-photo {
     border-radius: 100%;
+    width: $buttonWidth;
+    height: $buttonHeight;
 }
