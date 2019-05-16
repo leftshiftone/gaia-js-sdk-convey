@@ -34,6 +34,8 @@ export class Slider implements IRenderable {
 
         const value = document.createElement("div");
         value.classList.add("lto-slider-value");
+        const valueContent = document.createElement("span");
+        value.appendChild(valueContent);
 
         if (this.spec.values) {
             this.slider.max = (this.spec.values.length - 1).toString();
@@ -47,13 +49,13 @@ export class Slider implements IRenderable {
             minLabel.innerText = values.get(+this.slider.min)!.toString();
             maxLabel.innerText = values.get(+this.slider.max)!.toString();
 
-            value.innerHTML = values.get(+this.slider.value)!;
-            this.slider.setAttribute('value', values.get(+this.slider.value)!);
+            valueContent.innerHTML = values.get(+this.slider.value)!;
+            this.slider.setAttribute("value", values.get(+this.slider.value)!);
 
             this.slider.oninput = () => {
                 this.setSliderMinMaxClass();
-                this.slider.setAttribute('value', values.get(+this.slider.value)!);
-                value.innerHTML = values.get(+this.slider.value)!;
+                this.slider.setAttribute("value", values.get(+this.slider.value)!);
+                valueContent.innerHTML = values.get(+this.slider.value)!;
             };
         } else {
             //@ts-ignore
@@ -68,12 +70,12 @@ export class Slider implements IRenderable {
 
             this.setSliderMinMaxClass();
 
-            value.innerHTML = this.slider.value;
-            this.slider.setAttribute('value', this.slider.value);
+            valueContent.innerHTML = this.slider.value;
+            this.slider.setAttribute("value", this.slider.value);
             this.slider.oninput = () => {
                 this.setSliderMinMaxClass();
-                this.slider.setAttribute('value', this.slider.value);
-                value.innerHTML = this.slider.value;
+                this.slider.setAttribute("value", this.slider.value);
+                valueContent.innerHTML = this.slider.value;
             };
         }
 
