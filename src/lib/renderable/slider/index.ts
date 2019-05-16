@@ -107,6 +107,8 @@ export class Slider implements IRenderable {
             this.container.classList.add("lto-slider-value-max");
         if (this.slider.value === this.slider.min)
             this.container.classList.add("lto-slider-value-min");
+        if (this.slider.value === "1")
+            this.container.classList.add("lto-slider-value-one");
     }
 
 }
