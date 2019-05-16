@@ -39,7 +39,7 @@ export abstract class Choice implements IRenderable {
         label.appendChild(input);
         this.spec.class !== undefined ? label.addClasses(this.spec.class) : () => {};
         if (this.inputType() === "radio") {
-            input.unwrap().addEventListener("input", () => {
+            input.unwrap().addEventListener("click", () => {
                 label.unwrap().parentElement!.parentElement!.querySelectorAll('input[name=' + input.unwrap().getAttribute("name") + ']').forEach(e => {
                     e.parentElement!.classList.remove("lto-toggle", "lto-checked", "lto-unchecked");
                     e.parentElement!.classList.add("lto-unchecked");
@@ -48,7 +48,7 @@ export abstract class Choice implements IRenderable {
                 label.unwrap().classList.remove("lto-unchecked");
             });
         } else {
-            input.unwrap().addEventListener("input", () => {
+            input.unwrap().addEventListener("click", () => {
                 label.toggleClass("lto-toggle");
             });
         }

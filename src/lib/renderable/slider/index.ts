@@ -24,7 +24,7 @@ export class Slider implements IRenderable {
 
         const minLabel = document.createElement("span");
         const maxLabel = document.createElement("span");
-        const values: Map<number, string> = new Map([]);
+        const values: Map<number, string> = new Map();
 
         this.slider.type = "range";
         this.slider.name = this.spec.name || "";
@@ -52,11 +52,15 @@ export class Slider implements IRenderable {
             valueContent.innerHTML = values.get(+this.slider.value)!;
             this.slider.setAttribute("value", values.get(+this.slider.value)!);
 
-            this.slider.oninput = () => {
+            const onChange = () => {
                 this.setSliderMinMaxClass();
                 this.slider.setAttribute("value", values.get(+this.slider.value)!);
                 valueContent.innerHTML = values.get(+this.slider.value)!;
             };
+
+            this.slider.oninput = onChange;
+            //ie11 compatibility
+            this.slider.onchange = onChange;
         } else {
             //@ts-ignore
             this.slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
@@ -72,24 +76,30 @@ export class Slider implements IRenderable {
 
             valueContent.innerHTML = this.slider.value;
             this.slider.setAttribute("value", this.slider.value);
-            this.slider.oninput = () => {
+            const onChange = () => {
                 this.setSliderMinMaxClass();
                 this.slider.setAttribute("value", this.slider.value);
                 valueContent.innerHTML = this.slider.value;
             };
+            this.slider.oninput = onChange;
+            //ie11 compatibility
+            this.slider.onchange = onChange;
         }
 
         this.slider.classList.add("lto-slider", "lto-" + position);
 
-        if (!this.spec.horizontal)
+        if (!this.spec.horizontal) {
             this.slider.style.transform = "rotate(90deg)";
+        }
 
-        if (isNested)
+        if (isNested) {
             this.slider.classList.add("lto-nested");
+        }
 
         this.container.classList.add("lto-slider-container");
-        if (this.spec.class)
+        if (this.spec.class) {
             this.spec.class.split(" ").forEach(e => this.container.classList.add(e));
+        }
 
         this.slider.appendChild(document.createTextNode(this.spec.text || ""));
 
@@ -103,12 +113,15 @@ export class Slider implements IRenderable {
 
     public setSliderMinMaxClass() {
         this.container.classList.remove("lto-slider-value-max", "lto-slider-value-min", "lto-slider-value-one");
-        if (this.slider.value === this.slider.max)
+        if (this.slider.value === this.slider.max) {
             this.container.classList.add("lto-slider-value-max");
-        if (this.slider.value === this.slider.min)
+        }
+        if (this.slider.value === this.slider.min) {
             this.container.classList.add("lto-slider-value-min");
-        if (this.slider.value === "1")
+        }
+        if (this.slider.value === "1") {
             this.container.classList.add("lto-slider-value-one");
+        }
     }
 
 }
