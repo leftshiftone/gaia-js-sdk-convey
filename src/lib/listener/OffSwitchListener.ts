@@ -25,6 +25,13 @@ export class OffSwitchListener implements IListener {
     /**
      * {@inheritDoc}
      */
+    public onConnectionLost(): void {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public onDisconnected(): void {
         // do nothing
     }

@@ -23,6 +23,15 @@ export class DefaultListener implements IListener {
     /**
      * {@inheritDoc}
      */
+    public onConnectionLost(): void {
+        if (this.emitter && this.emitter.onConnectionLost) {
+            this.emitter.onConnectionLost();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public onDisconnected(): void {
         if (this.emitter && this.emitter.onDisconnected) {
             this.emitter.onDisconnected();

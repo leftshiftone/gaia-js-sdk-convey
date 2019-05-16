@@ -2,16 +2,19 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
-import EventStream from "../../event/EventStream";
 
 /**
  * Implementation of the 'camera' markup element.
  */
 export class Camera implements IRenderable, IStackeable {
-
+    private readonly maxCanvasSize: number;
     private readonly spec: ISpecification;
 
+    private mediaStream: MediaStream | null = null;
+    private imageCapture: ImageCapture | null = null;
+
     constructor(message: ISpecification) {
+        this.maxCanvasSize = 640;
         this.spec = message;
     }
 
@@ -19,80 +22,155 @@ export class Camera implements IRenderable, IStackeable {
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        // container
-        const div = document.createElement("div");
-        div.classList.add("lto-camera");
-        div.setAttribute("name", this.spec.name || "");
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("lto-camera");
+        wrapper.setAttribute("name", this.spec.name || "");
 
-        // snap
-        const snap = document.createElement("div");
-        snap.classList.add("lto-snap");
+        const error = document.createElement("div");
+        error.classList.add("lto-error");
+        error.style.display = "none";
+        wrapper.appendChild(error);
 
-        // video
         const video = document.createElement("video") as HTMLVideoElement;
-        video.width = 640;
-        video.height = 480;
         video.autoplay = true;
+        wrapper.appendChild(video);
 
-        // canvas
         const canvas = document.createElement("canvas") as HTMLCanvasElement;
-        canvas.width = 640;
-        canvas.height = 480;
+        wrapper.appendChild(canvas);
 
-        // overlay images
+        const photoButton = document.createElement("div");
+        photoButton.classList.add("lto-take-photo", "lto-disabled");
+        wrapper.appendChild(photoButton);
+
+        const resetButton = document.createElement("div");
+        resetButton.classList.add("lto-reset-photo", "lto-disabled");
+        wrapper.appendChild(resetButton);
+
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
-        elements.forEach(e => e.forEach(x => div.appendChild(x)));
+        elements.forEach(e => e.forEach(x => wrapper.appendChild(x)));
 
-        div.appendChild(video);
-        div.appendChild(canvas);
-        div.appendChild(snap);
+        this.initCamera(wrapper);
+        this.activatePhotoButton(wrapper);
 
-        this.initCamera(div);
-
-        return div;
+        return wrapper;
     }
 
-    private initCamera(div: HTMLDivElement) {
-        const video = div.querySelector("video") as HTMLVideoElement;
-        const canvas = div.querySelector("canvas") as HTMLCanvasElement;
-        const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-        const snap = div.querySelector(".lto-snap") as HTMLDivElement;
+    private initCamera(wrapper: HTMLDivElement) {
+        const video = wrapper.querySelector("video") as HTMLVideoElement;
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
 
-        // init video
+        wrapper.classList.remove("lto-not-available");
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({video: true})
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.play();
-                }).catch((e) => {
-                    console.error(e.name + ": " + e.message);
-                    EventStream.emit("GAIA::publish", {
-                        attributes: {type: 'submit', value: JSON.stringify({[this.spec.name || "camera"]: "denied"})},
-                        type: 'submit'
+                .then(mediaStream => {
+                    this.mediaStream = mediaStream;
+                    this.imageCapture = new ImageCapture(mediaStream.getVideoTracks()[0]);
+                    this.imageCapture.getPhotoSettings().then(settings => {
+                        video.width = settings.imageWidth!;
+                        video.height = settings.imageHeight!;
+                        canvas.width = settings.imageWidth!;
+                        canvas.height = settings.imageHeight!;
                     });
-            });
+                    video.srcObject = this.mediaStream;
+
+                    if (!video.classList.contains("lto-active")) {
+                        video.classList.add("lto-active");
+                    }
+                    canvas.classList.remove("lto-active");
+                })
+                .catch(error => {
+                    console.error(error);
+                    video.classList.remove("lto-active");
+                    canvas.classList.remove("lto-active");
+                    const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
+                    errorWrapper.style.display = "block";
+                    wrapper.classList.add("lto-not-available");
+                    Camera.deactivateClick(wrapper.querySelector(".lto-take-photo") as HTMLDivElement);
+                    this.activateResetButton(wrapper);
+                });
         }
+    }
 
-        // init overlay
-        const images = div.querySelectorAll<HTMLImageElement>("img");
+    private takePhoto(wrapper: HTMLDivElement) {
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+        this.imageCapture!.takePhoto()
+            .then(blob => createImageBitmap(blob))
+            .then(imageBitmap => {
+                this.drawCanvas(canvas, imageBitmap);
+            })
+            .finally(() => this.stopCamera(wrapper))
+            .catch(error => console.error(error))
+    }
 
-        // init snapshot
-        snap.onclick = () => {
-            context.drawImage(video,0, 0, video.width, video.height);
-            div.setAttribute("value", context.canvas.toDataURL());
+    private stopCamera(wrapper: HTMLDivElement) {
+        const video = wrapper.querySelector("video") as HTMLVideoElement;
+        video.classList.remove("lto-active");
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+        canvas.classList.add("lto-active");
+        this.mediaStream!.getTracks().forEach(track => track.stop());
+    }
+
+    private drawCanvas(canvas: HTMLCanvasElement, image: ImageBitmap) {
+        this.sizeCanvasAccordingToImage(canvas, image);
+
+        const ratio = Math.min(canvas.width / image.width, canvas.height / image.height);
+        const scaledWidth = image.width * ratio;
+        const scaledHeight = image.height * ratio;
+
+        const x = (canvas.width - scaledWidth) / 2;
+        const y = (canvas.height - scaledHeight) / 2;
+        canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.getContext("2d")!.drawImage(image, 0, 0, image.width, image.height, x, y, scaledWidth, scaledHeight);
+    }
+
+    private sizeCanvasAccordingToImage(canvas: HTMLCanvasElement, image: ImageBitmap) {
+        console.info("Computed Canvas Width: " + Number(getComputedStyle(canvas).width!.split("px")[0]));
+        console.info("Computed Canvas Height: " + Number(getComputedStyle(canvas).height!.split("px")[0]));
+
+        let isLandscape = image.width > image.height;
+        const imageRatio = image.width / image.height;
+        if (isLandscape && image.width > this.maxCanvasSize) {
+            canvas.width = this.maxCanvasSize;
+            canvas.height = this.maxCanvasSize / imageRatio;
+        } else if (!isLandscape && image.height > this.maxCanvasSize) {
+            canvas.width = this.maxCanvasSize * imageRatio;
+            canvas.height = this.maxCanvasSize
+        } else {
+            canvas.width = image.width;
+            canvas.height = image.height;
+        }
+    }
+
+    private activatePhotoButton(wrapper: HTMLDivElement) {
+        const photoButton = wrapper.querySelector(".lto-take-photo") as HTMLDivElement;
+        photoButton.onclick = () => {
+            this.takePhoto(wrapper);
+            const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+            wrapper.setAttribute("value", canvas.toDataURL());
+            this.activateResetButton(wrapper);
+            Camera.deactivateClick(photoButton);
         };
-
-        // init canvas
-        this.draw(video, context, images);
+        photoButton.classList.toggle("lto-disabled");
     }
 
-    private draw(video: HTMLVideoElement, context: CanvasRenderingContext2D, images: NodeListOf<HTMLImageElement>) {
-        context.drawImage(video, 0, 0, 640, 480);
-        images.forEach(image => context.drawImage(image, 0, 0, 640, 480));
-
-        setTimeout(this.draw, 20, video, context, images);
+    private activateResetButton(wrapper: HTMLDivElement) {
+        const resetButton = wrapper.querySelector(".lto-reset-photo") as HTMLDivElement;
+        resetButton.onclick = () => {
+            const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
+            errorWrapper.style.display = "none";
+            this.initCamera(wrapper);
+            const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+            canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
+            this.activatePhotoButton(wrapper);
+            Camera.deactivateClick(resetButton);
+        };
+        resetButton.classList.toggle("lto-disabled");
     }
 
+    private static deactivateClick(element: HTMLDivElement) {
+        element.onclick = null;
+        element.classList.toggle("lto-disabled");
+    }
 }
 
 Renderables.register("camera", Camera);
