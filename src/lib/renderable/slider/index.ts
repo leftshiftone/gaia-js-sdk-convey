@@ -8,6 +8,8 @@ import Renderables from '../Renderables';
 export class Slider implements IRenderable {
 
     private readonly spec: ISpecification;
+
+    private container = document.createElement("div");
     private slider = document.createElement("input");
 
     constructor(spec: ISpecification) {
@@ -83,27 +85,26 @@ export class Slider implements IRenderable {
         if (isNested)
             this.slider.classList.add("lto-nested");
 
-        const container = document.createElement("div");
-        container.classList.add("lto-slider-container");
+        this.container.classList.add("lto-slider-container");
         if (this.spec.class)
-            this.spec.class.split(" ").forEach(e => container.classList.add(e));
+            this.spec.class.split(" ").forEach(e => this.container.classList.add(e));
 
         this.slider.appendChild(document.createTextNode(this.spec.text || ""));
 
-        container.appendChild(value);
-        container.appendChild(minLabel);
-        container.appendChild(this.slider);
-        container.appendChild(maxLabel);
+        this.container.appendChild(value);
+        this.container.appendChild(minLabel);
+        this.container.appendChild(this.slider);
+        this.container.appendChild(maxLabel);
 
-        return container;
+        return this.container;
     }
 
     public setSliderMinMaxClass() {
-        this.slider.classList.remove("lto-slider-value-max", "lto-slider-value-min");
+        this.container.classList.remove("lto-slider-value-max", "lto-slider-value-min");
         if (this.slider.value === this.slider.max)
-            this.slider.classList.add("lto-slider-value-max");
+            this.container.classList.add("lto-slider-value-max");
         if (this.slider.value === this.slider.min)
-            this.slider.classList.add("lto-slider-value-min");
+            this.container.classList.add("lto-slider-value-min");
     }
 
 }
