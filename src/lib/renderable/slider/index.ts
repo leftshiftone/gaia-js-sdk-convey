@@ -8,6 +8,7 @@ import Renderables from '../Renderables';
 export class Slider implements IRenderable {
 
     private readonly spec: ISpecification;
+    private slider = document.createElement("input");
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -18,13 +19,13 @@ export class Slider implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
-        const slider = document.createElement("input");
+
         const minLabel = document.createElement("span");
         const maxLabel = document.createElement("span");
         const values: Map<number, string> = new Map([]);
 
-        slider.type="range";
-        slider.name = this.spec.name || "";
+        this.slider.type = "range";
+        this.slider.name = this.spec.name || "";
 
         minLabel.classList.add("lto-slider-min");
         maxLabel.classList.add("lto-slider-max");
@@ -32,64 +33,79 @@ export class Slider implements IRenderable {
         const value = document.createElement("div");
         value.classList.add("lto-slider-value");
 
-        if(this.spec.values !== undefined) {
-            slider.max = (this.spec.values.length - 1).toString();
-            slider.min = "0";
-            slider.value = this.spec.value || "0";
-            slider.step = "1";
+        if (this.spec.values) {
+            this.slider.max = (this.spec.values.length - 1).toString();
+            this.slider.min = "0";
+            this.slider.value = this.spec.value || "0";
+            this.slider.step = "1";
             this.spec.values.forEach(value => values.set(this.spec.values!.indexOf(value), value));
 
-            minLabel.innerText = values.get(+slider.min)!.toString();
-            maxLabel.innerText = values.get(+slider.max)!.toString();
+            this.setSliderMinMaxClass();
 
-            value.innerHTML = values.get(+slider.value)!;
-            slider.setAttribute('value', values.get(+slider.value)!);
+            minLabel.innerText = values.get(+this.slider.min)!.toString();
+            maxLabel.innerText = values.get(+this.slider.max)!.toString();
 
-            slider.oninput = () => {
-                slider.setAttribute('value', values.get(+slider.value)!);
-                value.innerHTML = values.get(+slider.value)!;
+            value.innerHTML = values.get(+this.slider.value)!;
+            this.slider.setAttribute('value', values.get(+this.slider.value)!);
+
+            this.slider.oninput = () => {
+                this.setSliderMinMaxClass();
+                this.slider.setAttribute('value', values.get(+this.slider.value)!);
+                value.innerHTML = values.get(+this.slider.value)!;
             };
         } else {
             //@ts-ignore
-            slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
+            this.slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
             //@ts-ignore
-            slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
+            this.slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
             //@ts-ignore
-            slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
-            slider.step = this.spec.step || "";
-            minLabel.innerText = slider.min;
-            maxLabel.innerText = slider.max;
+            this.slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
+            this.slider.step = this.spec.step || "";
+            minLabel.innerText = this.slider.min;
+            maxLabel.innerText = this.slider.max;
 
-            value.innerHTML = slider.value;
-            slider.setAttribute('value',slider.value);
-            slider.oninput = () => {
-                slider.setAttribute('value', slider.value);
-                value.innerHTML = slider.value;
+            this.setSliderMinMaxClass();
+
+            value.innerHTML = this.slider.value;
+            this.slider.setAttribute('value', this.slider.value);
+            this.slider.oninput = () => {
+                this.setSliderMinMaxClass();
+                this.slider.setAttribute('value', this.slider.value);
+                value.innerHTML = this.slider.value;
             };
         }
 
-        slider.classList.add("lto-slider", "lto-" + position);
+        this.slider.classList.add("lto-slider", "lto-" + position);
 
         if (!this.spec.horizontal)
-            slider.style.transform = "rotate(90deg)";
+            this.slider.style.transform = "rotate(90deg)";
 
         if (isNested)
-            slider.classList.add("lto-nested");
+            this.slider.classList.add("lto-nested");
 
         const container = document.createElement("div");
         container.classList.add("lto-slider-container");
-        if(this.spec.class !== undefined)
+        if (this.spec.class)
             this.spec.class.split(" ").forEach(e => container.classList.add(e));
 
-        slider.appendChild(document.createTextNode(this.spec.text || ""));
+        this.slider.appendChild(document.createTextNode(this.spec.text || ""));
 
         container.appendChild(value);
         container.appendChild(minLabel);
-        container.appendChild(slider);
+        container.appendChild(this.slider);
         container.appendChild(maxLabel);
 
         return container;
     }
+
+    public setSliderMinMaxClass() {
+        this.slider.classList.remove("lto-slider-value-max", "lto-slider-value-min");
+        if (this.slider.value === this.slider.max)
+            this.slider.classList.add("lto-slider-value-max");
+        if (this.slider.value === this.slider.min)
+            this.slider.classList.add("lto-slider-value-min");
+    }
+
 }
 
 Renderables.register("slider", Slider);
