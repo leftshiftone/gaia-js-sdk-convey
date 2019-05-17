@@ -10,8 +10,7 @@ export class Camera implements IRenderable, IStackeable {
     private readonly maxCanvasSize: number;
     private readonly spec: ISpecification;
 
-    private mediaStream: MediaStream | null = null;
-    private imageCapture: ImageCapture | null = null;
+    private mediaStream?: MediaStream;
 
     constructor(message: ISpecification) {
         this.maxCanvasSize = 640;
@@ -32,7 +31,6 @@ export class Camera implements IRenderable, IStackeable {
         wrapper.appendChild(error);
 
         const video = document.createElement("video") as HTMLVideoElement;
-        video.autoplay = true;
         wrapper.appendChild(video);
 
         const canvas = document.createElement("canvas") as HTMLCanvasElement;
@@ -64,19 +62,14 @@ export class Camera implements IRenderable, IStackeable {
             navigator.mediaDevices.getUserMedia({video: true})
                 .then(mediaStream => {
                     this.mediaStream = mediaStream;
-                    this.imageCapture = new ImageCapture(mediaStream.getVideoTracks()[0]);
-                    this.imageCapture.getPhotoSettings().then(settings => {
-                        video.width = settings.imageWidth!;
-                        video.height = settings.imageHeight!;
-                        canvas.width = settings.imageWidth!;
-                        canvas.height = settings.imageHeight!;
-                    });
                     video.srcObject = this.mediaStream;
-
-                    if (!video.classList.contains("lto-active")) {
-                        video.classList.add("lto-active");
-                    }
-                    canvas.classList.remove("lto-active");
+                    video.play()
+                        .then(() => {
+                            if (!video.classList.contains("lto-active")) {
+                                video.classList.add("lto-active");
+                            }
+                            canvas.classList.remove("lto-active");
+                        });
                 })
                 .catch(error => {
                     console.error(error);
@@ -93,13 +86,9 @@ export class Camera implements IRenderable, IStackeable {
 
     private takePhoto(wrapper: HTMLDivElement) {
         const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
-        this.imageCapture!.takePhoto()
-            .then(blob => createImageBitmap(blob))
-            .then(imageBitmap => {
-                this.drawCanvas(canvas, imageBitmap);
-            })
-            .finally(() => this.stopCamera(wrapper))
-            .catch(error => console.error(error))
+        const video = wrapper.querySelector("video") as HTMLVideoElement;
+        this.drawCanvas(canvas, video);
+        this.stopCamera(wrapper)
     }
 
     private stopCamera(wrapper: HTMLDivElement) {
@@ -110,34 +99,35 @@ export class Camera implements IRenderable, IStackeable {
         this.mediaStream!.getTracks().forEach(track => track.stop());
     }
 
-    private drawCanvas(canvas: HTMLCanvasElement, image: ImageBitmap) {
-        this.sizeCanvasAccordingToImage(canvas, image);
+    private drawCanvas(canvas: HTMLCanvasElement, video: HTMLVideoElement) {
+        const videoTrackSettings = this.mediaStream!.getVideoTracks()[0].getSettings();
+        const cameraWidth = videoTrackSettings.width!;
+        const cameraHeight = videoTrackSettings.height!;
 
-        const ratio = Math.min(canvas.width / image.width, canvas.height / image.height);
-        const scaledWidth = image.width * ratio;
-        const scaledHeight = image.height * ratio;
+        this.sizeCanvasAccordingToImage(canvas, cameraWidth, cameraHeight);
+
+        const ratio = Math.min(canvas.width / cameraWidth, canvas.height / cameraHeight);
+        const scaledWidth = cameraWidth * ratio;
+        const scaledHeight = cameraHeight * ratio;
 
         const x = (canvas.width - scaledWidth) / 2;
         const y = (canvas.height - scaledHeight) / 2;
         canvas.getContext("2d")!.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.getContext("2d")!.drawImage(image, 0, 0, image.width, image.height, x, y, scaledWidth, scaledHeight);
+        canvas.getContext("2d")!.drawImage(video, 0, 0, cameraWidth, cameraHeight, x, y, scaledWidth, scaledHeight);
     }
 
-    private sizeCanvasAccordingToImage(canvas: HTMLCanvasElement, image: ImageBitmap) {
-        console.info("Computed Canvas Width: " + Number(getComputedStyle(canvas).width!.split("px")[0]));
-        console.info("Computed Canvas Height: " + Number(getComputedStyle(canvas).height!.split("px")[0]));
-
-        let isLandscape = image.width > image.height;
-        const imageRatio = image.width / image.height;
-        if (isLandscape && image.width > this.maxCanvasSize) {
+    private sizeCanvasAccordingToImage(canvas: HTMLCanvasElement, width: number, height: number) {
+        let isLandscape = width > height;
+        const imageRatio = width / height;
+        if (isLandscape && width > this.maxCanvasSize) {
             canvas.width = this.maxCanvasSize;
             canvas.height = this.maxCanvasSize / imageRatio;
-        } else if (!isLandscape && image.height > this.maxCanvasSize) {
+        } else if (!isLandscape && height > this.maxCanvasSize) {
             canvas.width = this.maxCanvasSize * imageRatio;
             canvas.height = this.maxCanvasSize
         } else {
-            canvas.width = image.width;
-            canvas.height = image.height;
+            canvas.width = width;
+            canvas.height = height;
         }
     }
 
