@@ -36,13 +36,17 @@ export class Camera implements IRenderable, IStackeable {
         const canvas = document.createElement("canvas") as HTMLCanvasElement;
         wrapper.appendChild(canvas);
 
+        const controlWrapper = document.createElement("div");
+
         const photoButton = document.createElement("div");
         photoButton.classList.add("lto-take-photo", "lto-disabled");
-        wrapper.appendChild(photoButton);
+        controlWrapper.appendChild(photoButton);
 
         const resetButton = document.createElement("div");
         resetButton.classList.add("lto-reset-photo", "lto-disabled");
-        wrapper.appendChild(resetButton);
+        controlWrapper.appendChild(resetButton);
+
+        wrapper.appendChild(controlWrapper);
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => wrapper.appendChild(x)));
@@ -136,7 +140,13 @@ export class Camera implements IRenderable, IStackeable {
         photoButton.onclick = () => {
             this.takePhoto(wrapper);
             const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
-            wrapper.setAttribute("value", canvas.toDataURL());
+
+            wrapper.setAttribute("value", JSON.stringify({
+                data: canvas.toDataURL().split(",")[1],
+                fileExtension: "png",
+                mimeType: "image/png"
+            }));
+
             this.activateResetButton(wrapper);
             Camera.deactivateClick(photoButton);
         };
