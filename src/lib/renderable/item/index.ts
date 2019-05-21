@@ -7,7 +7,7 @@ import Renderables from '../Renderables';
  */
 export class Item implements IRenderable {
 
-    private spec:ISpecification;
+    private spec: ISpecification;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -16,10 +16,13 @@ export class Item implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const item = document.createElement('li');
         item.classList.add('lto-item');
-        if(this.spec.class !== undefined) {
+        if (this.spec.id !== undefined) {
+            item.id = this.spec.id;
+        }
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => item.classList.add(e));
         }
         item.appendChild(document.createTextNode(this.spec.text || ""));
@@ -28,4 +31,5 @@ export class Item implements IRenderable {
     }
 
 }
+
 Renderables.register("item", Item);

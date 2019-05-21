@@ -19,6 +19,9 @@ export class Bold implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const bold = document.createElement('b');
         bold.classList.add('lto-bold');
+        if (this.spec.id !== undefined) {
+            bold.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => bold.classList.add(e));
         }

@@ -20,6 +20,9 @@ export class Submit implements IRenderable {
         const submit: HTMLButtonElement = document.createElement('button');
 
         submit.classList.add("lto-submit", "lto-" + position);
+        if (this.spec.id !== undefined) {
+            submit.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => submit.classList.add(e));
         }

@@ -7,7 +7,7 @@ import Renderables from '../Renderables';
  */
 export class Link implements IRenderable {
 
-    private readonly spec:ISpecification;
+    private readonly spec: ISpecification;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -16,12 +16,15 @@ export class Link implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested: boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const link = document.createElement('a');
         link.setAttribute('href', this.spec.value || "");
         link.setAttribute('target', '_blank');
         link.classList.add('lto-link');
-        if(this.spec.class !== undefined) {
+        if (this.spec.id !== undefined) {
+            link.id = this.spec.id;
+        }
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => link.classList.add(e));
         }
         link.appendChild(document.createTextNode(this.spec.text || ""));
@@ -30,4 +33,5 @@ export class Link implements IRenderable {
     }
 
 }
+
 Renderables.register("link", Link);

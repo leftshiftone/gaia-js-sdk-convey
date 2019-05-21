@@ -26,7 +26,10 @@ export class Reel implements IRenderable, IStackeable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         this.reel.classList.add('lto-reel', "lto-" + position);
-        if(this.spec.class !== undefined) {
+        if (this.spec.id !== undefined) {
+            this.container.id = this.spec.id;
+        }
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => this.reel.classList.add(e));
         }
         this.reel.setAttribute("name", this.spec.name || "");
@@ -54,7 +57,9 @@ export class Reel implements IRenderable, IStackeable {
 
         this.container.children[0].classList.replace("lto-passive", "lto-active");
 
-        if (isNested) { this.reel.classList.add('lto-nested') }
+        if (isNested) {
+            this.reel.classList.add('lto-nested')
+        }
 
         this.setValueToReel(this.container.children[this.counter].getAttribute("value"));
 
@@ -93,4 +98,5 @@ export class Reel implements IRenderable, IStackeable {
         this.reel.setAttribute("value", value);
     }
 }
+
 Renderables.register("reel", Reel);

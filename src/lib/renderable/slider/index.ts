@@ -97,6 +97,9 @@ export class Slider implements IRenderable {
         }
 
         this.container.classList.add("lto-slider-container");
+        if (this.spec.id !== undefined) {
+            this.container.id = this.spec.id;
+        }
         if (this.spec.class) {
             this.spec.class.split(" ").forEach(e => this.container.classList.add(e));
         }

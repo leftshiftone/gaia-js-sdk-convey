@@ -21,7 +21,10 @@ export class Carousel implements IRenderable, IStackeable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.carousel.classList.add('lto-carousel', 'lto-left');
-        if(this.spec.class !== undefined) {
+        if (this.spec.id !== undefined) {
+            this.carousel.id = this.spec.id;
+        }
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => this.carousel.classList.add(e));
         }
 

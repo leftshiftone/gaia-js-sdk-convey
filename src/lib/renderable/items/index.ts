@@ -23,7 +23,10 @@ export class Items implements IRenderable, IStackeable {
         if (!isNested) {
             const div = document.createElement('div');
             div.classList.add('lto-items');
-            if(this.spec.class !== undefined) {
+            if (this.spec.id !== undefined) {
+                div.id = this.spec.id;
+            }
+            if (this.spec.class !== undefined) {
                 this.spec.class.split(" ").forEach(e => items.classList.add(e));
             }
             div.appendChild(Timestamp.render());
@@ -46,4 +49,5 @@ export class Items implements IRenderable, IStackeable {
     }
 
 }
+
 Renderables.register("items", Items);

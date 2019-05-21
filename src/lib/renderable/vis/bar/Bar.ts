@@ -49,9 +49,9 @@ export class Bar {
         });
     }
 
-    private xBand(data:any) {
+    private xBand(data: any) {
         return d3.scaleBand()
-            .domain(data.map((d:any) => d.name))
+            .domain(data.map((d: any) => d.name))
             .range([this.options.margin.left, this.options.width - this.options.margin.right])
             .padding(0.1);
     }

@@ -23,7 +23,10 @@ export class Suggestion implements IRenderable {
         button.setAttribute('name', this.spec.name || "");
 
         button.classList.add("lto-suggestion", "lto-" + position);
-        if(this.spec.class !== undefined) {
+        if (this.spec.id !== undefined) {
+            button.id = this.spec.id;
+        }
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => button.classList.add(e));
         }
 
@@ -51,4 +54,5 @@ export class Suggestion implements IRenderable {
     }
 
 }
+
 Renderables.register("suggestion", Suggestion);

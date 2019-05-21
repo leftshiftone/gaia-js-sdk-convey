@@ -34,6 +34,9 @@ export class Spinner implements IRenderable {
         });
 
         spinner.classList.add("lto-spinner", "lto-" + position);
+        if (this.spec.id !== undefined) {
+            spinner.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => spinner.classList.add(e));
         }
@@ -47,4 +50,5 @@ export class Spinner implements IRenderable {
         return spinner;
     }
 }
+
 Renderables.register("spinner", Spinner);

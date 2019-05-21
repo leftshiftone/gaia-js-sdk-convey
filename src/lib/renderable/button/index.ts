@@ -22,6 +22,9 @@ export class Button implements IRenderable {
         const button = document.createElement('button');
 
         button.setAttribute('name', this.spec.name || "");
+        if (this.spec.id !== undefined) {
+            button.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => button.classList.add(e));
         }
@@ -53,7 +56,11 @@ export class Button implements IRenderable {
                 suggestions.forEach(element => element.remove());
 
                 // add right button
-                const newButton = Object.assign(buttonObject, {class: this.spec.class, position: 'right', timestamp: new Date().getTime()});
+                const newButton = Object.assign(buttonObject, {
+                    class: this.spec.class,
+                    position: 'right',
+                    timestamp: new Date().getTime()
+                });
                 renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.appendContent(e));
             };
             button.addEventListener('click', eventListener, {once: true});

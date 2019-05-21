@@ -16,9 +16,12 @@ export class Headline implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean):HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const headline = document.createElement('h2');
-        if(this.spec.class !== undefined) {
+        if (this.spec.id !== undefined) {
+            headline.id = this.spec.id;
+        }
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => headline.classList.add(e));
         }
         headline.classList.add('lto-headline', "lto-" + this.spec.position || 'left');
@@ -28,4 +31,5 @@ export class Headline implements IRenderable {
     }
 
 }
+
 Renderables.register("headline", Headline);

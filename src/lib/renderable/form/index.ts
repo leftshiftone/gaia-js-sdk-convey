@@ -24,6 +24,9 @@ export class Form implements IRenderable, IStackeable {
         form.setAttribute("name", this.spec.name || "");
         form.classList.add('lto-form', "lto-" + position);
 
+        if (this.spec.id !== undefined) {
+            form.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => form.classList.add(e));
         }

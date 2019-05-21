@@ -10,7 +10,7 @@ import Renderables from '../Renderables';
 // FIXME: rename to label
 export class Text implements IRenderable {
 
-    private readonly spec:ISpecification;
+    private readonly spec: ISpecification;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -19,9 +19,12 @@ export class Text implements IRenderable {
     /**
      * {@inheritDoc}
      */
-    public render(renderer:IRenderer, isNested:boolean): HTMLElement {
+    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const text = document.createElement('div');
+        if (this.spec.id !== undefined) {
+            text.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => text.classList.add(e));
         }
@@ -43,4 +46,5 @@ export class Text implements IRenderable {
     }
 
 }
+
 Renderables.register("text", Text);

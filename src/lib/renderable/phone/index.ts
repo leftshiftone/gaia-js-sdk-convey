@@ -23,8 +23,13 @@ export class Phone implements IRenderable {
         phone.setAttribute('placeholder', this.spec.placeholder || "");
         phone.setAttribute('name', this.spec.name || "");
         phone.classList.add("lto-phone", "lto-" + position);
-        if (isNested) {phone.classList.add("lto-nested")}
+        if (isNested) {
+            phone.classList.add("lto-nested")
+        }
 
+        if (this.spec.id !== undefined) {
+            phone.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => phone.classList.add(e));
         }

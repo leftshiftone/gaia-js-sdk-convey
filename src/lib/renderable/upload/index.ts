@@ -39,9 +39,9 @@ export class Upload implements IRenderable {
         sizeSpan.innerText = this.spec.maxSize!.toString() || "";
         upload.type = "file";
 
-        if(this.spec.accept) {
+        if (this.spec.accept) {
             const acceptArray = this.spec.accept.replace(/\s/g, '').split(",");
-            upload.accept = "."+acceptArray.join(",.");
+            upload.accept = "." + acceptArray.join(",.");
         }
 
         this.dropArea.classList.add("lto-drop-area", "lto-" + position);
@@ -52,6 +52,9 @@ export class Upload implements IRenderable {
             this.dropArea.classList.add("lto-nested");
         }
 
+        if (this.spec.id !== undefined) {
+            uploadLabel.id = this.spec.id;
+        }
         if (this.spec.class !== undefined)
             this.spec.class.split(" ").forEach(e => {
                 uploadLabel.classList.add(e);

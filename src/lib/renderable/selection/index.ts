@@ -27,6 +27,9 @@ export class Selection implements IRenderable, IStackeable {
         this.selection.setAttribute("name", this.spec.name || "");
         this.selection.classList.add('lto-selection', "lto-" + position);
 
+        if (this.spec.id !== undefined) {
+            this.selection.id = this.spec.id;
+        }
         if (this.spec.class !== undefined)
             this.spec.class.split(" ").forEach(e => this.selection.classList.add(e));
 

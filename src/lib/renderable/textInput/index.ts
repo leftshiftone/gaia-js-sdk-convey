@@ -29,6 +29,9 @@ export class TextInput implements IRenderable {
             textInput.classList.add("lto-nested")
         }
 
+        if (this.spec.id !== undefined) {
+            textInput.id = this.spec.id;
+        }
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => textInput.classList.add(e));
         }
