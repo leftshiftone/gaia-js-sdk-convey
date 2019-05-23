@@ -123,12 +123,16 @@ export class Submit implements IRenderable {
                         position: 'right'
                     });
 
-                    const elements = document.querySelectorAll('.lto-button.lto-left');
-                    elements.forEach(element => element.remove());
+                    const buttons = document.querySelectorAll('.lto-button.lto-left');
+                    buttons.forEach(element => {
+                        if (!element.classList.contains("lto-persistent")) element.remove()
+                    });
 
                     // remove left submits
                     const submits = document.querySelectorAll('.lto-submit.lto-left');
-                    submits.forEach(element => element.remove());
+                    submits.forEach(element => {
+                        if (!element.classList.contains("lto-persistent")) element.remove()
+                    });
 
                     // remove left suggestions
                     const suggestions = document.querySelectorAll('.lto-suggestion.lto-left');
