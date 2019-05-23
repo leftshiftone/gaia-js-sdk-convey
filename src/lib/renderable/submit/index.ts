@@ -3,7 +3,7 @@ import EventStream from '../../event/EventStream';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 import Properties from "../Properties";
-import {closestByClass} from "../../support/Elements";
+import {closestByClass, removeAllEventListeners} from "../../support/Elements";
 import {ChoiceAggregator} from "./ChoiceAggregator";
 import {ChoiceContainer} from "../choice/ChoiceContainer";
 
@@ -125,7 +125,11 @@ export class Submit implements IRenderable {
 
                     const buttons = document.querySelectorAll('.lto-button.lto-left');
                     buttons.forEach(element => {
-                        if (!element.classList.contains("lto-persistent")) element.remove()
+                        if (element.classList.contains("lto-persistent")) {
+                            removeAllEventListeners(element);
+                        } else {
+                            element.remove()
+                        }
                     });
 
                     // remove left submits
