@@ -15,14 +15,3 @@ export function closestByClass(element: any, clazz: Array<string>): HTMLElement 
     }
     return el;
 }
-
-export function removeAllEventListeners(element: any) {
-    if (typeof element._eventListeners == "undefined" || element._eventListeners.length == 0) {
-        return;
-    }
-    for (let i = 0, len = element._eventListeners.length; i < len; i++) {
-        let event = element._eventListeners[i];
-        element.removeEventListener(event.event, event.callback);
-    }
-    element._eventListeners = [];
-}
