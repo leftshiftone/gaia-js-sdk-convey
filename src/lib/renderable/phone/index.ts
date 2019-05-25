@@ -22,6 +22,7 @@ export class Phone implements IRenderable {
         phone.setAttribute("type", "tel");
         phone.setAttribute('placeholder', this.spec.placeholder || "");
         phone.setAttribute('name', this.spec.name || "");
+        phone.setAttribute("value", this.spec.value || "");
         phone.classList.add("lto-phone", "lto-" + position);
         if (isNested) {
             phone.classList.add("lto-nested")
