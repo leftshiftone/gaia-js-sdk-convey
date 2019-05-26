@@ -18,10 +18,10 @@ export class Button implements IRenderable {
      * {@inheritDoc}
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        const position = this.spec.position || 'left';
-        const button = document.createElement('button');
+        const position = this.spec.position || "left";
+        const button = document.createElement("button");
 
-        button.setAttribute('name', this.spec.name || "");
+        button.setAttribute(`name`, this.spec.name || "");
         if (this.spec.id !== undefined) {
             button.id = this.spec.id;
         }
@@ -40,11 +40,11 @@ export class Button implements IRenderable {
                 const name = this.spec.name || "";
                 const value = this.spec.value || "";
 
-                const buttonObject = {text, type: 'button', attributes: {name, value, type: 'button'}};
+                const buttonObject = {text, type: "button", attributes: {name, value, type: "button"}};
                 EventStream.emit("GAIA::publish", buttonObject);
 
                 // remove left buttons
-                const buttons = document.querySelectorAll('.lto-button.lto-left');
+                const buttons = document.querySelectorAll(".lto-button.lto-left");
                 buttons.forEach(element => {
                     if (element.classList.contains("lto-persistent")) {
                         (element as HTMLElement).style.pointerEvents = "none";
@@ -54,7 +54,7 @@ export class Button implements IRenderable {
                 });
 
                 // remove left submits
-                const submits = document.querySelectorAll('.lto-submit.lto-left');
+                const submits = document.querySelectorAll(".lto-submit.lto-left");
                 submits.forEach(element => {
                     if (element.classList.contains("lto-persistent")) {
                         (element as HTMLElement).style.pointerEvents = "none";
@@ -64,18 +64,18 @@ export class Button implements IRenderable {
                 });
 
                 // remove left suggestions
-                const suggestions = document.querySelectorAll('.lto-suggestion.lto-left');
+                const suggestions = document.querySelectorAll(".lto-suggestion.lto-left");
                 suggestions.forEach(element => element.remove());
 
                 // add right button
                 const newButton = Object.assign(buttonObject, {
                     class: this.spec.class,
-                    position: 'right',
+                    position: "right",
                     timestamp: new Date().getTime()
                 });
                 renderer.render({type: "container", elements: [newButton]}).forEach(e => renderer.appendContent(e));
             };
-            button.addEventListener('click', eventListener, {once: true});
+            button.addEventListener("click", eventListener, {once: true});
         }
         return button;
     }
