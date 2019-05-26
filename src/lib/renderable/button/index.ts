@@ -43,29 +43,7 @@ export class Button implements IRenderable {
                 const buttonObject = {text, type: "button", attributes: {name, value, type: "button"}};
                 EventStream.emit("GAIA::publish", buttonObject);
 
-                // remove left buttons
-                const buttons = document.querySelectorAll(".lto-button.lto-left");
-                buttons.forEach(element => {
-                    if (element.classList.contains("lto-persistent")) {
-                        (element as HTMLElement).style.pointerEvents = "none";
-                    } else {
-                        element.remove()
-                    }
-                });
-
-                // remove left submits
-                const submits = document.querySelectorAll(".lto-submit.lto-left");
-                submits.forEach(element => {
-                    if (element.classList.contains("lto-persistent")) {
-                        (element as HTMLElement).style.pointerEvents = "none";
-                    } else {
-                        element.remove();
-                    }
-                });
-
-                // remove left suggestions
-                const suggestions = document.querySelectorAll(".lto-suggestion.lto-left");
-                suggestions.forEach(element => element.remove());
+                Button.cleanupButtons();
 
                 // add right button
                 const newButton = Object.assign(buttonObject, {
@@ -80,6 +58,31 @@ export class Button implements IRenderable {
         return button;
     }
 
+    public static cleanupButtons() {
+        // remove left buttons
+        const buttons = document.querySelectorAll(".lto-button.lto-left");
+        buttons.forEach(element => {
+            if (element.classList.contains("lto-persistent")) {
+                (element as HTMLElement).style.pointerEvents = "none";
+            } else {
+                element.remove()
+            }
+        });
+
+        // remove left submits
+        const submits = document.querySelectorAll(".lto-submit.lto-left");
+        submits.forEach(element => {
+            if (element.classList.contains("lto-persistent")) {
+                (element as HTMLElement).style.pointerEvents = "none";
+            } else {
+                element.remove();
+            }
+        });
+
+        // remove left suggestions
+        const suggestions = document.querySelectorAll(".lto-suggestion.lto-left");
+        suggestions.forEach(element => element.remove());
+    }
 }
 
 Renderables.register("button", Button);

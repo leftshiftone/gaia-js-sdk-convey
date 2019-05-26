@@ -5,6 +5,7 @@ import Renderables from '../Renderables';
 import {closestByClass} from "../../support/Elements";
 import {ChoiceAggregator} from "./ChoiceAggregator";
 import {ChoiceContainer} from "../choice/ChoiceContainer";
+import {Button} from "../button";
 
 export class Submit implements IRenderable {
 
@@ -121,29 +122,7 @@ export class Submit implements IRenderable {
                     position: "right"
                 });
 
-                // remove left buttons
-                const buttons = document.querySelectorAll(".lto-button.lto-left");
-                buttons.forEach(element => {
-                    if (element.classList.contains("lto-persistent")) {
-                        (element as HTMLElement).style.pointerEvents = "none";
-                    } else {
-                        element.remove()
-                    }
-                });
-
-                // remove left submits
-                const submits = document.querySelectorAll(".lto-submit.lto-left");
-                submits.forEach(element => {
-                    if (element.classList.contains("lto-persistent")) {
-                        (element as HTMLElement).style.pointerEvents = "none";
-                    } else {
-                        element.remove()
-                    }
-                });
-
-                // remove left suggestions
-                const suggestions = document.querySelectorAll('.lto-suggestion.lto-left');
-                suggestions.forEach(element => element.remove());
+                Button.cleanupButtons();
             }
         });
 
