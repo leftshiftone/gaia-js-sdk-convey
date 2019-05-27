@@ -63,7 +63,9 @@ export class Selection implements IRenderable, IStackeable {
 
                 if (++publishedBlocks === this.numOfBlocks) {
                     this.setFinished();
-                    this.publish();
+
+                    // wait till animation is finished
+                    setTimeout(() => this.publish(), 300);
                 }
             })
         });

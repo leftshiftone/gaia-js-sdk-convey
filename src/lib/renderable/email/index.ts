@@ -22,6 +22,7 @@ export class Email implements IRenderable {
         email.setAttribute("type", "email");
         email.setAttribute('name', this.spec.name || "");
         email.setAttribute('placeholder', this.spec.placeholder || "");
+        email.setAttribute("value", this.spec.value || "");
         email.classList.add("lto-email", "lto-" + position);
         if (isNested) {
             email.classList.add("lto-nested")

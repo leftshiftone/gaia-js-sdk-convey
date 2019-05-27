@@ -44,7 +44,12 @@ export abstract class AbstractRenderer implements IRenderer {
         return new renderableClass(message) as IRenderable;
     }
 
-    public appendContent = (element: HTMLElement) => this.content.appendChild(element);
-    public appendSuggest = (element: HTMLElement) => this.suggest.appendChild(element);
+    public appendContent = (element: HTMLElement) => {
+        this.content.appendChild(element);
+    };
+
+    public appendSuggest = (element: HTMLElement) => {
+        this.suggest.appendChild(element);
+    };
 
 }
