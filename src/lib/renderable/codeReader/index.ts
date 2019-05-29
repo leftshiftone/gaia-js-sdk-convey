@@ -122,4 +122,4 @@ export class CodeReader implements IRenderable, IStackeable {
 
 }
 
-Renderables.register("codeReader", CodeReader);
+Renderables.register("codereader", CodeReader);
