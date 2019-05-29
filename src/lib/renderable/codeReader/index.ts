@@ -29,7 +29,7 @@ export class CodeReader implements IRenderable, IStackeable {
         const successLabel = node("div");
 
         wrapper.addAttributes({
-            id: "id",
+            id: this.spec.id || "",
             name: this.spec.name || "",
             class: "lto-code-reader"
         });
@@ -92,7 +92,7 @@ export class CodeReader implements IRenderable, IStackeable {
                 wrapper.setAttribute("value", text);
             })
         } else {
-            console.error("failed to publish result");
+            console.error("Failed to publish result");
         }
     }
 

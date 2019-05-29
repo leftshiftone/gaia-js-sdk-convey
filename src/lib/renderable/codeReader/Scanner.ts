@@ -16,7 +16,7 @@ export class Scanner {
             const codeReader = new BrowserQRCodeReader();
             return codeReader.decodeFromInputVideoDevice(this.deviceId)
         }
-        console.error("set video device before calling this function");
+        console.error("Set video device before calling this function");
         return null
     }
 
@@ -25,7 +25,7 @@ export class Scanner {
             const codeReader = new BrowserBarcodeReader();
             return codeReader.decodeFromInputVideoDevice(this.deviceId)
         }
-        console.error("set video device before calling this function");
+        console.error("Set video device before calling this function");
         return null
     }
 
