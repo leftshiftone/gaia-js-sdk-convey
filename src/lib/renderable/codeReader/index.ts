@@ -4,6 +4,7 @@ import Renderables from '../Renderables';
 import {IStackeable} from '../../api/IStackeable';
 import node from "../../support/node";
 import {Scanner} from "./Scanner";
+import Result from "@zxing/library/esm5/core/Result";
 
 /**
  * Implementation of the 'codeReader' markup element.
@@ -79,41 +80,37 @@ export class CodeReader implements IRenderable, IStackeable {
         }
     }
 
-    // @ts-ignore
-    private handleBar(wrapper: HTMLElement, scanner: Scanner) {
-        scanner.scanBarCode().then(result => {
-            const text = result.getText();
-            const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
-            if (successLabel) {
-                successLabel.innerText = text;
-            }
-            wrapper.setAttribute("value", text);
-        })
-    }
-
-    private handleQr(wrapper: HTMLElement, scanner: Scanner) {
-        scanner.scanQRCode().then(result => {
-            const text = result.getText();
-            const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
-            if (successLabel) {
-                successLabel.innerText = text;
-            }
-            wrapper.setAttribute("value", text);
-        })
+    public publishResult(wrapper: HTMLElement, result: Promise<Result> | null) {
+        if(result !== null) {
+            result.then(result => {
+                const text = result.getText();
+                const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
+                if (successLabel) {
+                    successLabel.innerText = text;
+                }
+                wrapper.classList.add("lto-success");
+                wrapper.setAttribute("value", text);
+            })
+        } else {
+            console.error("failed to publish result");
+        }
     }
 
     private activatePhotoButton(wrapper: HTMLElement) {
         const video = wrapper.querySelector("video") as HTMLVideoElement;
-        const scanner = new Scanner(video);
+        const scanner = new Scanner();
+        scanner.setDevice(video);
 
         const photoButton = wrapper.querySelector(".lto-take-photo") as HTMLDivElement;
 
         photoButton.onclick = () => {
+            wrapper.classList.remove("lto-success");
             switch (this.spec.format) {
                 case "qr":
-                    this.handleQr(wrapper, scanner);
+                    this.publishResult(wrapper, scanner.scanQRCode());
                     break;
                 case "bar":
+                    this.publishResult(wrapper, scanner.scanBarCode());
                     break;
                 default:
                     break;

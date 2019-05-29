@@ -72,6 +72,7 @@ export class Submit implements IRenderable {
                 this.addValuesToAttributes(content, "div.lto-input", attributes);
                 this.addValuesToAttributes(content, "div.ical-event-input", attributes);
                 this.addValuesToAttributes(content, "div.lto-reel", attributes);
+                this.addValuesToAttributes(content, "div.lto-code-reader", attributes);
             } else if (content.classList.contains("lto-form")) {
                 const form = content as HTMLFormElement;
                 const values: Array<any> = [];
