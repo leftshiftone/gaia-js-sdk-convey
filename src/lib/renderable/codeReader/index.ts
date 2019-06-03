@@ -80,7 +80,7 @@ export class CodeReader implements IRenderable {
     }
 
     public static disableResetButton(wrapper: HTMLElement) {
-        const resetButton = wrapper.querySelector<HTMLDivElement>("lto-reset-button");
+        const resetButton = wrapper.querySelector<HTMLDivElement>(".lto-reset-button");
         if (resetButton) {
             resetButton.classList.remove("lto-active");
             resetButton.classList.add("lto-disabled");
@@ -99,6 +99,7 @@ export class CodeReader implements IRenderable {
             wrapper.classList.remove("lto-success");
             wrapper.removeAttribute("value");
             successLabel.innerText = "";
+            CodeReader.disableResetButton(wrapper);
             this.activateScanner(wrapper);
         }
     }
@@ -121,7 +122,6 @@ export class CodeReader implements IRenderable {
     }
 
     private activateScanner(wrapper: HTMLElement) {
-        CodeReader.disableResetButton(wrapper);
         const video = wrapper.querySelector("video") as HTMLVideoElement;
         const scanner = new Scanner();
         scanner.setDevice(video);
