@@ -24,7 +24,7 @@ export class CodeReader implements IRenderable {
         const wrapper = node("div");
         const video = node("video");
         const controlWrapper = node("div");
-        const photoButton = node("div");
+        const resetButton = node("div");
         const successLabel = node("div");
 
         wrapper.addAttributes({
@@ -33,16 +33,16 @@ export class CodeReader implements IRenderable {
             class: "lto-code-reader"
         });
 
-        photoButton.addClasses("lto-take-photo", "lto-disabled");
+        resetButton.addClasses("lto-reset-button", "lto-disabled");
         successLabel.addClasses("lto-read-success");
 
         if (this.spec.class !== undefined)
-            this.spec.class.split(" ").forEach(e => wrapper.addClasses(e))
+            this.spec.class.split(" ").forEach(e => wrapper.addClasses(e));
 
         if (isNested)
             wrapper.addClasses('lto-nested');
 
-        controlWrapper.appendChild(photoButton);
+        controlWrapper.appendChild(resetButton);
         wrapper.appendChild(video);
         wrapper.appendChild(controlWrapper);
         wrapper.appendChild(successLabel);
@@ -66,7 +66,7 @@ export class CodeReader implements IRenderable {
                         .then(() => {
                             if (!video.classList.contains("lto-active"))
                                 video.classList.add("lto-active");
-                            this.activatePhotoButton(wrapper);
+                            this.activateScanner(wrapper);
                         });
                 })
                 .catch(error => {
@@ -76,6 +76,30 @@ export class CodeReader implements IRenderable {
                     errorWrapper.style.display = "block";
                     wrapper.classList.add("lto-not-available");
                 });
+        }
+    }
+
+    public static disableResetButton(wrapper: HTMLElement) {
+        const resetButton = wrapper.querySelector<HTMLDivElement>("lto-reset-button");
+        if (resetButton) {
+            resetButton.classList.remove("lto-active");
+            resetButton.classList.add("lto-disabled");
+        }
+    }
+
+    public activateResetButton(wrapper: HTMLElement) {
+        const resetButton = wrapper.querySelector<HTMLDivElement>(".lto-reset-button");
+        const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
+        if (!resetButton) {
+            return
+        }
+        resetButton.classList.remove("lto-disabled");
+        resetButton.classList.add("lto-active");
+        resetButton.onclick = () => {
+            wrapper.classList.remove("lto-success");
+            wrapper.removeAttribute("value");
+            successLabel.innerText = "";
+            this.activateScanner(wrapper);
         }
     }
 
@@ -89,34 +113,29 @@ export class CodeReader implements IRenderable {
                 }
                 wrapper.classList.add("lto-success");
                 wrapper.setAttribute("value", text);
+                this.activateResetButton(wrapper);
             })
         } else {
             console.error("Failed to publish result");
         }
     }
 
-    private activatePhotoButton(wrapper: HTMLElement) {
+    private activateScanner(wrapper: HTMLElement) {
+        CodeReader.disableResetButton(wrapper);
         const video = wrapper.querySelector("video") as HTMLVideoElement;
         const scanner = new Scanner();
         scanner.setDevice(video);
-
-        const photoButton = wrapper.querySelector(".lto-take-photo") as HTMLDivElement;
-
-        photoButton.onclick = () => {
-            wrapper.classList.remove("lto-success");
-            switch (this.spec.format) {
-                case "qr":
-                    this.publishResult(wrapper, scanner.scanQRCode());
-                    break;
-                case "bar":
-                    this.publishResult(wrapper, scanner.scanBarCode());
-                    break;
-                default:
-                    break;
-            }
-
-        };
-        photoButton.classList.toggle("lto-disabled");
+        wrapper.classList.remove("lto-success");
+        switch (this.spec.format) {
+            case "qr":
+                this.publishResult(wrapper, scanner.scanQRCode());
+                break;
+            case "bar":
+                this.publishResult(wrapper, scanner.scanBarCode());
+                break;
+            default:
+                break;
+        }
     }
 
 }
