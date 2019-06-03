@@ -1,7 +1,6 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
-import {IStackeable} from '../../api/IStackeable';
 import node from "../../support/node";
 import {Scanner} from "./Scanner";
 import Result from "@zxing/library/esm5/core/Result";
@@ -9,7 +8,7 @@ import Result from "@zxing/library/esm5/core/Result";
 /**
  * Implementation of the 'codeReader' markup element.
  */
-export class CodeReader implements IRenderable, IStackeable {
+export class CodeReader implements IRenderable {
 
     private readonly spec: ISpecification;
     private mediaStream?: MediaStream;
@@ -81,7 +80,7 @@ export class CodeReader implements IRenderable, IStackeable {
     }
 
     public publishResult(wrapper: HTMLElement, result: Promise<Result> | null) {
-        if(result !== null) {
+        if (result !== null) {
             result.then(result => {
                 const text = result.getText();
                 const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
