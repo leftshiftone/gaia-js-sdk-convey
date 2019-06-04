@@ -73,6 +73,7 @@ export class Submit implements IRenderable {
                 this.addValuesToAttributes(content, "div.ical-event-input", attributes);
                 this.addValuesToAttributes(content, "div.lto-reel", attributes);
                 this.addValuesToAttributes(content, "div.lto-code-reader", attributes);
+                this.addValuesToAttributes(content, ".lto-textarea", attributes);
             } else if (content.classList.contains("lto-form")) {
                 const form = content as HTMLFormElement;
                 const values: Array<any> = [];
@@ -99,6 +100,17 @@ export class Submit implements IRenderable {
                     }
                 });
                 if (allowed) {
+                    const choiceContainers = content.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
+                    if (choiceContainers.length > 0) {
+                        Object.assign(attributes, ChoiceAggregator.aggregate(choiceContainers));
+                    } else {
+                        content.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+                            Submit.addElementValueToAttributes(checkbox, attributes);
+                        });
+                    }
+
+                    this.addValuesToAttributes(content, ".lto-textarea", attributes);
+
                     if (form.getAttribute("name") !== "") {
                         form.setAttribute("value", JSON.stringify(values));
                         Submit.addElementValueToAttributes(form, attributes);
@@ -140,7 +152,7 @@ export class Submit implements IRenderable {
         const name = element.getAttribute("name");
         let value = element.getAttribute("value");
 
-        if (value !== null) {
+        if (value !== null && value) {
             // check if attribute value is valid JSON string
             if (/^[\],:{}\s]*$/.test(value.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
                 value = JSON.parse(value);

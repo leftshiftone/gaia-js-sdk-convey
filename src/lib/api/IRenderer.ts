@@ -47,5 +47,7 @@ export interface ISpecification {
     values?: Array<string>;
     sieve?: boolean;
     selected?: boolean;
-    format?: "qr" | "bar"
+    format?: "qr" | "bar";
+    rows?: number;
+    cols?: number;
 }
