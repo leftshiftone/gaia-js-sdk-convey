@@ -9,6 +9,7 @@ module.exports = (env, argv) => ({
         'gaia-js-sdk-convey-map': './src/map.wpk.ts',
         'gaia-js-sdk-convey-vis': './src/vis.wpk.ts',
         'gaia-js-sdk-convey-aud': './src/aud.wpk.ts',
+        'gaia-js-sdk-convey-cod': './src/cod.wpk.ts',
     },
     module: {
         rules: [
@@ -48,7 +49,7 @@ module.exports = (env, argv) => ({
         path: __dirname,
         umdNamedDefine: true
     },
-    externals: ['google-maps', 'leaflet', 'node-ical'],
+    externals: ['google-maps', 'leaflet', 'node-ical', '@zxing/library'],
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'dist/[name].css',

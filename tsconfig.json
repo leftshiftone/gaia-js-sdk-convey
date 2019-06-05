@@ -27,7 +27,8 @@
         "./src/all.ts",
         "./src/vis.ts",
         "./src/std.ts",
-        "./src/aud.ts"
+        "./src/aud.ts",
+        "./src/cod.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false

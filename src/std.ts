@@ -40,6 +40,7 @@ import {Text} from './lib/renderable/text';
 import {MultipleChoice} from "./lib/renderable/choice";
 import {SingleChoice} from "./lib/renderable/choice";
 import {RadioChoice} from "./lib/renderable/choice";
+import {Textarea} from "./lib/renderable/textarea";
 import {CheckboxChoice} from "./lib/renderable/choice";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
@@ -84,6 +85,7 @@ export {
     Suggestion,
     Table,
     Text,
+    Textarea,
     Row,
     Col,
     Selection,

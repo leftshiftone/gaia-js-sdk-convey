@@ -1,9 +1,10 @@
 {
     "name": "gaia-js-sdk-convey",
-    "version": "0.52.0",
+    "version": "0.54.0",
     "description": "JavaScript connector to the G.A.I.A. ecosystem.",
     "main": "dist/lib/std.js",
     "dependencies": {
+        "@zxing/library": "^0.12.4",
         "d3": "^5.8.0",
         "d3-3d": "^0.0.9",
         "d3-sankey": "^0.7.1",
@@ -39,7 +40,7 @@
         "jest": "^24.5.0",
         "jest-junit": "^6.3.0",
         "mini-css-extract-plugin": "^0.5.0",
-        "ndc": "^0.1.4",
+        "ndc": "^0.2.0",
         "node-sass": "^4.11.0",
         "release-it": "^10.3.1",
         "sass-loader": "^7.1.0",
