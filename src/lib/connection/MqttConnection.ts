@@ -44,7 +44,7 @@ export class MqttConnection {
     public disconnect = () => {
         this.removeFromEventStream();
         return this.mqttClient.end(false, () => this.listener.onDisconnected());
-    }
+    };
 
     /**
      * Subscribes to the given destination.

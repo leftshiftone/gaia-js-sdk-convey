@@ -1,6 +1,7 @@
 import {Gaia} from './lib/Gaia';
 import {ClassicRenderer} from './lib/renderer/ClassicRenderer';
 import {ContentCentricRenderer} from './lib/renderer/ContentCentricRenderer';
+import {RevealJsRenderer} from './lib/renderer/RevealJsRenderer';
 import {MouseBehaviour} from './lib/behaviour/MouseBehaviour';
 import {KeyboardBehaviour} from './lib/behaviour/KeyboardBehaviour';
 import {ChannelType} from './lib/support/ChannelType';
@@ -37,11 +38,8 @@ import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
 import {ReelValue} from "./lib/renderable/reelValue";
 import {Text} from './lib/renderable/text';
-import {MultipleChoice} from "./lib/renderable/choice";
-import {SingleChoice} from "./lib/renderable/choice";
-import {RadioChoice} from "./lib/renderable/choice";
+import {CheckboxChoice, MultipleChoice, RadioChoice, SingleChoice} from "./lib/renderable/choice";
 import {Textarea} from "./lib/renderable/textarea";
-import {CheckboxChoice} from "./lib/renderable/choice";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
@@ -49,6 +47,7 @@ import EventStream from "./lib/event/EventStream";
 export {
     ClassicRenderer,
     ContentCentricRenderer,
+    RevealJsRenderer,
     Gaia,
     MouseBehaviour,
     KeyboardBehaviour,
