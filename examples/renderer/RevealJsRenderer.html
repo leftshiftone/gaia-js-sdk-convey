@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gaia-js-sdk-convey</title>
+    <link rel="stylesheet" href="../../dist/gaia-js-sdk-convey-std.css">
+    <script src="../../dist/gaia-js-sdk-convey-std.js"></script>
+    <script src="reveal.js/js/reveal.js"></script>
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <!--<link rel="stylesheet" href="reveal.js/css/theme/white.css">-->
+</head>
+<body>
+
+<div class="lto-gaia">
+    <div class="lto-content"></div>
+    <div class="lto-suggest"></div>
+    <div>
+        <textarea title="" class="lto-textbox"></textarea>
+        <button class="lto-invoker"></button>
+    </div>
+</div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const renderer = new GaiaConvey.RevealJsRenderer();
+        const listener = new GaiaConvey.OffSwitchListener();
+
+        let gaia = new GaiaConvey.Gaia(renderer, listener);
+        gaia.connect('ws://localhost:61616/mqtt', '90728165593445594')
+            .then(connection => {
+                connection.subscribe(GaiaConvey.ChannelType.CONTEXT, (payload) => console.log(`Context: ${JSON.stringify(payload)}`));
+                connection.subscribe(GaiaConvey.ChannelType.NOTIFICATION, (payload) => console.log(`Notification: ${JSON.stringify(payload)}`));
+                connection.subscribe(GaiaConvey.ChannelType.LOG, (payload) => console.log(`Log: ${JSON.stringify(payload)}`));
+                connection.reception();
+            });
+    });
+</script>
+</html>
