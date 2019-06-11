@@ -2,8 +2,6 @@ import {ContentCentricRenderer} from './ContentCentricRenderer';
 import {IRenderable} from '../api/IRenderable';
 import {IStackeable} from '../api/IStackeable';
 import {Defaults} from '../support/Defaults';
-// @ts-ignore
-import * as Reveal from "reveal.js/js/reveal.js";
 import {ISpecification} from '../api/IRenderer';
 
 /**
@@ -12,10 +10,17 @@ import {ISpecification} from '../api/IRenderer';
  */
 export class RevealJsRenderer extends ContentCentricRenderer {
 
+    private readonly Reveal: any;
+
     constructor(options?: {}, content?: HTMLElement, suggest?: HTMLElement) {
         super(RevealJsRenderer.wrapContent(content), suggest);
 
-        Reveal.initialize(options || {
+        if (document === undefined) {
+            return
+        }
+
+        this.Reveal = require("reveal.js/js/reveal.js");
+        this.Reveal.initialize(options || {
             controls: false,
             progress: false,
             center: false,
@@ -71,7 +76,9 @@ export class RevealJsRenderer extends ContentCentricRenderer {
 
     public appendContent = (element: HTMLElement) => {
         this.content.appendChild(element);
-        Reveal.sync();
+        if (this.Reveal) {
+            this.Reveal.sync();
+        }
     };
 
 }

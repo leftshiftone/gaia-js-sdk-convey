@@ -23,7 +23,7 @@ export class MqttConnection {
     private readonly mqttClient: mqtt.MqttClient;
     private readonly removeFromEventStream: () => void;
 
-    constructor(url: string, identityId: string, renderer: IRenderer, listener: IListener, username: string | null = null, password: string | null = null) {
+    constructor(url: string, identityId: string, renderer: IRenderer, listener: IListener, username?: string | null, password?: string | null) {
         this.listener = listener;
         this.renderer = renderer;
         this.clientId = uuid();
