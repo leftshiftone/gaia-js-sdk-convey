@@ -13,8 +13,7 @@ export class Gaia {
         this.renderer = renderer;
     }
 
-    public connect(url: string, identity: string): Promise<MqttConnection> {
-        return new Promise((resolve) => resolve(new MqttConnection(url, identity, this.renderer, this.listener)));
+    public connect(url: string, identity: string, username?: string | null, password?: string | null): Promise<MqttConnection> {
+        return new Promise((resolve) => resolve(new MqttConnection(url, identity, this.renderer, this.listener, username, password)));
     }
-
 }
