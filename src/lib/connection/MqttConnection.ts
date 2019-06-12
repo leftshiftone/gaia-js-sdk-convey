@@ -23,14 +23,20 @@ export class MqttConnection {
     private readonly mqttClient: mqtt.MqttClient;
     private readonly removeFromEventStream: () => void;
 
-    constructor(url: string, identityId: string, renderer: IRenderer, listener: IListener) {
+    constructor(url: string, identityId: string, renderer: IRenderer, listener: IListener, username?: string | null, password?: string | null) {
         this.listener = listener;
         this.renderer = renderer;
         this.clientId = uuid();
         this.identityId = identityId;
         this.userId = uuid();
 
-        this.mqttClient = mqtt.connect(url, {clean: false, clientId: this.clientId});
+        let connectionOptions = {};
+        if (username || password) {
+            connectionOptions = {clean: false, clientId: this.clientId, username: username, password: password}
+        } else {
+            connectionOptions = {clean: false, clientId: this.clientId}
+        }
+        this.mqttClient = mqtt.connect(url, connectionOptions);
         this.mqttClient.on('connect', () => this.listener.onConnected());
         this.mqttClient.on('offline', () => this.listener.onConnectionLost());
         this.mqttClient.on('message', this.onMessage.bind(this));

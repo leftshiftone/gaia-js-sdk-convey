@@ -37,8 +37,6 @@ export abstract class Choice implements IRenderable {
         if (this.spec.selected) {
             (input.unwrap() as HTMLInputElement).checked = this.spec.selected;
             label.unwrap().classList.add("lto-toggle", "lto-checked");
-        } else {
-            label.unwrap().classList.add("lto-unchecked");
         }
 
         this.spec.class !== undefined ? label.addClasses(this.spec.class) : () => {};
@@ -53,9 +51,11 @@ export abstract class Choice implements IRenderable {
             });
         } else {
             input.unwrap().addEventListener("click", () => {
+                if(label.unwrap().classList.contains("lto-checked")) {
+                    label.toggleClass("lto-unchecked");
+                }
                 label.toggleClass("lto-toggle");
                 label.toggleClass("lto-checked");
-                label.toggleClass("lto-unchecked");
             });
         }
 
