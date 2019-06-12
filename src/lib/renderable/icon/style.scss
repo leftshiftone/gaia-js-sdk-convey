@@ -1,22 +1,25 @@
 .lto-icon {
-  display: inline-block;
-  border: 1px solid #1E223F;
-  width: 40px;
-  height: 40px;
-  background: white;
-  background-size: cover;
-  animation: slide-up 0.4s ease;
+    display: inline-block;
+    border: 1px solid #1E223F;
+    width: 40px;
+    height: 40px;
+    background: white;
+    background-size: cover;
+    animation: slide-up 0.4s ease;
+    outline: 0;
 }
+
 .lto-icon.lto-left {
-  margin-left: 20px;
-  margin-right: 20px;
-  clear: both;
-  background: white;
-  background-size: cover;
-  box-shadow: none;
-  border-radius: 50%;
+    margin-left: 20px;
+    margin-right: 20px;
+    clear: both;
+    background: white;
+    background-size: cover;
+    box-shadow: none;
+    border-radius: 50%;
 }
+
 .lto-icon.lto-right {
-  margin-right: 20px;
-  margin-left: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
 }
