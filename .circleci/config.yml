@@ -1,3 +1,13 @@
+webhook-created: &webhook-created
+    name: Webhook created
+    command: |
+        curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+webhook-failed: &webhook-failed
+    name: Webhook completed
+    when: on_fail
+    command: |
+        curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+
 version: 2.1
 jobs:
   webhook-completed:
@@ -13,9 +23,7 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - run:
-          name: Webhook created
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-created
       - checkout
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -26,10 +34,7 @@ jobs:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn build
       - run:
-          name: Webhook completed
-          when: on_fail
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-failed
   code-analytics:
     docker:
       - image: circleci/node:lts-browsers
@@ -37,9 +42,7 @@ jobs:
       TZ: "/usr/share/zoneinfo/Europe/Vienna"
     steps:
       - run:
-          name: Webhook created
-          command: |
-            curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-created
       - checkout
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
@@ -49,10 +52,7 @@ jobs:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
       - run:
-          name: Webhook completed
-          when: on_fail
-          command: |
-            curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-failed
   dependency-updates:
     docker:
       - image: circleci/node:lts-browsers
@@ -60,9 +60,7 @@ jobs:
       TZ: "/usr/share/zoneinfo/Europe/Vienna"
     steps:
       - run:
-          name: Webhook created
-          command: |
-            curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-created
       - checkout
       - run: yarn add --dev ndc
       - restore_cache:
@@ -74,18 +72,13 @@ jobs:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn ndc --stats --export $BUILD_STATUS_URL\?flow\=depsNdc\&repositoryName\=$CIRCLE_PROJECT_REPONAME\&repositoryBranch\=$CIRCLE_BRANCH\&buildNumber\=$CIRCLE_BUILD_NUM
       - run:
-          name: Webhook completed
-          when: on_fail
-          command: |
-            curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-failed
   release-major:
     docker:
       - image: circleci/node:lts-browsers
     steps:
       - run:
-          name: Webhook created
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-created
       - add_ssh_keys:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
@@ -104,18 +97,13 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
       - run: npm run release:major
       - run:
-          name: Webhook completed
-          when: on_fail
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-failed
   release-minor:
     docker:
       - image: circleci/node:lts-browsers
     steps:
       - run:
-          name: Webhook created
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-created
       - add_ssh_keys:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
@@ -134,18 +122,13 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:minor
       - run:
-          name: Webhook completed
-          when: on_fail
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-failed
   release-patch:
     docker:
       - image: circleci/node:lts-browsers
     steps:
       - run:
-          name: Webhook created
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-created -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-created
       - add_ssh_keys:
           fingerprints:
             - "1a:f6:58:1d:a6:ba:b3:b6:6e:37:69:b7:96:3c:e1:f9"
@@ -163,10 +146,7 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:patch
       - run:
-          name: Webhook completed
-          when: on_fail
-          command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed\&status\=FAILED -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+          <<: *webhook-failed
 
 workflows:
   version: 2
