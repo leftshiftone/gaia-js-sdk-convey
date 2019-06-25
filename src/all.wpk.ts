@@ -1,8 +1,7 @@
-require("./all");
+import * as GaiaSDK from "./all";
+
+module.exports = GaiaSDK;
 
 if (typeof document !== "undefined") {
-    require("./std");
-    require("./vis");
-    require("./map");
-    require("./cal");
+    require("./lib/structure.scss");
 }
