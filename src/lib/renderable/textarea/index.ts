@@ -25,12 +25,13 @@ export class Textarea implements IRenderable {
             cols: this.spec.cols,
             rows: this.spec.rows,
             id: this.spec.id ? this.spec.id : "",
-            name: this.spec.name ? this.spec.name: "",
+            name: this.spec.name ? this.spec.name : "",
             placeholder: this.spec.placeholder ? this.spec.placeholder : "",
             class: this.spec.class ? this.spec.class : "",
+            required: this.spec.required
         });
 
-        if(this.spec.value) {
+        if (this.spec.value) {
             (textarea.unwrap() as HTMLTextAreaElement).value = this.spec.value;
             textarea.addAttributes({value: this.spec.value})
         }
