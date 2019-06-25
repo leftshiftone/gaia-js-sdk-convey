@@ -136,7 +136,7 @@ export class Submit implements IRenderable {
         return submit;
     }
 
-    private static addInputValuesToAttributes(element: HTMLInputElement, attributes: Attr) {
+    public static addInputValuesToAttributes(element: HTMLInputElement, attributes: Attr) {
         const name = element.getAttribute("name") || "undefined";
         let value = element.getAttribute("value");
         if (element.required) {
@@ -161,7 +161,7 @@ export class Submit implements IRenderable {
         });
     }
 
-    private static addElementValueToAttributes(element: HTMLElement, attributes: Attr) {
+    public static addElementValueToAttributes(element: HTMLElement, attributes: Attr) {
         const name = element.getAttribute("name") || "undefined";
         let value = element.getAttribute("value");
 
