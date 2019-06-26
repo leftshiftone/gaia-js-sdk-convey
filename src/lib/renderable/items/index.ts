@@ -27,7 +27,7 @@ export class Items implements IRenderable, IStackeable {
                 div.id = this.spec.id;
             }
             if (this.spec.class !== undefined) {
-                this.spec.class.split(" ").forEach(e => items.classList.add(e));
+                this.spec.class.split(" ").forEach(e => div.classList.add(e));
             }
             div.appendChild(Timestamp.render());
 
@@ -41,7 +41,9 @@ export class Items implements IRenderable, IStackeable {
             return div;
         }
         const items = document.createElement('ul');
-        if (this.spec.class !== undefined) items.classList.add(this.spec.class);
+        if (this.spec.class !== undefined)
+            this.spec.class.split(" ").forEach(e => items.classList.add(e));
+
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => items.appendChild(x)));
 
