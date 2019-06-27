@@ -69,7 +69,7 @@ export class Submit implements IRenderable {
                 this.addValuesToAttributes(content, "div.lto-camera", attributes);
                 this.addValuesToAttributes(content, "div.lto-drop-area", attributes);
                 this.addValuesToAttributes(content, "input.lto-slider", attributes);
-                this.addValuesToAttributes(content, "div.lto-input", attributes);
+                this.addValuesToAttributes(content, "div.lto-calendar-input", attributes);
                 this.addValuesToAttributes(content, "div.ical-event-input", attributes);
                 this.addValuesToAttributes(content, "div.lto-reel", attributes);
                 this.addValuesToAttributes(content, "div.lto-code-reader", attributes);

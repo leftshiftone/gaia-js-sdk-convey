@@ -41,12 +41,12 @@ export class Calendar implements IRenderable {
             this.spec.class.split(" ").forEach(e => calendarContainer.classList.add(e));
         }
         const position = this.spec.position || 'left';
-        this.input.setAttribute("name", this.spec.name + "");
+
         if (isNested) { calendarContainer.classList.add("lto-nested") }
 
         calendarContainer.classList.add("lto-calendar-container", "lto-" + position);
 
-        this.calendar.classList.add("calendar");
+        this.calendar.classList.add("lto-calendar");
 
         this.calendarTable.appendChild(this.renderCalendarTableHeader());
         this.calendarTable.appendChild(this.calendarTableBody);
@@ -77,14 +77,15 @@ export class Calendar implements IRenderable {
 
     public static renderHeadline(): HTMLDivElement {
         const headline = document.createElement('div');
-        headline.classList.add('headline');
+        headline.classList.add('lto-calendar-headline');
         return headline;
     }
 
     public renderInput(): HTMLDivElement {
         const input = document.createElement('div');
-        input.classList.add('input');
-        input.textContent = "Click to select a day"
+        input.classList.add('lto-calendar-input');
+        input.setAttribute("name", this.spec.name || "");
+        input.textContent = "Click to select a day";
         input.onclick = () => this.showCalendar();
         return input;
     }
@@ -108,10 +109,10 @@ export class Calendar implements IRenderable {
         const next = document.createElement("button");
         const previous = document.createElement("button");
 
-        header.classList.add("header");
-        control.classList.add("control");
-        next.classList.add("next");
-        previous.classList.add("previous");
+        header.classList.add("lto-calendar-header");
+        control.classList.add("lto-calendar-control");
+        next.classList.add("lto-calendar-next-month");
+        previous.classList.add("lto-calendar-previous-month");
 
         next.innerText = "next";
         previous.innerText = "previous";
@@ -135,7 +136,7 @@ export class Calendar implements IRenderable {
 
     public renderYearInput(): HTMLInputElement {
         const yearInput = document.createElement("input");
-        yearInput.classList.add("year-input");
+        yearInput.classList.add("lto-calendar-year-select");
         yearInput.onchange = () => {
             this.currentYear = parseInt(yearInput.value);
             this.updateCalendar();
@@ -148,7 +149,7 @@ export class Calendar implements IRenderable {
 
     public renderMonthSelect(): HTMLSelectElement {
         const monthSelect = document.createElement("select");
-        monthSelect.classList.add("month-select");
+        monthSelect.classList.add("lto-calendar-month-select");
         monthSelect.onchange = () => {
             this.currentMonth = parseInt(monthSelect.value);
             this.updateCalendar();
@@ -186,7 +187,7 @@ export class Calendar implements IRenderable {
                 } else {
                     const cellText = document.createTextNode(date + "");
                     if (date === this.today.getDate() && this.currentYear === this.today.getFullYear() && this.currentMonth === this.today.getMonth()) {
-                        cell.style.background = "red";
+                        cell.classList.add("lto-calendar-today")
                     }
                     cell.onclick = () => this.hideCalendar(cell.innerText + " " + this.months[this.currentMonth][0] + " " + this.currentYear);
                     cell.appendChild(cellText);
