@@ -41,8 +41,6 @@ export interface ISpecification {
     nerStrategies?: Map<string, any>;
     accept?: string;
     maxSize?: number;
-    storeInContext?: boolean;
-    destination?: string;
     countdownInSec?: number;
     values?: Array<string>;
     sieve?: boolean;
