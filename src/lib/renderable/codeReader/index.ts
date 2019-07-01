@@ -4,6 +4,8 @@ import Renderables from '../Renderables';
 import node from "../../support/node";
 import {Scanner} from "./Scanner";
 import Result from "@zxing/library/esm5/core/Result";
+import {getUserVideoMedia} from "../../support/Navigator";
+import {drawCanvas} from "../../support/Canvas";
 
 /**
  * Implementation of the 'codeReader' markup element.
@@ -12,6 +14,7 @@ export class CodeReader implements IRenderable {
 
     private readonly spec: ISpecification;
     private mediaStream?: MediaStream;
+    private maxCanvasSize = 640;
 
     constructor(message: ISpecification) {
         this.spec = message;
@@ -23,6 +26,7 @@ export class CodeReader implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const wrapper = node("div");
         const video = node("video");
+        const canvas = node("canvas");
         const controlWrapper = node("div");
         const resetButton = node("div");
         const successLabel = node("div");
@@ -39,11 +43,9 @@ export class CodeReader implements IRenderable {
         if (this.spec.class !== undefined)
             this.spec.class.split(" ").forEach(e => wrapper.addClasses(e));
 
-        if (isNested)
-            wrapper.addClasses('lto-nested');
-
         controlWrapper.appendChild(resetButton);
         wrapper.appendChild(video);
+        wrapper.appendChild(canvas);
         wrapper.appendChild(controlWrapper);
         wrapper.appendChild(successLabel);
 
@@ -54,30 +56,37 @@ export class CodeReader implements IRenderable {
 
     private initCamera(wrapper: HTMLElement) {
         const video = wrapper.querySelector("video") as HTMLVideoElement;
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
 
         wrapper.classList.remove("lto-not-available");
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({video: true})
-                .then(mediaStream => {
-                    this.mediaStream = mediaStream;
-                    video.srcObject = this.mediaStream;
-                    this.mediaStream.getVideoTracks();
-                    video.play()
-                        .then(() => {
-                            if (!video.classList.contains("lto-active"))
-                                video.classList.add("lto-active");
-                            this.activateScanner(wrapper);
-                        });
-                })
-                .catch(error => {
-                    console.error(error);
-                    video.classList.remove("lto-active");
-                    const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
-                    errorWrapper.style.display = "block";
-                    wrapper.classList.add("lto-not-available");
-                });
+
+        const userMedia = getUserVideoMedia();
+        if (userMedia == null) {
+            return;
         }
+
+        userMedia.then(mediaStream => {
+                this.mediaStream = mediaStream;
+                video.srcObject = this.mediaStream;
+                this.mediaStream.getVideoTracks();
+                video.play()
+                    .then(() => {
+                        if (!video.classList.contains("lto-active"))
+                            video.classList.add("lto-active");
+                        canvas.classList.remove("lto-active");
+                        this.activateScanner(wrapper);
+                    });
+            })
+            .catch(error => {
+                console.error(error);
+                video.classList.remove("lto-active");
+                canvas.classList.remove("lto-active");
+                const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
+                errorWrapper.style.display = "block";
+                wrapper.classList.add("lto-not-available");
+            });
     }
+
 
     public static disableResetButton(wrapper: HTMLElement) {
         const resetButton = wrapper.querySelector<HTMLDivElement>(".lto-reset-button");
@@ -100,7 +109,7 @@ export class CodeReader implements IRenderable {
             wrapper.removeAttribute("value");
             successLabel.innerText = "";
             CodeReader.disableResetButton(wrapper);
-            this.activateScanner(wrapper);
+            this.initCamera(wrapper);
         }
     }
 
@@ -115,6 +124,7 @@ export class CodeReader implements IRenderable {
                 wrapper.classList.add("lto-success");
                 wrapper.setAttribute("value", text);
                 this.activateResetButton(wrapper);
+                this.stopCamera(wrapper);
             })
         } else {
             console.error("Failed to publish result");
@@ -126,16 +136,31 @@ export class CodeReader implements IRenderable {
         const scanner = new Scanner();
         scanner.setDevice(video);
         wrapper.classList.remove("lto-success");
+
+        let result;
         switch (this.spec.format) {
             case "qr":
-                this.publishResult(wrapper, scanner.scanQRCode());
+                result = scanner.scanQRCode();
                 break;
             case "bar":
-                this.publishResult(wrapper, scanner.scanBarCode());
+                result = scanner.scanBarCode();
                 break;
             default:
-                break;
+                console.error("Format: " + this.spec.format + "is not supported")
         }
+
+        if (result) {
+            this.publishResult(wrapper, result);
+        }
+    }
+
+    private stopCamera(wrapper: HTMLElement) {
+        const video = wrapper.querySelector("video") as HTMLVideoElement;
+        video.classList.remove("lto-active");
+        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+        canvas.classList.add("lto-active");
+        drawCanvas(canvas, video, this.mediaStream||new MediaStream(), this.maxCanvasSize);
+        this.mediaStream!.getTracks().forEach(track => track.stop());
     }
 
 }
