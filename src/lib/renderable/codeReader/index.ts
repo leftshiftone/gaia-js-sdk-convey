@@ -146,7 +146,7 @@ export class CodeReader implements IRenderable {
                 result = scanner.scanBarCode();
                 break;
             default:
-                console.error("Format: " + this.spec.format + "is not supported")
+                console.error("Format: " + this.spec.format + " is not supported")
         }
 
         if (result) {
