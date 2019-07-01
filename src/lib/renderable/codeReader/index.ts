@@ -1,7 +1,7 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
-import node from "../../support/node";
+import node, {INode} from "../../support/node";
 import {Scanner} from "./Scanner";
 import Result from "@zxing/library/esm5/core/Result";
 import {getUserVideoMedia} from "../../support/Navigator";
@@ -49,16 +49,16 @@ export class CodeReader implements IRenderable {
         wrapper.appendChild(controlWrapper);
         wrapper.appendChild(successLabel);
 
-        this.initCamera(wrapper.unwrap());
+        this.initCamera(wrapper);
 
         return wrapper.unwrap();
     }
 
-    private initCamera(wrapper: HTMLElement) {
-        const video = wrapper.querySelector("video") as HTMLVideoElement;
-        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+    private initCamera(wrapper: INode) {
+        const video = wrapper.find("video") as HTMLVideoElement;
+        const canvas = wrapper.find("canvas") as HTMLCanvasElement;
 
-        wrapper.classList.remove("lto-not-available");
+        wrapper.removeClasses("lto-not-available");
 
         const userMedia = getUserVideoMedia();
         if (userMedia == null) {
@@ -81,48 +81,48 @@ export class CodeReader implements IRenderable {
                 console.error(error);
                 video.classList.remove("lto-active");
                 canvas.classList.remove("lto-active");
-                const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
+                const errorWrapper = wrapper.find(".lto-error") as HTMLDivElement;
                 errorWrapper.style.display = "block";
-                wrapper.classList.add("lto-not-available");
+                wrapper.addClasses("lto-not-available");
             });
     }
 
 
-    public static disableResetButton(wrapper: HTMLElement) {
-        const resetButton = wrapper.querySelector<HTMLDivElement>(".lto-reset-button");
+    public static disableResetButton(wrapper: INode) {
+        const resetButton = wrapper.find(".lto-reset-button") as HTMLDivElement;
         if (resetButton) {
             resetButton.classList.remove("lto-active");
             resetButton.classList.add("lto-disabled");
         }
     }
 
-    public activateResetButton(wrapper: HTMLElement) {
-        const resetButton = wrapper.querySelector<HTMLDivElement>(".lto-reset-button");
-        const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
+    public activateResetButton(wrapper: INode) {
+        const resetButton = wrapper.find(".lto-reset-button") as HTMLDivElement;
+        const successLabel = wrapper.find(".lto-read-success") as HTMLElement;
         if (!resetButton) {
             return
         }
         resetButton.classList.remove("lto-disabled");
         resetButton.classList.add("lto-active");
         resetButton.onclick = () => {
-            wrapper.classList.remove("lto-success");
-            wrapper.removeAttribute("value");
+            wrapper.removeClasses("lto-success");
+            wrapper.removeAttributes("value");
             successLabel.innerText = "";
             CodeReader.disableResetButton(wrapper);
             this.initCamera(wrapper);
         }
     }
 
-    public publishResult(wrapper: HTMLElement, result: Promise<Result> | null) {
+    public publishResult(wrapper: INode, result: Promise<Result> | null) {
         if (result !== null) {
             result.then(result => {
                 const text = result.getText();
-                const successLabel = wrapper.querySelector(".lto-read-success") as HTMLElement;
+                const successLabel = wrapper.find(".lto-read-success") as HTMLElement;
                 if (successLabel) {
                     successLabel.innerText = text;
                 }
-                wrapper.classList.add("lto-success");
-                wrapper.setAttribute("value", text);
+                wrapper.addClasses("lto-success");
+                wrapper.addAttributes({value: text});
                 this.activateResetButton(wrapper);
                 this.stopCamera(wrapper);
             })
@@ -131,11 +131,11 @@ export class CodeReader implements IRenderable {
         }
     }
 
-    private activateScanner(wrapper: HTMLElement) {
-        const video = wrapper.querySelector("video") as HTMLVideoElement;
+    private activateScanner(wrapper: INode) {
+        const video = wrapper.find("video") as HTMLVideoElement;
         const scanner = new Scanner();
         scanner.setDevice(video);
-        wrapper.classList.remove("lto-success");
+        wrapper.removeClasses("lto-success");
 
         let result;
         switch (this.spec.format) {
@@ -154,10 +154,10 @@ export class CodeReader implements IRenderable {
         }
     }
 
-    private stopCamera(wrapper: HTMLElement) {
-        const video = wrapper.querySelector("video") as HTMLVideoElement;
+    private stopCamera(wrapper: INode) {
+        const video = wrapper.find("video") as HTMLVideoElement;
         video.classList.remove("lto-active");
-        const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
+        const canvas = wrapper.find("canvas") as HTMLCanvasElement;
         canvas.classList.add("lto-active");
         drawCanvas(canvas, video, this.mediaStream||new MediaStream(), this.maxCanvasSize);
         this.mediaStream!.getTracks().forEach(track => track.stop());

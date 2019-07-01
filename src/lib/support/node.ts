@@ -22,11 +22,33 @@ export interface INode {
     addDataAttributes(map: {}): INode;
 
     /**
+     * Removes the given attributes from the node.
+     *
+     * @param names the attributes names
+     */
+    removeAttributes(...names: string[]):INode;
+
+    /**
      * Adds the given classes to the node.
      *
      * @param classes the classes to add
      */
     addClasses(...classes: string[]): INode;
+
+    /**
+     * Removes the given classes from the node.
+     *
+     * @param classes the classes to remove
+     */
+    removeClasses(...classes: string[]): INode;
+
+    /**
+     * Check if classList contains className
+     *
+     * @param className the class which should be contained
+     */
+    containsClass(className: string): boolean;
+
 
     /**
      * Appends the given node to the node.
@@ -47,6 +69,10 @@ export interface INode {
     onClick(callback: (e: MouseEvent) => void): void;
 
     unwrap(): HTMLElement;
+
+    find(selector: string): HTMLElement;
+
+    findAll(selector: string): NodeListOf<HTMLElement>;
 }
 
 class Node implements INode {
@@ -75,11 +101,27 @@ class Node implements INode {
         return this;
     }
 
+    public removeAttributes(...names: string[]): INode {
+        names.forEach(name => {
+            this.node.removeAttribute(name);
+        });
+        return this;
+    }
+
+
     public addClasses(...classes: string[]): INode {
         classes.forEach(clazz => this.node.classList.add(clazz));
         return this;
     }
 
+    public removeClasses(...classes: string[]): INode {
+        classes.forEach(clazz => this.node.classList.remove(clazz));
+        return this;
+    }
+
+    public containsClass(className: string): boolean {
+        return this.node.classList.contains(className)
+    }
 
     public appendChild(node: Node | string): INode {
         if (typeof node === 'string') {
@@ -116,6 +158,14 @@ class Node implements INode {
 
     public unwrap(): HTMLElement {
         return this.node;
+    }
+
+    public find(selector: string): HTMLElement {
+        return this.node.querySelector(selector) as HTMLElement
+    }
+
+    public findAll(selector: string): NodeListOf<HTMLElement> {
+        return this.node.querySelectorAll(selector)
     }
 
 }
