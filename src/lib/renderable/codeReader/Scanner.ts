@@ -8,33 +8,24 @@ if (typeof document !== "undefined" && typeof window !== "undefined") {
 
 export class Scanner {
 
-    private deviceId: string | undefined = "";
-
-    public setDevice(htmlVideoElement: HTMLVideoElement) {
-        (htmlVideoElement.srcObject as MediaStream).getVideoTracks().forEach(track => {
-            this.deviceId = track.getCapabilities().deviceId
-        });
-        return this;
-    }
-
-    public scanQRCode() {
+    public static scanQRCodeFromDevice(deviceId: string) {
         if (qrCodeReader !== null) {
             const {BrowserQRCodeReader} = qrCodeReader;
-            if (this.deviceId) {
+            if (deviceId) {
                 const codeReader = new BrowserQRCodeReader();
-                return codeReader.decodeFromInputVideoDevice(this.deviceId)
+                return codeReader.decodeFromInputVideoDevice(deviceId)
             }
             console.error("Set video device before calling this function");
         }
         return null
     }
 
-    public scanBarCode() {
+    public static scanBarCodeFromDevice(deviceId: string) {
         if (barcodeReader !== null) {
             const {BrowserBarcodeReader} = barcodeReader;
-            if (this.deviceId) {
+            if (deviceId) {
                 const codeReader = new BrowserBarcodeReader();
-                return codeReader.decodeFromInputVideoDevice(this.deviceId)
+                return codeReader.decodeFromInputVideoDevice(deviceId)
             }
             console.error("Set video device before calling this function");
         }

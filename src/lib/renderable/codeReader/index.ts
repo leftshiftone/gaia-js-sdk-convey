@@ -61,30 +61,26 @@ export class CodeReader implements IRenderable {
         wrapper.removeClasses("lto-not-available");
 
         const userMedia = getUserVideoMedia();
-        if (userMedia == null) {
+        if (userMedia == null)
             return;
-        }
 
         userMedia.then(mediaStream => {
-                this.mediaStream = mediaStream;
-                video.srcObject = this.mediaStream;
-                this.mediaStream.getVideoTracks();
-                video.play()
-                    .then(() => {
-                        if (!video.classList.contains("lto-active"))
-                            video.classList.add("lto-active");
-                        canvas.removeClasses("lto-active");
-                        this.activateScanner(wrapper);
-                    });
-            })
-            .catch(error => {
-                console.error(error);
-                video.classList.remove("lto-active");
-                canvas.removeClasses("lto-active");
-                const errorWrapper = wrapper.find(".lto-error");
-                errorWrapper.setStyle({display: "block"});
-                wrapper.addClasses("lto-not-available");
-            });
+            this.mediaStream = mediaStream;
+            video.srcObject = this.mediaStream;
+            this.mediaStream.getVideoTracks();
+            video.play()
+                .then(() => {
+                    if (!video.classList.contains("lto-active"))
+                        video.classList.add("lto-active");
+                    canvas.removeClasses("lto-active");
+                    this.activateScanner(wrapper);
+                });
+        }).catch(error => {
+            console.error(error);
+            video.classList.remove("lto-active");
+            canvas.removeClasses("lto-active");
+            wrapper.addClasses("lto-not-available");
+        });
     }
 
 
@@ -99,9 +95,10 @@ export class CodeReader implements IRenderable {
     public activateResetButton(wrapper: INode) {
         const resetButton = wrapper.find(".lto-reset-button");
         const successLabel = wrapper.find(".lto-read-success");
-        if (!resetButton) {
-            return
-        }
+
+        if (!resetButton)
+            return;
+
         resetButton.removeClasses("lto-disabled");
         resetButton.addClasses("lto-active");
         resetButton.onClick(() => {
@@ -125,33 +122,28 @@ export class CodeReader implements IRenderable {
                 wrapper.addAttributes({value: text});
                 this.activateResetButton(wrapper);
                 this.stopCamera(wrapper);
-            })
+            }).catch(reason => console.error(reason))
         } else {
-            console.error("Failed to publish result");
+            console.error("Result is null");
         }
     }
 
     private activateScanner(wrapper: INode) {
         const video = wrapper.find("video");
-        const scanner = new Scanner();
-        scanner.setDevice(video.unwrap() as HTMLVideoElement);
-        wrapper.removeClasses("lto-success");
+        CodeReader.getDeviceId(video).then(deviceId => {
+            wrapper.removeClasses("lto-success");
+            switch (this.spec.format) {
+                case "qr":
+                    this.publishResult(wrapper, Scanner.scanQRCodeFromDevice(deviceId));
+                    break;
+                case "bar":
+                    this.publishResult(wrapper, Scanner.scanBarCodeFromDevice(deviceId));
+                    break;
+                default:
+                    console.error("Format: " + this.spec.format + " is not supported")
+            }
+        }).catch(reason => console.error(reason))
 
-        let result;
-        switch (this.spec.format) {
-            case "qr":
-                result = scanner.scanQRCode();
-                break;
-            case "bar":
-                result = scanner.scanBarCode();
-                break;
-            default:
-                console.error("Format: " + this.spec.format + " is not supported")
-        }
-
-        if (result) {
-            this.publishResult(wrapper, result);
-        }
     }
 
     private stopCamera(wrapper: INode) {
@@ -159,8 +151,22 @@ export class CodeReader implements IRenderable {
         video.removeClasses("lto-active");
         const canvas = wrapper.find("canvas");
         canvas.addClasses("lto-active");
-        drawCanvas(canvas.unwrap() as HTMLCanvasElement, video.unwrap() as HTMLVideoElement, this.mediaStream||new MediaStream(), this.maxCanvasSize);
+        drawCanvas(canvas.unwrap() as HTMLCanvasElement, video.unwrap() as HTMLVideoElement, this.mediaStream || new MediaStream(), this.maxCanvasSize);
         this.mediaStream!.getTracks().forEach(track => track.stop());
+    }
+
+    public static getDeviceId(node: INode) {
+        const htmlVideoElement = node.unwrap() as HTMLVideoElement;
+        return new Promise<string>(resolve => {
+            (htmlVideoElement.srcObject as MediaStream).getVideoTracks().forEach(track =>
+                navigator.mediaDevices.enumerateDevices().then(value =>
+                    value.forEach(e => {
+                        if (e.label === track.label)
+                            resolve(e.deviceId);
+                    })
+                )
+            );
+        });
     }
 
 }
