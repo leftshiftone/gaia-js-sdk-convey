@@ -1,6 +1,7 @@
 // noinspection TsLint
 import wrap from '../node';
 import * as  sinon from 'sinon';
+import node from "../node";
 
 describe('NodeTest', () => {
 
@@ -29,6 +30,30 @@ describe('NodeTest', () => {
         expect(spy.calledTwice).toBeTruthy();
     });
 
+    it("removeAttributes()", () => {
+        const n = node("div");
+        n.addAttributes({
+            test: "abc",
+            x: "y",
+            y: "x"
+        });
+        n.removeAttributes("x", "y");
+
+        expect(n.getAttribute("x")).toBeNull();
+        expect(n.getAttribute("y")).toBeNull();
+    });
+
+    it("getAttribute()", () => {
+        const n = node("div");
+        n.addAttributes({
+            test: "abc",
+            x: "y",
+            y: "x"
+        });
+        expect(n.getAttribute("x")).toBe("y");
+        expect(n.getAttribute("x")).toBe("y");
+    });
+
     it("addDataAttributes()", () => {
         const mocked = { dataset: {}};
         const node = wrap(mocked as HTMLElement);
@@ -53,6 +78,14 @@ describe('NodeTest', () => {
         expect(spy.withArgs('b').calledOnce).toBeTruthy();
         // @ts-ignore
         expect(spy.withArgs('c').calledOnce).toBeTruthy();
+    });
+
+    it('removeClasses() containsClass()', () => {
+        const n = node("div");
+        n.addClasses("a", "b", "c");
+        n.removeClasses("a", "b");
+        expect(n.containsClass("a")).toBeFalsy();
+        expect(n.containsClass("b")).toBeFalsy();
     });
 
     it('appendChild(node: Node)', () => {
@@ -117,6 +150,13 @@ describe('NodeTest', () => {
         classUnderTest.onClick((e => undefined));
 
         expect(addEventListenerSpy.calledOnce).toBeTruthy();
+    });
+
+    it('setStyle()', () => {
+        const n = node("div");
+        n.setStyle({fontFamily: "Arial", fontSize: "13px"});
+        expect(n.unwrap().style.fontSize).toBe("13px");
+        expect(n.unwrap().style.fontFamily).toBe("Arial");
     });
 
 });

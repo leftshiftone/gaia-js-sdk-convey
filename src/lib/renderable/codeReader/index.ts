@@ -55,8 +55,8 @@ export class CodeReader implements IRenderable {
     }
 
     private initCamera(wrapper: INode) {
-        const video = wrapper.find("video") as HTMLVideoElement;
-        const canvas = wrapper.find("canvas") as HTMLCanvasElement;
+        const video = wrapper.find("video").unwrap() as HTMLVideoElement;
+        const canvas = wrapper.find("canvas");
 
         wrapper.removeClasses("lto-not-available");
 
@@ -73,53 +73,53 @@ export class CodeReader implements IRenderable {
                     .then(() => {
                         if (!video.classList.contains("lto-active"))
                             video.classList.add("lto-active");
-                        canvas.classList.remove("lto-active");
+                        canvas.removeClasses("lto-active");
                         this.activateScanner(wrapper);
                     });
             })
             .catch(error => {
                 console.error(error);
                 video.classList.remove("lto-active");
-                canvas.classList.remove("lto-active");
-                const errorWrapper = wrapper.find(".lto-error") as HTMLDivElement;
-                errorWrapper.style.display = "block";
+                canvas.removeClasses("lto-active");
+                const errorWrapper = wrapper.find(".lto-error");
+                errorWrapper.setStyle({display: "block"});
                 wrapper.addClasses("lto-not-available");
             });
     }
 
 
     public static disableResetButton(wrapper: INode) {
-        const resetButton = wrapper.find(".lto-reset-button") as HTMLDivElement;
+        const resetButton = wrapper.find(".lto-reset-button");
         if (resetButton) {
-            resetButton.classList.remove("lto-active");
-            resetButton.classList.add("lto-disabled");
+            resetButton.removeClasses("lto-active");
+            resetButton.addClasses("lto-disabled");
         }
     }
 
     public activateResetButton(wrapper: INode) {
-        const resetButton = wrapper.find(".lto-reset-button") as HTMLDivElement;
-        const successLabel = wrapper.find(".lto-read-success") as HTMLElement;
+        const resetButton = wrapper.find(".lto-reset-button");
+        const successLabel = wrapper.find(".lto-read-success");
         if (!resetButton) {
             return
         }
-        resetButton.classList.remove("lto-disabled");
-        resetButton.classList.add("lto-active");
-        resetButton.onclick = () => {
+        resetButton.removeClasses("lto-disabled");
+        resetButton.addClasses("lto-active");
+        resetButton.onClick(() => {
             wrapper.removeClasses("lto-success");
             wrapper.removeAttributes("value");
-            successLabel.innerText = "";
+            successLabel.innerText("");
             CodeReader.disableResetButton(wrapper);
             this.initCamera(wrapper);
-        }
+        });
     }
 
     public publishResult(wrapper: INode, result: Promise<Result> | null) {
         if (result !== null) {
             result.then(result => {
                 const text = result.getText();
-                const successLabel = wrapper.find(".lto-read-success") as HTMLElement;
+                const successLabel = wrapper.find(".lto-read-success");
                 if (successLabel) {
-                    successLabel.innerText = text;
+                    successLabel.innerText(text);
                 }
                 wrapper.addClasses("lto-success");
                 wrapper.addAttributes({value: text});
@@ -132,9 +132,9 @@ export class CodeReader implements IRenderable {
     }
 
     private activateScanner(wrapper: INode) {
-        const video = wrapper.find("video") as HTMLVideoElement;
+        const video = wrapper.find("video");
         const scanner = new Scanner();
-        scanner.setDevice(video);
+        scanner.setDevice(video.unwrap() as HTMLVideoElement);
         wrapper.removeClasses("lto-success");
 
         let result;
@@ -155,11 +155,11 @@ export class CodeReader implements IRenderable {
     }
 
     private stopCamera(wrapper: INode) {
-        const video = wrapper.find("video") as HTMLVideoElement;
-        video.classList.remove("lto-active");
-        const canvas = wrapper.find("canvas") as HTMLCanvasElement;
-        canvas.classList.add("lto-active");
-        drawCanvas(canvas, video, this.mediaStream||new MediaStream(), this.maxCanvasSize);
+        const video = wrapper.find("video");
+        video.removeClasses("lto-active");
+        const canvas = wrapper.find("canvas");
+        canvas.addClasses("lto-active");
+        drawCanvas(canvas.unwrap() as HTMLCanvasElement, video.unwrap() as HTMLVideoElement, this.mediaStream||new MediaStream(), this.maxCanvasSize);
         this.mediaStream!.getTracks().forEach(track => track.stop());
     }
 

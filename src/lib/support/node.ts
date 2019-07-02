@@ -13,6 +13,20 @@ export interface INode {
      */
     addAttributes(map: {}): INode;
 
+    /**
+     * Removes the given attributes from the node.
+     *
+     * @param qualifiers the attributes qualifiers
+     */
+    removeAttributes(...qualifiers: string[]):INode;
+
+    /**
+     * Returns the attribute value
+     *
+     * @param qualifier the attribute qualifier
+     */
+    getAttribute(qualifier: string): string | null
+
 
     /**
      * Adds the given attributes to the nodes dataset
@@ -20,13 +34,6 @@ export interface INode {
      * @see https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
      */
     addDataAttributes(map: {}): INode;
-
-    /**
-     * Removes the given attributes from the node.
-     *
-     * @param names the attributes names
-     */
-    removeAttributes(...names: string[]):INode;
 
     /**
      * Adds the given classes to the node.
@@ -70,9 +77,13 @@ export interface INode {
 
     unwrap(): HTMLElement;
 
-    find(selector: string): HTMLElement;
+    find(selector: string): INode;
 
-    findAll(selector: string): NodeListOf<HTMLElement>;
+    findAll(selector: string): Array<INode>;
+
+    innerText(str: string): INode;
+
+    setStyle(map: {[key: string]: string}): INode;
 }
 
 class Node implements INode {
@@ -101,13 +112,16 @@ class Node implements INode {
         return this;
     }
 
-    public removeAttributes(...names: string[]): INode {
-        names.forEach(name => {
-            this.node.removeAttribute(name);
+    public removeAttributes(...qualifiers: string[]): INode {
+        qualifiers.forEach(qualifier => {
+            this.node.removeAttribute(qualifier);
         });
         return this;
     }
 
+    public getAttribute(qualifier: string): string | null {
+        return this.node.getAttribute(qualifier);
+    }
 
     public addClasses(...classes: string[]): INode {
         classes.forEach(clazz => this.node.classList.add(clazz));
@@ -160,12 +174,31 @@ class Node implements INode {
         return this.node;
     }
 
-    public find(selector: string): HTMLElement {
-        return this.node.querySelector(selector) as HTMLElement
+    public find(selector: string): INode {
+        return wrap(this.node.querySelector(selector) as HTMLElement)
     }
 
-    public findAll(selector: string): NodeListOf<HTMLElement> {
-        return this.node.querySelectorAll(selector)
+    public findAll(selector: string): Array<INode> {
+        const elements = this.node.querySelectorAll(selector);
+        const array: Array<INode> = [];
+        elements.forEach(element => {
+            array.push(wrap(element as HTMLElement));
+        });
+        return array
     }
+
+    public setStyle(map: {[key: string]: string}): INode {
+        for (let key in map) {
+            this.node.style[key] = map[key];
+        }
+        return this;
+    }
+
+    public innerText(str: string): INode {
+        this.node.innerText = str;
+        return this
+    }
+
+
 
 }
