@@ -153,7 +153,13 @@ workflows:
   build:
     jobs:
       - build
+          filters:
+            tags:
+              ignore: /.*/
       - webhook-completed:
+          filters:
+            tags:
+              ignore: /.*/
           requires:
             - build
   release-major:
@@ -166,6 +172,11 @@ workflows:
             tags:
               only: /^release-major$/
       - webhook-completed:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^release-major$/
           requires:
             - release-major
   release-minor:
@@ -178,6 +189,11 @@ workflows:
             tags:
               only: /^release-minor$/
       - webhook-completed:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^release-minor$/
           requires:
             - release-minor
   release-patch:
@@ -190,6 +206,11 @@ workflows:
             tags:
               only: /^release-patch$/
       - webhook-completed:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^release-patch$/
           requires:
             - release-patch
   code-analytics:
