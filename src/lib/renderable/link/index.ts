@@ -18,7 +18,7 @@ export class Link implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const link = document.createElement('a');
-        link.setAttribute('href', this.spec.value || "");
+        link.setAttribute('href', Link.decode(this.spec.value || ""));
         link.setAttribute('target', '_blank');
         link.classList.add('lto-link');
         if (this.spec.id !== undefined) {
@@ -32,6 +32,11 @@ export class Link implements IRenderable {
         return link;
     }
 
-}
+    private static decode(input:string) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = input;
+        return txt.value;
+    }
 
+}
 Renderables.register("link", Link);
