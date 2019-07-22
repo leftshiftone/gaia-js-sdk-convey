@@ -5,6 +5,7 @@
     "main": "dist/lib/std.js",
     "dependencies": {
         "@zxing/library": "^0.12.4",
+        "browser-image-compression": "^1.0.6",
         "d3": "^5.8.0",
         "d3-3d": "^0.0.9",
         "d3-sankey": "^0.7.1",

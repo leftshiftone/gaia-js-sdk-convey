@@ -5,6 +5,12 @@ import {IStackeable} from '../../api/IStackeable';
 import {drawCanvas} from "../../support/Canvas";
 import {getUserVideoMedia} from "../../support/Navigator";
 
+let imageCompression: any = null;
+
+if (typeof window !== "undefined") {
+    imageCompression = require("browser-image-compression/dist/browser-image-compression");
+}
+
 /**
  * Implementation of the 'camera' markup element.
  */
@@ -120,10 +126,66 @@ export class Camera implements IRenderable, IStackeable {
                 mimeType: "image/png"
             }));
 
+            if (this.spec.maxCompressSize) {
+                console.log("use image compression");
+                this.compressCameraImage(canvas, wrapper);
+            }
+
             this.activateResetButton(wrapper);
             Camera.deactivateClick(photoButton);
         };
         photoButton.classList.toggle("lto-disabled");
+    }
+
+    private async compressCameraImage(canvas: HTMLCanvasElement, wrapper : HTMLDivElement) {
+
+        let uncompressedFile = this.dataURLToFile(canvas.toDataURL().split(",")[1], "uncompressFoto");
+
+        console.log(uncompressedFile);
+        console.log(imageCompression);
+        console.log(this.spec.maxCompressSize);
+
+        if (uncompressedFile && imageCompression) {
+
+            const options = {
+                maxSizeMB: this.spec.maxCompressSize,
+                useWebWorker: false,
+                maxWidthOrHeight: 974
+            }
+
+            //console.log(`uncompressedFile size ${uncompressedFile. / 1024 / 1024} MB`);
+
+            const compressedFile = await imageCompression.default(uncompressedFile, options);
+            console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+            wrapper.setAttribute("value", JSON.stringify({
+                data: this.getBase64(compressedFile),
+                fileExtension: "png",
+                mimeType: "image/png"
+            }));
+
+        }
+    }
+
+    private dataURLToFile(urlString: string, fileName: string) : File {
+        let imageArr = atob(urlString);
+        let n = imageArr.length;
+        let u8arr = new Uint8Array(n);
+
+        while(n--){
+            u8arr[n] = imageArr.charCodeAt(n);
+        }
+        return new File([u8arr], fileName, {type:"image/png"});
+    }
+
+    private getBase64(file: File) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result!);
+            reader.onerror = error => reject(error);
+        });
     }
 
     private activateResetButton(wrapper: HTMLDivElement) {

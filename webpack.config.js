@@ -48,7 +48,7 @@ module.exports = (env, argv) => ({
         path: __dirname,
         umdNamedDefine: true
     },
-    externals: ['google-maps', 'leaflet', 'node-ical', '@zxing/library', 'reveal.js'],
+    externals: ['google-maps', 'leaflet', 'node-ical', '@zxing/library', 'reveal.js', 'browser-image-compression'],
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'dist/[name].css',

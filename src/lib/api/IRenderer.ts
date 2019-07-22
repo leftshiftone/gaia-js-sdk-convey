@@ -48,4 +48,5 @@ export interface ISpecification {
     format?: "qr" | "bar";
     rows?: number;
     cols?: number;
+    maxCompressSize?: number;
 }

@@ -2,6 +2,12 @@ import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 
+let imageCompression: any = null;
+
+if (typeof window !== "undefined") {
+    imageCompression = require("browser-image-compression/dist/browser-image-compression");
+}
+
 /**
  * Implementation of the 'upload' markup element.
  */
@@ -75,8 +81,10 @@ export class Upload implements IRenderable {
         };
 
         upload.onchange = () => {
-            if (upload.files && upload.files[0]) {
+            if (upload.files && upload.files[0] && !this.spec.maxCompressSize) {
                 this.doValidateAndGetBase64(upload.files[0]);
+            } else if (upload.files && upload.files[0] && this.spec.maxCompressSize){
+                this.doValidateCompressAndGetBase64(upload.files[0]);
             }
         };
 
@@ -107,6 +115,43 @@ export class Upload implements IRenderable {
                 }))
             })
             .catch(reason => console.error("ERROR: " + reason));
+    }
+
+    public doValidateCompressAndGetBase64(file: File) {
+        if (!this.validateFile(file.size, Upload.getFileExtensionFromFile(file)))
+            return;
+
+        this.setFileNameToSpan(file.name).setErrorSpanTo("");
+
+        this.getCompressedImage(file)
+            .then(compressedFile => this.getBase64(compressedFile))
+            .then(data => {
+                this.dropArea.setAttribute("value", JSON.stringify({
+                    data: data.toString().split(",")[1],
+                    fileExtension: Upload.getFileExtensionFromFile(file),
+                    fileName: file.name,
+                    mimeType: file.type
+                }))
+            })
+            .catch(reason => console.error("ERROR: " + reason));
+    }
+
+    public async getCompressedImage(file: File) : Promise<File> {
+        const options = {
+            maxSizeMB: this.spec.maxCompressSize,
+            useWebWorker: false,
+            maxWidthOrHeight: 974
+        }
+
+
+        if (imageCompression) {
+            const compressedFile = await imageCompression.default(file, options);
+            console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+            return compressedFile;
+        }
+
+        return file;
     }
 
     public getBase64(file: File) {
