@@ -1,6 +1,7 @@
 import {IRenderer, ISpecification} from '../../api/IRenderer';
 import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
+import {getBase64FromFile, getFileExtensionFromFile} from "../../support/Files";
 
 let imageCompression: any = null;
 
@@ -100,16 +101,16 @@ export class Upload implements IRenderable {
     }
 
     public doValidateAndGetBase64(file: File) {
-        if (!this.validateFile(file.size, Upload.getFileExtensionFromFile(file)))
+        if (!this.validateFile(file.size, getFileExtensionFromFile(file)))
             return;
 
         this.setFileNameToSpan(file.name).setErrorSpanTo("");
 
-        this.getBase64(file)
+        getBase64FromFile(file)
             .then(data => {
                 this.dropArea.setAttribute("value", JSON.stringify({
                     data: data.toString().split(",")[1],
-                    fileExtension: Upload.getFileExtensionFromFile(file),
+                    fileExtension: getFileExtensionFromFile(file),
                     fileName: file.name,
                     mimeType: file.type
                 }))
@@ -118,17 +119,17 @@ export class Upload implements IRenderable {
     }
 
     public doValidateCompressAndGetBase64(file: File) {
-        if (!this.validateFile(file.size, Upload.getFileExtensionFromFile(file)))
+        if (!this.validateFile(file.size, getFileExtensionFromFile(file)))
             return;
 
         this.setFileNameToSpan(file.name).setErrorSpanTo("");
 
         this.getCompressedImage(file)
-            .then(compressedFile => this.getBase64(compressedFile))
+            .then(compressedFile => getBase64FromFile(compressedFile))
             .then(data => {
                 this.dropArea.setAttribute("value", JSON.stringify({
                     data: data.toString().split(",")[1],
-                    fileExtension: Upload.getFileExtensionFromFile(file),
+                    fileExtension: getFileExtensionFromFile(file),
                     fileName: file.name,
                     mimeType: file.type
                 }))
@@ -146,26 +147,12 @@ export class Upload implements IRenderable {
 
         if (imageCompression) {
             const compressedFile = await imageCompression.default(file, options);
-            console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+            console.debug('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+            console.debug(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
             return compressedFile;
         }
 
         return file;
-    }
-
-    public getBase64(file: File) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result!);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    public static getFileExtensionFromFile(file: File) {
-        const array = file.name.split(".");
-        return array[array.length - 1];
     }
 
     public setFileNameToSpan(name: string) {
