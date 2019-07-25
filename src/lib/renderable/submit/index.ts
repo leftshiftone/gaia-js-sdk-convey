@@ -109,7 +109,7 @@ export class Submit implements IRenderable {
                         for(const e in inputAttributes) {
                             attributes[e] !== undefined ?
                                 attributes[e].push(inputAttributes[e]) :
-                                attributes[e] = inputAttributes[e];
+                                attributes[e] = [inputAttributes[e]];
                         }
                     }
 
