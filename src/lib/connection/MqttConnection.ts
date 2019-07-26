@@ -65,6 +65,9 @@ export class MqttConnection {
             const destination = this.incoming(type);
             this.mqttClient.subscribe(destination);
 
+            const zeroDestination = ChannelNameFactory.clientIncoming(this.clientId, "0", type);
+            this.mqttClient.subscribe(zeroDestination);
+
             const channelType = ChannelType.match(destination);
             this.callbacks!.set(channelType, callback);
         }
