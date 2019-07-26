@@ -8,8 +8,8 @@ export default class D3Support {
     public static getMonthAndDay = (date: Date) => D3Support.monthDayFormat(date);
 
     public static initSvg(svg: d3.Selection<SVGSVGElement | null, {}, null, undefined>, width: number, height: number, margin: any) {
-        console.log("width: " + width);
-        console.log("height: " + height);
+        console.debug("Width: " + width);
+        console.debug("Weight: " + height);
 
         return svg
             .attr('width', width)
@@ -26,10 +26,11 @@ export default class D3Support {
                 .toString(16)
                 .substring(1);
         }
-        return {id:name + "-" + s4()};
+
+        return {id: name + "-" + s4()};
     }
 
-    public static svg(width:number, height:number) {
+    public static svg(width: number, height: number) {
         const svg = document.createElement("svg");
         svg.setAttribute("width", width + "");
         svg.setAttribute("height", height + "");

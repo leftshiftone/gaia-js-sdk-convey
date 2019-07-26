@@ -78,16 +78,16 @@ export class Camera implements IRenderable, IStackeable {
         }
 
         userMedia.then(mediaStream => {
-                this.mediaStream = mediaStream;
-                video.srcObject = this.mediaStream;
-                video.play()
-                    .then(() => {
-                        if (!video.classList.contains("lto-active")) {
-                            video.classList.add("lto-active");
-                        }
-                        canvas.classList.remove("lto-active");
-                    });
-            })
+            this.mediaStream = mediaStream;
+            video.srcObject = this.mediaStream;
+            video.play()
+                .then(() => {
+                    if (!video.classList.contains("lto-active")) {
+                        video.classList.add("lto-active");
+                    }
+                    canvas.classList.remove("lto-active");
+                });
+        })
             .catch(error => {
                 console.error(error);
                 video.classList.remove("lto-active");
@@ -128,7 +128,7 @@ export class Camera implements IRenderable, IStackeable {
             }));
 
             if (this.spec.maxCompressSize) {
-                console.log("use image compression");
+                console.info(`Using image compression with ${this.spec.maxCompressSize}MB`);
                 this.compressCameraImage(canvas, wrapper);
             }
 
@@ -138,13 +138,13 @@ export class Camera implements IRenderable, IStackeable {
         photoButton.classList.toggle("lto-disabled");
     }
 
-    private async compressCameraImage(canvas: HTMLCanvasElement, wrapper : HTMLDivElement) {
+    private async compressCameraImage(canvas: HTMLCanvasElement, wrapper: HTMLDivElement) {
 
-        let uncompressedFile = dataURLToFile(canvas.toDataURL().split(",")[1], "uncompressFoto");
+        let uncompressedFile = dataURLToFile(canvas.toDataURL().split(",")[1], "uncompressedPhoto");
 
-        console.debug(uncompressedFile);
-        console.debug(imageCompression);
-        console.debug(this.spec.maxCompressSize);
+        //console.debug(uncompressedFile);
+        //console.debug(imageCompression);
+        //console.debug(this.spec.maxCompressSize);
 
         if (uncompressedFile && imageCompression) {
 
@@ -152,23 +152,21 @@ export class Camera implements IRenderable, IStackeable {
                 maxSizeMB: this.spec.maxCompressSize,
                 useWebWorker: false,
                 maxWidthOrHeight: 974
-            }
+            };
 
-            //console.log(`uncompressedFile size ${uncompressedFile. / 1024 / 1024} MB`);
+            console.debug(`Uncompressed image size: ${uncompressedFile.size / 1024 / 1024} MB`);
 
             const compressedFile = await imageCompression.default(uncompressedFile, options);
-            console.debug('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-            console.debug(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+            //console.debug('Compressed image is of type Blob', compressedFile instanceof Blob);
+            console.debug(`Compressed image size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
 
             wrapper.setAttribute("value", JSON.stringify({
                 data: getBase64FromFile(compressedFile),
                 fileExtension: "png",
                 mimeType: "image/png"
             }));
-
         }
     }
-
 
     private activateResetButton(wrapper: HTMLDivElement) {
         const resetButton = wrapper.querySelector(".lto-reset-photo") as HTMLDivElement;

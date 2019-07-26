@@ -7,17 +7,18 @@ import HeatmapOptions from './HeatmapOptions';
  */
 export class Heatmap {
 
-    private options:HeatmapOptions;
-    private itemSizeX:number;
-    private itemSizeY:number;
-    private cellSizeX:number;
-    private cellSizeY:number;
-    private width:number;
-    private height:number;
+    private options: HeatmapOptions;
+    private itemSizeX: number;
+    private itemSizeY: number;
+    private cellSizeX: number;
+    private cellSizeY: number;
+    private width: number;
+    private height: number;
     private margin = {top: 20, right: 20, bottom: 20, left: 25};
+
     // private colorCalibration:string[];
 
-    constructor(options:HeatmapOptions = new HeatmapOptions()) {
+    constructor(options: HeatmapOptions = new HeatmapOptions()) {
         this.options = options;
         this.width = options.itemSizeX * 25 + this.margin.top;
         this.height = options.itemSizeY * 25 + this.margin.left;
@@ -39,10 +40,10 @@ export class Heatmap {
         return div;
     }
 
-    public init(element:HTMLElement) {
+    public init(element: HTMLElement) {
         const dailyValueExtent = {};
 
-        console.log(element.querySelector("svg"));
+        console.debug(element.querySelector("svg"));
 
         const svg = d3.select(element.querySelector("svg"));
         const heatmap = D3Support.initSvg(svg, this.width, this.height, this.margin);
@@ -89,7 +90,7 @@ export class Heatmap {
             .call(yAxis);
     }
 
-    private renderColor(dayOffset:number, dailyValueExtent:any, rect:d3.Selection<SVGRectElement, any, any, any>) {
+    private renderColor(dayOffset: number, dailyValueExtent: any, rect: d3.Selection<SVGRectElement, any, any, any>) {
         rect.filter((d: any) => (d.value >= 0))
             .transition()
             .delay((d: any) => (D3Support.getDayOfYear(d.date) - dayOffset) * 15)
@@ -101,16 +102,16 @@ export class Heatmap {
 
                 return "lto-vis-color-" + colorIndex(d.value);
             });
-            // .attrTween('fill', (d: any, i: any, a: any) => {
-            //     const colorIndex = d3.scaleQuantize()
-            //         .range([0, 1, 2, 3, 4, 5])
-            //         .domain((this.options.colorGroup !== "auto" ? this.options.colorGroup : dailyValueExtent[d.day]));
-            //
-            //     return d3.interpolate(a, this.colorCalibration[colorIndex(d.value)]);
-            // });
+        // .attrTween('fill', (d: any, i: any, a: any) => {
+        //     const colorIndex = d3.scaleQuantize()
+        //         .range([0, 1, 2, 3, 4, 5])
+        //         .domain((this.options.colorGroup !== "auto" ? this.options.colorGroup : dailyValueExtent[d.day]));
+        //
+        //     return d3.interpolate(a, this.colorCalibration[colorIndex(d.value)]);
+        // });
     }
 
-    private renderRects(rect:d3.Selection<d3.BaseType, any, SVGGElement, any>, data:any, dayOffset:number) {
+    private renderRects(rect: d3.Selection<d3.BaseType, any, SVGGElement, any>, data: any, dayOffset: number) {
         const newRect = rect
             .data(data)
             .enter()

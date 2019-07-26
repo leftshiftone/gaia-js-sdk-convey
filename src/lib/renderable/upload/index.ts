@@ -84,7 +84,7 @@ export class Upload implements IRenderable {
         upload.onchange = () => {
             if (upload.files && upload.files[0] && !this.spec.maxCompressSize) {
                 this.doValidateAndGetBase64(upload.files[0]);
-            } else if (upload.files && upload.files[0] && this.spec.maxCompressSize){
+            } else if (upload.files && upload.files[0] && this.spec.maxCompressSize) {
                 this.doValidateCompressAndGetBase64(upload.files[0]);
             }
         };
@@ -137,18 +137,17 @@ export class Upload implements IRenderable {
             .catch(reason => console.error("ERROR: " + reason));
     }
 
-    public async getCompressedImage(file: File) : Promise<File> {
+    public async getCompressedImage(file: File): Promise<File> {
         const options = {
             maxSizeMB: this.spec.maxCompressSize,
             useWebWorker: false,
             maxWidthOrHeight: 974
-        }
-
+        };
 
         if (imageCompression) {
             const compressedFile = await imageCompression.default(file, options);
-            console.debug('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-            console.debug(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+            //console.debug('Compressed image is of type Blob', compressedFile instanceof Blob);
+            console.debug(`Compressed image size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
             return compressedFile;
         }
 

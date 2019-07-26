@@ -55,8 +55,8 @@ export class Line {
                 .attr("class", () => "lto-vis-line-" + counter++)
                 .attr("d", (d: any) => {
                     const _line = line(d.values);
-                    // console.log("LINE");
-                    // console.log(_line);
+                    // console.debug("LINE");
+                    // console.debug(_line);
                     return _line;
                 })
                 .style("stroke-dasharray", (d: any, e: any, f: any) => Math.max.apply(null, f.map((e: any) => e.getTotalLength())))
