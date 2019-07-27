@@ -90,9 +90,10 @@ export class MqttConnection {
         const destination = this.outgoing(channelType);
         console.debug('Sending message to destination ' + destination);
 
-        // noinspection SuspiciousInstanceOfGuard
-        const payload = JSON.stringify({body: msg instanceof Array ? msg[0] : msg, header: this.header()});
-        this.mqttClient.publish(destination, payload, this.mqttCallback(msg[0]));
+        // noinspection SuspiciousTypeOfGuard
+        const message = msg instanceof Array ? msg[0] : msg;
+        const payload = JSON.stringify({body: message, header: this.header()});
+        this.mqttClient.publish(destination, payload, this.mqttCallback(message));
     }
 
     /**
