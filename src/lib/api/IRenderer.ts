@@ -1,5 +1,6 @@
 import {IRenderable} from './IRenderable';
 import {IStackeable} from './IStackeable';
+import { ISpecification } from './ISpecification';
 
 export interface IRenderer {
     render(message: ISpecification | IRenderable, containerType?: IStackeable): HTMLElement[];
@@ -9,44 +10,3 @@ export interface IRenderer {
     appendSuggest(element: HTMLElement): void;
 }
 
-export interface ISpecification {
-    type: string;
-    elements?: ISpecification[];
-    position?: "left" | "right";
-    text?: string;
-    name?: string;
-    id?: string;
-    class?: string;
-    value?: string;
-    source?: string;
-    width?: string;
-    height?: string;
-    timestamp?: string;
-    min?: string;
-    max?: string;
-    size?: string;
-    step?: string;
-    src?: string;
-    horizontal?: string;
-    exact?: boolean;
-    checked?: string;
-    mapType?: string;
-    valueType?: string;
-    centerLat?: number;
-    centerLng?: number;
-    required?: boolean;
-    regex?: string;
-    placeholder?: string;
-    centerBrowserLocation?: boolean;
-    nerStrategies?: Map<string, any>;
-    accept?: string;
-    maxSize?: number;
-    countdownInSec?: number;
-    values?: Array<string>;
-    sieve?: boolean;
-    selected?: boolean;
-    format?: "qr" | "bar";
-    rows?: number;
-    cols?: number;
-    maxCompressSize?: number;
-}

@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification} from "../../../api/IRenderer";
+import {IRenderer, ISpecification} from "../../../api";
 import * as GoogleMapsLoader from 'google-maps';
 import {IMarker} from "../IMarker";
 import Properties from "../../Properties";

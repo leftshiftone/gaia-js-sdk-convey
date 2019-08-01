@@ -1,8 +1,6 @@
 import {ContentCentricRenderer} from './ContentCentricRenderer';
-import {IRenderable} from '../api/IRenderable';
-import {IStackeable} from '../api/IStackeable';
+import {IRenderable, IStackeable, ISpecification} from '../api';
 import {Defaults} from '../support/Defaults';
-import {ISpecification} from '../api/IRenderer';
 
 /**
  * Renderer implementation which is based on the reveal.js library.

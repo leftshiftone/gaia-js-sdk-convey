@@ -1,6 +1,5 @@
-import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderer, ISpecification, IRenderable} from '../../api';
 import EventStream from '../../event/EventStream';
-import {IRenderable} from '../../api/IRenderable';
 import Renderables from '../Renderables';
 
 /**

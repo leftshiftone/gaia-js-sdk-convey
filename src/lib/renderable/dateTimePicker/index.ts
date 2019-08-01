@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification} from '../../api/IRenderer';
+import {IRenderer, ISpecification} from '../../api';
 
 import {DatePicker} from "../datePicker";
 import {CalendarEvent} from "../datePicker/calendar-event";

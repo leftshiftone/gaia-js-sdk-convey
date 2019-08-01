@@ -7,12 +7,11 @@
  * @author benjamin.krenn@leftshift.one - 3/11/19.
  * @since 0.11.0
  */
-import {IBehaviour} from "../api/IBehaviour";
+import {IBehaviour, ISpecification} from "../api";
 import {MqttConnection} from "../connection/MqttConnection";
 import {AudioRecorder} from "../audio/recorder/AudioRecorder";
 import {WebRTCRecorder} from "../audio/recorder/WebRTCRecorder";
 import {ChannelType} from "../support/ChannelType";
-import {ISpecification} from "../api/IRenderer";
 import {BufferedAudioPlayer} from "../audio/player/BufferedAudioPlayer";
 
 export class VoiceBehaviour implements IBehaviour {

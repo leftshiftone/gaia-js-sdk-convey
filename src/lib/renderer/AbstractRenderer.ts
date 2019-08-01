@@ -1,7 +1,5 @@
 import Renderables from '../renderable/Renderables';
-import {IRenderer, ISpecification} from '../api/IRenderer';
-import {IRenderable} from '../api/IRenderable';
-import {IStackeable} from '../api/IStackeable';
+import {IRenderer, ISpecification, IRenderable, IStackeable} from '../api';
 
 /**
  * Abstract renderer class.

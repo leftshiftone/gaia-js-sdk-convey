@@ -1,5 +1,4 @@
-import {IRenderer} from '../../api/IRenderer';
-import {IRenderable} from '../../api/IRenderable';
+import {IRenderer,IRenderable} from '../../api';
 
 /**
  * Implementation of the 'overlay' markup element.

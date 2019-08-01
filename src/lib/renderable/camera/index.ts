@@ -1,7 +1,5 @@
-import {IRenderer, ISpecification} from '../../api/IRenderer';
-import {IRenderable} from '../../api/IRenderable';
+import {IRenderer, ISpecification,IRenderable, IStackeable} from '../../api';
 import Renderables from '../Renderables';
-import {IStackeable} from '../../api/IStackeable';
 import {drawCanvas} from "../../support/Canvas";
 import {getUserVideoMedia} from "../../support/Navigator";
 import {dataURLToFile, getBase64FromFile} from "../../support/Files";

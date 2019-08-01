@@ -1,6 +1,5 @@
-import {IListener} from '../api/IListener';
+import {IListener, ISpecification} from '../api';
 import {Defaults} from '../support/Defaults';
-import {ISpecification} from "../api/IRenderer";
 
 /**
  * Off switch listener implementation.

@@ -1,5 +1,4 @@
-import {IStackeable} from "../../api/IStackeable";
-import {IRenderer, ISpecification} from "../../api/IRenderer";
+import {IRenderer, ISpecification,IStackeable} from "../../api";
 import node from "../../support/node";
 import {ChoiceMutator} from "./ChoiceMutator";
 

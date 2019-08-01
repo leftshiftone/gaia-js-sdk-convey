@@ -74,6 +74,7 @@ import {Bar3D} from './lib/renderable/vis/bar3d/Bar3D';
 import Bar3DOptions from './lib/renderable/vis/bar3d/Bar3DOptions';
 
 
+export * from './lib/api';
 export {
     VoiceBehaviour,
     WebRTCRecorder,
