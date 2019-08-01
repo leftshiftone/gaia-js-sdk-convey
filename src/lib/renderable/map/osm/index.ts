@@ -1,7 +1,6 @@
 import * as L from 'leaflet';
 import {IRenderer, ISpecification} from '../../../api/IRenderer';
 import {IRenderable} from '../../../api/IRenderable';
-import './leaflet.css';
 import {Circle, Icon, LatLngLiteral, Marker} from "leaflet";
 import {IMarker} from "../IMarker";
 
