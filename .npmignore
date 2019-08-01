@@ -3,6 +3,8 @@
 **/webpack.config.js
 **/jest.config.js
 **/sonar-project.properties
+*.iml
+*.tgz
 
 node_modules
 src
