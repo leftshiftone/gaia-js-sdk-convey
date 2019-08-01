@@ -7,7 +7,7 @@
         "allowJs": false,
         "moduleResolution": "node",
         "rootDir": "./src",
-        "outDir": "./dist/lib",
+        "outDir": "./dist/esm5",
         "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
