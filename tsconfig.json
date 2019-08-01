@@ -3,6 +3,7 @@
         "module": "commonjs",
         "target": "es5",
         "sourceMap": true,
+        "inlineSources": true,
         "allowJs": false,
         "moduleResolution": "node",
         "rootDir": "./src",
