@@ -1,4 +1,4 @@
-import {IRenderable} from '../../api/IRenderable';
+import {IRenderable} from '../../api';
 
 export class Icon implements IRenderable{
 

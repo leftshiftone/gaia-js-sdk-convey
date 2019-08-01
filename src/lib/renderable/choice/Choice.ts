@@ -1,5 +1,4 @@
-import {IRenderable} from "../../api/IRenderable";
-import {IRenderer, ISpecification} from "../../api/IRenderer";
+import {IRenderer, ISpecification,IRenderable} from "../../api";
 import node from "../../support/node";
 
 /**

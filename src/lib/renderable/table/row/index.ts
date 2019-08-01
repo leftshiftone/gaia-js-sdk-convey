@@ -1,7 +1,5 @@
-import {IRenderer, ISpecification} from '../../../api/IRenderer';
-import {IRenderable} from '../../../api/IRenderable';
+import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../../api';
 import Renderables from '../../Renderables';
-import {IStackeable} from '../../../api/IStackeable';
 
 /**
  * Implementation of the 'row' markup element.

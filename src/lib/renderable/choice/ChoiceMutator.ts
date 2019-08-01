@@ -1,4 +1,4 @@
-import {ISpecification} from "../../api/IRenderer";
+import {ISpecification} from "../../api";
 
 export class ChoiceMutator {
 

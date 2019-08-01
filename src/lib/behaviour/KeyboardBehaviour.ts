@@ -1,8 +1,7 @@
-import {IBehaviour} from '../api/IBehaviour';
+import {IBehaviour, IRenderer, ISpecification} from '../api';
 import {MqttConnection} from '../connection/MqttConnection';
 import {ChannelType} from '../support/ChannelType';
 import {Defaults} from '../support/Defaults';
-import {IRenderer, ISpecification} from '../api/IRenderer';
 
 /**
  * IBehaviour implementation which listens for a keyup event with code 13 in order to publish

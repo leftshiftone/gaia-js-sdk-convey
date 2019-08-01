@@ -1,9 +1,7 @@
-import {IListener} from '../api/IListener';
 import * as mqtt from 'mqtt';
 import {ChannelNameFactory} from "../support/ChannelNameFactory";
 import {ChannelType} from "../support/ChannelType";
-import {IBehaviour} from '../api/IBehaviour';
-import {IRenderer, ISpecification} from '../api/IRenderer';
+import {IRenderer, ISpecification, IListener, IBehaviour} from '../api';
 import {uuid} from '../support/Uuid';
 import EventStream from '../event/EventStream';
 import {KeyboardBehaviour} from '../behaviour/KeyboardBehaviour';

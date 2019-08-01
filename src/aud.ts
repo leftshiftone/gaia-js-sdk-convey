@@ -9,6 +9,7 @@ import {BufferedAudioPlayer} from "./lib/audio/player/BufferedAudioPlayer";
 import {NoopRenderer} from "./lib/renderer/NoopRenderer";
 import {DefaultListener} from "./lib/listener/DefaultListener";
 
+export * from './lib/api';
 export {
     Gaia,
     ChannelType,

@@ -1,7 +1,8 @@
-import {IRenderer, ISpecification} from "../../../api/IRenderer";
+import {IRenderer, ISpecification} from "../../../api";
 import * as GoogleMapsLoader from 'google-maps';
 import {IMarker} from "../IMarker";
 import Properties from "../../Properties";
+import LatLng = google.maps.LatLng;
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -184,7 +185,7 @@ export class GoogleMap {
                     const markersInCircle: { markers: any } = {markers: []};
                     markers.forEach(marker => {
                         if (marker[1]) {
-                            if (circle.getBounds().contains(marker[0].getPosition())) {
+                            if (marker[0].getPosition() && circle.getBounds().contains(<LatLng>marker[0].getPosition())) {
                                 markersInCircle.markers.push({
                                     position: marker[0].getPosition(),
                                     meta: marker[0].get("meta")

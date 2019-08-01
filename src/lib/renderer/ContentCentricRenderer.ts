@@ -1,8 +1,7 @@
 import {ClassicRenderer} from './ClassicRenderer';
-import {IRenderable} from '../api/IRenderable';
+import {IRenderable, IStackeable} from '../api';
 import EventStream from '../event/EventStream';
 import {Overlay} from '../renderable/overlay';
-import {IStackeable} from '../api/IStackeable';
 import {Block} from '../renderable/block';
 import {Container} from '../renderable/container';
 

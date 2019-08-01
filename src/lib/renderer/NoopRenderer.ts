@@ -1,6 +1,4 @@
-import {IRenderer, ISpecification} from "../api/IRenderer";
-import {IRenderable} from "../api/IRenderable";
-import {IStackeable} from "../api/IStackeable";
+import {IRenderer, ISpecification, IStackeable, IRenderable} from "../api";
 
 /**
  * No-operation dummy renderer. Used for audio only.

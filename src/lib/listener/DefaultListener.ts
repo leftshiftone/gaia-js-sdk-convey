@@ -1,4 +1,4 @@
-import {IListener} from '../api/IListener';
+import {IListener} from '../api';
 
 /**
  * Default IListener implementation.

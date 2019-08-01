@@ -21,6 +21,8 @@ module.exports = (env, argv) => ({
                     // folder since it wouldn't be of any use ans the source
                     // map already include everything for debugging
                     declaration: false,
+                    inlineSources: false,
+                    sourceMap: false
                 }
             },
             {
@@ -30,7 +32,7 @@ module.exports = (env, argv) => ({
                     argv.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
                     'css-loader',
                     'sass-loader',
-                    'import-glob-loader',
+                    'import-glob-loader'
                 ],
             },
         ],

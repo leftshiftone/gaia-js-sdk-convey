@@ -44,6 +44,7 @@ import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
 
+export * from './lib/api';
 export {
     ClassicRenderer,
     ContentCentricRenderer,
