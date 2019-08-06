@@ -142,11 +142,8 @@ export class Camera implements IRenderable, IStackeable {
 
         let uncompressedFile = dataURLToFile(canvas.toDataURL().split(",")[1], "uncompressedPhoto");
 
-        //console.debug(uncompressedFile);
-        //console.debug(imageCompression);
-        //console.debug(this.spec.maxCompressSize);
-
-        if (uncompressedFile && imageCompression) {
+        if (uncompressedFile && imageCompression &&
+            this.spec.maxCompressSize && uncompressedFile.size > this.spec.maxCompressSize) {
 
             const options = {
                 maxSizeMB: this.spec.maxCompressSize,
@@ -160,11 +157,15 @@ export class Camera implements IRenderable, IStackeable {
             //console.debug('Compressed image is of type Blob', compressedFile instanceof Blob);
             console.debug(`Compressed image size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
 
-            wrapper.setAttribute("value", JSON.stringify({
-                data: getBase64FromFile(compressedFile),
-                fileExtension: "png",
-                mimeType: "image/png"
-            }));
+            getBase64FromFile(compressedFile)
+                .then(data => {
+                    wrapper.setAttribute("value", JSON.stringify({
+                        data: data.toString().split(",")[1],
+                        fileExtension: "png",
+                        fileName: "compressedPhoto",
+                        mimeType: "image/png"
+                    }))
+                }).catch(reason => console.error("ERROR: " + reason));
         }
     }
 
