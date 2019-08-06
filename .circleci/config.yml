@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Webhook completed
           command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"${CIRCLE_BRANCH:-${CIRCLE_TAG/-/\/}}"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
   build:
     docker:
       - image: circleci/node:lts-browsers
@@ -203,13 +203,13 @@ workflows:
           context: npm
           filters:
             branches:
-              only: /^release\/\d+\.\d+\.x/
+              ignore: /.*/
             tags:
               only: /^release-\d+\.\d+\.x$/
       - webhook-completed:
           filters:
             branches:
-              only: /^release\/\d+\.\d+\.x/
+              ignore: /.*/
             tags:
               only: /^release-\d+\.\d+\.x$/
           requires:
