@@ -88,14 +88,12 @@
         "lint": "tslint src/**/*.ts",
         "sonarqube": "jest --env=jsdom --coverage && sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN",
         "trigger-release:major": "git pull --tags && git tag release-major && git push --tags && git tag -d release-major",
-        "cleanup-release:major": "git tag -d release-major && git push -d origin release-major",
         "trigger-release:minor": "git pull --tags && git tag release-minor && git push --tags && git tag -d release-minor",
-        "cleanup-release:minor": "git tag -d release-minor && git push -d origin release-minor",
-        "trigger-release:patch": "git pull --tags && git tag release-patch && git push --tags && git tag -d release-patch",
-        "cleanup-release:patch": "git tag -d release-patch && git push -d origin release-patch",
+        "trigger-release:patch": "TRIGGER_TAG=$(git branch | grep \\* | cut -d ' ' -f2); git pull --tags && git tag ${TRIGGER_TAG/\\//-} && git push --tags && git tag -d ${TRIGGER_TAG/\\//-}",
+        "cleanup-release": "git tag -d $CIRCLE_TAG && git push -d origin $CIRCLE_TAG",
         "release:major": "release-it major",
         "release:minor": "release-it minor --no-requireCleanWorkingDir",
-        "release:patch": "release-it patch --no-git.requireUpstream",
+        "release:patch": "release-it patch",
         "test": "jest"
     },
     "repository": {
