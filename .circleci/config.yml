@@ -135,7 +135,7 @@ jobs:
       - checkout
       - run: yarn cleanup-release
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
-      - run: git branch --set-upstream-to=origin/${CIRCLE_TAG/-/\/}
+      - run: git checkout ${CIRCLE_TAG/-/\/}
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn install
