@@ -70,6 +70,7 @@ import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Bar3D} from './lib/renderable/vis/bar3d/Bar3D';
 import Bar3DOptions from './lib/renderable/vis/bar3d/Bar3DOptions';
+import { MqttConnection } from './lib/connection/MqttConnection';
 
 
 export * from './lib/api';
@@ -148,5 +149,6 @@ export {
     Graph,
     GraphOptions,
     Bar3D,
-    Bar3DOptions
+    Bar3DOptions,
+    MqttConnection
 };
