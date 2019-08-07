@@ -48,8 +48,6 @@ import {CheckboxChoice, MultipleChoice, RadioChoice, SingleChoice} from "./lib/r
 import {Textarea} from "./lib/renderable/textarea";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
-import {DatePicker} from './lib/renderable/datePicker';
-import {DateTimePicker} from './lib/renderable/dateTimePicker';
 import {Map} from './lib/renderable/map';
 import {CodeReader} from './lib/renderable/codeReader';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
@@ -81,8 +79,6 @@ export {
     BufferedAudioPlayer,
     NoopRenderer,
     DefaultListener,
-    DatePicker,
-    DateTimePicker,
     CodeReader,
     Map,
     ClassicRenderer,

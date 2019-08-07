@@ -24,7 +24,6 @@
         "google-maps": "^3.3.0",
         "leaflet": "^1.4.0",
         "mqtt": "^2.18.8",
-        "node-ical": "^0.9.2",
         "recordrtc": "5.5.4",
         "reveal.js": "^3.8.0"
     },
