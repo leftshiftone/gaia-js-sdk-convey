@@ -90,8 +90,8 @@
         "trigger-release:minor": "git pull --tags && git tag release-minor && git push --tags && git tag -d release-minor",
         "trigger-release:patch": "TRIGGER_TAG=$(git branch | grep \\* | cut -d ' ' -f2); git pull --tags && git tag ${TRIGGER_TAG/\\//-} && git push --tags && git tag -d ${TRIGGER_TAG/\\//-}",
         "cleanup-release": "git tag -d $CIRCLE_TAG && git push -d origin $CIRCLE_TAG",
-        "release:major": "release-it major",
-        "release:minor": "release-it minor --no-requireCleanWorkingDir",
+        "release:major": "release-it major --no-git.requireCleanWorkingDir",
+        "release:minor": "release-it minor --no-git.requireCleanWorkingDir",
         "release:patch": "release-it patch",
         "test": "jest"
     },
