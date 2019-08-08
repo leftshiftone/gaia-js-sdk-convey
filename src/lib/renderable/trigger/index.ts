@@ -1,6 +1,7 @@
 import {IRenderer, IRenderable, ISpecification} from '../../api';
-import node from "../../support/node";
+import node, {INode} from "../../support/node";
 import Renderables from "../Renderables";
+import {Overlay} from "../overlays/Overlay";
 
 /**
  * Implementation of the 'trigger' markup element.
@@ -18,54 +19,30 @@ export class Trigger implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const trigger = node("div");
-        trigger.addClasses("lto-tirgger");
-        if(this.spec.id)
-            trigger.addAttributes({
-                id: this.spec.id
-            });
+        trigger.addClasses("lto-trigger");
+        trigger.setId(this.spec.id);
+        trigger.setName(this.spec.name);
+        trigger.innerText(this.spec.text);
 
-        trigger.addAttributes({name: this.spec.name});
-        if(this.spec.text)
-            trigger.innerText(this.spec.text);
+        this.spec.class !== undefined ? trigger.addClasses(this.spec.class) : () => {};
 
         trigger.onClick(() => {
-            const overlay = this.getOverlayFromContainer(Trigger.getContainer(trigger.unwrap()));
-            if(!overlay) {
+            const overlay = this.getOverlayFromContainer(trigger.getContainer());
+            if (!overlay) {
                 console.error(`No overlay with name ${this.spec.name} found`);
                 return
             }
-            Trigger.activateOverlay(overlay);
+            Overlay.show(overlay);
 
+            // TODO: handle submit
         });
 
         return trigger.unwrap();
     }
 
-
-    private static activateOverlay(overlay: HTMLElement) {
-        overlay.classList.remove("lto-inactive");
-    }
-
-    private getOverlayFromContainer(container?: HTMLElement): HTMLElement | undefined {
-        if(!container) return;
-        return container.querySelectorAll(`.lto-overlays .lto-overlay[name="${this.spec.name!}"]`).item(0) as HTMLElement;
-    }
-
-    private static getContainer(element: HTMLElement): HTMLElement | undefined {
-        if(element.parentElement) {
-            let parent = element.parentElement;
-            while(parent) {
-                if(parent.classList.contains("lto-container")){
-                    return parent;
-                }
-                if(parent.parentElement) {
-                    parent = parent.parentElement;
-                } else {
-                    return
-                }
-            }
-        }
-        return
+    private getOverlayFromContainer(container?: INode): INode | undefined {
+        if (!container) return;
+        return container.findAll(`.lto-overlays .lto-overlay[name="${this.spec.name!}"]`)[0]
     }
 
 }

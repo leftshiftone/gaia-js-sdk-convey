@@ -71,6 +71,11 @@ export interface INode {
      */
     toggleClass(className: string): void;
 
+    /**
+     * Get the parent lto-container of the node
+     */
+    getContainer(): INode | undefined
+
     toggle(): void;
 
     onClick(callback: (e: MouseEvent) => void, options?: AddEventListenerOptions): void;
@@ -85,9 +90,13 @@ export interface INode {
 
     findAll(selector: string): Array<INode>;
 
-    innerText(str: string): INode;
+    innerText(str?: string): INode;
 
     setStyle(map: {[key: string]: string}): INode;
+
+    setName(name?: string): void;
+
+    setId(id?: string): void;
 }
 
 class Node implements INode {
@@ -198,8 +207,8 @@ class Node implements INode {
         return this;
     }
 
-    public innerText(str: string): INode {
-        this.node.innerText = str;
+    public innerText(str?: string): INode {
+        this.node.innerText = str ? str : "";
         return this
     }
 
@@ -215,6 +224,32 @@ class Node implements INode {
         if(node) {
             this.node.removeChild(node.unwrap());
         }
+    }
+
+    public setName(name?: string): void {
+        if(!name) return;
+        this.node.setAttribute("name", name);
+    }
+
+    public setId(id?: string): void {
+        if(!id) return;
+        this.node.id = id
+    }
+
+    public getContainer(): INode | undefined {
+        const node = wrap(this.node);
+        if (node.parent()) {
+            let parent = node.parent();
+            while (parent) {
+                if (parent.containsClass("lto-container")) {
+                    return parent;
+                }
+                if (parent.parent()) {
+                    parent = parent.parent();
+                } else return
+            }
+        }
+        return
     }
 
 }

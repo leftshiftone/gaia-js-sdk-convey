@@ -1,5 +1,5 @@
 import {IRenderer, IRenderable, ISpecification} from '../../api';
-import node from "../../support/node";
+import node, {INode} from "../../support/node";
 import Renderables from "../Renderables";
 
 /**
@@ -18,29 +18,30 @@ export class Overlay implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const overlay = node("div");
-        overlay.addClasses("lto-overlay", "lto-inactive");
+        overlay.setId(this.spec.id);
+        overlay.setName(this.spec.trigger);
+        overlay.addClasses("lto-overlay");
         this.spec.class !== undefined ? overlay.addClasses(this.spec.class) : () => {};
-        if(this.spec.id)
-            overlay.addAttributes({
-                id: this.spec.id
-            });
-        overlay.addAttributes({
-            name: this.spec.trigger!
-        });
 
         const close = node("div");
         close.addClasses("lto-close-overlay");
-
+        close.onClick(() => Overlay.hide(overlay));
         overlay.appendChild(close);
-
-        close.onClick(() => {
-            overlay.addClasses("lto-inactive")
-        });
 
         const elements = (this.spec.elements || []).map(e => renderer.render(e, this));
         elements.forEach(e => e.forEach(x => overlay.appendChild(node(x as HTMLElement))));
 
+        Overlay.hide(overlay);
+
         return overlay.unwrap();
+    }
+
+    public static hide(overlay: INode) {
+        overlay.addClasses("lto-inactive")
+    }
+
+    public static show(overlay: INode) {
+        overlay.removeClasses("lto-inactive")
     }
 
 }
