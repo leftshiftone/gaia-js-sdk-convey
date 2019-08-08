@@ -61,7 +61,7 @@ export class DefaultListener implements IListener {
      * {@inheritDoc}
      */
     public onPacketSend(packet: Packet): void {
-        if (this.emitter && this.emitter.onPacketSend(packet)) {
+        if (this.emitter && this.emitter.onPacketSend) {
             this.emitter.onPacketSend(packet);
         }
     }
