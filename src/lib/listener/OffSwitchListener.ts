@@ -1,6 +1,5 @@
-import {IListener, ISpecification} from '../api';
+import {IPacket, IListener, ISpecification} from '../api';
 import {Defaults} from '../support/Defaults';
-import {Packet} from 'mqtt';
 /**
  * Off switch listener implementation.
  */
@@ -45,7 +44,7 @@ export class OffSwitchListener implements IListener {
     /**
      * {@inheritDoc}
      */
-    public onPacketSend(packet: Packet): void {
+    public onPacketSend(packet: IPacket): void {
         // do nothing
     }
 

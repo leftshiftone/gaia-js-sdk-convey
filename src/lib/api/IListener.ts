@@ -1,4 +1,4 @@
-import {Packet} from 'mqtt'
+import {IPacket} from "./IPacket";
 
 export interface IListener {
 
@@ -6,7 +6,7 @@ export interface IListener {
 
     onConnectionLost(): void;
 
-    onPacketSend(packet: Packet): void;
+    onPacketSend(packet: IPacket): void;
 
     onDisconnected(): void;
 
