@@ -38,4 +38,5 @@ export interface ISpecification {
     rows?: number;
     cols?: number;
     maxCompressSize?: number;
+    trigger?: string;
 }

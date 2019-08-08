@@ -71,7 +71,9 @@ import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Bar3D} from './lib/renderable/vis/bar3d/Bar3D';
 import Bar3DOptions from './lib/renderable/vis/bar3d/Bar3DOptions';
 import { MqttConnection } from './lib/connection/MqttConnection';
-
+import {Trigger} from "./lib/renderable/trigger";
+import {Overlays} from "./lib/renderable/overlays/Overlays";
+import {Overlay} from "./lib/renderable/overlays/Overlay";
 
 export * from './lib/api';
 export {
@@ -150,5 +152,8 @@ export {
     GraphOptions,
     Bar3D,
     Bar3DOptions,
-    MqttConnection
+    MqttConnection,
+    Trigger,
+    Overlays,
+    Overlay,
 };

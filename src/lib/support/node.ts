@@ -73,7 +73,11 @@ export interface INode {
 
     toggle(): void;
 
-    onClick(callback: (e: MouseEvent) => void): void;
+    onClick(callback: (e: MouseEvent) => void, options?: AddEventListenerOptions): void;
+
+    parent(): INode | null;
+
+    removeChild(node: INode): void;
 
     unwrap(): HTMLElement;
 
@@ -160,14 +164,14 @@ class Node implements INode {
         }
     }
 
-    public onClick(callback: (e: MouseEvent) => void) {
+    public onClick(callback: (e: MouseEvent) => void, options?: AddEventListenerOptions) {
         const onClick = (e: MouseEvent) => {
             callback(e);
 
             e.stopPropagation();
             e.preventDefault();
         };
-        this.node.addEventListener('click', onClick);
+        this.node.addEventListener('click', onClick, options);
     }
 
     public unwrap(): HTMLElement {
@@ -199,6 +203,18 @@ class Node implements INode {
         return this
     }
 
+    public parent(): INode | null {
+        if(this.node.parentElement) {
+            return wrap(this.node.parentElement)
+        } else {
+            return null;
+        }
+    }
 
+    public removeChild(node: INode) {
+        if(node) {
+            this.node.removeChild(node.unwrap());
+        }
+    }
 
 }
