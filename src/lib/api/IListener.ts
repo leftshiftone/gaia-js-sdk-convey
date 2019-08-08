@@ -1,8 +1,12 @@
+import {Packet} from 'mqtt'
+
 export interface IListener {
 
     onConnected(): void;
 
     onConnectionLost(): void;
+
+    onPacketSend(packet: Packet): void;
 
     onDisconnected(): void;
 

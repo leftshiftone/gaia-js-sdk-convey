@@ -1,4 +1,5 @@
 import {IListener} from '../api';
+import {Packet} from 'mqtt';
 
 /**
  * Default IListener implementation.
@@ -53,6 +54,15 @@ export class DefaultListener implements IListener {
     public onMessage(data: any): void {
         if (this.emitter && this.emitter.onMessage) {
             this.emitter.onMessage(data);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public onPacketSend(packet: Packet): void {
+        if (this.emitter && this.emitter.onPacketSend(packet)) {
+            this.emitter.onPacketSend(packet);
         }
     }
 
