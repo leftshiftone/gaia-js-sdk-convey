@@ -126,12 +126,6 @@ export class Submit implements IRenderable {
         return true;
     }
 
-   /* private addValuesToAttributes(parentElement: HTMLElement, selector: string, attributes: Attr) {
-        parentElement.querySelectorAll(selector).forEach((element: any) => {
-            Submit.addElementValueToAttributes(element, attributes);
-        });
-    }*/
-
     public static addElementValueToAttributes(element: HTMLElement, attributes: Attr) {
         const name = element.getAttribute("name") || "undefined";
         let value = element.getAttribute("value");
