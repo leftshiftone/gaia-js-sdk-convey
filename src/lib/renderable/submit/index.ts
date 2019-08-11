@@ -23,6 +23,7 @@ export class Submit implements IRenderable {
         if (this.spec.id !== undefined) {
             submit.id = this.spec.id;
         }
+
         if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => submit.classList.add(e));
         }
@@ -38,48 +39,18 @@ export class Submit implements IRenderable {
             let attributes: Attr = {} as Attr;
 
             // FIXME: use generic class name e.g. message-content
-            const content = closestByClass(submit, ["lto-block", "lto-form"]);
+            const content = closestByClass(submit, ["lto-form"]);
 
-            if (content.classList.contains("lto-block")) {
+            // put in exception for overlay
 
-                const choiceContainers = content.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
-                if (choiceContainers.length > 0) {
-                    Object.assign(attributes, ChoiceAggregator.aggregate(choiceContainers));
-                } else {
-                    content.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-                        Submit.addElementValueToAttributes(checkbox as HTMLElement, attributes);
-                    });
-                }
-
-                content.querySelectorAll("div.lto-map").forEach((map) => {
-                    if (map.getAttribute("value") !== null) {
-                        Submit.addElementValueToAttributes(map as HTMLElement, attributes);
-                    }
-                });
-
-                content.querySelectorAll("input.lto-textInput").forEach((element) => {
-                    if (element.getAttribute("value") !== null) {
-                        if ((element as HTMLInputElement).checkValidity()) {
-                            Submit.addElementValueToAttributes(element as HTMLElement, attributes);
-                        }
-                    }
-                });
-
-                this.addValuesToAttributes(content, "input.lto-spinner", attributes);
-                this.addValuesToAttributes(content, "div.lto-camera", attributes);
-                this.addValuesToAttributes(content, "div.lto-drop-area", attributes);
-                this.addValuesToAttributes(content, "input.lto-slider", attributes);
-                this.addValuesToAttributes(content, "div.lto-calendar-input", attributes);
-                this.addValuesToAttributes(content, "div.ical-event-input", attributes);
-                this.addValuesToAttributes(content, "div.lto-reel", attributes);
-                this.addValuesToAttributes(content, "div.lto-code-reader", attributes);
-                this.addValuesToAttributes(content, "textarea.lto-textarea", attributes);
-            } else if (content.classList.contains("lto-form")) {
+            if (content) {
                 const form = content as HTMLFormElement;
                 let allowed = true;
                 let inputAttributes: Attr = {} as Attr;
 
-                form.querySelectorAll('input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, textarea.lto-textarea').forEach(e => {
+                form.querySelectorAll('input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, ' +
+                    'textarea.lto-textarea, input.lto-spinner, div.lto-camera, input.lto-slider, div.lto-calendar-input, ' +
+                    'div.ical-event-input, div.lto-reel, div.lto-code-reader, div.lto-date-picker-container').forEach(e => {
                     const b = Submit.addInputValuesToAttributes(e as HTMLInputElement, inputAttributes);
                     if(allowed)
                         allowed = b
@@ -155,11 +126,11 @@ export class Submit implements IRenderable {
         return true;
     }
 
-    private addValuesToAttributes(parentElement: HTMLElement, selector: string, attributes: Attr) {
+   /* private addValuesToAttributes(parentElement: HTMLElement, selector: string, attributes: Attr) {
         parentElement.querySelectorAll(selector).forEach((element: any) => {
             Submit.addElementValueToAttributes(element, attributes);
         });
-    }
+    }*/
 
     public static addElementValueToAttributes(element: HTMLElement, attributes: Attr) {
         const name = element.getAttribute("name") || "undefined";
