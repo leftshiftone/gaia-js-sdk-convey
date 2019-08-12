@@ -1,7 +1,7 @@
-import {Submit} from "../index";
-import node from "../../../support/node";
+import node from "../node";
+import {InputContainer} from "../InputContainer";
 
-describe("SubmitTest", () => {
+describe("InputContainer test", () => {
 
     it("form data structure", () => {
         [
@@ -21,10 +21,10 @@ describe("SubmitTest", () => {
                 const expectAttr: Attr = {} as Attr;
                 expectAttr[e.name] = e.value;
 
-                Submit.addInputValuesToAttributes(input.unwrap() as HTMLInputElement, attributes);
+                InputContainer.addInputValuesToAttributes(input.unwrap() as HTMLInputElement, attributes);
                 expect(attributes).toEqual(expectAttr)
             })
-    })
+    });
 
     it("block data structure", () => {
         [
@@ -43,8 +43,20 @@ describe("SubmitTest", () => {
                 const expectAttr: Attr = {} as Attr;
                 expectAttr[e.name] = [e.value];
 
-                Submit.addElementValueToAttributes(input.unwrap() as HTMLInputElement, attributes);
+                InputContainer.addElementValueToAttributes(input.unwrap() as HTMLInputElement, attributes);
                 expect(attributes).toEqual(expectAttr)
             })
+    })
+
+    it("getAll", () => {
+        [
+            [`<input class="lto-slider" type="range" value="3" name="val"/>`, {"val": ["3"]}],
+        ].forEach(element => {
+            const form = document.createElement("form") as HTMLFormElement;
+            form.innerHTML = element[1] as string;
+            InputContainer.getAll(form).then(attr => {
+                expect(attr).toBe(element[1])
+            })
+        })
     })
 });

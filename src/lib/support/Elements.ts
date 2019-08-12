@@ -1,10 +1,10 @@
-export function closestByClass(element: any, clazz: Array<string>): HTMLElement {
+export function closestByClass(element: any, clazz: Array<string>): HTMLElement | null{
     let el = element;
     let b = false;
     while (!b) {
         el = el.parentNode as HTMLElement;
         if (!el || !el.classList) {
-            throw new Error("could not find required classes");
+            return null;
         }
         clazz.forEach(e => {
                 if (el.classList.contains(e)) {
