@@ -72,9 +72,9 @@ export interface INode {
     toggleClass(className: string): void;
 
     /**
-     * Get the parent lto-container of the node
+     * Get the parent by class of the node
      */
-    getContainer(): INode | undefined
+    getParentByClass(className: string): INode | undefined
 
     toggle(): void;
 
@@ -236,12 +236,12 @@ class Node implements INode {
         this.node.id = id
     }
 
-    public getContainer(): INode | undefined {
+    public getParentByClass(className: string): INode | undefined {
         const node = wrap(this.node);
         if (node.parent()) {
             let parent = node.parent();
             while (parent) {
-                if (parent.containsClass("lto-container")) {
+                if (parent.containsClass(className)) {
                     return parent;
                 }
                 if (parent.parent()) {

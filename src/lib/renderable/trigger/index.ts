@@ -27,14 +27,12 @@ export class Trigger implements IRenderable {
         this.spec.class !== undefined ? trigger.addClasses(this.spec.class) : () => {};
 
         trigger.onClick(() => {
-            const overlay = this.getOverlayFromContainer(trigger.getContainer());
+            const overlay = this.getOverlayFromContainer(trigger.getParentByClass("lto-container"));
             if (!overlay) {
                 console.error(`No overlay with name ${this.spec.name} found`);
                 return
             }
             Overlay.show(overlay);
-
-            // TODO: handle submit
         });
 
         return trigger.unwrap();
