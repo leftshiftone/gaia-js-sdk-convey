@@ -1,10 +1,9 @@
 import {AbstractRenderer} from './AbstractRenderer';
-import {IRenderable} from '../api/IRenderable';
+import {IRenderable, IStackeable} from '../api';
 import {Button} from '../renderable/button';
 import {Link} from '../renderable/link';
 import {Defaults} from '../support/Defaults';
 import {Suggestion} from '../renderable/suggestion';
-import {IStackeable} from '../api/IStackeable';
 import EventStream from '../event/EventStream';
 
 /**

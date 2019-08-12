@@ -1,5 +1,5 @@
 import {ChoiceMutator} from "../ChoiceMutator";
-import {ISpecification} from "../../../api/IRenderer";
+import {ISpecification} from "../../../api";
 
 describe("ChoiceMutatorTest", () => {
 

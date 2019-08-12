@@ -1,4 +1,4 @@
-import {IListener} from '../api/IListener';
+import {IPacket, IListener} from '../api';
 
 /**
  * Default IListener implementation.
@@ -53,6 +53,15 @@ export class DefaultListener implements IListener {
     public onMessage(data: any): void {
         if (this.emitter && this.emitter.onMessage) {
             this.emitter.onMessage(data);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public onPacketSend(packet: IPacket): void {
+        if (this.emitter && this.emitter.onPacketSend) {
+            this.emitter.onPacketSend(packet);
         }
     }
 

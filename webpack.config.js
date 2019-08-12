@@ -4,7 +4,6 @@ module.exports = (env, argv) => ({
     entry: {
         'gaia-js-sdk-convey-std': './src/std.wpk.ts',
         'gaia-js-sdk-convey-all': './src/all.wpk.ts',
-        'gaia-js-sdk-convey-cal': './src/cal.wpk.ts',
         'gaia-js-sdk-convey-map': './src/map.wpk.ts',
         'gaia-js-sdk-convey-vis': './src/vis.wpk.ts',
         'gaia-js-sdk-convey-aud': './src/aud.wpk.ts',
@@ -21,6 +20,8 @@ module.exports = (env, argv) => ({
                     // folder since it wouldn't be of any use ans the source
                     // map already include everything for debugging
                     declaration: false,
+                    inlineSources: false,
+                    sourceMap: false
                 }
             },
             {
@@ -30,7 +31,7 @@ module.exports = (env, argv) => ({
                     argv.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
                     'css-loader',
                     'sass-loader',
-                    'import-glob-loader',
+                    'import-glob-loader'
                 ],
             },
         ],
@@ -46,9 +47,11 @@ module.exports = (env, argv) => ({
         libraryTarget: 'umd',
         filename: 'dist/[name].js',
         path: __dirname,
-        umdNamedDefine: true
+        umdNamedDefine: true,
+        // see: https://github.com/webpack/webpack/issues/6784
+        globalObject: 'typeof self !== \'undefined\' ? self : this'
     },
-    externals: ['google-maps', 'leaflet', 'node-ical', '@zxing/library', 'reveal.js', 'browser-image-compression'],
+    externals: ['google-maps', 'leaflet', '@zxing/library', 'reveal.js', 'browser-image-compression'],
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'dist/[name].css',

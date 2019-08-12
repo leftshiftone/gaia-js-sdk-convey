@@ -1,5 +1,4 @@
-import {IListener} from './api/IListener';
-import {IRenderer} from './api/IRenderer';
+import {IListener, IRenderer} from './api';
 import {MqttConnection} from './connection/MqttConnection';
 import {DefaultListener} from './listener/DefaultListener';
 

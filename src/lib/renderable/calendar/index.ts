@@ -1,5 +1,5 @@
-import {IRenderer, ISpecification} from '../../api/IRenderer';
-import {IRenderable} from '../../api/IRenderable';
+import {IRenderer, ISpecification, IRenderable} from '../../api';
+
 import Renderables from '../Renderables';
 
 /**

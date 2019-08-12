@@ -1,8 +1,16 @@
 {
     "name": "gaia-js-sdk-convey",
-    "version": "0.64.1",
+    "version": "0.69.0",
     "description": "JavaScript connector to the G.A.I.A. ecosystem.",
-    "main": "dist/lib/std.js",
+    "main": "./dist/gaia-js-sdk-convey-std.js",
+    "module": "./dist/esm5/all.js",
+    "typings": "./dist/esm5/all.d.ts",
+    "es5": "./dist/esm5/all.js",
+    "esm5": "./dist/esm5/all.js",
+    "es2015": "./dist/esm2015/all.js",
+    "esm2015": "./dist/esm2015/all.js",
+    "license": "MIT",
+    "author": "Leftshift One Software GmbH <core-devs@leftshift.one>",
     "dependencies": {
         "@zxing/library": "^0.12.4",
         "browser-image-compression": "^1.0.6",
@@ -16,7 +24,6 @@
         "google-maps": "^3.3.0",
         "leaflet": "^1.4.0",
         "mqtt": "^2.18.8",
-        "node-ical": "^0.9.2",
         "recordrtc": "5.5.4",
         "reveal.js": "^3.8.0"
     },
@@ -55,7 +62,7 @@
         "tslint": "^5.14.0",
         "tslint-config-airbnb": "^5.11.1",
         "tslint-loader": "^3.5.4",
-        "typescript": "^3.3.4000",
+        "typescript": "~3.3.4000",
         "typings-for-css-modules-loader": "^1.7.0",
         "webpack": "^4.29.6",
         "webpack-cli": "^3.3.0",
@@ -70,22 +77,21 @@
         "titleTemplate": "{classname}-{title}"
     },
     "scripts": {
-        "copy-scss": "copyfiles -u 1 ./src/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/*.scss ./dist/lib-esm && copyfiles -u 1 ./src/**/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/**/*.scss ./dist/lib-esm && copyfiles -u 1 ./src/**/**/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/**/**/*.scss ./dist/lib-esm && copyfiles -u 1 ./src/**/**/**/**/*.scss ./dist/lib && copyfiles -u 1 ./src/**/**/**/**/*.scss ./dist/lib-esm",
+        "copy-scss": "copyfiles -u 1 ./src/**/*.scss ./dist/esm5 && copyfiles -u 1 ./src/**/*.scss ./dist/esm2015 && copyfiles -u 1 ./src/**/**/*.scss ./dist/esm5 && copyfiles -u 1 ./src/**/**/*.scss ./dist/esm2015 && copyfiles -u 1 ./src/**/**/**/*.scss ./dist/esm5 && copyfiles -u 1 ./src/**/**/**/*.scss ./dist/esm2015 && copyfiles -u 1 ./src/**/**/**/**/*.scss ./dist/esm5 && copyfiles -u 1 ./src/**/**/**/**/*.scss ./dist/esm2015",
         "webpack:dev": "webpack-dev-server --open --mode=development",
         "webpack:build": "webpack --mode=production",
         "webpack:dev-build": "webpack --mode=development",
-        "bundle": "npm run test && npm run webpack:bundle",
-        "clean": "shx rm -rf dist lib lib-esm",
+        "clean": "shx rm -rf dist esm5 esm2015",
         "deps": "ndc .",
-        "build": "tsc && tsc -m es6 --outDir ./dist/lib-esm && npm run webpack:build && npm run copy-scss",
+        "build": "tsc && tsc -m es2015 --outDir ./dist/esm2015 && npm run webpack:build && npm run copy-scss",
         "lint": "tslint src/**/*.ts",
         "sonarqube": "jest --env=jsdom --coverage && sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN",
         "trigger-release:major": "git pull --tags && git tag release-major && git push --tags && git tag -d release-major",
         "trigger-release:minor": "git pull --tags && git tag release-minor && git push --tags && git tag -d release-minor",
-        "trigger-release:patch": "git pull --tags && git tag release-patch && git push --tags && git tag -d release-patch",
+        "trigger-release:patch": "TRIGGER_TAG=$(git branch | grep \\* | cut -d ' ' -f2); git pull --tags && git tag ${TRIGGER_TAG/\\//-} && git push --tags && git tag -d ${TRIGGER_TAG/\\//-}",
         "cleanup-release": "git tag -d $CIRCLE_TAG && git push -d origin $CIRCLE_TAG",
-        "release:major": "release-it major",
-        "release:minor": "release-it minor --no-requireCleanWorkingDir",
+        "release:major": "release-it major --no-git.requireCleanWorkingDir",
+        "release:minor": "release-it minor --no-git.requireCleanWorkingDir",
         "release:patch": "release-it patch",
         "test": "jest"
     },
@@ -101,8 +107,6 @@
         "g.a.i.a.",
         "leftshiftone"
     ],
-    "author": "Leftshift One Software GmbH <core-devs@leftshift.one>",
-    "license": "MIT",
     "bugs": {
         "url": "https://github.com/leftshiftone/gaia-js-sdk-convey/issues"
     },

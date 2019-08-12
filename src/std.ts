@@ -38,12 +38,16 @@ import {Col} from "./lib/renderable/table/col";
 import {Row} from "./lib/renderable/table/row";
 import {ReelValue} from "./lib/renderable/reelValue";
 import {Text} from './lib/renderable/text';
+import {Trigger} from "./lib/renderable/trigger";
+import {Overlays} from "./lib/renderable/overlays/Overlays";
+import {Overlay} from "./lib/renderable/overlays/Overlay";
 import {CheckboxChoice, MultipleChoice, RadioChoice, SingleChoice} from "./lib/renderable/choice";
 import {Textarea} from "./lib/renderable/textarea";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
 
+export * from './lib/api';
 export {
     ClassicRenderer,
     ContentCentricRenderer,
@@ -93,4 +97,7 @@ export {
     MultipleChoice,
     CheckboxChoice,
     RadioChoice,
+    Overlays,
+    Overlay,
+    Trigger,
 };

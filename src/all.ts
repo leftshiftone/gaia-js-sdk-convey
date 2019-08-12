@@ -48,8 +48,6 @@ import {CheckboxChoice, MultipleChoice, RadioChoice, SingleChoice} from "./lib/r
 import {Textarea} from "./lib/renderable/textarea";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
-import {DatePicker} from './lib/renderable/datePicker';
-import {DateTimePicker} from './lib/renderable/dateTimePicker';
 import {Map} from './lib/renderable/map';
 import {CodeReader} from './lib/renderable/codeReader';
 import {Heatmap} from './lib/renderable/vis/heatmap/Heatmap';
@@ -72,16 +70,18 @@ import {Graph} from './lib/renderable/vis/graph/Graph';
 import GraphOptions from './lib/renderable/vis/graph/GraphOptions';
 import {Bar3D} from './lib/renderable/vis/bar3d/Bar3D';
 import Bar3DOptions from './lib/renderable/vis/bar3d/Bar3DOptions';
+import { MqttConnection } from './lib/connection/MqttConnection';
+import {Trigger} from "./lib/renderable/trigger";
+import {Overlays} from "./lib/renderable/overlays/Overlays";
+import {Overlay} from "./lib/renderable/overlays/Overlay";
 
-
+export * from './lib/api';
 export {
     VoiceBehaviour,
     WebRTCRecorder,
     BufferedAudioPlayer,
     NoopRenderer,
     DefaultListener,
-    DatePicker,
-    DateTimePicker,
     CodeReader,
     Map,
     ClassicRenderer,
@@ -151,5 +151,9 @@ export {
     Graph,
     GraphOptions,
     Bar3D,
-    Bar3DOptions
+    Bar3DOptions,
+    MqttConnection,
+    Trigger,
+    Overlays,
+    Overlay,
 };

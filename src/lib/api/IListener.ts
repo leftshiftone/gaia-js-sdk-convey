@@ -1,8 +1,12 @@
+import {IPacket} from "./IPacket";
+
 export interface IListener {
 
     onConnected(): void;
 
     onConnectionLost(): void;
+
+    onPacketSend(packet: IPacket): void;
 
     onDisconnected(): void;
 

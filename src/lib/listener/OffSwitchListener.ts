@@ -1,7 +1,5 @@
-import {IListener} from '../api/IListener';
+import {IPacket, IListener, ISpecification} from '../api';
 import {Defaults} from '../support/Defaults';
-import {ISpecification} from "../api/IRenderer";
-
 /**
  * Off switch listener implementation.
  */
@@ -40,6 +38,13 @@ export class OffSwitchListener implements IListener {
      * {@inheritDoc}
      */
     public onError(error: string): void {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public onPacketSend(packet: IPacket): void {
         // do nothing
     }
 

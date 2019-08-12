@@ -1,9 +1,7 @@
-import {IListener} from '../api/IListener';
 import * as mqtt from 'mqtt';
 import {ChannelNameFactory} from "../support/ChannelNameFactory";
 import {ChannelType} from "../support/ChannelType";
-import {IBehaviour} from '../api/IBehaviour';
-import {IRenderer, ISpecification} from '../api/IRenderer';
+import {IPacket, IRenderer, ISpecification, IListener, IBehaviour} from '../api';
 import {uuid} from '../support/Uuid';
 import EventStream from '../event/EventStream';
 import {KeyboardBehaviour} from '../behaviour/KeyboardBehaviour';
@@ -40,6 +38,7 @@ export class MqttConnection {
         this.mqttClient.on('connect', () => this.listener.onConnected());
         this.mqttClient.on('offline', () => this.listener.onConnectionLost());
         this.mqttClient.on('message', this.onMessage.bind(this));
+        this.mqttClient.on('packetsend', (packet: IPacket) => this.listener.onPacketSend(packet));
 
         this.removeFromEventStream = EventStream.addListener("GAIA::publish", this.publish.bind(this, ChannelType.TEXT)).remove;
     }

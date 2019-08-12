@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Webhook completed
           command: |
-              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"$CIRCLE_BRANCH"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
+              curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"${CIRCLE_BRANCH:-${CIRCLE_TAG/-/\/}}"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
   build:
     docker:
       - image: circleci/node:lts-browsers
@@ -135,7 +135,7 @@ jobs:
       - checkout
       - run: yarn cleanup-release
       - run: git config --local user.email "ci@leftshift.one" && git config --local user.name "Continuous Integration"
-      - run: git branch --set-upstream-to=origin/${CIRCLE_TAG/-/\/}
+      - run: git checkout ${CIRCLE_TAG/-/\/}
       - restore_cache:
           key: cache-node-{{ checksum "package.json" }}
       - run: yarn install
