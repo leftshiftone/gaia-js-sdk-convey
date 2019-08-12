@@ -42,8 +42,9 @@ export class Submit implements IRenderable {
             const content = closestByClass(submit, ["lto-form"]);
 
             // put in exception for overlay
+            const foundOverlay = content.querySelector(`lto-overlay`)
 
-            if (content) {
+            if (content && !foundOverlay) {
                 const form = content as HTMLFormElement;
                 let allowed = true;
                 let inputAttributes: Attr = {} as Attr;
