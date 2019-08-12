@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gaia-js-sdk-convey</title>
+    <link rel="stylesheet" href="../../dist/gaia-js-sdk-convey-std.css">
+    <script src="../../dist/gaia-js-sdk-convey-all.js"></script>
+</head>
+<style>
+    .lto-block {
+        background: lightblue !important;
+        border: 5px solid red !important;
+    }
+</style>
+<body>
+<div class="lto-gaia">
+    <div class="lto-content"></div>
+    <div class="lto-suggest"></div>
+</div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const specification =  {
+            name: "block",
+            elements: [
+                {
+                    type: "block",
+                    name: "formSubmitBlock",
+                    elements: [{
+                        type: "form",
+                        name: "submitForm",
+                        elements: [{
+                            type: "submit_block.html",
+                            name: "submitAll",
+                            text: "send"
+                        }]
+                    }]
+                },
+                {
+                    type: "block",
+                    name: "overlayBlock",
+                    elements: [{
+                        type: "overlays",
+                        elements: [{
+                            type: "overlay",
+                            trigger: "headlineTrigger",
+                            elements: [{
+                                type: "block",
+                                name: "overlayHeadlineBlock",
+                                elements: [{
+                                    type: "headline",
+                                    text: "headline1"
+                                }]
+
+                            }]
+                        },
+                        {
+                            type: "overlay",
+                            trigger: "overlayFormTrigger",
+                            elements: [{
+                                type: "form",
+                                name: "overlayForm",
+                                elements: [{
+                                    type: "textInput",
+                                    name: "textInput1"
+                                }, {
+                                    type: "submit_block.html",
+                                    name: "submitOverlay",
+                                    text: "sendOverlay"
+                                }]
+
+                            }]
+                        }]
+                    }]
+                }]
+        };
+
+        const renderer = new GaiaConvey.ClassicRenderer();
+        const block = new GaiaConvey.Block(specification);
+
+        const element = block.render(renderer, false);
+
+        document.getElementsByClassName("lto-content").item(0).appendChild(element);
+
+    });
+</script>
+
+</html>

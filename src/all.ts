@@ -155,5 +155,5 @@ export {
     MqttConnection,
     Trigger,
     Overlays,
-    Overlay,
+    Overlay
 };
