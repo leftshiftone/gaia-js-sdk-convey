@@ -45,23 +45,20 @@ export class Submit implements IRenderable {
             const content = closestByClass(submit, ["lto-form"]);
 
             InputContainer.getAll(content as HTMLFormElement).then((attr) => {
-                if (Object.keys(attr).length > 0) {
-                    submit.disabled = true;
-                    if (content)
-                        content.style.pointerEvents = "none";
+                submit.disabled = true;
+                if (content)
+                    content.style.pointerEvents = "none";
 
-                    EventStream.emit("GAIA::publish", {
-                        timestamp,
-                        text,
-                        attributes: {type: "submit", value: JSON.stringify(attr)},
-                        type: "submit",
-                        position: "right"
-                    });
+                EventStream.emit("GAIA::publish", {
+                    timestamp,
+                    text,
+                    attributes: {type: "submit", value: JSON.stringify(attr)},
+                    type: "submit",
+                    position: "right"
+                });
 
-                    Button.cleanupButtons();
-                }
-            })
-
+                Button.cleanupButtons();
+            }).catch(() => {return})
         });
 
         return submit;
