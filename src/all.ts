@@ -74,6 +74,7 @@ import { MqttConnection } from './lib/connection/MqttConnection';
 import {Trigger} from "./lib/renderable/trigger";
 import {Overlays} from "./lib/renderable/overlays/Overlays";
 import {Overlay} from "./lib/renderable/overlays/Overlay";
+import {Transition} from "./lib/renderable/transition";
 
 export * from './lib/api';
 export {
@@ -155,5 +156,6 @@ export {
     MqttConnection,
     Trigger,
     Overlays,
-    Overlay
+    Overlay,
+    Transition,
 };

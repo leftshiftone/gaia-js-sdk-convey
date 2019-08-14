@@ -46,6 +46,7 @@ import {Textarea} from "./lib/renderable/textarea";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import EventStream from "./lib/event/EventStream";
+import {Transition} from "./lib/renderable/transition";
 
 export * from './lib/api';
 export {
@@ -100,4 +101,5 @@ export {
     Overlays,
     Overlay,
     Trigger,
+    Transition,
 };

@@ -40,23 +40,18 @@ export class RevealJsRenderer extends ContentCentricRenderer {
     }
 
     protected renderElement(renderable: IRenderable, containerType?: IStackeable): HTMLElement[] {
-        const elements = super.renderElement(renderable, containerType);
+        //const elements = super.renderElement(renderable, containerType);
 
         // wrap renderables with class lto-container into a section element
         // ****************************************************************
-        if (elements[0].classList.contains("lto-container")) {
-            const section = document.createElement("section");
-            elements.forEach(e => section.appendChild(e));
 
-            document.querySelectorAll("section.present").forEach(e => {
-                e.classList.remove("present");
-                e.classList.add("past");
-            });
-            section.classList.add("present");
+        const section = document.createElement("section");
+        const span = document.createElement("span");
+        span.textContent = "test";
+        section.append(span);
 
-            return [section];
-        }
-        return elements;
+        return [section];
+
     }
 
     private static wrapContent(content?: HTMLElement): HTMLElement {
@@ -75,6 +70,7 @@ export class RevealJsRenderer extends ContentCentricRenderer {
     public appendContent = (element: HTMLElement) => {
         this.content.appendChild(element);
         if (this.Reveal) {
+            console.debug("synch reveal");
             this.Reveal.sync();
         }
     };
