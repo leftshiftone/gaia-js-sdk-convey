@@ -40,17 +40,68 @@ export class RevealJsRenderer extends ContentCentricRenderer {
     }
 
     protected renderElement(renderable: IRenderable, containerType?: IStackeable): HTMLElement[] {
-        //const elements = super.renderElement(renderable, containerType);
+        const elements = super.renderElement(renderable, containerType);
 
         // wrap renderables with class lto-container into a section element
         // ****************************************************************
+        console.debug(elements);
+        console.debug(elements[0].outerHTML);
 
-        const section = document.createElement("section");
-        const span = document.createElement("span");
-        span.textContent = "test";
-        section.append(span);
+        if (elements[0].classList.contains("lto-container") &&
+            !elements[0].outerHTML.includes("lto-transition")) {
+            // create section
+            console.debug("reached container section");
+            const section = document.createElement("section");
+            elements.forEach(e => section.appendChild(e));
 
-        return [section];
+            document.querySelectorAll("section.present").forEach(e => {
+                e.classList.remove("present");
+                e.classList.add("past");
+            });
+            section.classList.add("present");
+
+            return [section];
+        } else if (elements[0].classList.contains("lto-transition")) {
+
+            console.debug(elements[0]);
+            console.debug("reached transition check");
+            const transition = elements[0];
+            if (transition && transition.getAttribute("wrapped") === "in"
+                && transition.getAttribute("direction") !== "down") {
+
+                console.debug("reached transition section");
+                // get last section
+                const sections = document.getElementsByName("section");
+                console.debug(sections);
+                if (sections.length === 0) {
+                    const section = document.createElement("section");
+                    elements.forEach(e => section.appendChild(e));
+
+                    document.querySelectorAll("section.present").forEach(e => {
+                        e.classList.remove("present");
+                        e.classList.add("past");
+                    });
+                    section.classList.add("present");
+
+                    return [section];
+                } else {
+                    const lastSection = sections.item(sections.length-1);
+                    elements.forEach(e => lastSection.appendChild(e));
+
+                    document.querySelectorAll("section.present").forEach(e => {
+                        e.classList.remove("present");
+                        e.classList.add("past");
+                    });
+                    lastSection.classList.add("present");
+
+                    return [lastSection];
+                }
+            }
+
+
+        }
+
+        return elements;
 
     }
 
@@ -70,7 +121,6 @@ export class RevealJsRenderer extends ContentCentricRenderer {
     public appendContent = (element: HTMLElement) => {
         this.content.appendChild(element);
         if (this.Reveal) {
-            console.debug("synch reveal");
             this.Reveal.sync();
         }
     };

@@ -1,10 +1,10 @@
-import {IRenderable, IRenderer, ISpecification, IStackeable} from "../../api";
+import {IRenderable, IRenderer, ISpecification} from "../../api";
 import Renderables from "../Renderables";
 
 /**
  * Implementation of the 'transition' type markup element.
  */
-export class Transition implements IRenderable, IStackeable {
+export class Transition implements IRenderable {
 
     private readonly spec: ISpecification;
 
