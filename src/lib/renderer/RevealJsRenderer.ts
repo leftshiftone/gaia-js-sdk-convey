@@ -19,10 +19,12 @@ export class RevealJsRenderer extends ContentCentricRenderer {
 
         this.Reveal = require("reveal.js/js/reveal.js");
         this.Reveal.initialize(options || {
-            controls: false,
-            progress: false,
-            center: false,
-            transitionSpeed: "slow"
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+
+            transition: 'slide',
         });
         this.scrollStrategy = () => {
         };
@@ -45,71 +47,72 @@ export class RevealJsRenderer extends ContentCentricRenderer {
         // wrap renderables with class lto-container into a section element
         // ****************************************************************
         console.debug(elements);
-        console.debug(elements[0].outerHTML);
+
+        const sections = document.getElementsByTagName("section");
+
+        // open issue controls
+        //const controls = document.getElementsByClassName("controls");
 
         if (elements[0].classList.contains("lto-container") &&
             !elements[0].outerHTML.includes("lto-transition")) {
             // create section
             console.debug("reached container section");
-            const section = document.createElement("section");
-            elements.forEach(e => section.appendChild(e));
-
-            document.querySelectorAll("section.present").forEach(e => {
-                e.classList.remove("present");
-                e.classList.add("past");
-            });
-            section.classList.add("present");
-
-            return [section];
-        } else if (elements[0].classList.contains("lto-transition")) {
+            return RevealJsRenderer.createNewSection(elements, sections);
+        } else if (elements[0].classList.contains("lto-container") &&
+            elements[0].outerHTML.includes("lto-transition")) {
 
             console.debug(elements[0]);
             console.debug("reached transition check");
-            const transition = elements[0];
+            const transition = elements[0].firstElementChild;
+
             if (transition && transition.getAttribute("wrapped") === "in"
                 && transition.getAttribute("direction") !== "down") {
 
                 console.debug("reached transition section");
                 // get last section
-                const sections = document.getElementsByName("section");
-                console.debug(sections);
+
                 if (sections.length === 0) {
-                    const section = document.createElement("section");
-                    elements.forEach(e => section.appendChild(e));
-
-                    document.querySelectorAll("section.present").forEach(e => {
-                        e.classList.remove("present");
-                        e.classList.add("past");
-                    });
-                    section.classList.add("present");
-
-                    return [section];
+                    return RevealJsRenderer.createNewSection(elements, sections);
                 } else {
                     const lastSection = sections.item(sections.length-1);
-                    elements.forEach(e => lastSection.appendChild(e));
-
-                    document.querySelectorAll("section.present").forEach(e => {
-                        e.classList.remove("present");
-                        e.classList.add("past");
-                    });
-                    lastSection.classList.add("present");
-
-                    return [lastSection];
+                    if (lastSection) {
+                        elements.forEach(e => lastSection.appendChild(e));
+                        return [lastSection];
+                    }
                 }
+            } else {
+                return RevealJsRenderer.createNewSection(elements, sections);
             }
-
-
         }
 
+        // what needs to be returned if I don't want to add to the dom?
         return elements;
+    }
 
+    private static createNewSection (elements: HTMLElement[], sections: HTMLCollectionOf<HTMLElement>) : HTMLElement [] {
+        const section = document.createElement("section");
+        elements.forEach(e => section.appendChild(e));
+
+        if (sections.length === 0) {
+            document.querySelectorAll("section.present").forEach(e => {
+                e.classList.remove("present");
+                e.classList.add("past");
+            });
+            section.classList.add("present");
+        }
+
+        return [section];
     }
 
     private static wrapContent(content?: HTMLElement): HTMLElement {
         const div1 = document.createElement("div");
         const div2 = document.createElement("div");
 
-        div1.classList.add("reveal");
+        div1.classList.add('reveal', 'slide', 'center', 'has-horizontal-slides',
+            'has-vertical-slides', 'ready');
+        div1.setAttribute("role", "application");
+        div1.setAttribute("data-transition-speed", "default");
+        div1.setAttribute("data-background-transition", "fade");
         div2.classList.add("slides");
 
         (content || Defaults.content()).appendChild(div1);
