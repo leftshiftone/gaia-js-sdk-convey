@@ -8,7 +8,7 @@ import {Defaults} from '../support/Defaults';
  */
 export class RevealJsRenderer extends ContentCentricRenderer {
 
-    private readonly Reveal: any;
+    private Reveal: any;
 
     constructor(options?: {}, content?: HTMLElement, suggest?: HTMLElement) {
         super(RevealJsRenderer.wrapContent(content), suggest);
@@ -23,9 +23,12 @@ export class RevealJsRenderer extends ContentCentricRenderer {
             progress: true,
             center: true,
             hash: true,
+            controlsLayout: 'bottom-right',
+            autoSlide: 1,
 
             transition: 'slide',
         });
+
         this.scrollStrategy = () => {
         };
     }
@@ -57,7 +60,7 @@ export class RevealJsRenderer extends ContentCentricRenderer {
             !elements[0].outerHTML.includes("lto-transition")) {
             // create section
             console.debug("reached container section");
-            return RevealJsRenderer.createNewSection(elements, sections);
+            return this.createNewSection(elements, sections);
         } else if (elements[0].classList.contains("lto-container") &&
             elements[0].outerHTML.includes("lto-transition")) {
 
@@ -72,16 +75,17 @@ export class RevealJsRenderer extends ContentCentricRenderer {
                 // get last section
 
                 if (sections.length === 0) {
-                    return RevealJsRenderer.createNewSection(elements, sections);
+                    return this.createNewSection(elements, sections);
                 } else {
                     const lastSection = sections.item(sections.length-1);
+                    console.debug(lastSection);
                     if (lastSection) {
                         elements.forEach(e => lastSection.appendChild(e));
                         return [lastSection];
                     }
                 }
             } else {
-                return RevealJsRenderer.createNewSection(elements, sections);
+                return this.createNewSection(elements, sections);
             }
         }
 
@@ -89,17 +93,16 @@ export class RevealJsRenderer extends ContentCentricRenderer {
         return elements;
     }
 
-    private static createNewSection (elements: HTMLElement[], sections: HTMLCollectionOf<HTMLElement>) : HTMLElement [] {
+    private createNewSection (elements: HTMLElement[], sections: HTMLCollectionOf<HTMLElement>) : HTMLElement [] {
         const section = document.createElement("section");
         elements.forEach(e => section.appendChild(e));
 
-        if (sections.length === 0) {
-            document.querySelectorAll("section.present").forEach(e => {
-                e.classList.remove("present");
-                e.classList.add("past");
-            });
-            section.classList.add("present");
-        }
+        document.querySelectorAll("section.present").forEach(e => {
+            e.classList.remove("present");
+            e.classList.add("past");
+        });
+        section.classList.add("present");
+
 
         return [section];
     }
