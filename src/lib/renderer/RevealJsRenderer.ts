@@ -19,8 +19,8 @@ export class RevealJsRenderer extends ContentCentricRenderer {
 
         this.Reveal = require("reveal.js/js/reveal.js");
         this.Reveal.initialize(options || {
-            controls: true,
-            progress: true,
+            controls: false,
+            progress: false,
             center: true,
             hash: true,
             controlsLayout: 'bottom-right',
