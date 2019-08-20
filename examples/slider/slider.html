@@ -11,6 +11,32 @@
         background: lightblue !important;
         border: 5px solid red !important;
     }
+
+    .lto-slider {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-transition: .2s;
+        background: transparent;
+        outline: none;
+        opacity: 1;
+        transition: opacity .2s;
+        width: 60%;
+    }
+
+    a.lto-slider-prev {
+        visibility: visible;
+        display: block;
+        float: left;
+        width: 20%;
+    }
+
+    a.lto-slider-next {
+        visibility: visible;
+        display: block;
+        float: right;
+        width: 20%;
+    }
 </style>
 <body>
 <div class="lto-gaia">
@@ -27,8 +53,7 @@
                 {
                     type: "slider",
                     name: "slider",
-                    min: 1,
-                    max: 10,
+                    values: ["test1", "test2", "test3", "test4"],
                     value: 1,
                     horizontal: true,
                     step: 1

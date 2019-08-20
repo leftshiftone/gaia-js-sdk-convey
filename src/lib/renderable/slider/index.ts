@@ -36,29 +36,7 @@ export class Slider implements IRenderable {
         const valueContent = document.createElement("span");
         value.appendChild(valueContent);
 
-        const prevLink = document.createElement("a");
-        prevLink.text = "prev";
-        prevLink.classList.add("lto-slider-prev");
-
-        prevLink.addEventListener("click", () => {
-            this.setSliderMinMaxClass();
-            if (this.slider.getAttribute("value") !== this.slider.min) {
-                this.slider.setAttribute("value", values.get(-this.slider.value)!);
-                valueContent.innerHTML = values.get(-this.slider.value)!;
-            }
-        });
-
-        const nextLink = document.createElement("a");
-        nextLink.classList.add("lto-slider-next");
-        nextLink.text = "next";
-        nextLink.addEventListener("click", () => {
-            this.setSliderMinMaxClass();
-            if (this.slider.getAttribute("value") !== this.slider.max) {
-                this.slider.setAttribute("value", values.get(+this.slider.value)!);
-                valueContent.innerHTML = values.get(+this.slider.value)!;
-            }
-        });
-
+        let sliderAnchors : HTMLAnchorElement [];
 
         if (this.spec.values) {
             this.slider.max = (this.spec.values.length - 1).toString();
@@ -72,18 +50,38 @@ export class Slider implements IRenderable {
             minLabel.innerText = values.get(+this.slider.min)!.toString();
             maxLabel.innerText = values.get(+this.slider.max)!.toString();
 
-            valueContent.innerHTML = values.get(+this.slider.value)!;
             this.slider.setAttribute("value", values.get(+this.slider.value)!);
+            valueContent.innerHTML = values.get(+this.slider.value)!;
 
             const onChange = () => {
-                this.setSliderMinMaxClass();
-                this.slider.setAttribute("value", values.get(+this.slider.value)!);
                 valueContent.innerHTML = values.get(+this.slider.value)!;
+                this.slider.setAttribute("value", values.get(+this.slider.value)!);
+                this.setSliderMinMaxClass();
             };
 
             this.slider.oninput = onChange;
             //ie11 compatibility
             this.slider.onchange = onChange;
+            sliderAnchors = this.createSliderAnchors();
+
+            sliderAnchors[0].addEventListener("click", () => {
+                if (parseInt(this.slider.value)-1 !>= 0) {
+                    const index = parseInt(this.slider.value)-1;
+                    this.slider.value = (index).toString();
+                    this.slider.setAttribute("value", values.get(index)!!);
+                    valueContent.innerHTML = values.get(index)!;
+                }
+            });
+
+            sliderAnchors[1].addEventListener("click", () => {
+                if (parseInt(this.slider.value)+1 !<= values.size-1) {
+                    const index = parseInt(this.slider.value)+1;
+                    this.slider.value = (index).toString();
+                    this.slider.setAttribute("value", values.get(index)!!);
+                    valueContent.innerHTML = values.get(index)!;
+                }
+            });
+
         } else {
             //@ts-ignore
             this.slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
@@ -99,14 +97,36 @@ export class Slider implements IRenderable {
 
             valueContent.innerHTML = this.slider.value;
             this.slider.setAttribute("value", this.slider.value);
+
             const onChange = () => {
                 this.setSliderMinMaxClass();
                 this.slider.setAttribute("value", this.slider.value);
                 valueContent.innerHTML = this.slider.value;
             };
+
             this.slider.oninput = onChange;
             //ie11 compatibility
             this.slider.onchange = onChange;
+
+            sliderAnchors = this.createSliderAnchors();
+
+            sliderAnchors[0].addEventListener("click", () => {
+                if (this.slider.getAttribute("value") !== this.slider.min && this.slider.getAttribute("value") !== undefined) {
+                    const newSliderValue = String(parseFloat(this.slider.value)-parseFloat(this.slider.step));
+                    this.slider.setAttribute("value", newSliderValue);
+                    this.slider.value = newSliderValue;
+                    valueContent.innerHTML = this.slider.value;
+                }
+            });
+
+            sliderAnchors[1].addEventListener("click", () => {
+                if (this.slider.getAttribute("value") !== this.slider.min && this.slider.getAttribute("value") !== undefined) {
+                    const newSliderValue = String(parseFloat(this.slider.value)+parseFloat(this.slider.step));
+                    this.slider.setAttribute("value", newSliderValue);
+                    this.slider.value = newSliderValue;
+                    valueContent.innerHTML = this.slider.value;
+                }
+            });
         }
 
         this.slider.classList.add("lto-slider", "lto-" + position);
@@ -130,13 +150,29 @@ export class Slider implements IRenderable {
         this.slider.appendChild(document.createTextNode(this.spec.text || ""));
 
         this.container.appendChild(value);
-        this.container.appendChild(prevLink);
+        this.container.appendChild(sliderAnchors[0]);
         this.container.appendChild(minLabel);
         this.container.appendChild(this.slider);
         this.container.appendChild(maxLabel);
-        this.container.appendChild(nextLink);
+        this.container.appendChild(sliderAnchors[1]);
 
         return this.container;
+    }
+
+    private createSliderAnchors() : HTMLAnchorElement [] {
+        const prevLink = document.createElement("a");
+        prevLink.classList.add("lto-slider-prev");
+        const prevSpan = document.createElement("span");
+        prevSpan.innerText = "←";
+        prevLink.appendChild(prevSpan);
+
+        const nextLink = document.createElement("a");
+        nextLink.classList.add("lto-slider-next");
+        const nextSpan = document.createElement("span");
+        nextSpan.innerText = "→";
+        nextLink.appendChild(nextSpan);
+
+        return [prevLink, nextLink];
     }
 
     public setSliderMinMaxClass() {
