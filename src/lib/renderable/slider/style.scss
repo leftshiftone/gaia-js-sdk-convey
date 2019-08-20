@@ -11,6 +11,16 @@
     transition: opacity .2s;
 }
 
+a.lto-slider-prev {
+    visibility: hidden;
+    display: none;
+}
+
+a.lto-slider-next {
+    visibility: hidden;
+    display: none;
+}
+
 .lto-slider-min {
     float:left;
 }
