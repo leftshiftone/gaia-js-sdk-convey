@@ -68,8 +68,7 @@ export class RevealJsRenderer extends ContentCentricRenderer {
             console.debug("reached transition check");
             const transition = elements[0].firstElementChild;
 
-            if (transition && transition.getAttribute("wrapped") === "in"
-                && transition.getAttribute("direction") !== "down") {
+            if (transition && transition.getAttribute("wrapped") === "in") {
 
                 console.debug("reached transition section");
                 // get last section
@@ -108,20 +107,20 @@ export class RevealJsRenderer extends ContentCentricRenderer {
     }
 
     private static wrapContent(content?: HTMLElement): HTMLElement {
-        const div1 = document.createElement("div");
-        const div2 = document.createElement("div");
+        const revealDiv = document.createElement("div");
+        const slidesDiv = document.createElement("div");
 
-        div1.classList.add('reveal', 'slide', 'center', 'has-horizontal-slides',
+        revealDiv.classList.add('reveal', 'slide', 'center', 'has-horizontal-slides',
             'has-vertical-slides', 'ready');
-        div1.setAttribute("role", "application");
-        div1.setAttribute("data-transition-speed", "default");
-        div1.setAttribute("data-background-transition", "fade");
-        div2.classList.add("slides");
+        revealDiv.setAttribute("role", "application");
+        revealDiv.setAttribute("data-transition-speed", "default");
+        revealDiv.setAttribute("data-background-transition", "fade");
+        slidesDiv.classList.add("slides");
 
-        (content || Defaults.content()).appendChild(div1);
-        div1.appendChild(div2);
+        (content || Defaults.content()).appendChild(revealDiv);
+        revealDiv.appendChild(slidesDiv);
 
-        return div2;
+        return slidesDiv;
     }
 
     public appendContent = (element: HTMLElement) => {
