@@ -36,6 +36,30 @@ export class Slider implements IRenderable {
         const valueContent = document.createElement("span");
         value.appendChild(valueContent);
 
+        const prevLink = document.createElement("a");
+        prevLink.text = "prev";
+        prevLink.classList.add("lto-slider-prev");
+
+        prevLink.addEventListener("click", () => {
+            this.setSliderMinMaxClass();
+            if (this.slider.getAttribute("value") !== this.slider.min) {
+                this.slider.setAttribute("value", values.get(-this.slider.value)!);
+                valueContent.innerHTML = values.get(-this.slider.value)!;
+            }
+        });
+
+        const nextLink = document.createElement("a");
+        nextLink.classList.add("lto-slider-next");
+        nextLink.text = "next";
+        nextLink.addEventListener("click", () => {
+            this.setSliderMinMaxClass();
+            if (this.slider.getAttribute("value") !== this.slider.max) {
+                this.slider.setAttribute("value", values.get(+this.slider.value)!);
+                valueContent.innerHTML = values.get(+this.slider.value)!;
+            }
+        });
+
+
         if (this.spec.values) {
             this.slider.max = (this.spec.values.length - 1).toString();
             this.slider.min = "0";
@@ -106,9 +130,11 @@ export class Slider implements IRenderable {
         this.slider.appendChild(document.createTextNode(this.spec.text || ""));
 
         this.container.appendChild(value);
+        this.container.appendChild(prevLink);
         this.container.appendChild(minLabel);
         this.container.appendChild(this.slider);
         this.container.appendChild(maxLabel);
+        this.container.appendChild(nextLink);
 
         return this.container;
     }

@@ -18,21 +18,32 @@
             height: calc( var(--vh, 1vh) * 100);
             overflow: hidden;
         }
+        .lto-textbox {
+            display: none;
+        }
+
+        button .lto-invoker {
+            display: none;
+        }
     </style>
-    <link rel="stylesheet" href="../../dist/gaia-js-sdk-convey-std.css">
-    <script src="../../dist/gaia-js-sdk-convey-std.js"></script>
+    <link rel="stylesheet" href="../../dist/gaia-js-sdk-convey-all.css">
+    <script src="../../dist/gaia-js-sdk-convey-all.js"></script>
     <script src="../../node_modules/reveal.js/js/reveal.js"></script>
     <link rel="stylesheet" href="../../node_modules/reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../../node_modules/reveal.js/css/theme/league.css">
 </head>
 <body>
 
 <div class="lto-gaia">
     <div class="lto-content"></div>
     <div class="lto-suggest"></div>
+
     <div>
         <textarea title="" class="lto-textbox"></textarea>
         <button class="lto-invoker"></button>
     </div>
+
+
 </div>
 
 </body>
@@ -42,13 +53,13 @@
         const listener = new GaiaConvey.OffSwitchListener();
 
         let gaia = new GaiaConvey.Gaia(renderer, listener);
-        gaia.connect('ws://localhost:61616/mqtt', '90728165593445594')
+        gaia.connect('ws://localhost:61616/mqtt', 'e198738a-5042-47a0-93f7-19329fc48a88')
             .then(connection => {
-                connection.subscribe(GaiaConvey.ChannelType.CONTEXT, (payload) => console.log(`Context: ${JSON.stringify(payload)}`));
-                connection.subscribe(GaiaConvey.ChannelType.NOTIFICATION, (payload) => console.log(`Notification: ${JSON.stringify(payload)}`));
-                connection.subscribe(GaiaConvey.ChannelType.LOG, (payload) => console.log(`Log: ${JSON.stringify(payload)}`));
-                connection.reception();
-            });
+            connection.subscribe(GaiaConvey.ChannelType.CONTEXT, (payload) => console.log(`Context: ${JSON.stringify(payload)}`));
+        connection.subscribe(GaiaConvey.ChannelType.NOTIFICATION, (payload) => console.log(`Notification: ${JSON.stringify(payload)}`));
+        connection.subscribe(GaiaConvey.ChannelType.LOG, (payload) => console.log(`Log: ${JSON.stringify(payload)}`));
+        connection.reception();
+    });
     });
 </script>
 </html>
