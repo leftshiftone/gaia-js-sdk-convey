@@ -36,9 +36,6 @@ export class Slider implements IRenderable {
         const valueContent = document.createElement("span");
         value.appendChild(valueContent);
 
-
-
-
         let sliderAnchors : HTMLAnchorElement [];
 
         if (this.spec.values) {
