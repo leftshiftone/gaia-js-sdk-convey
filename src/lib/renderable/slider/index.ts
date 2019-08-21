@@ -111,7 +111,7 @@ export class Slider implements IRenderable {
             sliderAnchors = this.createSliderAnchors();
 
             sliderAnchors[0].addEventListener("click", () => {
-                if (this.slider.getAttribute("value") !== this.slider.min && this.slider.getAttribute("value") !== undefined) {
+                if (parseFloat(this.slider.value) !== parseFloat(this.slider.min) && this.slider.getAttribute("value") !== undefined) {
                     const newSliderValue = String(parseFloat(this.slider.value)-parseFloat(this.slider.step));
                     this.slider.setAttribute("value", newSliderValue);
                     this.slider.value = newSliderValue;
@@ -120,7 +120,7 @@ export class Slider implements IRenderable {
             });
 
             sliderAnchors[1].addEventListener("click", () => {
-                if (this.slider.getAttribute("value") !== this.slider.min && this.slider.getAttribute("value") !== undefined) {
+                if (parseFloat(this.slider.value) !<= parseFloat(this.slider.max) && this.slider.getAttribute("value") !== undefined) {
                     const newSliderValue = String(parseFloat(this.slider.value)+parseFloat(this.slider.step));
                     this.slider.setAttribute("value", newSliderValue);
                     this.slider.value = newSliderValue;
