@@ -24,19 +24,21 @@ export class ChoiceAggregator {
      *
      * @param choiceContainers
      */
-    public static aggregate(choiceContainers: NodeListOf<Element>): Attr {
+    public static aggregate(choiceContainers: NodeListOf<Element>): Attr | boolean {
         const choices = {};
+        let allowed = true;
         choiceContainers.forEach((container) => {
-
             const name = (container as HTMLElement).dataset.name;
+            const required = JSON.parse((container as HTMLElement).getAttribute("required") || "false");
             if (name === undefined) {
                 throw new Error("name is undefined");
             }
             this.addToContainer(name, this.toChoiceResults(container, "input[type='checkbox']"), choices);
             this.addToContainer(name, this.toChoiceResults(container, "input[type='radio']"), choices);
+            if (required && Object.keys(choices).length == 0) allowed = false;
         });
-
-        return choices as Attr;
+        if (allowed) return choices as Attr;
+        else return false;
     }
 
     private static addToContainer(name: string, items: ChoiceResult[], container: any): void {
@@ -66,7 +68,7 @@ export class ChoiceAggregator {
      * the sieve data attribute
      * @param container the choice container element {@link ChoiceContainer}
      */
-    private static filter(container: Element) : (e: Element) => boolean {
+    private static filter(container: Element): (e: Element) => boolean {
         if ((container as HTMLElement).dataset.sieve === "true") {
             return (e: Element) => (e as HTMLInputElement).checked;
         }

@@ -31,7 +31,7 @@ export class Camera implements IRenderable, IStackeable {
         const wrapper = document.createElement("div");
         wrapper.classList.add("lto-camera");
         wrapper.setAttribute("name", this.spec.name || "");
-
+        wrapper.setAttribute("required", (this.spec.required || false).toString());
         const error = document.createElement("div");
         error.classList.add("lto-error");
         error.style.display = "none";

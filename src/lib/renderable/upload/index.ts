@@ -27,6 +27,7 @@ export class Upload implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
+        this.dropArea.setAttribute("required", (this.spec.required || false).toString());
 
         const upload = document.createElement("input");
         const uploadLabel = document.createElement("label");

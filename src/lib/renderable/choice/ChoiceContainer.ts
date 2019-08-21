@@ -26,6 +26,7 @@ export abstract class ChoiceContainer implements IStackeable {
             sieve: `${this.spec.sieve}`,
             name: `${this.spec.name}`
         });
+        container.addAttributes({required: this.spec.required});
 
         const children = this.spec.elements || [];
 
