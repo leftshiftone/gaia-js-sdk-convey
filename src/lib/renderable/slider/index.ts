@@ -36,6 +36,9 @@ export class Slider implements IRenderable {
         const valueContent = document.createElement("span");
         value.appendChild(valueContent);
 
+
+
+
         let sliderAnchors : HTMLAnchorElement [];
 
         if (this.spec.values) {
@@ -149,12 +152,17 @@ export class Slider implements IRenderable {
 
         this.slider.appendChild(document.createTextNode(this.spec.text || ""));
 
+        const controls = document.createElement("div");
+        controls.classList.add("lto-slider-controls");
+
         this.container.appendChild(value);
-        this.container.appendChild(sliderAnchors[0]);
         this.container.appendChild(minLabel);
-        this.container.appendChild(this.slider);
+
+        controls.appendChild(sliderAnchors[0]);
+        controls.appendChild(this.slider);
+        controls.appendChild(sliderAnchors[1]);
+        this.container.appendChild(controls);
         this.container.appendChild(maxLabel);
-        this.container.appendChild(sliderAnchors[1]);
 
         return this.container;
     }
