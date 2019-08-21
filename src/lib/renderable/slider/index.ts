@@ -70,7 +70,7 @@ export class Slider implements IRenderable {
             sliderAnchors[0].addEventListener("click", () => {
                 if (parseInt(this.slider.value)-1 !>= 0) {
                     const index = parseInt(this.slider.value)-1;
-                    this.slider.value = (index).toString();
+                    this.slider.value = index.toString();
                     this.slider.setAttribute("value", values.get(index)!!);
                     valueContent.innerHTML = values.get(index)!;
                 }
@@ -79,7 +79,7 @@ export class Slider implements IRenderable {
             sliderAnchors[1].addEventListener("click", () => {
                 if (parseInt(this.slider.value)+1 !<= values.size-1) {
                     const index = parseInt(this.slider.value)+1;
-                    this.slider.value = (index).toString();
+                    this.slider.value = index.toString();
                     this.slider.setAttribute("value", values.get(index)!!);
                     valueContent.innerHTML = values.get(index)!;
                 }
