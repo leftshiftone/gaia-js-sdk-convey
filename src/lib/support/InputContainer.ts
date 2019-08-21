@@ -7,7 +7,7 @@ export class InputContainer {
 
     private static ELEMENTS: string = 'input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, ' +
         'textarea.lto-textarea, input.lto-spinner, div.lto-camera, input.lto-slider, div.lto-calendar-input, ' +
-        'div.lto-reel, div.lto-code-reader, div.lto-trigger, .lto-choice-container.single-choice';
+        'div.lto-reel, div.lto-code-reader, div.lto-trigger';
 
     public static getAll(container: HTMLFormElement) {
         return new Promise<Attr>((resolve, reject) => {
@@ -66,7 +66,7 @@ export class InputContainer {
         const required = JSON.parse(element.getAttribute("required") || "false");
 
         if (required && !InputContainer.isAllowed(value)) {
-            // element required but empty
+            // element value is required but empty
             return SubmitState.SUBMIT_REQUIRED_ERROR;
         }
         if (element instanceof HTMLInputElement && !element.checkValidity()) {
