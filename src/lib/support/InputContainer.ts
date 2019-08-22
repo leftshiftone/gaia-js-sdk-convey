@@ -15,7 +15,7 @@ export class InputContainer {
             let state: SubmitState = SubmitState.ALLOWED;
 
             container.querySelectorAll(InputContainer.ELEMENTS).forEach(e => {
-                const newState = InputContainer.addInputValuesToAttributes(e as HTMLElement, attributes);
+                const newState = InputContainer.addValuesToAttributes(e as HTMLElement, attributes);
                 if (state == SubmitState.ALLOWED)
                     state = newState
             });
@@ -30,7 +30,7 @@ export class InputContainer {
                 }
             } else {
                 container.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-                    InputContainer.addInputValuesToAttributes(checkbox as HTMLElement, attributes);
+                    InputContainer.addValuesToAttributes(checkbox as HTMLElement, attributes);
                 });
             }
 
@@ -45,7 +45,7 @@ export class InputContainer {
                     }
                     container.setAttribute("value", JSON.stringify(array));
                     attributes = {} as Attr;
-                    InputContainer.addInputValuesToAttributes(container, attributes);
+                    InputContainer.addValuesToAttributes(container, attributes);
                 }
             } else {
                 const span = node("span");
@@ -58,10 +58,10 @@ export class InputContainer {
     }
 
     public static isAllowed(value: any) {
-        return !(!value || value == "" || value == undefined);
+        return value && value != "" && value != undefined
     }
 
-    public static addInputValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
+    public static addValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
         const name = element.getAttribute("name") || "undefined";
         let value = element.getAttribute("value");
         const required = JSON.parse(element.getAttribute("required") || "false");
