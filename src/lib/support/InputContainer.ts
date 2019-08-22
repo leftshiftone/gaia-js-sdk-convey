@@ -22,7 +22,6 @@ export class InputContainer {
 
             const choiceContainers = container.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
             if (choiceContainers.length > 0) {
-
                 const choiceAttrs = ChoiceAggregator.aggregate(choiceContainers);
                 if (choiceAttrs === false) {
                     state = SubmitState.SUBMIT_REQUIRED_ERROR;
@@ -34,7 +33,9 @@ export class InputContainer {
                     InputContainer.addInputValuesToAttributes(checkbox as HTMLElement, attributes);
                 });
             }
+
             container.querySelectorAll(".lto-submit-error").forEach(e => e.remove());
+
             if (state == SubmitState.ALLOWED) {
                 // workaround to keep existing data structure
                 if (container.name) {
@@ -65,14 +66,13 @@ export class InputContainer {
         let value = element.getAttribute("value");
         const required = JSON.parse(element.getAttribute("required") || "false");
 
-        if (required && !InputContainer.isAllowed(value)) {
-            // element value is required but empty
+        // element value is required but empty
+        if (required && !InputContainer.isAllowed(value))
             return SubmitState.SUBMIT_REQUIRED_ERROR;
-        }
-        if (element instanceof HTMLInputElement && !element.checkValidity()) {
-            // element value is not valid
+
+        // element value is not valid
+        if (element instanceof HTMLInputElement && element.pattern && !element.checkValidity())
             return SubmitState.SUBMIT_VALIDATION_ERROR;
-        }
 
         if (InputContainer.isAllowed(value)) {
             if (/^[\],:{}\s]*$/.test(value!.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {

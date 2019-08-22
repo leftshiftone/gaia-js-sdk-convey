@@ -23,6 +23,8 @@ export class TextInput implements IRenderable {
         textInput.setAttribute("name", this.spec.name || "");
         textInput.setAttribute("placeholder", this.spec.placeholder || "");
         textInput.setAttribute("value", this.spec.value || "");
+        textInput.setAttribute("required", (this.spec.required || false).toString());
+
         textInput.classList.add("lto-textInput", "lto-" + position);
         if (isNested) {
             textInput.classList.add("lto-nested")
@@ -36,8 +38,6 @@ export class TextInput implements IRenderable {
         }
 
         if (this.spec.regex !== undefined) textInput.pattern = this.spec.regex;
-
-        textInput.required = Boolean(this.spec.required);
 
         textInput.addEventListener("change", () => textInput.setAttribute("value", textInput.value));
 
