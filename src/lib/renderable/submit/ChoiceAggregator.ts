@@ -19,12 +19,12 @@
 export class ChoiceAggregator {
 
     /**
-     * Returns an {@link Attr} object containing the {@link ChoiceResult}. Choices may be filtered or sieved depending
-     * on the data-sieve attribute.
+     * Returns an {@link boolean} containing the permission to be submitted.
      *
      * @param choiceContainers
+     * @param attributes
      */
-    public static aggregate(choiceContainers: NodeListOf<Element>): Attr | boolean {
+    public static aggregate(choiceContainers: NodeListOf<Element>, attributes: Attr): boolean {
         const choices = {};
         let allowed = true;
         choiceContainers.forEach((container) => {
@@ -37,8 +37,10 @@ export class ChoiceAggregator {
             this.addToContainer(name, this.toChoiceResults(container, "input[type='radio']"), choices);
             if (required && Object.keys(choices).length == 0) allowed = false;
         });
-        if (allowed) return choices as Attr;
-        else return false;
+
+        if (!allowed) return false;
+        Object.assign(attributes, choices as Attr);
+        return true;
     }
 
     private static addToContainer(name: string, items: ChoiceResult[], container: any): void {

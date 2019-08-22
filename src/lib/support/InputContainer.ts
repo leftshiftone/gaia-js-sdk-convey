@@ -22,12 +22,8 @@ export class InputContainer {
 
             const choiceContainers = container.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
             if (choiceContainers.length > 0) {
-                const choiceAttrs = ChoiceAggregator.aggregate(choiceContainers);
-                if (choiceAttrs === false) {
-                    state = SubmitState.SUBMIT_REQUIRED_ERROR;
-                } else {
-                    Object.assign(attributes, choiceAttrs);
-                }
+                const b = ChoiceAggregator.aggregate(choiceContainers, attributes);
+                if (!b) state = SubmitState.SUBMIT_REQUIRED_ERROR;
             } else {
                 container.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
                     InputContainer.addValuesToAttributes(checkbox as HTMLElement, attributes);
