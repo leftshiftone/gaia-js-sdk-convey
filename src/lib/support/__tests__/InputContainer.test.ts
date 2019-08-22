@@ -29,12 +29,20 @@ describe("InputContainer test", () => {
 
     it("getAll", () => {
         [
-            [`<input class="lto-slider" type="range" value="3" name="val"/>`, {"val": ["3"]}],
+            [`<div class="lto-trigger" value="value" name="val"/>`, {"val": ["value"]}],
+            [`<div class="lto-drop-area" value="value" name="val"/>`, {"val": ["value"]}],
+            [`<div class="lto-code-reader" value="value" name="val"/>`, {"val": ["value"]}],
+            [`<div class="lto-camera" value="value" name="val"/>`, {"val": ["value"]}],
+            [`<textarea class="lto-textarea" value="value" name="val"/>`, {"val": ["value"]}],
+            [`<input class="lto-slider" type="range" value="3" name="val"/>`, {"val": [3]}],
+            [`<input class="lto-spinner" type="number" value="4" name="val"/>`, {"val": [4]}],
+            [`<input class="lto-textInput" type="text" value="value" name="val"/>`, {"val": ["value"]}],
+            [`<input class="lto-email" type="email" value="email@mail.com" name="val"/>`, {"val": ["email@mail.com"]}],
         ].forEach(element => {
             const form = document.createElement("form") as HTMLFormElement;
-            form.innerHTML = element[1] as string;
+            form.innerHTML = element[0] as string;
             InputContainer.getAll(form).then(attr => {
-                expect(attr).toBe(element[1])
+                expect(attr).toEqual(element[1])
             })
         })
     })
