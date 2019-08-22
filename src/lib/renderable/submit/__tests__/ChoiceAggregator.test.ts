@@ -45,13 +45,13 @@ describe("ChoiceAggregatorTest", () => {
                 cb(gen.next().value);
             }});
 
-        expect(result["first"]).not.toBeUndefined();
-        expect(result["first"].length).toBe(2);
+        expect(result.attributes["first"]).not.toBeUndefined();
+        expect(result.attributes["first"].length).toBe(2);
         // contains only true values
-        expect(result["first"].reduce((acc: boolean, val: any) => acc && val.value, true)).toBe(true);
-        expect(result["second"]).not.toBeUndefined();
-        expect(result["second"].length).toBe(2);
+        expect(result.attributes["first"].reduce((acc: boolean, val: any) => acc && val.value, true)).toBe(true);
+        expect(result.attributes["second"]).not.toBeUndefined();
+        expect(result.attributes["second"].length).toBe(2);
         // contains only false values
-        expect(result["second"].reduce((acc: boolean, val: any) => acc && val.value, true)).toBe(false);
+        expect(result.attributes["second"].reduce((acc: boolean, val: any) => acc && val.value, true)).toBe(false);
     });
 });
