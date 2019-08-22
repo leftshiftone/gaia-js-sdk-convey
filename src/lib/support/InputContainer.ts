@@ -3,12 +3,21 @@ import {ChoiceAggregator} from "../renderable/submit/ChoiceAggregator";
 import {SubmitState} from "../renderable/submit/SubmitState";
 import node from "./node";
 
+/**
+ *
+ * @author patrick.arbeiter@leftshift.one
+ */
 export class InputContainer {
 
     private static ELEMENTS: string = 'input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, ' +
         'textarea.lto-textarea, input.lto-spinner, div.lto-camera, input.lto-slider, div.lto-calendar-input, ' +
         'div.lto-reel, div.lto-code-reader, div.lto-trigger';
 
+    /**
+     * returns a {@link Promise} containing the attributes of the input elements
+     *
+     * @param container: the parent element
+     */
     public static getAll(container: HTMLFormElement) {
         return new Promise<Attr>((resolve, reject) => {
             let attributes = {} as Attr;
@@ -53,10 +62,21 @@ export class InputContainer {
         })
     }
 
+    /**
+     * returns a {@link boolean} containing the info if the value is undefined, null or an empty String
+     *
+     * @param value
+     */
     public static isAllowed(value: any) {
         return value && value != "" && value != undefined
     }
 
+    /**
+     * adds the value of the element to the attributes
+     *
+     * @param element
+     * @param attributes
+     */
     public static addValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
         const name = element.getAttribute("name") || "undefined";
         let value = element.getAttribute("value");
