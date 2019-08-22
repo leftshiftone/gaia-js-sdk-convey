@@ -16,15 +16,17 @@
  * @author benjamin.krenn@leftshift.one - 5/9/19.
  * @since 0.26.0
  */
+import {SubmitState} from "./SubmitState";
+import {ChoiceAggregationResult} from "./ChoiceAggregationResult";
+
 export class ChoiceAggregator {
 
     /**
-     * Returns an {@link boolean} containing the permission to be submitted.
+     * Returns an {@link ChoiceAggregationResult} containing the permission to be submitted and the attributes.
      *
      * @param choiceContainers
-     * @param attributes
      */
-    public static aggregate(choiceContainers: NodeListOf<Element>, attributes: Attr): boolean {
+    public static aggregate(choiceContainers: NodeListOf<Element>): ChoiceAggregationResult {
         const choices = {};
         let allowed = true;
         choiceContainers.forEach((container) => {
@@ -38,9 +40,7 @@ export class ChoiceAggregator {
             if (required && Object.keys(choices).length == 0) allowed = false;
         });
 
-        if (!allowed) return false;
-        Object.assign(attributes, choices as Attr);
-        return true;
+        return {state: allowed ? SubmitState.ALLOWED: SubmitState.SUBMIT_REQUIRED_ERROR, attributes: choices as Attr};
     }
 
     private static addToContainer(name: string, items: ChoiceResult[], container: any): void {

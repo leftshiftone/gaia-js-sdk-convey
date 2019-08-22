@@ -2,6 +2,7 @@ import {ChoiceContainer} from "../renderable/choice/ChoiceContainer";
 import {ChoiceAggregator} from "../renderable/submit/ChoiceAggregator";
 import {SubmitState} from "../renderable/submit/SubmitState";
 import node from "./node";
+import {ChoiceAggregationResult} from "../renderable/submit/ChoiceAggregationResult";
 
 /**
  *
@@ -31,8 +32,10 @@ export class InputContainer {
 
             const choiceContainers = container.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
             if (choiceContainers.length > 0) {
-                const b = ChoiceAggregator.aggregate(choiceContainers, attributes);
-                if (!b) state = SubmitState.SUBMIT_REQUIRED_ERROR;
+                const result: ChoiceAggregationResult = ChoiceAggregator.aggregate(choiceContainers);
+                result.state === SubmitState.SUBMIT_REQUIRED_ERROR ?
+                    state = SubmitState.SUBMIT_REQUIRED_ERROR :
+                    Object.assign(attributes, result.attributes)
             } else {
                 container.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
                     InputContainer.addValuesToAttributes(checkbox as HTMLElement, attributes);
