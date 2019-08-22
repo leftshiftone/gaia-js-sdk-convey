@@ -64,7 +64,7 @@ export class InputContainer {
     public static addValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
         const name = element.getAttribute("name") || "undefined";
         let value = element.getAttribute("value");
-        const required = JSON.parse(element.getAttribute("required") || "false");
+        const required = JSON.parse(element.dataset.required || "false");
 
         // element value is required but empty
         if (required && !InputContainer.isAllowed(value))

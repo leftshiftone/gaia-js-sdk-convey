@@ -24,6 +24,10 @@ export class Phone implements IRenderable {
             required: this.spec.required as boolean
         });
 
+        phone.addDataAttributes({
+            required: this.spec.required || "false"
+        });
+
         phone.addClasses("lto-phone", "lto-" + position);
 
         if (isNested)

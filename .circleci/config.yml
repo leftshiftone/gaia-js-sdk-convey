@@ -32,6 +32,7 @@ jobs:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
+      - run: yarn test
       - run: yarn build
       - run:
           <<: *webhook-failed
@@ -93,6 +94,7 @@ jobs:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
+      - run: yarn test
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
       - run: npm run release:major
@@ -118,6 +120,7 @@ jobs:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
+      - run: yarn test
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:minor
@@ -143,6 +146,7 @@ jobs:
           paths:
             - ./node_modules
           key: cache-node-{{ checksum "package.json" }}
+      - run: yarn test
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:patch

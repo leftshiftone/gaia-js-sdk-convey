@@ -29,7 +29,7 @@ export class ChoiceAggregator {
         let allowed = true;
         choiceContainers.forEach((container) => {
             const name = (container as HTMLElement).dataset.name;
-            const required = JSON.parse((container as HTMLElement).getAttribute("required") || "false");
+            const required = JSON.parse((container as HTMLElement).dataset.required || "false");
             if (name === undefined) {
                 throw new Error("name is undefined");
             }
