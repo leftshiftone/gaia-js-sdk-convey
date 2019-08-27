@@ -34,7 +34,9 @@ export class Button implements IRenderable {
         button.appendChild(document.createTextNode(this.spec.text || ""));
 
         if (position === "left") {
-            const eventListener = () => {
+            const eventListener = (ev: MouseEvent) => {
+                ev.preventDefault();
+
                 const text = this.spec.text || "";
                 const name = this.spec.name || "";
                 const value = this.spec.value || "";
