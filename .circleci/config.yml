@@ -98,6 +98,7 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\n" > .npmrc
       - run: npm run release:major
+      - run: npm run doc
       - run:
           <<: *webhook-failed
   release-minor:
@@ -124,6 +125,7 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:minor
+      - run: npm run doc
       - run:
           <<: *webhook-failed
   release-patch:
@@ -150,6 +152,7 @@ jobs:
       - run: npm set registry https://registry.npmjs.org/
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run: npm run release:patch
+      - run: npm run doc
       - run:
           <<: *webhook-failed
 

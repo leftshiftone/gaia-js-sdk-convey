@@ -44,6 +44,7 @@
         "draft": false,
         "tokenRef": "GITHUB_TOKEN",
         "assets": [
+            "docs/typescript-doc.zip",
             "dist/*.css",
             "dist/*.js"
         ],
