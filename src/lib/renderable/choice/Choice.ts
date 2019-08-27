@@ -50,11 +50,14 @@ export abstract class Choice implements IRenderable {
             });
         } else {
             input.unwrap().addEventListener("click", () => {
-                if(label.unwrap().classList.contains("lto-checked")) {
-                    label.toggleClass("lto-unchecked");
+                if(label.containsClass("lto-checked")) {
+                    label.unwrap().classList.replace("lto-checked", "lto-unchecked");
+                } else if(label.containsClass("lto-unchecked")) {
+                    label.unwrap().classList.replace("lto-unchecked", "lto-checked");
+                } else {
+                    label.addClasses("lto-checked");
                 }
                 label.toggleClass("lto-toggle");
-                label.toggleClass("lto-checked");
             });
         }
 
