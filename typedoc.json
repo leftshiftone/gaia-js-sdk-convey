@@ -1,0 +1,13 @@
+{
+    "mode": "file",
+    "out": "docs",
+    "exclude": [
+        "**/node_modules/**",
+        "**/vis/**",
+        "**/dist/**",
+        "**/examples/**",
+        "**/__tests__/**",
+        "**/typescript/**"
+    ]
+
+}

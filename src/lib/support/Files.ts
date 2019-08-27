@@ -10,7 +10,7 @@ export function dataURLToFile(urlString: string, fileName: string) : File {
     return new File([u8arr], fileName, {type:"image/png"});
 }
 
-export function getBase64FromFile(file: File) {
+export function getBase64FromFile(file: File) : Promise<any> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
