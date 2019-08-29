@@ -170,6 +170,7 @@ export class Camera implements IRenderable, IStackeable {
     private activateResetButton(wrapper: HTMLDivElement) {
         const resetButton = wrapper.querySelector(".lto-reset-photo") as HTMLDivElement;
         resetButton.onclick = () => {
+            wrapper.removeAttribute("value");
             const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
             errorWrapper.style.display = "none";
             this.initCamera(wrapper);

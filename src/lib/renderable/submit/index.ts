@@ -69,7 +69,13 @@ export class Submit implements IRenderable {
         const trigger = container.querySelector(`.lto-trigger[name="${overlay.getAttribute("name")}"]`);
         if (!trigger || !form) return;
         InputContainer.getAll(form as HTMLFormElement).then((attr) => {
-            trigger.setAttribute("value", JSON.stringify(attr));
+            if(Object.keys(attr).length !== 0 && !trigger.classList.contains("lto-success")) {
+                trigger.classList.add("lto-success");
+                trigger.setAttribute("value", JSON.stringify(attr));
+            } else if(Object.keys(attr).length === 0) {
+                trigger.classList.remove("lto-success");
+                trigger.removeAttribute("value")
+            }
             Overlay.hide(node(overlay));
         })
     }

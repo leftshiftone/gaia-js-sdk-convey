@@ -81,9 +81,20 @@ export class Upload implements IRenderable {
         };
 
         upload.onchange = () => {
-            if (upload.files && upload.files[0] && !this.spec.maxCompressSize) {
+            if(!upload.files || !upload.files[0]) {
+                return
+            }
+
+            const file: File = upload.files[0];
+
+            if (!this.validateFile(file.size, getFileExtensionFromFile(file)))
+                return;
+
+            this.setFileNameToSpan(file.name).setErrorSpanTo("");
+
+            if (!this.spec.maxCompressSize) {
                 this.doValidateAndGetBase64(upload.files[0]);
-            } else if (upload.files && upload.files[0] && this.spec.maxCompressSize) {
+            } else if (this.spec.maxCompressSize) {
                 this.doValidateCompressAndGetBase64(upload.files[0]);
             }
         };
@@ -100,40 +111,33 @@ export class Upload implements IRenderable {
     }
 
     public doValidateAndGetBase64(file: File) {
-        if (!this.validateFile(file.size, getFileExtensionFromFile(file)))
-            return;
-
-        this.setFileNameToSpan(file.name).setErrorSpanTo("");
-
         getBase64FromFile(file)
-            .then(data => {
-                this.dropArea.setAttribute("value", JSON.stringify({
-                    data: data.toString().split(",")[1],
-                    fileExtension: getFileExtensionFromFile(file),
-                    fileName: file.name,
-                    mimeType: file.type
-                }))
-            })
+            .then(data => this.setDataToValue(data, file))
+            .then(() => this.setSuccessClass())
             .catch(reason => console.error("ERROR: " + reason));
     }
 
     public doValidateCompressAndGetBase64(file: File) {
-        if (!this.validateFile(file.size, getFileExtensionFromFile(file)))
-            return;
-
-        this.setFileNameToSpan(file.name).setErrorSpanTo("");
-
         this.getCompressedImage(file)
             .then(compressedFile => getBase64FromFile(compressedFile))
-            .then(data => {
-                this.dropArea.setAttribute("value", JSON.stringify({
-                    data: data.toString().split(",")[1],
-                    fileExtension: getFileExtensionFromFile(file),
-                    fileName: file.name,
-                    mimeType: file.type
-                }))
-            })
+            .then(data => this.setDataToValue(data, file))
+            .then(() => this.setSuccessClass())
             .catch(reason => console.error("ERROR: " + reason));
+    }
+
+    public setSuccessClass() {
+        if(!this.dropArea.classList.contains("lto-success")) {
+            this.dropArea.classList.add("lto-success");
+        }
+    }
+
+    public setDataToValue(data: any, file: any) {
+        this.dropArea.setAttribute("value", JSON.stringify({
+            data: data.toString().split(",")[1],
+            fileExtension: getFileExtensionFromFile(file),
+            fileName: file.name,
+            mimeType: file.type
+        }));
     }
 
     public async getCompressedImage(file: File): Promise<File> {
