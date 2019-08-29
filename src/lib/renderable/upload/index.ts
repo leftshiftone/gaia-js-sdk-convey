@@ -114,7 +114,10 @@ export class Upload implements IRenderable {
         getBase64FromFile(file)
             .then(data => this.setDataToValue(data, file))
             .then(() => this.setSuccessClass())
-            .catch(reason => console.error("ERROR: " + reason));
+            .catch(reason => {
+                console.error("ERROR: " + reason);
+                this.removeSuccessClass();
+            });
     }
 
     public doValidateCompressAndGetBase64(file: File) {
@@ -122,13 +125,20 @@ export class Upload implements IRenderable {
             .then(compressedFile => getBase64FromFile(compressedFile))
             .then(data => this.setDataToValue(data, file))
             .then(() => this.setSuccessClass())
-            .catch(reason => console.error("ERROR: " + reason));
+            .catch(reason => {
+                console.error("ERROR: " + reason);
+                this.removeSuccessClass();
+            });
     }
 
     public setSuccessClass() {
         if(!this.dropArea.classList.contains("lto-success")) {
             this.dropArea.classList.add("lto-success");
         }
+    }
+
+    public removeSuccessClass() {
+        this.dropArea.classList.remove("lto-success");
     }
 
     public setDataToValue(data: any, file: any) {

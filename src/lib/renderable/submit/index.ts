@@ -77,6 +77,9 @@ export class Submit implements IRenderable {
                 trigger.removeAttribute("value")
             }
             Overlay.hide(node(overlay));
+        }).catch(reason => {
+            console.error("ERROR: " + reason);
+            trigger.classList.remove("lto-success");
         })
     }
 
