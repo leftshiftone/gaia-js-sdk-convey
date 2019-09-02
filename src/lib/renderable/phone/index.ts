@@ -21,7 +21,6 @@ export class Phone implements IRenderable {
             placeholder: this.spec.placeholder || "",
             name: this.spec.name || "",
             value: this.spec.value || "",
-            required: this.spec.required as boolean
         });
 
         phone.addDataAttributes({

@@ -66,15 +66,6 @@ export class InputContainer {
     }
 
     /**
-     * returns a {@link boolean} containing the info if the value is undefined, null or an empty String
-     *
-     * @param value
-     */
-    public static isAllowed(value: any) {
-        return value && value != "" && value != undefined
-    }
-
-    /**
      * adds the value of the element to the attributes
      *
      * @param element
@@ -86,14 +77,20 @@ export class InputContainer {
         const required = JSON.parse(element.dataset.required || "false");
 
         // element value is required but empty
-        if (required && !InputContainer.isAllowed(value))
+        if (required && !value)
             return SubmitState.SUBMIT_REQUIRED_ERROR;
 
-        // element value is not valid
-        if (element instanceof HTMLInputElement && element.pattern && !element.checkValidity())
-            return SubmitState.SUBMIT_VALIDATION_ERROR;
+        if (element instanceof HTMLInputElement) {
+            // element value is not valid
+            if(element.pattern && !element.checkValidity())
+                return SubmitState.SUBMIT_VALIDATION_ERROR;
 
-        if (InputContainer.isAllowed(value)) {
+            // element is type of email and its value is not valid
+            if(element.type == "email" && !element.checkValidity())
+                return SubmitState.SUBMIT_EMAIL_VALIDATION_ERROR;
+        }
+
+        if (value) {
             if (/^[\],:{}\s]*$/.test(value!.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
                 value = JSON.parse(value!);
             }
