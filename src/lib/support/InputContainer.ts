@@ -77,17 +77,15 @@ export class InputContainer {
         const required = JSON.parse(element.dataset.required || "false");
 
         // element value is required but empty
-        if (required && !value)
+        if (required && !value) {
+            if(!element.classList.contains("lto-error")) element.classList.add("lto-error");
             return SubmitState.SUBMIT_REQUIRED_ERROR;
+        }
 
-        if (element instanceof HTMLInputElement) {
-            // element value is not valid
-            if(element.pattern && !element.checkValidity())
-                return SubmitState.SUBMIT_VALIDATION_ERROR;
-
-            // element is type of email and its value is not valid
-            if(element.type == "email" && !element.checkValidity())
-                return SubmitState.SUBMIT_EMAIL_VALIDATION_ERROR;
+        // element value is not valid
+        if (element instanceof HTMLInputElement && (element.type == "email" || element.pattern) && !element.checkValidity()) {
+            if(!element.classList.contains("lto-error")) element.classList.add("lto-error");
+            return SubmitState.SUBMIT_VALIDATION_ERROR;
         }
 
         if (value) {
@@ -98,6 +96,8 @@ export class InputContainer {
                 attributes[name].push(value) :
                 attributes[name] = [value];
         }
+
+        element.classList.remove("lto-error");
 
         return SubmitState.ALLOWED;
     }
