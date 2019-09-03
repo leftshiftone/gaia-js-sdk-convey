@@ -12,7 +12,7 @@ export class GoogleMap {
     static DEFAULT_MARKER_ICON = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
     static DEFAULT_SELECTED_MARKER_ICON = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
 
-    private map: Map | null = null;
+    public map: Map | null = null;
     private readonly spec: ISpecification;
     private wrapper: INode;
     private markers: Array<google.maps.Marker> = [];
