@@ -2,10 +2,6 @@
 ## JSON structure
 ```
 {
-    "center": {
-        "lat": [number]
-        "lng": [number]
-    }
      "markers": [
         {
             "position": {
@@ -21,9 +17,6 @@
 }
 ```
 
-##### center
-`center` defines the start point of view
-
 #### markers
 `markers` array of marker objects
 
@@ -34,9 +27,4 @@
 `meta` meta information of the marker
 
 ##### active
-`active` is marker active (can be selected) or inactive (cannot be selected)
-
-### required
-- center
-- position
-- active
+`active` is marker selected or not selected

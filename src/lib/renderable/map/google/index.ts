@@ -2,76 +2,118 @@ import {IRenderer, ISpecification} from "../../../api";
 import Properties from "../../Properties";
 import node, {INode} from "../../../support/node";
 import {IMarker} from "../IMarker";
+
 import Map = google.maps.Map;
+import LatLng = google.maps.LatLng;
 
 export class GoogleMap {
 
     API = "https://maps.googleapis.com/maps/api/js?key=" + Properties.resolve("GOOGLE_MAPS_API_KEY");
+    static DEFAULT_MARKER_ICON = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+    static DEFAULT_SELECTED_MARKER_ICON = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+
+    private map: Map | null = null;
     private readonly spec: ISpecification;
+    private wrapper: INode;
+    private markers: Array<google.maps.Marker> = [];
 
     constructor(spec: ISpecification) {
         this.spec = spec;
+        this.wrapper = node("div");
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
-        const wrapper = node("div");
-        wrapper.addClasses("lto-map");
-        wrapper.setId(this.spec.id);
-        wrapper.setName(this.spec.name);
-        this.includeScript(wrapper);
-        return wrapper.unwrap();
+        this.wrapper.addClasses("lto-map");
+        this.wrapper.setId(this.spec.id);
+        this.wrapper.setName(this.spec.name);
+        this.wrapper.addDataAttributes({required: this.spec.required || "true"});
+        this.includeScript();
+        return this.wrapper.unwrap();
     }
 
-    public static init(wrapper: INode, spec: ISpecification) {
-        const map = GoogleMap.initMap(wrapper);
-
-        GoogleMap.initCenter(map, spec);
-
-        const markers: Array<google.maps.Marker> = [];
-        GoogleMap.initMarkers(map, markers, spec);
+    private init() {
+        this.map = this.initMap();
+        this.setCenter();
+        this.addMarkersToMap();
     }
 
-    public static initMarkers(map: Map, markers: Array<google.maps.Marker>, spec: ISpecification) {
-        if(!spec.src)
+    public addMarkersToMap() {
+        if (!this.spec.src)
             return;
 
-            fetch(spec.src).then(data => data.json()).then(json => {
-                if(!json.markers)
-                    return;
+        GoogleMap.getMarkersFromSrc(this.spec.src).then((markers: Array<IMarker> | null) => {
+            if (!markers)
+                return;
 
-                json.markers.forEach((marker: IMarker) => {
-                    const current = new google.maps.Marker({map,opacity: 0.6, position: marker.position})
-                    current.addListener("click", e => {
-                        current.setValues({active: !current.get("active")});
-                    });
-                    markers.push(current);
+            markers.forEach((marker: IMarker) => {
+                const current = new google.maps.Marker({map: this.map!, position: marker.position});
+                current.setValues({meta: marker.meta, active: marker.active});
+                this.markers.push(current);
+                current.get("active") ?
+                    this.activateMarker(current) :
+                    this.deactivateMarker(current);
+
+                current.addListener("click", e => {
+                    current.get("active") ?
+                        this.deactivateMarker(current) :
+                        this.activateMarker(current);
+                    this.setMarkersToValue()
                 });
-            })
+            });
+            this.setMarkersToValue()
+        })
     }
 
-    public static initMap(wrapper: INode): Map {
-        return new google.maps.Map(wrapper.unwrap(), {center: {lat: 0, lng: 0}, zoom: 8});
+    public initMap(): Map {
+        return new google.maps.Map(this.wrapper.unwrap(), {center: {lat: 0, lng: 0}, zoom: 8});
     }
 
-    private static initCenter(map: Map, spec: ISpecification) {
-        if (spec.centerBrowserLocation && navigator.geolocation)
-           navigator.geolocation.getCurrentPosition(position =>
-               map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude}));
-        else if (spec.centerLat && spec.centerLng)
-            map.setCenter({lat: spec.centerLat, lng: spec.centerLng})
+    public setCenter() {
+        if (this.spec.centerBrowserLocation && navigator.geolocation)
+            navigator.geolocation.getCurrentPosition(position =>
+                this.map!.setCenter({lat: position.coords.latitude, lng: position.coords.longitude}));
+        else if (this.spec.centerLat && this.spec.centerLng)
+            this.map!.setCenter({lat: this.spec.centerLat, lng: this.spec.centerLng})
     }
 
-    private includeScript(wrapper: INode) {
+    public includeScript() {
         if (!document.querySelectorAll(`[src="${this.API}"]`).length) {
             document.body.appendChild(Object.assign(
                 document.createElement('script'), {
                     type: 'text/javascript',
                     src: this.API,
-                    onload: () => GoogleMap.init(wrapper, this.spec)
+                    onload: () => this.init()
                 }));
         } else {
-            GoogleMap.init(wrapper, this.spec);
+            this.init();
         }
     }
 
+    private static getMarkersFromSrc(src: string) {
+        return fetch(src).then(data => data.json()).then(json => json.markers ? json.markers : null)
+    }
+
+    public deactivateMarker(marker: google.maps.Marker) {
+        marker.setValues({active: false});
+        marker.setIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON)
+    }
+
+    public activateMarker(marker: google.maps.Marker) {
+        marker.setValues({active: true});
+        marker.setIcon(this.spec.selectedMarkerIcon ? this.spec.selectedMarkerIcon : GoogleMap.DEFAULT_SELECTED_MARKER_ICON);
+    }
+
+    public setMarkersToValue() {
+        const selectedMarkers: Array<{position: LatLng, meta: any}> = [];
+        this.markers.forEach(marker => {
+            if(marker.get("active")) {
+                selectedMarkers.push({position: marker.getPosition()!, meta: marker.get("meta")});
+            }
+        });
+
+        if(selectedMarkers.length > 0)
+            this.wrapper.addAttributes({value: JSON.stringify(selectedMarkers)});
+        else
+            this.wrapper.removeAttributes("value")
+    }
 }

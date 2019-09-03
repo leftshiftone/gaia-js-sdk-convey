@@ -51,7 +51,7 @@ module.exports = (env, argv) => ({
         // see: https://github.com/webpack/webpack/issues/6784
         globalObject: 'typeof self !== \'undefined\' ? self : this'
     },
-    externals: ['google-maps', 'leaflet', '@zxing/library', 'reveal.js', 'browser-image-compression'],
+    externals: ['leaflet', '@zxing/library', 'reveal.js', 'browser-image-compression'],
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'dist/[name].css',

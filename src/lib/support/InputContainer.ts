@@ -12,7 +12,7 @@ export class InputContainer {
 
     private static ELEMENTS: string = 'input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, ' +
         'textarea.lto-textarea, input.lto-spinner, div.lto-camera, input.lto-slider, div.lto-calendar-input, ' +
-        'div.lto-reel, div.lto-code-reader, div.lto-trigger';
+        'div.lto-reel, div.lto-code-reader, div.lto-trigger, div.lto-map';
 
     /**
      * returns a {@link Promise} containing the attributes of the input elements

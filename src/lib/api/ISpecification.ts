@@ -41,4 +41,6 @@ export interface ISpecification {
     trigger?: string;
     wrapped?: string;
     direction?: string;
+    markerIcon?: string;
+    selectedMarkerIcon?: string;
 }
