@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification} from "../../../api";
+import {ISpecification} from "../../../api";
 import Properties from "../../Properties";
 import node, {INode} from "../../../support/node";
 import {IMarker} from "../IMarker";
@@ -22,7 +22,7 @@ export class GoogleMap {
         this.wrapper = node("div");
     }
 
-    public render(renderer: IRenderer, isNested: boolean): HTMLElement {
+    public render(): HTMLElement {
         this.wrapper.addClasses("lto-map");
         this.wrapper.setId(this.spec.id);
         this.wrapper.setName(this.spec.name);
@@ -76,19 +76,6 @@ export class GoogleMap {
             this.map!.setCenter({lat: this.spec.centerLat, lng: this.spec.centerLng})
     }
 
-    public includeScript() {
-        if (!document.querySelectorAll(`[src="${this.API}"]`).length) {
-            document.body.appendChild(Object.assign(
-                document.createElement('script'), {
-                    type: 'text/javascript',
-                    src: this.API,
-                    onload: () => this.init()
-                }));
-        } else {
-            this.init();
-        }
-    }
-
     private static getMarkersFromSrc(src: string) {
         return fetch(src).then(data => data.json()).then(json => json.markers ? json.markers : null)
     }
@@ -106,14 +93,25 @@ export class GoogleMap {
     public setMarkersToValue() {
         const selectedMarkers: Array<{position: LatLng, meta: any}> = [];
         this.markers.forEach(marker => {
-            if(marker.get("active")) {
+            if(marker.get("active"))
                 selectedMarkers.push({position: marker.getPosition()!, meta: marker.get("meta")});
-            }
         });
 
-        if(selectedMarkers.length > 0)
-            this.wrapper.addAttributes({value: JSON.stringify(selectedMarkers)});
-        else
+        selectedMarkers.length > 0 ?
+            this.wrapper.addAttributes({value: JSON.stringify(selectedMarkers)}) :
             this.wrapper.removeAttributes("value")
+    }
+
+    public includeScript() {
+        if (!document.querySelectorAll(`[src="${this.API}"]`).length) {
+            document.body.appendChild(Object.assign(
+                document.createElement('script'), {
+                    type: 'text/javascript',
+                    src: this.API,
+                    onload: () => this.init()
+                }));
+        } else {
+            this.init();
+        }
     }
 }

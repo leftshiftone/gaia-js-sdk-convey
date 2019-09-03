@@ -15,7 +15,7 @@ export class Map implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         switch (this.spec.mapType) {
             case "osm": return (new OpenStreetMap(this.spec)).render(renderer, isNested);
-            case "google": return (new GoogleMap(this.spec)).render(renderer, isNested);
+            case "google": return (new GoogleMap(this.spec)).render();
         }
         return document.createElement("div")
     }
