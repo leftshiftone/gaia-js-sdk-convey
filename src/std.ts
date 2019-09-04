@@ -8,6 +8,7 @@ import {ChannelType} from './lib/support/ChannelType';
 import {OffSwitchListener} from './lib/listener/OffSwitchListener';
 import {Defaults} from './lib/support/Defaults';
 import {Block} from './lib/renderable/block';
+import {Video} from './lib/renderable/video';
 import {Camera} from "./lib/renderable/camera";
 import {Selection} from './lib/renderable/selection';
 import {Bold} from './lib/renderable/bold';
@@ -65,6 +66,7 @@ export {
     Block,
     Bold,
     Break,
+    Video,
     Button,
     Calendar,
     Upload,
