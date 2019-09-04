@@ -17,16 +17,8 @@ export class Video implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const video = node("video");
         video.setId(this.spec.id);
-        video.addClasses("lto-video", "lto-left");
-        video.addAttributes({
-            controls: true,
-            src: this.spec.src
-        });
-        this.spec.class !== undefined ? video.addClasses(this.spec.class) : () => {};
-
-        if(isNested)
-            video.addClasses("lto-nested");
-
+        video.addClasses("lto-video", "lto-left", isNested ? "lto-nested" : "", this.spec.class !== undefined ? this.spec.class : "");
+        video.addAttributes({controls: true, src: this.spec.src});
         return video.unwrap();
     }
 }
