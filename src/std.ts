@@ -12,6 +12,7 @@ import {Video} from './lib/renderable/video';
 import {Camera} from "./lib/renderable/camera";
 import {Selection} from './lib/renderable/selection';
 import {Bold} from './lib/renderable/bold';
+import {Italic} from './lib/renderable/italic';
 import {Break} from './lib/renderable/break';
 import {Button} from './lib/renderable/button';
 import {Calendar} from './lib/renderable/calendar';
@@ -75,6 +76,7 @@ export {
     Container,
     Headline,
     Image,
+    Italic,
     Item,
     Items,
     Form,
