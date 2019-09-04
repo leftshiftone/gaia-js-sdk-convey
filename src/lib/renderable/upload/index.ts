@@ -1,6 +1,6 @@
 import {IRenderer, ISpecification,IRenderable} from '../../api';
 import Renderables from '../Renderables';
-import {getBase64FromFile, getFileExtensionFromFile} from "../../support/Files";
+import {getBase64FromFile, getFileExtensionFromFile, isImageFile} from "../../support/Files";
 
 let imageCompression: any = null;
 
@@ -9,7 +9,8 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Implementation of the 'upload' markup element.
+ * The Upload renderable is used to upload files and also includes an image compression
+ * for jpg and png files.
  */
 export class Upload implements IRenderable {
 
@@ -18,12 +19,26 @@ export class Upload implements IRenderable {
     private fileSpan = document.createElement("span");
     private dropArea = document.createElement("div");
 
+    /**
+     * Constructor
+     * @param spec evaluated specifications are:
+     *      accept: string of the excepted file types of the upload
+     *      maxSize: max size of the file
+     *      maxCompressSize: max size of the file after compression (only for images)
+     *      name: name of the upload
+     */
     constructor(spec: ISpecification) {
         this.spec = spec;
     }
 
     /**
      * {@inheritDoc}
+     * The render method receives the upload markup and creates an HTML element.
+     *
+     * @param renderer upload markup
+     * @param isNested contains other renderables
+     *
+     * @returns HTMLElement DOM representation of the upload markup
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
@@ -92,10 +107,10 @@ export class Upload implements IRenderable {
 
             this.setFileNameToSpan(file.name).setErrorSpanTo("");
 
-            if (!this.spec.maxCompressSize) {
-                this.doValidateAndGetBase64(upload.files[0]);
-            } else if (this.spec.maxCompressSize) {
-                this.doValidateCompressAndGetBase64(upload.files[0]);
+            if (!this.spec.maxCompressSize || !isImageFile(getFileExtensionFromFile(file))) {
+                this.doValidateAndGetBase64(file);
+            } else if (this.spec.maxCompressSize && isImageFile(getFileExtensionFromFile(file))) {
+                this.doValidateCompressAndGetBase64(file);
             }
         };
 
