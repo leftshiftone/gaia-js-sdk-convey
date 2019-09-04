@@ -21,7 +21,12 @@ export function getBase64FromFile(file: File) : Promise<any> {
 
 export function getFileExtensionFromFile(file: File) {
     const array = file.name.split(".");
-    return array[array.length - 1];
+    return array[array.length - 1].toLowerCase();
+}
+
+export function isImageFile(fileExtension : string) : Boolean {
+    const allowedImageFileExtensions = ["jpg", "jpeg", "png"];
+    return allowedImageFileExtensions.indexOf(fileExtension) !== -1
 }
 
 
