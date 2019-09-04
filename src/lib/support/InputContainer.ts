@@ -4,10 +4,6 @@ import {SubmitState} from "../renderable/submit/SubmitState";
 import node from "./node";
 import {ChoiceAggregationResult} from "../renderable/submit/ChoiceAggregationResult";
 
-/**
- *
- * @author patrick.arbeiter@leftshift.one
- */
 export class InputContainer {
 
     private static ELEMENTS: string = 'input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, ' +
