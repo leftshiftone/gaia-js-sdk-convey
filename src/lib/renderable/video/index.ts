@@ -4,7 +4,6 @@ import node from "../../support/node";
 
 /**
  * Implementation of the 'video' markup element.
- * @author patrick.arbeiter@leftshift.one
  */
 export class Video implements IRenderable {
 
