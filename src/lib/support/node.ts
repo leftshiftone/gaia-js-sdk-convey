@@ -213,11 +213,7 @@ class Node implements INode {
     }
 
     public parent(): INode | null {
-        if(this.node.parentElement) {
-            return wrap(this.node.parentElement)
-        } else {
-            return null;
-        }
+        return this.node.parentElement ? wrap(this.node.parentElement) : null;
     }
 
     public removeChild(node: INode) {

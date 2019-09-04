@@ -46,6 +46,7 @@ import {ReelValue} from "./lib/renderable/reelValue";
 import {Text} from './lib/renderable/text';
 import {CheckboxChoice, MultipleChoice, RadioChoice, SingleChoice} from "./lib/renderable/choice";
 import {Textarea} from "./lib/renderable/textarea";
+import {Video} from "./lib/renderable/video";
 import Renderables from "./lib/renderable/Renderables";
 import Properties from "./lib/renderable/Properties";
 import {Map} from './lib/renderable/map';
@@ -105,6 +106,7 @@ export {
     Upload,
     Carousel,
     Checkbox,
+    Video,
     Container,
     Headline,
     Image,
