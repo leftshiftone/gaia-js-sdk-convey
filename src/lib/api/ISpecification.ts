@@ -43,4 +43,5 @@ export interface ISpecification {
     direction?: string;
     markerIcon?: string;
     selectedMarkerIcon?: string;
+    ordered?:boolean;
 }
