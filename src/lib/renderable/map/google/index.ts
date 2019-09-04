@@ -23,10 +23,11 @@ export class GoogleMap {
     }
 
     public render(): HTMLElement {
-        this.wrapper.addClasses("lto-map");
+        this.wrapper.addClasses("lto-map", "lto-map-google", "lto-left");
         this.wrapper.setId(this.spec.id);
         this.wrapper.setName(this.spec.name);
         this.wrapper.addDataAttributes({required: this.spec.required || "true"});
+        this.spec.class !== undefined ? this.wrapper.addClasses(this.spec.class) : () => {};
         this.includeScript();
         return this.wrapper.unwrap();
     }
