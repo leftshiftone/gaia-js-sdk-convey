@@ -3,18 +3,35 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'textInput' markup element.
+ * The textInput element is used for a simple text input
  */
-// FIXME: rename to text
 export class TextInput implements IRenderable {
 
     private readonly spec: ISpecification;
 
+    /**
+     * Constructor
+     * @param spec evaluated specifications are:
+     *      name: the name of the textInput
+     *      placeholder: the placeholder of the textInput
+     *      value: the default value which is set
+     *      regex: the pattern which is set
+     *      required: the textInput needs to be filled
+     */
     constructor(spec: ISpecification) {
         this.spec = spec;
     }
 
     /**
      * {@inheritDoc}
+     * The render method receives the textInput markup and creates an HTML element.
+     *
+     * Class which is set per default: <b>lto-textInput</b>
+     *
+     * @param renderer can render furthermore nested elements if they exist
+     * @param isNested if the HTML element is nested
+     *
+     * @returns {@link HTMLInputElement} DOM representation of the textInput markup
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || "left";
