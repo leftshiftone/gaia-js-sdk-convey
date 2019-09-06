@@ -39,9 +39,10 @@ describe("InputContainer test", () => {
             [`<input class="lto-textInput" type="text" value="value" name="val"/>`, {"val": ["value"]}],
             [`<input class="lto-email" type="email" value="email@mail.com" name="val"/>`, {"val": ["email@mail.com"]}],
         ].forEach(element => {
+            const submit = document.createElement("button") as HTMLButtonElement;
             const form = document.createElement("form") as HTMLFormElement;
             form.innerHTML = element[0] as string;
-            InputContainer.getAll(form).then(attr => {
+            InputContainer.getAll(form, submit).then(attr => {
                 expect(attr).toEqual(element[1])
             })
         })
