@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 import EventStream from '../../event/EventStream';
 import Renderables from '../Renderables';
 import {closestByClass} from "../../support/Elements";
@@ -44,7 +44,7 @@ export class Submit implements IRenderable {
 
             const content = closestByClass(submit, ["lto-form"]);
 
-            InputContainer.getAll(content as HTMLFormElement).then((attr) => {
+            InputContainer.getAll(content as HTMLFormElement, submit).then((attr) => {
                 submit.disabled = true;
                 if (content)
                     content.style.pointerEvents = "none";
@@ -58,21 +58,24 @@ export class Submit implements IRenderable {
                 });
 
                 Button.cleanupButtons();
-            }).catch(() => {return})
+            }).catch(() => {
+                return
+            })
         });
 
         return submit;
     }
 
     public handleOverlay(container: HTMLElement, overlay: HTMLElement) {
-        const form = overlay.querySelector(".lto-form");
+        const form = overlay.querySelector(".lto-form") as HTMLFormElement;
+        const submit = overlay.querySelector(".lto-submit") as HTMLButtonElement;
         const trigger = container.querySelector(`.lto-trigger[name="${overlay.getAttribute("name")}"]`);
         if (!trigger || !form) return;
-        InputContainer.getAll(form as HTMLFormElement).then((attr) => {
-            if(Object.keys(attr).length !== 0 && !trigger.classList.contains("lto-success")) {
+        InputContainer.getAll(form, submit).then((attr) => {
+            if (Object.keys(attr).length !== 0 && !trigger.classList.contains("lto-success")) {
                 trigger.classList.add("lto-success");
                 trigger.setAttribute("value", JSON.stringify(attr));
-            } else if(Object.keys(attr).length === 0) {
+            } else if (Object.keys(attr).length === 0) {
                 trigger.classList.remove("lto-success");
                 trigger.removeAttribute("value")
             }

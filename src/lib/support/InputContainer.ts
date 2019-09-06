@@ -11,11 +11,12 @@ export class InputContainer {
         'div.lto-reel, div.lto-code-reader, div.lto-trigger, div.lto-map';
 
     /**
-     * returns a {@link Promise} containing the attributes of the input elements
+     * Returns a {@link Promise} containing the attributes of the input elements
      *
-     * @param container: the parent element
+     * @param container: the parent form element
+     * @param submit: the submit button element
      */
-    public static getAll(container: HTMLFormElement) {
+    public static getAll(container: HTMLFormElement, submit: HTMLButtonElement) {
         return new Promise<Attr>((resolve, reject) => {
             let attributes = {} as Attr;
             let state: SubmitState = SubmitState.ALLOWED;
@@ -39,6 +40,10 @@ export class InputContainer {
             }
 
             container.querySelectorAll(".lto-submit-error").forEach(e => e.remove());
+            submit.classList.remove("lto-error");
+            Object.keys(SubmitState).map(key => SubmitState[key]).forEach(value => {
+                submit.classList.remove(value);
+            });
 
             if (state == SubmitState.ALLOWED) {
                 // workaround to keep existing data structure
@@ -54,7 +59,8 @@ export class InputContainer {
             } else {
                 const span = node("span");
                 span.addClasses("lto-submit-error", "lto-" + state);
-                container.appendChild(span.unwrap());
+                submit.classList.add("lto-error", "lto-" + state);
+                submit.parentElement!.appendChild(span.unwrap());
                 reject("not allowed");
             }
             resolve(attributes)
@@ -62,7 +68,7 @@ export class InputContainer {
     }
 
     /**
-     * adds the value of the element to the attributes
+     * Adds the value of the element to the attributes
      *
      * @param element
      * @param attributes
@@ -74,13 +80,13 @@ export class InputContainer {
 
         // element value is required but empty
         if (required && !value) {
-            if(!element.classList.contains("lto-error")) element.classList.add("lto-error");
+            if (!element.classList.contains("lto-error")) element.classList.add("lto-error");
             return SubmitState.SUBMIT_REQUIRED_ERROR;
         }
 
         // element value is not valid
         if (element instanceof HTMLInputElement && (element.type == "email" || element.pattern) && !element.checkValidity()) {
-            if(!element.classList.contains("lto-error")) element.classList.add("lto-error");
+            if (!element.classList.contains("lto-error")) element.classList.add("lto-error");
             return SubmitState.SUBMIT_VALIDATION_ERROR;
         }
 
