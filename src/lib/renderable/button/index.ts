@@ -19,6 +19,7 @@ export class Button implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || "left";
         const button = document.createElement("button");
+        button.setAttribute(`type`, "button");
 
         button.setAttribute(`name`, this.spec.name || "");
         if (this.spec.id !== undefined) {
