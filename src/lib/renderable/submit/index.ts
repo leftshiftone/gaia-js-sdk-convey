@@ -18,6 +18,8 @@ export class Submit implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const submit: HTMLButtonElement = document.createElement('button');
+        submit.setAttribute(`type`, "submit");
+
         submit.classList.add("lto-submit", "lto-" + position);
         if (this.spec.id !== undefined)
             submit.id = this.spec.id;
