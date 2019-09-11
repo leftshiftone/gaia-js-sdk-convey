@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../api';
+import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 
 /**
@@ -59,7 +59,7 @@ export class Reel implements IRenderable, IStackeable {
             this.reel.classList.add('lto-nested')
         }
 
-        this.setValueToReel(this.container.children[this.counter].getAttribute("value"));
+        this.setValueToReel(this.container.children[this.counter].getAttribute("data-value"));
 
         this.reel.appendChild(up);
         this.reel.appendChild(this.container);
@@ -71,7 +71,7 @@ export class Reel implements IRenderable, IStackeable {
     public next() {
         (this.counter + 1) < this.container.children.length ? this.counter++ : this.counter = 0;
 
-        this.setValueToReel(this.container.children[this.counter].getAttribute("value"));
+        this.setValueToReel(this.container.children[this.counter].getAttribute("data-value"));
 
         this.container.childNodes.forEach(child => {
             (child as HTMLElement).classList.remove("lto-passive", "lto-active");
@@ -83,7 +83,7 @@ export class Reel implements IRenderable, IStackeable {
     public previous() {
         (this.counter - 1) >= 0 ? this.counter-- : this.counter = this.container.children.length - 1;
 
-        this.setValueToReel(this.container.children[this.counter].getAttribute("value"));
+        this.setValueToReel(this.container.children[this.counter].getAttribute("data-value"));
 
         this.container.childNodes.forEach(child => {
             (child as HTMLElement).classList.remove("lto-passive", "lto-active");
@@ -93,7 +93,7 @@ export class Reel implements IRenderable, IStackeable {
     }
 
     private setValueToReel(value: any) {
-        this.reel.setAttribute("value", value);
+        this.reel.setAttribute("data-value", value);
     }
 }
 

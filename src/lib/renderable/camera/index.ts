@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification,IRenderable, IStackeable} from '../../api';
+import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 import {drawCanvas} from "../../support/Canvas";
 import {getUserVideoMedia} from "../../support/Navigator";
@@ -31,7 +31,7 @@ export class Camera implements IRenderable, IStackeable {
         const wrapper = document.createElement("div");
         wrapper.classList.add("lto-camera");
         wrapper.setAttribute("name", this.spec.name || "");
-        wrapper.dataset.required = this.spec.required!.toString() || "false";
+        wrapper.setAttribute("data-required", this.spec.required!.toString() || "false");
         const error = document.createElement("div");
         error.classList.add("lto-error");
         error.style.display = "none";
@@ -119,7 +119,7 @@ export class Camera implements IRenderable, IStackeable {
             this.takePhoto(wrapper);
             const canvas = wrapper.querySelector("canvas") as HTMLCanvasElement;
 
-            wrapper.setAttribute("value", JSON.stringify({
+            wrapper.setAttribute("data-value", JSON.stringify({
                 data: canvas.toDataURL().split(",")[1],
                 fileExtension: "png",
                 mimeType: "image/png"
@@ -157,7 +157,7 @@ export class Camera implements IRenderable, IStackeable {
 
             getBase64FromFile(compressedFile)
                 .then(data => {
-                    wrapper.setAttribute("value", JSON.stringify({
+                    wrapper.setAttribute("data-value", JSON.stringify({
                         data: data.toString().split(",")[1],
                         fileExtension: "png",
                         fileName: "compressedPhoto",
@@ -170,7 +170,7 @@ export class Camera implements IRenderable, IStackeable {
     private activateResetButton(wrapper: HTMLDivElement) {
         const resetButton = wrapper.querySelector(".lto-reset-photo") as HTMLDivElement;
         resetButton.onclick = () => {
-            wrapper.removeAttribute("value");
+            wrapper.removeAttribute("data-value");
             const errorWrapper = wrapper.querySelector(".lto-error") as HTMLDivElement;
             errorWrapper.style.display = "none";
             this.initCamera(wrapper);

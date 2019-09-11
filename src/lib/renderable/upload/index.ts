@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification,IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 import {getBase64FromFile, getFileExtensionFromFile, isImageFile} from "../../support/Files";
 
@@ -42,7 +42,7 @@ export class Upload implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
-        this.dropArea.dataset.required = this.spec.required!.toString() || "false";
+        this.dropArea.setAttribute("data-required", this.spec.required!.toString() || "false");
         const upload = document.createElement("input");
         const uploadLabel = document.createElement("label");
         const textSpan = document.createElement("span");
@@ -96,7 +96,7 @@ export class Upload implements IRenderable {
         };
 
         upload.onchange = () => {
-            if(!upload.files || !upload.files[0]) {
+            if (!upload.files || !upload.files[0]) {
                 return
             }
 
@@ -147,7 +147,7 @@ export class Upload implements IRenderable {
     }
 
     public setSuccessClass() {
-        if(!this.dropArea.classList.contains("lto-success")) {
+        if (!this.dropArea.classList.contains("lto-success")) {
             this.dropArea.classList.add("lto-success");
         }
     }
@@ -157,7 +157,7 @@ export class Upload implements IRenderable {
     }
 
     public setDataToValue(data: any, file: any) {
-        this.dropArea.setAttribute("value", JSON.stringify({
+        this.dropArea.setAttribute("data-value", JSON.stringify({
             data: data.toString().split(",")[1],
             fileExtension: getFileExtensionFromFile(file),
             fileName: file.name,

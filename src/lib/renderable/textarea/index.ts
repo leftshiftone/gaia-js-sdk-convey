@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 import node from "../../support/node";
 
@@ -39,9 +39,9 @@ export class Textarea implements IRenderable {
 
         textarea.unwrap().addEventListener("input", () => {
                 if ((textarea.unwrap() as HTMLTextAreaElement).value === "") {
-                    textarea.unwrap().removeAttribute("value");
+                    textarea.unwrap().removeAttribute("data-value");
                 } else {
-                    textarea.addAttributes({value: (textarea.unwrap() as HTMLTextAreaElement).value})
+                    textarea.unwrap().setAttribute("data-value", (textarea.unwrap() as HTMLTextAreaElement).value)
                 }
             }
         );

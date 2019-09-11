@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 
 import Renderables from '../Renderables';
 
@@ -72,7 +72,7 @@ export class Calendar implements IRenderable {
         this.calendar.style.display = "none";
         this.input.style.display = "inline-block";
         this.input.innerText = date;
-        this.input.setAttribute("value", date);
+        this.input.setAttribute("data-value", date);
     }
 
     public static renderHeadline(): HTMLDivElement {

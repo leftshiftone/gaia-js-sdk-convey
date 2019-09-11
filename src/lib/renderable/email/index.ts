@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 
 /**
@@ -22,7 +22,7 @@ export class Email implements IRenderable {
         email.setAttribute('name', this.spec.name || "");
         email.setAttribute('placeholder', this.spec.placeholder || "");
         email.setAttribute("value", this.spec.value || "");
-        email.dataset.required = this.spec.required!.toString() || "false";
+        email.setAttribute("required", this.spec.required!.toString() || "false");
 
         email.classList.add("lto-email", "lto-" + position);
         if (isNested) {
