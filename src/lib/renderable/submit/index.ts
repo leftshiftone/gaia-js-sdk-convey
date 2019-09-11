@@ -60,7 +60,8 @@ export class Submit implements IRenderable {
                 });
 
                 Button.cleanupButtons();
-            }).catch(() => {
+            }).catch((reason) => {
+                console.error(`Unable to collect form input data: ${reason}`);
                 return
             })
         });
