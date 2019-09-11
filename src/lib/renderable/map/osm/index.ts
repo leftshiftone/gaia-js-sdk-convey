@@ -1,6 +1,6 @@
 import * as L from 'leaflet';
-import {IRenderer, ISpecification, IRenderable} from '../../../api';
-import {Circle, Icon, LatLngLiteral, Marker} from "leaflet";
+import {Circle, Icon, LatLngLiteral, Marker} from 'leaflet';
+import {IRenderable, IRenderer, ISpecification} from '../../../api';
 import {IMarker} from "../IMarker";
 
 export class OpenStreetMap implements IRenderable {
@@ -19,10 +19,10 @@ export class OpenStreetMap implements IRenderable {
         this.spec = spec;
         this.mapContainer = document.createElement('div');
         this.mapMarkerActive = L.icon({
-            iconUrl: 'http://www.myiconfinder.com/uploads/iconsets/256-256-a5485b563efc4511e0cd8bd04ad0fe9e.png',
+            iconUrl: 'https://img.icons8.com/office/96/000000/marker.png',
         });
         this.mapMarkerInactive = L.icon({
-            iconUrl: 'https://cdn2.iconfinder.com/data/icons/navigation-location/512/Gps_locate_location_map_marker_navigate_navigation_pin_plan_road_route_travel_icon_-512.png',
+            iconUrl: 'https://img.icons8.com/ultraviolet/96/000000/marker.png',
         });
         this.center = {lng: 0, lat: 0};
         this.mapMarkers = [];
@@ -36,7 +36,7 @@ export class OpenStreetMap implements IRenderable {
             fetch(src).then(response =>
                 response.json().then(data => {
                     this.markers = data.markers;
-                    if(this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
+                    if (this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
                         this.center = {
                             lng: this.spec.centerLng,
                             lat: this.spec.centerLat
@@ -48,7 +48,7 @@ export class OpenStreetMap implements IRenderable {
                     }
                 }));
         } else {
-            if(this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
+            if (this.spec.centerLat !== undefined && this.spec.centerLng !== undefined) {
                 this.center = {
                     lng: this.spec.centerLng,
                     lat: this.spec.centerLat
@@ -104,7 +104,7 @@ export class OpenStreetMap implements IRenderable {
                         bounds.getNorthEast().lng,
                         bounds.getNorthWest().lat,
                         bounds.getNorthWest().lng,
-                    ) / 2.15 ), 2000), 20000);
+                    ) / 2.15), 2000), 20000);
     }
 
     public drawCircle() {
@@ -118,7 +118,7 @@ export class OpenStreetMap implements IRenderable {
             this.circle.setRadius(radius);
         }
 
-        this.mapContainer.setAttribute("value", JSON.stringify({position: this.circle!.getBounds().getCenter()}));
+        this.mapContainer.setAttribute("data-value", JSON.stringify({position: this.circle!.getBounds().getCenter()}));
     }
 
     public drawCircleAndMarkers() {
@@ -149,12 +149,12 @@ export class OpenStreetMap implements IRenderable {
             markers.push(OpenStreetMap.getMarkerJSON(m));
         });
 
-        this.mapContainer.setAttribute("value", JSON.stringify({markers: markers}));
+        this.mapContainer.setAttribute("data-value", JSON.stringify({markers: markers}));
     }
 
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.mapContainer.classList.add('lto-map');
-        if(this.spec.class !== undefined) {
+        if (this.spec.class !== undefined) {
             this.spec.class.split(" ").forEach(e => this.mapContainer.classList.add(e));
         }
         this.mapContainer.setAttribute("name", this.spec.name || "lto-map");
@@ -191,21 +191,24 @@ export class OpenStreetMap implements IRenderable {
 
             if (this.markers !== undefined) {
                 this.markers.forEach((m: any) => {
-                        const marker = L.marker(m.position, {icon: m.active ? this.mapMarkerActive : this.mapMarkerInactive, alt: m.meta !== undefined ? m.meta : {}});
-                        if (this.spec.exact) {
-                            if (m.active) {
-                                marker.on("click", () => {
-                                    if (selected !== null) {
-                                        selected.setIcon(this.mapMarkerActive);
-                                    }
-                                    selected = marker;
-                                    marker.setIcon(mapMarkerSelected);
-                                    this.mapContainer.setAttribute("value", JSON.stringify(OpenStreetMap.getMarkerJSON(marker)));
-                                })
-                            }
+                    const marker = L.marker(m.position, {
+                        icon: m.active ? this.mapMarkerActive : this.mapMarkerInactive,
+                        alt: m.meta !== undefined ? m.meta : {}
+                    });
+                    if (this.spec.exact) {
+                        if (m.active) {
+                            marker.on("click", () => {
+                                if (selected !== null) {
+                                    selected.setIcon(this.mapMarkerActive);
+                                }
+                                selected = marker;
+                                marker.setIcon(mapMarkerSelected);
+                                this.mapContainer.setAttribute("data-value", JSON.stringify(OpenStreetMap.getMarkerJSON(marker)));
+                            })
                         }
-                        this.mapMarkers.push(marker);
-                        marker.addTo(this.map);
+                    }
+                    this.mapMarkers.push(marker);
+                    marker.addTo(this.map);
                 });
                 if (this.spec.exact === false) {
                     this.drawCircleAndMarkers();

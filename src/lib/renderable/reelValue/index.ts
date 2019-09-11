@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../api';
+import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 
 /**
@@ -41,7 +41,7 @@ export class ReelValue implements IRenderable, IStackeable {
                 this.reelValue.appendChild(document.createTextNode(this.spec.value || ""))
         }
 
-        this.reelValue.setAttribute("value", this.spec.value || "");
+        this.reelValue.setAttribute("data-value", this.spec.value || "");
 
         if (isNested) {
             this.reelValue.classList.add('lto-nested')

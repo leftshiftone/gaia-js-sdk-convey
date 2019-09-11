@@ -6,9 +6,22 @@ import {ChoiceAggregationResult} from "../renderable/submit/ChoiceAggregationRes
 
 export class InputContainer {
 
-    private static ELEMENTS: string = 'input.lto-email, input.lto-phone, input.lto-textInput, div.lto-drop-area, ' +
-        'textarea.lto-textarea, input.lto-spinner, div.lto-camera, input.lto-slider, div.lto-calendar-input, ' +
-        'div.lto-reel, div.lto-code-reader, div.lto-trigger, div.lto-map';
+    public static ELEMENTS = [
+        'div.lto-calendar-input',
+        'div.lto-camera',
+        'div.lto-code-reader',
+        'div.lto-drop-area',
+        'div.lto-map',
+        'div.lto-reel',
+        'div.lto-trigger',
+        'input.lto-email',
+        'input.lto-phone',
+        'input.lto-slider',
+        'input.lto-spinner',
+        'input.lto-textInput',
+        'textarea.lto-textarea',
+    ];
+    private static ELEMENTS_AS_STRING: string = InputContainer.ELEMENTS.join(",");
 
     /**
      * Returns a {@link Promise} containing the attributes of the input elements
@@ -21,7 +34,7 @@ export class InputContainer {
             let attributes = {} as Attr;
             let state: SubmitState = SubmitState.ALLOWED;
 
-            container.querySelectorAll(InputContainer.ELEMENTS).forEach(e => {
+            container.querySelectorAll(this.ELEMENTS_AS_STRING).forEach(e => {
                 const newState = InputContainer.addValuesToAttributes(e as HTMLElement, attributes);
                 if (state == SubmitState.ALLOWED)
                     state = newState
@@ -52,7 +65,7 @@ export class InputContainer {
                     for (const e in attributes) {
                         array.push({[e]: attributes[e]})
                     }
-                    container.setAttribute("value", JSON.stringify(array));
+                    container.setAttribute("data-value", JSON.stringify(array));
                     attributes = {} as Attr;
                     InputContainer.addValuesToAttributes(container, attributes);
                 }
@@ -74,9 +87,9 @@ export class InputContainer {
      * @param attributes
      */
     public static addValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
-        const name = element.getAttribute("name") || "undefined";
-        let value = element.getAttribute("value");
-        const required = JSON.parse(element.dataset.required || "false");
+        const name = InputContainer.getNormalOrDataAttribute(element, "name") || "undefined";
+        const value = InputContainer.getNormalOrDataAttribute(element, "value");
+        const required = InputContainer.getNormalOrDataAttribute(element, "required") || false;
 
         // element value is required but empty
         if (required && !value) {
@@ -85,18 +98,21 @@ export class InputContainer {
         }
 
         // element value is not valid
-        if (element instanceof HTMLInputElement && (element.type == "email" || element.pattern) && !element.checkValidity()) {
+        if (element instanceof HTMLInputElement && !element.checkValidity()) {
             if (!element.classList.contains("lto-error")) element.classList.add("lto-error");
             return SubmitState.SUBMIT_VALIDATION_ERROR;
         }
 
         if (value) {
-            if (/^[\],:{}\s]*$/.test(value!.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-                value = JSON.parse(value!);
+            let preparedValue = value;
+            try {
+                preparedValue = JSON.parse(value);
+            } catch (e) {
+                console.debug(`Unable to parse value as JSON for element ${element}: ${e}`);
             }
             attributes[name] !== undefined ?
-                attributes[name].push(value) :
-                attributes[name] = [value];
+                attributes[name].push(preparedValue) :
+                attributes[name] = [preparedValue];
         }
 
         element.classList.remove("lto-error");
@@ -104,4 +120,12 @@ export class InputContainer {
         return SubmitState.ALLOWED;
     }
 
+    private static getNormalOrDataAttribute(element: HTMLElement, name: string): string | null {
+        if (element.hasAttribute(name)) {
+            return element.getAttribute(name);
+        } else if (element.hasAttribute(`data-${name}`)) {
+            return element.getAttribute(`data-${name}`);
+        }
+        return null;
+    }
 }

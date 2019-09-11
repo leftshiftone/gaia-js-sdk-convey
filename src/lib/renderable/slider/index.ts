@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification,IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 
 /**
@@ -62,7 +62,7 @@ export class Slider implements IRenderable {
             this.slider.oninput = onChange;
             //ie11 compatibility
             this.slider.onchange = onChange;
-            sliderAnchors = this.createSliderAnchors();
+            sliderAnchors = Slider.createSliderAnchors();
 
             sliderAnchors[0].addEventListener("click", () => {
                 if (parseInt(this.slider.value)-1 !>= 0) {
@@ -108,7 +108,7 @@ export class Slider implements IRenderable {
             //ie11 compatibility
             this.slider.onchange = onChange;
 
-            sliderAnchors = this.createSliderAnchors();
+            sliderAnchors = Slider.createSliderAnchors();
 
             sliderAnchors[0].addEventListener("click", () => {
                 if (parseFloat(this.slider.value) !== parseFloat(this.slider.min) && this.slider.getAttribute("value") !== undefined) {
@@ -164,7 +164,7 @@ export class Slider implements IRenderable {
         return this.container;
     }
 
-    private createSliderAnchors() : HTMLAnchorElement [] {
+    private static createSliderAnchors() : HTMLAnchorElement [] {
         const prevLink = document.createElement("a");
         prevLink.classList.add("lto-slider-prev");
         const prevSpan = document.createElement("span");

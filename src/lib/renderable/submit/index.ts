@@ -60,7 +60,8 @@ export class Submit implements IRenderable {
                 });
 
                 Button.cleanupButtons();
-            }).catch(() => {
+            }).catch((reason) => {
+                console.error(`Unable to collect form input data: ${reason}`);
                 return
             })
         });
@@ -71,23 +72,25 @@ export class Submit implements IRenderable {
     public handleOverlay(container: HTMLElement, overlay: HTMLElement) {
         const form = overlay.querySelector(".lto-form") as HTMLFormElement;
         const submit = overlay.querySelector(".lto-submit") as HTMLButtonElement;
-        const trigger = container.querySelector(`.lto-trigger[name="${overlay.getAttribute("name")}"]`);
+        const trigger: HTMLElement | null = container.querySelector(`.lto-trigger[name="${overlay.getAttribute("name")}"]`);
         if (!trigger || !form) return;
         InputContainer.getAll(form, submit).then((attr) => {
             if (Object.keys(attr).length !== 0 && !trigger.classList.contains("lto-success")) {
                 trigger.classList.add("lto-success");
-                trigger.setAttribute("value", JSON.stringify(attr));
+                trigger.setAttribute("data-value", JSON.stringify(attr));
             } else if (Object.keys(attr).length === 0) {
                 trigger.classList.remove("lto-success");
-                trigger.removeAttribute("value")
+                if (trigger.hasAttribute("value"))
+                    trigger.removeAttribute("value");
+                else if (trigger.hasAttribute("data-value"))
+                    trigger.removeAttribute("data-value");
             }
             Overlay.hide(node(overlay));
         }).catch(reason => {
-            console.error("ERROR: " + reason);
+            console.error(`Unable to collect form input data: ${reason}`);
             trigger.classList.remove("lto-success");
         })
     }
-
 }
 
 Renderables.register("submit", Submit);
