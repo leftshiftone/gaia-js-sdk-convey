@@ -1,5 +1,6 @@
 import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
+import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'email' markup element.
@@ -22,7 +23,7 @@ export class Email implements IRenderable {
         email.setAttribute('name', this.spec.name || "");
         email.setAttribute('placeholder', this.spec.placeholder || "");
         email.setAttribute("value", this.spec.value || "");
-        email.setAttribute("required", this.spec.required!.toString() || "false");
+        InputContainer.setRequiredAttribute(email, this.spec.required)
 
         email.classList.add("lto-email", "lto-" + position);
         if (isNested) {

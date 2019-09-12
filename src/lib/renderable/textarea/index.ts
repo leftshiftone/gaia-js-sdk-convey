@@ -1,6 +1,7 @@
 import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 import node from "../../support/node";
+import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'textarea' markup element.
@@ -27,8 +28,8 @@ export class Textarea implements IRenderable {
             name: this.spec.name ? this.spec.name : "",
             placeholder: this.spec.placeholder ? this.spec.placeholder : "",
             class: this.spec.class ? this.spec.class : "",
-            required: this.spec.required
         });
+        InputContainer.setRequiredAttribute(textarea.unwrap(), this.spec.required);
 
         if (this.spec.value) {
             (textarea.unwrap() as HTMLTextAreaElement).value = this.spec.value;

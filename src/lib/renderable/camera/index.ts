@@ -3,6 +3,7 @@ import Renderables from '../Renderables';
 import {drawCanvas} from "../../support/Canvas";
 import {getUserVideoMedia} from "../../support/Navigator";
 import {dataURLToFile, getBase64FromFile} from "../../support/Files";
+import {InputContainer} from "../../support/InputContainer";
 
 let imageCompression: any = null;
 
@@ -31,7 +32,7 @@ export class Camera implements IRenderable, IStackeable {
         const wrapper = document.createElement("div");
         wrapper.classList.add("lto-camera");
         wrapper.setAttribute("name", this.spec.name || "");
-        wrapper.setAttribute("data-required", this.spec.required!.toString() || "false");
+        InputContainer.setRequiredAttribute(wrapper, this.spec.required);
         const error = document.createElement("div");
         error.classList.add("lto-error");
         error.style.display = "none";

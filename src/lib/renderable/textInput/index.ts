@@ -1,5 +1,6 @@
 import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
+import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'textInput' markup element.
@@ -23,7 +24,7 @@ export class TextInput implements IRenderable {
         textInput.setAttribute("name", this.spec.name || "");
         textInput.setAttribute("placeholder", this.spec.placeholder || "");
         textInput.setAttribute("value", this.spec.value || "");
-        textInput.setAttribute("required", this.spec.required!.toString() || "false");
+        InputContainer.setRequiredAttribute(textInput, this.spec.required);
         textInput.classList.add("lto-textInput", "lto-" + position);
         if (isNested) {
             textInput.classList.add("lto-nested")

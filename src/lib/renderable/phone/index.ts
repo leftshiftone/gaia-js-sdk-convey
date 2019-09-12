@@ -1,6 +1,7 @@
-import {IRenderer, ISpecification, IRenderable} from '../../api';
+import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 import node from "../../support/node";
+import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'phone' markup element.
@@ -16,18 +17,14 @@ export class Phone implements IRenderable {
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const phone = node('input');
+        phone.addClasses("lto-phone", "lto-" + position);
         phone.addAttributes({
             type: "tel",
             placeholder: this.spec.placeholder || "",
             name: this.spec.name || "",
             value: this.spec.value || "",
         });
-
-        phone.addDataAttributes({
-            required: this.spec.required || "false"
-        });
-
-        phone.addClasses("lto-phone", "lto-" + position);
+        InputContainer.setRequiredAttribute(phone.unwrap(), this.spec.required)
 
         if (isNested)
             phone.addClasses("lto-nested");

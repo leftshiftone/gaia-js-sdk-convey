@@ -36,6 +36,7 @@ export class InputContainer {
 
             container.querySelectorAll(this.ELEMENTS_AS_STRING).forEach(e => {
                 const newState = InputContainer.addValuesToAttributes(e as HTMLElement, attributes);
+                console.debug(`State is ${newState}`);
                 if (state == SubmitState.ALLOWED)
                     state = newState
             });
@@ -43,9 +44,11 @@ export class InputContainer {
             const choiceContainers = container.querySelectorAll(`div.${ChoiceContainer.CSS_BASE_CLASS}`);
             if (choiceContainers.length > 0) {
                 const result: ChoiceAggregationResult = ChoiceAggregator.aggregate(choiceContainers);
-                result.state === SubmitState.SUBMIT_REQUIRED_ERROR ?
-                    state = SubmitState.SUBMIT_REQUIRED_ERROR :
+                if (result.state === SubmitState.SUBMIT_REQUIRED_ERROR) {
+                    state = SubmitState.SUBMIT_REQUIRED_ERROR
+                } else {
                     Object.assign(attributes, result.attributes)
+                }
             } else {
                 container.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
                     InputContainer.addValuesToAttributes(checkbox as HTMLElement, attributes);
@@ -89,16 +92,19 @@ export class InputContainer {
     public static addValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
         const name = InputContainer.getNormalOrDataAttribute(element, "name") || "undefined";
         const value = InputContainer.getNormalOrDataAttribute(element, "value");
-        const required = InputContainer.getNormalOrDataAttribute(element, "required") == "true";
+        const required = InputContainer.getRequiredAttribute(element);
+
 
         // element value is required but empty
         if (required && !value) {
             if (!element.classList.contains("lto-error")) element.classList.add("lto-error");
+            console.warn("Input is required");
             return SubmitState.SUBMIT_REQUIRED_ERROR;
         }
 
         // element value is not valid
         if (element instanceof HTMLInputElement && !element.checkValidity()) {
+            console.warn("Input is not valid");
             if (!element.classList.contains("lto-error")) element.classList.add("lto-error");
             return SubmitState.SUBMIT_VALIDATION_ERROR;
         }
@@ -116,7 +122,6 @@ export class InputContainer {
         }
 
         element.classList.remove("lto-error");
-
         return SubmitState.ALLOWED;
     }
 
@@ -127,5 +132,29 @@ export class InputContainer {
             return element.getAttribute(`data-${name}`);
         }
         return null;
+    }
+
+    private static getRequiredAttribute(element: HTMLElement): boolean {
+        const requiredAttribute = "required";
+        if (element.hasAttribute(requiredAttribute)) {
+            return true
+        } else if (element.hasAttribute("data-required")) {
+            return element.getAttribute(`data-${requiredAttribute}`) == "true"
+        }
+        return false;
+    }
+
+    public static setRequiredAttribute(element: HTMLElement, required: string | boolean | null | undefined) {
+        if (!required) {
+            return;
+        }
+
+        if (required == "true" || required == true) {
+            if (element.tagName.toLowerCase() == "input" || element.tagName.toLowerCase() == "textarea") {
+                element.setAttribute("required", "required");
+                return;
+            }
+            element.setAttribute("data-required", "true");
+        }
     }
 }

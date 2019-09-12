@@ -1,6 +1,7 @@
-import {IRenderer, ISpecification,IStackeable} from "../../api";
+import {IRenderer, ISpecification, IStackeable} from "../../api";
 import node from "../../support/node";
 import {ChoiceMutator} from "./ChoiceMutator";
+import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Abstract choice container can be either multiple choice or single choice
@@ -25,8 +26,8 @@ export abstract class ChoiceContainer implements IStackeable {
         container.addDataAttributes({
             sieve: `${this.spec.sieve}`,
             name: `${this.spec.name}`,
-            required: `${this.spec.required}`
         });
+        InputContainer.setRequiredAttribute(container.unwrap(), this.spec.required);
 
         const children = this.spec.elements || [];
 
@@ -51,7 +52,6 @@ export abstract class ChoiceContainer implements IStackeable {
      * Attached to class list of the container element
      */
     abstract cssClassName(): string;
-
 
 
     private static unwrap(e: HTMLElement[]): HTMLElement | undefined {

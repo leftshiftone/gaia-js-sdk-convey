@@ -1,6 +1,7 @@
 import {IRenderable, IRenderer, ISpecification} from '../../api';
 import Renderables from '../Renderables';
 import {getBase64FromFile, getFileExtensionFromFile, isImageFile} from "../../support/Files";
+import {InputContainer} from "../../support/InputContainer";
 
 let imageCompression: any = null;
 
@@ -42,7 +43,7 @@ export class Upload implements IRenderable {
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
-        this.dropArea.setAttribute("data-required", this.spec.required!.toString() || "false");
+        InputContainer.setRequiredAttribute(this.dropArea, this.spec.required);
         const upload = document.createElement("input");
         const uploadLabel = document.createElement("label");
         const textSpan = document.createElement("span");

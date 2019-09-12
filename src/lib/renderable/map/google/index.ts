@@ -2,7 +2,7 @@ import {ISpecification} from "../../../api";
 import Properties from "../../Properties";
 import node, {INode} from "../../../support/node";
 import {IMarker} from "../IMarker";
-
+import {InputContainer} from "../../../support/InputContainer";
 import Map = google.maps.Map;
 import LatLng = google.maps.LatLng;
 
@@ -26,8 +26,9 @@ export class GoogleMap {
         this.wrapper.addClasses("lto-map", "lto-map-google", "lto-left");
         this.wrapper.setId(this.spec.id);
         this.wrapper.setName(this.spec.name);
-        this.wrapper.addDataAttributes({required: this.spec.required || "true"});
-        this.spec.class !== undefined ? this.wrapper.addClasses(this.spec.class) : () => {};
+        InputContainer.setRequiredAttribute(this.wrapper.unwrap(), this.spec.required);
+        if (this.spec.class !== undefined)
+            this.wrapper.addClasses(this.spec.class);
         this.includeScript();
         return this.wrapper.unwrap();
     }
@@ -92,9 +93,9 @@ export class GoogleMap {
     }
 
     public setMarkersToValue() {
-        const selectedMarkers: Array<{position: LatLng, meta: any}> = [];
+        const selectedMarkers: Array<{ position: LatLng, meta: any }> = [];
         this.markers.forEach(marker => {
-            if(marker.get("active"))
+            if (marker.get("active"))
                 selectedMarkers.push({position: marker.getPosition()!, meta: marker.get("meta")});
         });
 
