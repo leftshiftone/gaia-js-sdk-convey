@@ -89,7 +89,7 @@ export class InputContainer {
     public static addValuesToAttributes(element: HTMLElement, attributes: Attr): SubmitState {
         const name = InputContainer.getNormalOrDataAttribute(element, "name") || "undefined";
         const value = InputContainer.getNormalOrDataAttribute(element, "value");
-        const required = InputContainer.getNormalOrDataAttribute(element, "required") || false;
+        const required = InputContainer.getNormalOrDataAttribute(element, "required") == "true";
 
         // element value is required but empty
         if (required && !value) {
