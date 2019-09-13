@@ -5,8 +5,9 @@ import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Abstract choice container can be either multiple choice or single choice
- * @author benjamin.krenn@leftshift.one - 5/9/19.
+ *
  * @since 0.23.0
+ * @see {@link IRenderable}
  */
 export abstract class ChoiceContainer implements IStackeable {
     private readonly spec: ISpecification;

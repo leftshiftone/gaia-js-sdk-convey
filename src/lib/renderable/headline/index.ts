@@ -3,6 +3,10 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'headline' markup element.
+ * Create a h2 HTML element is created and the class
+ * lto-headline is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Headline implements IRenderable {
 

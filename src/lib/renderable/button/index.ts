@@ -4,6 +4,12 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'button' markup element.
+ * A HTML button element is created with type button and
+ * if given in the markup its name, text and value. The
+ * class lto-button is added to allow CSS modifications.
+ * For form submit buttons we refer to @see {@link Submit}
+ *
+ * @see {@link IRenderable}
  */
 export class Button implements IRenderable {
 

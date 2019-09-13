@@ -4,9 +4,10 @@ import node from "../../support/node";
 /**
  * Represents either a checkbox (multiple choice) or a radio button (single choice) element.
  *
- * @see RadioChoice && CheckboxChoice
+ * @see {@link RadioChoice}
+ * @see {@link CheckboxChoice}
+ * @see {@link IRenderable}
  *
- * @author benjamin.krenn@leftshift.one - 5/9/19.
  * @since 0.23.0
  */
 export abstract class Choice implements IRenderable {

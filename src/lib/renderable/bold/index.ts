@@ -2,7 +2,11 @@ import {IRenderer, ISpecification, IRenderable} from '../../api';
 import Renderables from '../Renderables';
 
 /**
- * Implementation of the 'bold' markup element.
+ * Implementation of the 'bold' markup element. A
+ * b HTML element is created and the lto-bold class
+ * is added to allow CSS modifications.
+ *
+ * @see {@link IRenderable}
  */
 export class Bold implements IRenderable {
 

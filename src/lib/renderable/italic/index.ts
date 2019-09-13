@@ -4,6 +4,11 @@ import node from "../../support/node";
 
 /**
  * Implementation of the 'italic' markup element.
+ * An i HTML element is created, the attributes id and
+ * text from the markup applied and the class
+ * lto-italic is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Italic implements IRenderable {
 

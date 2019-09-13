@@ -6,8 +6,20 @@ if (typeof document !== "undefined" && typeof window !== "undefined") {
     qrCodeReader = require("@zxing/library/esm5/browser/BrowserQRCodeReader");
 }
 
+/**
+ * The scanner class provides functionality to scan
+ * codes.
+ *
+ * @see {@link CodeReader}
+ */
 export class Scanner {
 
+    /**
+     * Scan a QR code using the BrowserQRCodeReader
+     * library.
+     *
+     * @param deviceId
+     */
     public static scanQRCodeFromDevice(deviceId: string) {
         if (qrCodeReader !== null) {
             const {BrowserQRCodeReader} = qrCodeReader;
@@ -20,6 +32,12 @@ export class Scanner {
         return null
     }
 
+    /**
+     * Scan a barcode using the BrowserBarcodeReader
+     * library.
+     *
+     * @param deviceId
+     */
     public static scanBarCodeFromDevice(deviceId: string) {
         if (barcodeReader !== null) {
             const {BrowserBarcodeReader} = barcodeReader;

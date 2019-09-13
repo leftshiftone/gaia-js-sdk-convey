@@ -4,6 +4,14 @@ import node from "../../support/node";
 
 /**
  * Implementation of the 'items' markup element.
+ * An ol or ul HTML element is created depending if
+ * the items of the item section requires ordering.
+ * The attribute id of the markup is applied and the
+ * class lto-items is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
+ * @see {@link Item}
  */
 export class Items implements IRenderable, IStackeable {
 

@@ -3,7 +3,12 @@ import Renderables from '../Renderables';
 import {Timestamp} from '../timestamp';
 
 /**
- * Implementation of the 'block' markup element.
+ * Implementation of the 'block' markup element. A div HTML element
+ * is created and the and the classes lto-block is added to
+ * allow CSS modifications.
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
  */
 export class Block implements IRenderable, IStackeable {
 
