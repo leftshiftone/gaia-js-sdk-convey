@@ -61,14 +61,14 @@ export class Sunburst {
             .sum((d) => d.size)
             .sort((a: any, b: any) => b.value - a.value);
 
-        const nodes = partition(root).descendants().filter((d) => (d.x1 - d.x0 > 0.005));
+        const nodes = partition(root).descendants().filter((d) => (d.x1 - d.x0 > this.options.filter));
 
         const path = vis.data([data]).selectAll("path")
             .data(nodes)
             .enter().append("svg:path")
             .attr("display", (d) => d.depth ? null : "none")
             .attr("d", arc)
-            .attr("class", (d: any) => `lto-vis-${getDigit(this.idMap, d.data.name)} lto-vis-${getLetter(this.idMap, d.data.name)}`)
+            .attr("class", (d: any) => `lto-vis-${getDigit(this.idMap, d.data.name)} lto-vis-${getLetter(this.idMap, d.data.name)} ${d.data.class || ""}`)
             .attr("fill-rule", "evenodd")
             .on("mouseover", (d) => this.mouseover(d, vis, this.totalSize, element));
         path
