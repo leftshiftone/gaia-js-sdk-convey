@@ -1,3 +1,6 @@
+/**
+ * Supported GAIA channel types.
+ */
 export enum ChannelType {
     NOTIFICATION = "NOTIFICATION",
     CONTEXT = "CONTEXT",
