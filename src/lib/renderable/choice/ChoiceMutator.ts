@@ -6,6 +6,7 @@ export class ChoiceMutator {
      * Mutates choice elements depending on the concrete container implementation
      * singleChoiceContainer => radioChoice
      * multipleChoiceContainer => checkboxChoice
+     *
      * @param elements
      * @param type
      */

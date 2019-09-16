@@ -2,6 +2,13 @@ import {IRenderer,IRenderable} from '../../api';
 
 /**
  * Implementation of the 'overlay' markup element.
+ * An overlay always has to be a part of an overlays element. A
+ * div HTML element is created containing an additional div
+ * element for the overlay content and a button for the interaction.
+ * The class lto-overlay is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link Overlays}
  */
 export class Overlay implements IRenderable {
 

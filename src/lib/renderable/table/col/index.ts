@@ -1,6 +1,16 @@
 import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../../api';
 import Renderables from '../../Renderables';
 
+/**
+ * Implementation of the 'td' markup element.
+ * A td HTML element is created and the class
+ * lto-col is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
+ * @see {@link Table}
+ * @see {@link Row}
+ */
 export class Col implements IRenderable, IStackeable {
 
     public spec: ISpecification;

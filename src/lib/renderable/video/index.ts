@@ -4,6 +4,11 @@ import node from "../../support/node";
 
 /**
  * Implementation of the 'video' markup element.
+ * A video HTML element is created and the given attributes
+ * id and src are applied from the markup. The lto-video
+ * class is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Video implements IRenderable {
 

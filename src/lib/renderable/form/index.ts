@@ -4,6 +4,12 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'form' markup element.
+ * A form HTML element is created and the class
+ * lto-form is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
+ * @see {@link Submit}
  */
 export class Form implements IRenderable, IStackeable {
 

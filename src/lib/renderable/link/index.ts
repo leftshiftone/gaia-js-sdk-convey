@@ -2,7 +2,12 @@ import {IRenderer, ISpecification, IRenderable} from '../../api';
 import Renderables from '../Renderables';
 
 /**
- * Implementation of the 'link' markup element.
+ * Implementation of the 'link' markup element. An
+ * a HTML element is created and the given attributes
+ * for href and target are taken over from the markup. The
+ * class lto-link is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Link implements IRenderable {
 

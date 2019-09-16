@@ -4,6 +4,14 @@ import Renderables from "../Renderables";
 import {OpenStreetMap} from "./osm";
 import {GoogleMap} from "./google";
 
+/**
+ * Implementation of the 'map' markup element and has been
+ * added to provide the integration of google maps or open
+ * street map depending on the value of the mapType attribute
+ * in the markup.
+ *
+ * @see {@link IRenderable}
+ */
 export class Map implements IRenderable {
 
     public spec: ISpecification;

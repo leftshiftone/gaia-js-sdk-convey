@@ -4,6 +4,11 @@ import node from "../../support/node";
 
 /**
  * Implementation of the 'item' markup element.
+ * A li HTML element is created and the class lto-item
+ * is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link Items}
  */
 export class Item implements IRenderable {
 

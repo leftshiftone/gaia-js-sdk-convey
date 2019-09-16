@@ -3,6 +3,16 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'container' type markup element.
+ * The container markup element is always the top element
+ * of each process step.
+ *
+ * A div HTML element is created and the class lto-container
+ * is added to allow CSS manipulations. Additionally, if the
+ * rendered markup elements contains the class lto-suggestions
+ * a suggestion element is crated.
+ *
+ * @see {@link Suggestion}
+ * @see {@link IRenderable}
  */
 export class Container implements IRenderable {
 

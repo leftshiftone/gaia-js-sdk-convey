@@ -5,6 +5,11 @@ import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'phone' markup element.
+ * An input HTML element is created and the given attributes name and
+ * value are taken over from the markup. The class lto-phone is added
+ * to allow CSS manipulations and a change listener is added.
+ *
+ * @see {@link IRenderable}
  */
 export class Phone implements IRenderable {
 

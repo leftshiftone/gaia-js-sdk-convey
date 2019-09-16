@@ -4,8 +4,13 @@ import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'textInput' markup element.
+ * An input HTML element of type text is created and
+ * the given attributes name, placeholder and value from
+ * the markup are applied. The class lto-textInput is
+ * added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
-// FIXME: rename to text
 export class TextInput implements IRenderable {
 
     private readonly spec: ISpecification;

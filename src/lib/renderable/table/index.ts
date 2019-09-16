@@ -5,6 +5,13 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'table' markup element.
+ * A table HTML element is created and the class
+ * lto-table is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
+ * @see {@link Col}
+ * @see {@link Row}
  */
 export class Table implements IRenderable, IStackeable {
 

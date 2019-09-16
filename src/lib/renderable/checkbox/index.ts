@@ -4,6 +4,10 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'checkbox' markup language.
+ * An input HTML element is created of type checkbox. The
+ * lto-checkbox class is added to allow CSS modifications.
+ *
+ * @see {@link IRenderable}
  */
 export class Checkbox implements IRenderable {
 

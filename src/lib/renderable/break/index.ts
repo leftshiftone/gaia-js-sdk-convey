@@ -3,6 +3,9 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'break' markup element.
+ * A br HTML element is created.
+ *
+ * @see {@link IRenderable}
  */
 export class Break implements IRenderable {
 

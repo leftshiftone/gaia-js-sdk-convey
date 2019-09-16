@@ -8,6 +8,12 @@ import {drawCanvas} from "../../support/Canvas";
 
 /**
  * Implementation of the 'codeReader' markup element.
+ * Creates an HTML canvas element that allows the scanning of
+ * media elements using a media stream e.g. QR codes @see {@link Scanner}
+ * The class lto-code-reader is added to allow CSS
+ * manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class CodeReader implements IRenderable {
 

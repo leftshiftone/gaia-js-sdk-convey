@@ -7,6 +7,15 @@ import {InputContainer} from "../../support/InputContainer";
 import {Overlay} from "../overlays/Overlay";
 import node from "../../support/node";
 
+/**
+ * Implementation of the 'submit' markup element.
+ * A button HTML element is created of type submit and has to be
+ * part of a form element in the markup. The class
+ * lto-submit is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link Form}
+ */
 export class Submit implements IRenderable {
 
     private readonly spec: ISpecification;

@@ -3,6 +3,15 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'slider' markup element.
+ * A input HTML element of type range is used to create a
+ * slider element. The classes lto-slider-min, lto-slider-max,
+ * lto-slider-value and lto-slider-step and their values
+ * are taken over from the markup. The slider anchors is an
+ * additional possibility to control the slider and can
+ * be accessed using the lto-slider-prev and lto-slider-next
+ * classes.
+ *
+ * @see {@link IRenderable}
  */
 export class Slider implements IRenderable {
 
