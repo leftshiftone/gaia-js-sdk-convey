@@ -2,7 +2,14 @@ import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../../api'
 import Renderables from '../../Renderables';
 
 /**
- * Implementation of the 'row' markup element.
+ * Implementation of the 'tr' markup element.
+ * A tr HTML element is created and the class
+ * lto-row is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
+ * @see {@link Table}
+ * @see {@link Col}
  */
 export class Row implements IRenderable, IStackeable {
 

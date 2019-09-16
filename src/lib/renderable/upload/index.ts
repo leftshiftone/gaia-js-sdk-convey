@@ -10,8 +10,17 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * The Upload renderable is used to upload files and also includes an image compression
- * for jpg and png files.
+ * Implementation of the 'upload' markup element.
+ * Multiple HTML elements are used to create an upload drop area.
+ * For CSS manipulations the following classes are added:
+ *  lto-upload-error-label: text for error messages
+ *  lto-upload-file-label: upload file text
+ *  lto-upload-file-extension-label: file extension text label
+ *  lto-upload-size-label: file size text label
+ *  lto-upload-text-label: upload file text label
+ *  lto-upload: general CSS upload class
+ *
+ * @see {@link IRenderable}
  */
 export class Upload implements IRenderable {
 

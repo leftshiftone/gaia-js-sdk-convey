@@ -1,3 +1,9 @@
+/**
+ * The Timestamp class creates an small HTML element
+ * and adds the current date and time to it. The class
+ * lto-timestamp is added to allow CSS manipulations.
+ *
+ */
 export class Timestamp {
 
     public static render() {

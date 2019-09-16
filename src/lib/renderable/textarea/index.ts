@@ -5,6 +5,11 @@ import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'textarea' markup element.
+ * A textarea HTML element is created and the given
+ * attributes cols, rows, id, name, placeholder and class are applied.
+ * The class lto-textarea is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Textarea implements IRenderable {
 

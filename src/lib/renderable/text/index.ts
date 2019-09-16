@@ -5,8 +5,13 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'text' markup element.
+ * A div HTML element is crated and if the attributes
+ * text and icon are set, they are applied.
+ * The class lto-text is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link Icon}
  */
-// FIXME: rename to label
 export class Text implements IRenderable {
 
     private readonly spec: ISpecification;

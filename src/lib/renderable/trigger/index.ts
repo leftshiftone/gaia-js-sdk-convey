@@ -5,6 +5,12 @@ import {Overlay} from "../overlays/Overlay";
 
 /**
  * Implementation of the 'trigger' markup element.
+ * A div HTML element is created and the attributes id,
+ * name and text from the markup are applied. The class
+ * lto-trigger is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
+ * @see {@link Overlay}
  */
 export class Trigger implements IRenderable {
 
