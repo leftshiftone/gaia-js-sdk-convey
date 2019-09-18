@@ -3,12 +3,6 @@ import Renderables from '../Renderables';
 import {getBase64FromFile, getFileExtensionFromFile, isImageFile} from "../../support/Files";
 import {InputContainer} from "../../support/InputContainer";
 
-let imageCompression: any = null;
-
-if (typeof window !== "undefined") {
-    imageCompression = require("browser-image-compression/dist/browser-image-compression");
-}
-
 /**
  * Implementation of the 'upload' markup element.
  * Multiple HTML elements are used to create an upload drop area.
@@ -140,20 +134,21 @@ export class Upload implements IRenderable {
             .then(data => this.setDataToValue(data, file))
             .then(() => this.setSuccessClass())
             .catch(reason => {
-                console.error("ERROR: " + reason);
+                console.error(`Unable to get file: ${reason}`);
                 this.removeSuccessClass();
             });
     }
 
     public doValidateCompressAndGetBase64(file: File) {
-        this.getCompressedImage(file)
-            .then(compressedFile => getBase64FromFile(compressedFile))
-            .then(data => this.setDataToValue(data, file))
+        this.compressImage(file)
+            .then((compressedFile: File) => {
+                console.debug(`Compressed object is instanceof Blob: ${compressedFile instanceof Blob}`);
+                console.info(`Compressed to size ${compressedFile.size / 1024 / 1024} MB`);
+                return getBase64FromFile(compressedFile);
+            })
+            .then(base64Data => this.setDataToValue(base64Data, file))
             .then(() => this.setSuccessClass())
-            .catch(reason => {
-                console.error("ERROR: " + reason);
-                this.removeSuccessClass();
-            });
+            .catch(reason => console.error(`Unable to compress file: ${reason}`));
     }
 
     public setSuccessClass() {
@@ -166,30 +161,29 @@ export class Upload implements IRenderable {
         this.dropArea.classList.remove("lto-success");
     }
 
-    public setDataToValue(data: any, file: any) {
+    public setDataToValue(data: string, file: File) {
         this.dropArea.setAttribute("data-value", JSON.stringify({
-            data: data.toString().split(",")[1],
+            data: data.split(",")[1],
             fileExtension: getFileExtensionFromFile(file),
             fileName: file.name,
             mimeType: file.type
         }));
     }
 
-    public async getCompressedImage(file: File): Promise<File> {
+    private async compressImage(file: File): Promise<File> {
+        console.info(`Attempt to comress file with max. compress size ${this.spec.maxCompressSize}`);
+
+        let imageCompression = typeof window !== "undefined" ? require("browser-image-compression/dist/browser-image-compression") : null;
+        if (!imageCompression) {
+            console.error("Image compression is not available; returning uncompressed file");
+            return file;
+        }
         const options = {
             maxSizeMB: this.spec.maxCompressSize,
             useWebWorker: false,
             maxWidthOrHeight: 974
         };
-
-        if (imageCompression) {
-            const compressedFile = await imageCompression.default(file, options);
-            //console.debug('Compressed image is of type Blob', compressedFile instanceof Blob);
-            console.debug(`Compressed image size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-            return compressedFile;
-        }
-
-        return file;
+        return imageCompression(file, options);
     }
 
     public setFileNameToSpan(name: string) {

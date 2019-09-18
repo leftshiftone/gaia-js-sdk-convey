@@ -2,14 +2,8 @@ import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 import {drawCanvas} from "../../support/Canvas";
 import {getUserVideoMedia} from "../../support/Navigator";
-import {dataURLToFile, getBase64FromFile} from "../../support/Files";
+import {getBase64FromFile} from "../../support/Files";
 import {InputContainer} from "../../support/InputContainer";
-
-let imageCompression: any = null;
-
-if (typeof window !== "undefined") {
-    imageCompression = require("browser-image-compression/dist/browser-image-compression");
-}
 
 /**
  * Implementation of the 'camera' markup element.
@@ -128,7 +122,8 @@ export class Camera implements IRenderable, IStackeable {
 
             if (this.spec.maxCompressSize) {
                 console.info(`Using image compression with ${this.spec.maxCompressSize}MB`);
-                this.compressCameraImage(canvas, wrapper);
+                this.compressCameraImage(canvas, wrapper)
+                    .catch(reason => console.error(`Unable to compress image: ${reason}`));
             }
 
             this.activateResetButton(wrapper);
@@ -138,34 +133,34 @@ export class Camera implements IRenderable, IStackeable {
     }
 
     private async compressCameraImage(canvas: HTMLCanvasElement, wrapper: HTMLDivElement) {
+        console.info(`Attempt to comress image with max. compress size ${this.spec.maxCompressSize}`);
 
-        let uncompressedFile = dataURLToFile(canvas.toDataURL().split(",")[1], "uncompressedPhoto");
+        let imageCompression = typeof window !== "undefined" ? require("browser-image-compression/dist/browser-image-compression") : null;
+        if (!imageCompression) return;
 
-        if (uncompressedFile && imageCompression &&
-            this.spec.maxCompressSize && uncompressedFile.size > this.spec.maxCompressSize) {
+        (imageCompression.getFilefromDataUrl(canvas.toDataURL()) as Promise<File>)
+            .then((uncompressedFile: File) => {
+                console.debug("Got file from data url");
+                if (!uncompressedFile) return;
 
-            const options = {
-                maxSizeMB: this.spec.maxCompressSize,
-                useWebWorker: false,
-                maxWidthOrHeight: 974
-            };
+                const options = {
+                    maxSizeMB: this.spec.maxCompressSize,
+                    useWebWorker: false,
+                    maxWidthOrHeight: 974
+                };
+                imageCompression(uncompressedFile, options)
+                    .then((compressedFile: File) => {
+                        console.debug(`Compressed object is instanceof Blob: ${compressedFile instanceof Blob}`);
+                        console.info(`Compressed to size ${compressedFile.size / 1024 / 1024} MB`);
 
-            console.debug(`Uncompressed image size: ${uncompressedFile.size / 1024 / 1024} MB`);
-
-            const compressedFile = await imageCompression.default(uncompressedFile, options);
-            //console.debug('Compressed image is of type Blob', compressedFile instanceof Blob);
-            console.debug(`Compressed image size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-
-            getBase64FromFile(compressedFile)
-                .then(data => {
-                    wrapper.setAttribute("data-value", JSON.stringify({
-                        data: data.toString().split(",")[1],
-                        fileExtension: "png",
-                        fileName: "compressedPhoto",
-                        mimeType: "image/png"
-                    }))
-                }).catch(reason => console.error("ERROR: " + reason));
-        }
+                        wrapper.setAttribute("value", JSON.stringify({
+                            data: getBase64FromFile(compressedFile),
+                            fileExtension: "png",
+                            mimeType: "image/png"
+                        }));
+                    }).catch((reason: any) => console.error(`Unable to compress file: ${reason}`));
+            })
+            .catch(reason => console.error(`Unable to get file from data url: ${reason}`));
     }
 
     private activateResetButton(wrapper: HTMLDivElement) {
