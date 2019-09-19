@@ -148,7 +148,7 @@ export class Camera implements IRenderable, IStackeable {
                     useWebWorker: false,
                     maxWidthOrHeight: 974
                 };
-                imageCompression(uncompressedFile, options)
+                imageCompression.default(uncompressedFile, options)
                     .then((compressedFile: File) => {
                         console.debug(`Compressed object is instanceof Blob: ${compressedFile instanceof Blob}`);
                         console.info(`Compressed to size ${compressedFile.size / 1024 / 1024} MB`);

@@ -183,7 +183,7 @@ export class Upload implements IRenderable {
             useWebWorker: false,
             maxWidthOrHeight: 974
         };
-        return imageCompression(file, options);
+        return imageCompression.default(file, options);
     }
 
     public setFileNameToSpan(name: string) {
