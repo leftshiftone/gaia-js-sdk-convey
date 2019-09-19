@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../api';
+import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 import EventStream from "../../event/EventStream";
 
@@ -12,6 +12,7 @@ export class Selection implements IRenderable, IStackeable {
     private readonly numOfBlocks: number;
     private values: Array<any> = [];
     private isPublished: boolean = false;
+    private animationDuration = 300;
 
     constructor(message: ISpecification) {
         this.spec = message;
@@ -56,14 +57,14 @@ export class Selection implements IRenderable, IStackeable {
                     block.classList.add("lto-animate-right");
                     this.values.push({[block.getAttribute("name") || ""]: "right"});
                 }
-
-                setTimeout(() => (block as HTMLElement).style.display = "none", 300);
+                setTimeout(() => (block as HTMLElement).style.display = "none", this.animationDuration);
 
                 if (++publishedBlocks === this.numOfBlocks) {
-                    this.setFinished();
-
                     // wait till animation is finished
-                    setTimeout(() => this.publish(), 300);
+                    setTimeout(() => {
+                        this.setFinished();
+                        this.publish();
+                    }, this.animationDuration);
                 }
             })
         });
