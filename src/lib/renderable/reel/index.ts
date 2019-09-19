@@ -53,7 +53,8 @@ export class Reel implements IRenderable, IStackeable {
             (child as HTMLElement).classList.add("lto-passive");
         });
 
-        this.container.children[0].classList.replace("lto-passive", "lto-active");
+        this.container.children[0].classList.remove("lto-passive");
+        this.container.children[0].classList.add("lto-active");
 
         if (isNested) {
             this.reel.classList.add('lto-nested')
@@ -77,7 +78,8 @@ export class Reel implements IRenderable, IStackeable {
             (child as HTMLElement).classList.remove("lto-passive", "lto-active");
             (child as HTMLElement).classList.add("lto-passive");
         });
-        this.container.children[this.counter].classList.replace("lto-passive", "lto-active");
+        this.container.children[this.counter].classList.remove("lto-passive");
+        this.container.children[this.counter].classList.add("lto-active");
     }
 
     public previous() {
@@ -89,7 +91,8 @@ export class Reel implements IRenderable, IStackeable {
             (child as HTMLElement).classList.remove("lto-passive", "lto-active");
             (child as HTMLElement).classList.add("lto-passive");
         });
-        this.container.children[this.counter].classList.replace("lto-passive", "lto-active");
+        this.container.children[this.counter].classList.remove("lto-passive");
+        this.container.children[this.counter].classList.add("lto-active");
     }
 
     private setValueToReel(value: any) {

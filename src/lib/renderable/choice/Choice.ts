@@ -1,4 +1,4 @@
-import {IRenderer, ISpecification,IRenderable} from "../../api";
+import {IRenderable, IRenderer, ISpecification} from "../../api";
 import node from "../../support/node";
 
 /**
@@ -39,7 +39,8 @@ export abstract class Choice implements IRenderable {
             label.unwrap().classList.add("lto-toggle", "lto-checked");
         }
 
-        this.spec.class !== undefined ? label.addClasses(this.spec.class) : () => {};
+        this.spec.class !== undefined ? label.addClasses(this.spec.class) : () => {
+        };
         if (this.inputType() === "radio") {
             input.unwrap().addEventListener("click", () => {
                 label.unwrap().parentElement!.parentElement!.querySelectorAll('input[name=' + input.unwrap().getAttribute("name") + ']').forEach(e => {
@@ -51,10 +52,12 @@ export abstract class Choice implements IRenderable {
             });
         } else {
             input.unwrap().addEventListener("click", () => {
-                if(label.containsClass("lto-checked")) {
-                    label.unwrap().classList.replace("lto-checked", "lto-unchecked");
-                } else if(label.containsClass("lto-unchecked")) {
-                    label.unwrap().classList.replace("lto-unchecked", "lto-checked");
+                if (label.containsClass("lto-checked")) {
+                    label.unwrap().classList.remove("lto-checked");
+                    label.unwrap().classList.add("lto-unchecked");
+                } else if (label.containsClass("lto-unchecked")) {
+                    label.unwrap().classList.remove("lto-unchecked");
+                    label.unwrap().classList.add("lto-checked");
                 } else {
                     label.addClasses("lto-checked");
                 }

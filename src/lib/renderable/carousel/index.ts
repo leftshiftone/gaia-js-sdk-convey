@@ -1,6 +1,6 @@
-import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../api';
+import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
-import EventStream from "../../event/EventStream";
+import EventStream from '../../event/EventStream';
 
 export class Carousel implements IRenderable, IStackeable {
 
@@ -11,7 +11,7 @@ export class Carousel implements IRenderable, IStackeable {
     constructor(message: ISpecification) {
         this.spec = message;
         this.cellContainer = document.createElement("div");
-        this.carousel = document.createElement('div');
+        this.carousel = document.createElement("div");
     }
 
     /**
@@ -81,9 +81,11 @@ export class Carousel implements IRenderable, IStackeable {
     private init(current: number) {
         this.resetCells();
         EventStream.emit("GAIA::carousel", current);
-        this.cellContainer.children[current].classList.replace("lto-not-visible-item", "lto-center-item");
+        this.cellContainer.children[current].classList.remove("lto-not-visible-item");
+        this.cellContainer.children[current].classList.add("lto-not-visible-item");
         if (current + 1 < this.cellContainer.children.length) {
-            this.cellContainer.children[current + 1].classList.replace("lto-not-visible-item", "lto-next-item");
+            this.cellContainer.children[current + 1].classList.remove("lto-not-visible-item");
+            this.cellContainer.children[current + 1].classList.add("lto-next-item");
         }
         setTimeout(() => this.carousel.style.height = (this.cellContainer.children[current] as HTMLElement).scrollHeight + "px", 1);
     }
@@ -94,11 +96,14 @@ export class Carousel implements IRenderable, IStackeable {
         current + 1 === this.cellContainer.children.length ? current = 0 : current++;
         EventStream.emit("GAIA::carousel", current);
         if (current > 0) {
-            this.cellContainer.children[current - 1].classList.replace("lto-not-visible-item", "lto-previous-item");
+            this.cellContainer.children[current - 1].classList.remove("lto-not-visible-item");
+            this.cellContainer.children[current - 1].classList.add("lto-previous-item");
         }
-        this.cellContainer.children[current].classList.replace("lto-not-visible-item", "lto-center-item");
+        this.cellContainer.children[current].classList.remove("lto-not-visible-item");
+        this.cellContainer.children[current].classList.add("lto-center-item");
         if (current + 1 < this.cellContainer.children.length) {
-            this.cellContainer.children[current + 1].classList.replace("lto-not-visible-item", "lto-next-item");
+            this.cellContainer.children[current + 1].classList.remove("lto-not-visible-item");
+            this.cellContainer.children[current + 1].classList.add("lto-next-item");
         }
         setTimeout(() => this.carousel.style.height = (this.cellContainer.children[current] as HTMLElement).scrollHeight + "px", 1);
     }
@@ -108,11 +113,14 @@ export class Carousel implements IRenderable, IStackeable {
         current === 0 ? current = this.cellContainer.children.length - 1 : current--;
         EventStream.emit("GAIA::carousel", current);
         if (current - 1 > -1) {
-            this.cellContainer.children[current - 1].classList.replace("lto-not-visible-item", "lto-previous-item");
+            this.cellContainer.children[current - 1].classList.remove("lto-not-visible-item");
+            this.cellContainer.children[current - 1].classList.add("lto-previous-item");
         }
-        this.cellContainer.children[current].classList.replace("lto-not-visible-item", "lto-center-item");
+        this.cellContainer.children[current].classList.remove("lto-not-visible-item");
+        this.cellContainer.children[current].classList.add("lto-center-item");
         if (current + 1 < this.cellContainer.children.length) {
-            this.cellContainer.children[current + 1].classList.replace("lto-not-visible-item", "lto-next-item");
+            this.cellContainer.children[current + 1].classList.remove("lto-not-visible-item");
+            this.cellContainer.children[current + 1].classList.add("lto-next-item");
         }
         setTimeout(() => this.carousel.style.height = (this.cellContainer.children[current] as HTMLElement).scrollHeight + "px", 1);
     }
