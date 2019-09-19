@@ -90,7 +90,8 @@ export default class Stackedbar {
             rect.transition()
                 .delay((d, i) => i)
                 .attr("y", (d: any) => y(d.y0 + d.y))
-                .attr("height", (d: any) => y(d.y0) - y(d.y0 + d.y));
+                .attr("height", (d: any) => y(d.y0) - y(d.y0 + d.y))
+                .attr("class", (d: any) => d.column);
 
             // add svg title for tooltip support
             rect.append("svg:title")
