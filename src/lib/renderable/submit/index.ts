@@ -55,10 +55,9 @@ export class Submit implements IRenderable {
 
             const content = closestByClass(submit, ["lto-form"]);
 
+            submit.disabled = true;
+            if (content) content.style.pointerEvents = "none";
             InputContainer.getAll(content as HTMLFormElement, submit).then((attr) => {
-                submit.disabled = true;
-                if (content)
-                    content.style.pointerEvents = "none";
 
                 EventStream.emit("GAIA::publish", {
                     timestamp,
@@ -71,7 +70,8 @@ export class Submit implements IRenderable {
                 Button.cleanupButtons();
             }).catch((reason) => {
                 console.error(`Unable to collect form input data: ${reason}`);
-                return
+                submit.disabled = false;
+                if (content) content.style.pointerEvents = "auto";
             })
         });
 
