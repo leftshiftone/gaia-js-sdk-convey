@@ -2,6 +2,10 @@ import {IPacket, IListener, ISpecification} from '../api';
 import {Defaults} from '../support/Defaults';
 /**
  * Off switch listener implementation.
+ *
+ * The lto-textbox and the lto-invoker will be disabled when
+ * the incoming message doesn't contain a NER-strategy.
+ * lto-off will be added to both elements for CSS manipulation.
  */
 export class OffSwitchListener implements IListener {
 

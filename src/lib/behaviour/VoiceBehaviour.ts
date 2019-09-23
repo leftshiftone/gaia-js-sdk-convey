@@ -3,9 +3,6 @@
  *
  * onmouseup starts the recording, onmousedown stops the recording and publishes an audio message
  * to the outbound audio channel.
- *
- * @author benjamin.krenn@leftshift.one - 3/11/19.
- * @since 0.11.0
  */
 import {IBehaviour, ISpecification} from "../api";
 import {MqttConnection} from "../connection/MqttConnection";

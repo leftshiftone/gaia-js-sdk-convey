@@ -1,7 +1,4 @@
-/**
- * @author benjamin.krenn@leftshift.one - 3/14/19.
- * @since 0.12.0
- */
+
 export class Base64ToArrayBufferConverter {
     /**
      * Converts a base64 to an ArrayBuffer object
