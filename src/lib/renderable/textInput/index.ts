@@ -45,7 +45,6 @@ export class TextInput implements IRenderable {
         if (this.spec.regex !== undefined) textInput.pattern = this.spec.regex;
 
         textInput.addEventListener("change", () => textInput.setAttribute("value", textInput.value));
-
         return textInput;
     }
 }

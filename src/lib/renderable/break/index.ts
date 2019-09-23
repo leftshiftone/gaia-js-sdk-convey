@@ -15,6 +15,9 @@ export class Break implements IRenderable {
         this.spec = spec
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const br = document.createElement('br');
         if (this.spec.id !== undefined) {

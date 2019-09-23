@@ -3,6 +3,14 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'reel' markup element.
+ * A HTML div element where multiple 'reelValue' can be displayed.
+ * The user can select a 'reelValue' by clicking up or down.
+ * For CSS manipulations the following classes are added:
+ *  lto-reel: the container
+ *  lto-up: selects the upper 'reelValue'
+ *  lto-down: selects the lower 'reelValue'
+ *
+ * @see {@link IRenderable}
  */
 export class Reel implements IRenderable, IStackeable {
 

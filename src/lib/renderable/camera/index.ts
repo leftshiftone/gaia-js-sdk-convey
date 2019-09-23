@@ -7,6 +7,13 @@ import {InputContainer} from "../../support/InputContainer";
 
 /**
  * Implementation of the 'camera' markup element.
+ * A HTML video element is used to create a camera.
+ * For CSS manipulations the following classes are added:
+ *  lto-camera: the camera container
+ *  lto-take-photo: is used for taking a photo. The photo will be displayed in the canvas below the video element
+ *  lto-reset-photo: is enabled when photo is taken. A click on this div, resets the camera
+ *
+ * @see {@link IRenderable}
  */
 export class Camera implements IRenderable, IStackeable {
     private readonly maxCanvasSize: number;

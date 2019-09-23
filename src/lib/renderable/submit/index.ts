@@ -24,6 +24,9 @@ export class Submit implements IRenderable {
         this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
         const submit: HTMLButtonElement = document.createElement('button');

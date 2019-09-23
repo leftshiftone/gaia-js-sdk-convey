@@ -18,6 +18,9 @@ export class Video implements IRenderable {
         this.spec = spec;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const video = node("video");
         video.setId(this.spec.id);

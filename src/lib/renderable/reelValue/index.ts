@@ -3,6 +3,14 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'reelValue' markup element.
+ * A HTML div element where a digit, char or image can be displayed.
+ * For CSS manipulations the following classes are added:
+ *  lto-reel-value: the container
+ *  lto-reel-digit: is added when a digit is showed
+ *  lto-image: is added when a image is showed
+ *  lto-reel-char: is added when a char is showed
+ *
+ * @see {@link IRenderable}
  */
 export class ReelValue implements IRenderable, IStackeable {
 

@@ -4,6 +4,11 @@ import Renderables from "../Renderables";
 
 /**
  * Implementation of the 'overlays' markup element.
+ * A HTML div element containing 'overlay' elements.
+ * For CSS manipulations the following classes are added:
+ *  lto-overlays: the container
+ *
+ * @see {@link IRenderable}
  */
 export class Overlays implements IRenderable {
 

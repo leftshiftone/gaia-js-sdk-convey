@@ -2,7 +2,11 @@ import {IRenderer, ISpecification, IRenderable, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 
 /**
- * Implementation of the 'slot machine' markup element.
+ * Implementation of the 'slotMachine' markup element.
+ * A HTML div element where multiple 'reel' elements can be displayed.
+ * The class lto-slotmachine is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class SlotMachine implements IRenderable, IStackeable {
 

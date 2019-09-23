@@ -3,6 +3,10 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'spinner' markup element.
+ * A HTML input element where attribute type is set to number.
+ * The class lto-spinner is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Spinner implements IRenderable {
 
