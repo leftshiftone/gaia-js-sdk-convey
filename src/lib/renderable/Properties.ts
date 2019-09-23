@@ -2,9 +2,7 @@
  * Properties is a simple registry to register properties.
  *
  * Existing Properties:
- * <ul>
- *     <li>GOOGLE_MAPS_API_KEY</li>
- * </ul>
+ *  GOOGLE_MAPS_API_KEY
  */
 export default class Properties {
 

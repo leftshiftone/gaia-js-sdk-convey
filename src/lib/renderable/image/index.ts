@@ -5,7 +5,7 @@ import Renderables from '../Renderables';
  * Implementation of the 'image' markup element.
  * An img HTML element is created and the given
  * attributes src, alt, with and height are taken over.
- * The class lot-image is added to allow CSS manipulations.
+ * The class lto-image is added to allow CSS manipulations.
  *
  * @see {@link IRenderable}
  */

@@ -8,7 +8,9 @@ import {GoogleMap} from "./google";
  * Implementation of the 'map' markup element and has been
  * added to provide the integration of google maps or open
  * street map depending on the value of the mapType attribute
- * in the markup.
+ * in the markup. The class lto-map is added to allow CSS manipulations.
+ * If the mapType is 'google' the user needs to add the
+ * GOOGLE_MAPS_API_KEY to the {@link Properties} registry.
  *
  * @see {@link IRenderable}
  */
