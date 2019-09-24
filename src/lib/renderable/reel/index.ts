@@ -11,6 +11,7 @@ import Renderables from '../Renderables';
  *  lto-down: selects the lower 'reelValue'
  *
  * @see {@link IRenderable}
+ * @see {@link IStackeable}
  */
 export class Reel implements IRenderable, IStackeable {
 
@@ -27,7 +28,7 @@ export class Reel implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';

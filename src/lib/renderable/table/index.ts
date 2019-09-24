@@ -22,7 +22,7 @@ export class Table implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const table = document.createElement('table');

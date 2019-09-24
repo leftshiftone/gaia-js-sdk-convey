@@ -1,9 +1,3 @@
-/**
- * IBehaviour implementation that listens for a onmouseup/down on the given recordButton.
- *
- * onmouseup starts the recording, onmousedown stops the recording and publishes an audio message
- * to the outbound audio channel.
- */
 import {IBehaviour, ISpecification} from "../api";
 import {MqttConnection} from "../connection/MqttConnection";
 import {AudioRecorder} from "../audio/recorder/AudioRecorder";
@@ -11,6 +5,12 @@ import {WebRTCRecorder} from "../audio/recorder/WebRTCRecorder";
 import {ChannelType} from "../support/ChannelType";
 import {BufferedAudioPlayer} from "../audio/player/BufferedAudioPlayer";
 
+/**
+ * IBehaviour implementation that listens for a onmouseup/down on the given recordButton.
+ *
+ * onmouseup starts the recording, onmousedown stops the recording and publishes an audio message
+ * to the outbound audio channel.
+ */
 export class VoiceBehaviour implements IBehaviour {
 
     private readonly recordButton: HTMLButtonElement;
@@ -25,6 +25,10 @@ export class VoiceBehaviour implements IBehaviour {
         this.callback = callback;
     }
 
+    /**
+     *
+     * @inheritDoc
+     */
     public bind(gateway: MqttConnection): void {
         this.subscribeToAudioChannel(gateway);
         this.startRecordingOnMouseDown();

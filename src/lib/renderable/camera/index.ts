@@ -27,7 +27,7 @@ export class Camera implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const wrapper = document.createElement("div");

@@ -16,6 +16,9 @@ export class ClassicRenderer extends AbstractRenderer {
         EventStream.addListener("GAIA::carousel", this.handleCarousel.bind(this));
     }
 
+    /**
+     * @inheritDoc
+     */
     protected renderElement(renderable: IRenderable, containerType?: IStackeable): HTMLElement[] {
         const array = [];
         const element = renderable.render(this, containerType !== undefined);

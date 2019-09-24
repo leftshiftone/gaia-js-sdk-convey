@@ -17,6 +17,7 @@ import EventStream from "../../event/EventStream";
  *  lto-animation-right: is set when clicking lto-selection-right
  *
  * @see {@link IRenderable}
+ * @see {@link IStackeable}
  */
 export class Selection implements IRenderable, IStackeable {
 
@@ -34,7 +35,7 @@ export class Selection implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';

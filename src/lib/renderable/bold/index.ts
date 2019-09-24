@@ -17,7 +17,7 @@ export class Bold implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const bold = document.createElement('b');

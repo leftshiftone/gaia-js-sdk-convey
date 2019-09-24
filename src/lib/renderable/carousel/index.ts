@@ -13,6 +13,7 @@ import EventStream from '../../event/EventStream';
  *  lto-previous: selects the previous carousel cell
  *
  * @see {@link IRenderable}
+ * @see {@link IStackeable}
  */
 export class Carousel implements IRenderable, IStackeable {
 
@@ -27,7 +28,7 @@ export class Carousel implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.carousel.classList.add('lto-carousel', 'lto-left');

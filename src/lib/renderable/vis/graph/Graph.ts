@@ -13,7 +13,7 @@ export class Graph {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(): HTMLElement {
         const div = document.createElement("div");

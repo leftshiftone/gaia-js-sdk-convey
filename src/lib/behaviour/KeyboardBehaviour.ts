@@ -20,7 +20,12 @@ export class KeyboardBehaviour implements IBehaviour {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds an event listener to the textbox.
+     * When the textbox is focused, the user
+     * is able to publish a message by pressing
+     * enter.
+     *
+     * @inheritDoc
      */
     public bind(gateway: MqttConnection): void {
         this.target.addEventListener("keyup", ((ev) => {

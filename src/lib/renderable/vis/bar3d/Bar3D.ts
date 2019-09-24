@@ -28,7 +28,7 @@ export class Bar3D {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(): HTMLElement {
         const div = document.createElement("div");

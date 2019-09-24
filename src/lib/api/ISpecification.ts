@@ -1,3 +1,6 @@
+/**
+ * This interface is used to specify an incoming message
+ */
 export interface ISpecification {
     type: string;
     elements?: ISpecification[];

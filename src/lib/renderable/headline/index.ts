@@ -17,7 +17,7 @@ export class Headline implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const headline = document.createElement('h2');

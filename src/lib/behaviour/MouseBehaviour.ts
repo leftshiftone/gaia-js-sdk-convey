@@ -21,6 +21,13 @@ export class MouseBehaviour implements IBehaviour {
         this.callback = callback;
     }
 
+    /**
+     * Adds an event listener to the invoker.
+     * The user is able to publish a message by
+     * clicking the invoker.
+     *
+     * @inheritDoc
+     */
     public bind(gateway: MqttConnection): void {
         this.target1.addEventListener("click", (() => {
             const value = this.target2.value;

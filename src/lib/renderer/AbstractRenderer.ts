@@ -15,7 +15,7 @@ export abstract class AbstractRenderer implements IRenderer {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(message: ISpecification | IRenderable, containerType?: IStackeable): HTMLElement[] {
         if (message["render"] !== undefined) {
@@ -25,6 +25,9 @@ export abstract class AbstractRenderer implements IRenderer {
         return this.renderElement(renderable, containerType);
     }
 
+    /**
+     * Renders an incoming {@link IRenderable}
+     */
     protected abstract renderElement(element: IRenderable, containerType?: IStackeable): HTMLElement[];
 
     // noinspection JSMethodCanBeStatic
@@ -42,10 +45,16 @@ export abstract class AbstractRenderer implements IRenderer {
         return new renderableClass(message) as IRenderable;
     }
 
+    /**
+     * @inheritDoc
+     */
     public appendContent = (element: HTMLElement) => {
         this.content.appendChild(element);
     };
 
+    /**
+     * @inheritDoc
+     */
     public appendSuggest = (element: HTMLElement) => {
         this.suggest.appendChild(element);
     };

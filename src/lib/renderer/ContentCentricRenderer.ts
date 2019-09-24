@@ -23,6 +23,9 @@ export class ContentCentricRenderer extends ClassicRenderer {
         });
     }
 
+    /**
+     * @inheritDoc
+     */
     protected renderElement(renderable: IRenderable, containerType?: IStackeable): HTMLElement[] {
         return this.behaviour(renderable, containerType);
     }
