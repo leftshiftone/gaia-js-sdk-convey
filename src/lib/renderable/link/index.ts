@@ -18,7 +18,7 @@ export class Link implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const link = document.createElement('a');

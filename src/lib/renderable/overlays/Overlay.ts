@@ -4,6 +4,12 @@ import Renderables from "../Renderables";
 
 /**
  * Implementation of the 'overlay' markup element.
+ * A HTML div element which can contain several markup elements.
+ * An overlay will be triggered by clicking on the associated 'trigger' element
+ * For CSS manipulations the following classes are added:
+ *  lto-overlay: the overlay element
+ *
+ * @see {@link IRenderable}
  */
 export class Overlay implements IRenderable {
 
@@ -14,7 +20,7 @@ export class Overlay implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const overlay = node("div");

@@ -2,6 +2,19 @@ import {IRenderable, IRenderer, ISpecification, IStackeable} from '../../api';
 import Renderables from '../Renderables';
 import EventStream from '../../event/EventStream';
 
+/**
+ * Implementation of the 'carousel' markup element.
+ * A HTML div element which can contain several 'form' or 'block' elements.
+ * The user can switch between cells by clicking the next or previous button.
+ * For CSS manipulations the following classes are added:
+ *  lto-carousel: the container
+ *  lto-carousel-cell: the container where a single markup element is wrapped
+ *  lto-next: selects the next carousel cell
+ *  lto-previous: selects the previous carousel cell
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
+ */
 export class Carousel implements IRenderable, IStackeable {
 
     public spec: ISpecification;
@@ -15,7 +28,7 @@ export class Carousel implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         this.carousel.classList.add('lto-carousel', 'lto-left');

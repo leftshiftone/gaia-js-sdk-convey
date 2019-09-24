@@ -1,5 +1,9 @@
 /**
- * Supported GAIA channel types.
+ * Supported G.A.I.A. channel types:
+ *  TEXT: receives the message which will be displayed
+ *  LOG: receives different system logs (error & info
+ *  CONTEXT: receives the full context every time
+ *  NOTIFICATION: receives some custom specified notification
  */
 export enum ChannelType {
     NOTIFICATION = "NOTIFICATION",

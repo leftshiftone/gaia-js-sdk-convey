@@ -18,7 +18,7 @@ export class Checkbox implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         let isChecked: boolean = this.spec.checked === "true";

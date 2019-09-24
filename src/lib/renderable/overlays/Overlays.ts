@@ -1,11 +1,17 @@
-import {IRenderer, IRenderable, ISpecification} from '../../api';
+import {IRenderer, IRenderable, ISpecification, IStackeable} from '../../api';
 import node from "../../support/node";
 import Renderables from "../Renderables";
 
 /**
  * Implementation of the 'overlays' markup element.
+ * A HTML div element containing 'overlay' elements.
+ * For CSS manipulations the following classes are added:
+ *  lto-overlays: the container
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
  */
-export class Overlays implements IRenderable {
+export class Overlays implements IRenderable, IStackeable {
 
     private readonly spec: ISpecification;
 
@@ -14,7 +20,7 @@ export class Overlays implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const overlays = node("div");

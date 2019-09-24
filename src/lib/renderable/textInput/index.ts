@@ -20,7 +20,7 @@ export class TextInput implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || "left";
@@ -45,7 +45,6 @@ export class TextInput implements IRenderable {
         if (this.spec.regex !== undefined) textInput.pattern = this.spec.regex;
 
         textInput.addEventListener("change", () => textInput.setAttribute("value", textInput.value));
-
         return textInput;
     }
 }

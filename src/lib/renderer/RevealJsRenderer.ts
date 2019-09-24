@@ -33,6 +33,9 @@ export class RevealJsRenderer extends ContentCentricRenderer {
         };
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(message: ISpecification | IRenderable, containerType?: IStackeable): HTMLElement[] {
         if (message["render"] === undefined) {
             // do not render renderables with position 'right'
@@ -44,6 +47,9 @@ export class RevealJsRenderer extends ContentCentricRenderer {
         return super.render(message, containerType);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected renderElement(renderable: IRenderable, containerType?: IStackeable): HTMLElement[] {
         const elements = super.renderElement(renderable, containerType);
 
@@ -123,6 +129,9 @@ export class RevealJsRenderer extends ContentCentricRenderer {
         return slidesDiv;
     }
 
+    /**
+     * @inheritDoc
+     */
     public appendContent = (element: HTMLElement) => {
         this.content.appendChild(element);
         if (this.Reveal) {

@@ -26,7 +26,7 @@ export class CodeReader implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const wrapper = node("div");

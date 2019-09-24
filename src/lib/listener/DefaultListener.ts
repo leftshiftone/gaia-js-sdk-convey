@@ -1,6 +1,8 @@
 import {IPacket, IListener} from '../api';
 
 /**
+ * @inheritDoc
+ *
  * Default IListener implementation.
  */
 export class DefaultListener implements IListener {
@@ -12,7 +14,7 @@ export class DefaultListener implements IListener {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public onConnected(): void {
         if (this.emitter && this.emitter.onConnected) {
@@ -21,7 +23,7 @@ export class DefaultListener implements IListener {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public onConnectionLost(): void {
         if (this.emitter && this.emitter.onConnectionLost) {
@@ -30,7 +32,7 @@ export class DefaultListener implements IListener {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public onDisconnected(): void {
         if (this.emitter && this.emitter.onDisconnected) {
@@ -39,7 +41,7 @@ export class DefaultListener implements IListener {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public onError(error: string): void {
         if (this.emitter && this.emitter.onError) {
@@ -48,7 +50,7 @@ export class DefaultListener implements IListener {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public onMessage(data: any): void {
         if (this.emitter && this.emitter.onMessage) {
@@ -57,7 +59,7 @@ export class DefaultListener implements IListener {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public onPacketSend(packet: IPacket): void {
         if (this.emitter && this.emitter.onPacketSend) {

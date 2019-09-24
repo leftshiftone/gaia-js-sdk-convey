@@ -21,6 +21,9 @@ export class Table implements IRenderable, IStackeable {
         this.spec = spec;
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const table = document.createElement('table');
         const position = this.spec.position || 'left';

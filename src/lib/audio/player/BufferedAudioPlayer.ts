@@ -1,7 +1,3 @@
-/**
- * @author benjamin.krenn@leftshift.one - 3/14/19.
- * @since 0.12.0
- */
 import {AudioPlayer} from "./AudioPlayer";
 import {MutableQueue} from "./queue/MutableQueue";
 import {Base64ToArrayBufferConverter} from "./Base64ToArrayBufferConverter";
@@ -14,10 +10,6 @@ import {Base64ToArrayBufferConverter} from "./Base64ToArrayBufferConverter";
  * will be added to the queue before playing the first (initial) message is done.
  * This assumption is made to avoid complex Promise heavy code and/or a while loop that may completely block
  * the front-end.
- *
- *
- * @author benjamin.krenn@leftshift.one
- * @since 0.12.0
  */
 export class BufferedAudioPlayer implements AudioPlayer {
 

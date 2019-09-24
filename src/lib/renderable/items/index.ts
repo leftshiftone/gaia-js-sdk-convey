@@ -22,7 +22,7 @@ export class Items implements IRenderable, IStackeable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const items = node(this.spec.ordered ? "ol" : "ul");

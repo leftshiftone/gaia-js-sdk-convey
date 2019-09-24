@@ -4,6 +4,20 @@ import EventStream from "../../event/EventStream";
 
 /**
  * Implementation of the 'selection' markup element.
+ * A HTML div element is used to create a selection containing multiple 'block' elements.
+ * Only one 'block' is visible.
+ * The user can either click on the left or right side of the visible 'block' to select one of the two options.
+ * If the click happened, the next 'block' will be showed.
+ * For CSS manipulations the following classes are added:
+ *  lto-selection: the container
+ *  lto-selection-item: the container where the 'block' is wrapped
+ *  lto-selection-left: click to choose the left option
+ *  lto-selection-right: click to choose the right option
+ *  lto-animation-left: is set when clicking lto-selection-left
+ *  lto-animation-right: is set when clicking lto-selection-right
+ *
+ * @see {@link IRenderable}
+ * @see {@link IStackeable}
  */
 export class Selection implements IRenderable, IStackeable {
 
@@ -20,6 +34,9 @@ export class Selection implements IRenderable, IStackeable {
         this.selection = document.createElement('div');
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';
 

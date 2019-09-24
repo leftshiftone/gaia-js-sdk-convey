@@ -1,5 +1,5 @@
 /**
- * Classes which implements this interface can be rendered by an IRenderer instance.
+ * Classes which implements this interface can be rendered by an {@link IRenderer} instance.
  */
 import {IRenderable} from './IRenderable';
 

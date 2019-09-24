@@ -12,9 +12,6 @@
  *  ]}
  *
  *  If multiple containers share the same name the array containing the {@link ChoiceResult} objects is overwritten.
- *
- * @author benjamin.krenn@leftshift.one - 5/9/19.
- * @since 0.26.0
  */
 import {SubmitState} from "./SubmitState";
 import {ChoiceAggregationResult} from "./ChoiceAggregationResult";

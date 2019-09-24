@@ -3,6 +3,10 @@ import Renderables from '../Renderables';
 
 /**
  * Implementation of the 'spinner' markup element.
+ * A HTML input element where attribute type is set to number.
+ * The class lto-spinner is added to allow CSS manipulations.
+ *
+ * @see {@link IRenderable}
  */
 export class Spinner implements IRenderable {
 
@@ -13,7 +17,7 @@ export class Spinner implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const position = this.spec.position || 'left';

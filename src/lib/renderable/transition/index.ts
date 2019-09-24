@@ -13,7 +13,7 @@ export class Transition implements IRenderable {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public render(renderer: IRenderer, isNested: boolean): HTMLElement {
         const div = document.createElement('div');

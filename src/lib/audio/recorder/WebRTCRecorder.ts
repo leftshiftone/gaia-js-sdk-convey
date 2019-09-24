@@ -1,7 +1,4 @@
-/**
- * @author benjamin.krenn@leftshift.one - 3/11/19.
- * @since 0.12.0
- */
+
 import {AudioRecorder} from "./AudioRecorder";
 // @ts-ignore
 import * as RecordRTC from "recordrtc";
