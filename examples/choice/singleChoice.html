@@ -16,13 +16,24 @@
     document.addEventListener('DOMContentLoaded', function () {
         const renderer = new GaiaConvey.ClassicRenderer();
         const obj = {
-            "elements": [
-                {"name": "no", class:"test1", "text": "Nein", "type": "choice", "selected": false},
-                {"name": "yes", class:"test2", "text": "Ja", "type": "choice", "selected": false}
-            ],
-            "name": "name",
-            "sieve": true,
-            "type": "singlechoice"
+            "elements": [{
+                "elements": [
+                    {"name": "no", class: "test1", "text": "Nein", "type": "choice", "selected": false},
+                    {"name": "yes", class: "test2", "text": "Ja", "type": "choice", "selected": false}
+                ],
+                "name": "name",
+                "sieve": true,
+                "type": "singlechoice"
+            }, {
+                "elements": [
+                    {"name": "no", class: "test1", "text": "Nein", "type": "choice", "selected": false},
+                    {"name": "yes", class: "test2", "text": "Ja", "type": "choice", "selected": false}
+                ],
+                "name": "name1",
+                "sieve": true,
+                "type": "singlechoice"
+            }],
+            type: "block"
         };
         const singleChoice = new GaiaConvey.SingleChoice(obj);
         const element = singleChoice.render(renderer, false);
