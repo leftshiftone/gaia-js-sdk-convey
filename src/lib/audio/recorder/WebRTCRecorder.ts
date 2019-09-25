@@ -16,6 +16,9 @@ export class WebRTCRecorder implements AudioRecorder {
         return this.INSTANCE || (this.INSTANCE = new this(WebRTCRecorder.initializeAudioContext()));
     }
 
+    /**
+     * Starts the RecordRTC recording
+     */
     public async startRecording(): Promise<void> {
         try {
             const r = await this.recordRTC;
@@ -25,6 +28,9 @@ export class WebRTCRecorder implements AudioRecorder {
         }
     }
 
+    /**
+     * Stops the recording session and transforms the resulting blob to base64 encoded string
+     */
     public async stopRecording(): Promise<string> {
         const recorder = await this.recordRTC;
         await recorder.stopRecording();
