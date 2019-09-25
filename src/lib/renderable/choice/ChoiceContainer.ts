@@ -40,6 +40,10 @@ export abstract class ChoiceContainer implements IStackeable {
             .filter((renderedChild: HTMLElement | undefined) => renderedChild !== undefined)
             .forEach(inputElement => container.appendChild(node(inputElement!!)));
 
+        container.findAll("input").forEach(input => {
+            input.setName(this.spec.name)
+        });
+
         return container.unwrap();
     }
 
