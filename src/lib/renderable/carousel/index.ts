@@ -49,21 +49,19 @@ export class Carousel implements IRenderable, IStackeable {
         const next = document.createElement("div");
         const previous = document.createElement("div");
 
-        if (this.cellContainer.children.length > 1) {
-            next.addEventListener("click", () => this.next(this.getCurrent()));
-            previous.addEventListener("click", () => this.previous(this.getCurrent()));
+        next.addEventListener("click", () => this.next(this.getCurrent()));
+        previous.addEventListener("click", () => this.previous(this.getCurrent()));
 
-            next.classList.add("lto-next");
-            previous.classList.add("lto-previous");
+        next.classList.add("lto-next");
+        previous.classList.add("lto-previous");
 
-            const nextSpan = document.createElement("span");
-            nextSpan.appendChild(document.createTextNode(">"));
-            next.appendChild(nextSpan);
+        const nextSpan = document.createElement("span");
+        nextSpan.appendChild(document.createTextNode(">"));
+        next.appendChild(nextSpan);
 
-            const previousSpan = document.createElement("span");
-            previousSpan.appendChild(document.createTextNode("<"));
-            previous.appendChild(previousSpan);
-        }
+        const previousSpan = document.createElement("span");
+        previousSpan.appendChild(document.createTextNode("<"));
+        previous.appendChild(previousSpan);
 
         this.resetCells();
         this.init(this.getCurrent());
@@ -88,10 +86,8 @@ export class Carousel implements IRenderable, IStackeable {
 
         this.carousel.appendChild(this.cellContainer);
 
-        if (this.cellContainer.children.length > 1) {
-            this.carousel.appendChild(next);
-            this.carousel.appendChild(previous);
-        }
+        this.carousel.appendChild(next);
+        this.carousel.appendChild(previous);
 
         return this.carousel;
     }
@@ -102,12 +98,12 @@ export class Carousel implements IRenderable, IStackeable {
         this.cellContainer.children[current].classList.remove("lto-not-visible-item");
         this.cellContainer.children[current].classList.add("lto-not-visible-item");
 
-        const currentIndex = current + (this.cellContainer.children.length > 1 ? 1 : 0);
+        const nextIndex = current + (this.cellContainer.children.length > 1 ? 1 : 0);
 
-        this.cellContainer.children[currentIndex].classList.remove("lto-not-visible-item");
-        this.cellContainer.children[currentIndex].classList.add("lto-next-item");
+        this.cellContainer.children[nextIndex].classList.remove("lto-not-visible-item");
+        this.cellContainer.children[nextIndex].classList.add("lto-next-item");
 
-        setTimeout(() => this.carousel.style.height = (this.cellContainer.children[currentIndex] as HTMLElement).scrollHeight + "px", 1);
+        setTimeout(() => this.carousel.style.height = (this.cellContainer.children[nextIndex] as HTMLElement).scrollHeight + "px", 1);
     }
 
     private next(current: number) {
