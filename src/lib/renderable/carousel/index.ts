@@ -42,7 +42,7 @@ export class Carousel implements IRenderable, IStackeable {
         (this.spec.elements || []).map((e) => {
             renderer.render(e, this).forEach(x => {
                 x.classList.add("lto-carousel-cell");
-                this.cellContainer.appendChild(x)
+                this.cellContainer.appendChild(x);
             });
         });
 
@@ -85,6 +85,7 @@ export class Carousel implements IRenderable, IStackeable {
         }
 
         this.carousel.appendChild(this.cellContainer);
+
         this.carousel.appendChild(next);
         this.carousel.appendChild(previous);
 
@@ -95,11 +96,13 @@ export class Carousel implements IRenderable, IStackeable {
         this.resetCells();
         EventStream.emit("GAIA::carousel", current);
         this.cellContainer.children[current].classList.remove("lto-not-visible-item");
-        this.cellContainer.children[current].classList.add("lto-not-visible-item");
+        this.cellContainer.children[current].classList.add("lto-center-item");
+
         if (current + 1 < this.cellContainer.children.length) {
             this.cellContainer.children[current + 1].classList.remove("lto-not-visible-item");
             this.cellContainer.children[current + 1].classList.add("lto-next-item");
         }
+
         setTimeout(() => this.carousel.style.height = (this.cellContainer.children[current] as HTMLElement).scrollHeight + "px", 1);
     }
 
@@ -144,7 +147,7 @@ export class Carousel implements IRenderable, IStackeable {
 
         this.cellContainer.childNodes.forEach(node => {
             if ((node as HTMLElement).classList.contains("lto-center-item")) {
-                current = counter
+                current = counter;
             }
             counter++;
         });
