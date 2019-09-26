@@ -18,7 +18,7 @@ export class Slider implements IRenderable {
     private readonly spec: ISpecification;
 
     private container = document.createElement("div");
-    private slider = document.createElement("input");
+    private slider: HTMLInputElement = document.createElement("input");
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -45,98 +45,76 @@ export class Slider implements IRenderable {
         const valueContent = document.createElement("span");
         value.appendChild(valueContent);
 
-        let sliderAnchors : HTMLAnchorElement [];
+        let prevButton: HTMLAnchorElement;
+        let nextButton: HTMLAnchorElement;
+
+        //@ts-ignore
+        this.slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
+        //@ts-ignore
+        this.slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
+        //@ts-ignore
+        this.slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
+        this.slider.step = this.spec.step || "";
+
+        let initialValue: string = this.slider.value;
+        let minValue: string = this.slider.min;
+        let maxValue: string = this.slider.max;
+        let onChange = () => {
+            this.setSliderMinMaxClass();
+            this.slider.setAttribute("value", this.slider.value);
+            valueContent.innerHTML = this.slider.value;
+        };
+        let prevClick = () => {
+            if (parseFloat(this.slider.value) !== parseFloat(this.slider.min) && this.slider.getAttribute("value") !== undefined) {
+                this.updateValue(String(parseFloat(this.slider.value) - parseFloat(this.slider.step)));
+            }
+        };
+        let nextClick = () => {
+            if (parseFloat(this.slider.value) ! <= parseFloat(this.slider.max) && this.slider.getAttribute("value") !== undefined) {
+                this.updateValue(String(parseFloat(this.slider.value) + parseFloat(this.slider.step)));
+            }
+        };
 
         if (this.spec.values) {
-            this.slider.max = (this.spec.values.length - 1).toString();
-            this.slider.min = "0";
             this.slider.value = this.spec.value || "0";
+            this.slider.min = "0";
+            this.slider.max = (this.spec.values.length - 1).toString();
             this.slider.step = "1";
             this.spec.values.forEach(value => values.set(this.spec.values!.indexOf(value), value));
 
-            this.setSliderMinMaxClass();
-
-            minLabel.innerText = values.get(+this.slider.min)!.toString();
-            maxLabel.innerText = values.get(+this.slider.max)!.toString();
-
-            this.slider.setAttribute("value", values.get(+this.slider.value)!);
-            valueContent.innerHTML = values.get(+this.slider.value)!;
-
-            const onChange = () => {
+            initialValue = values.get(+this.slider.value)!;
+            minValue = values.get(+this.slider.min)!.toString();
+            maxValue = values.get(+this.slider.max)!.toString();
+            onChange = () => {
                 valueContent.innerHTML = values.get(+this.slider.value)!;
                 this.slider.setAttribute("value", values.get(+this.slider.value)!);
                 this.setSliderMinMaxClass();
             };
-
-            this.slider.oninput = onChange;
-            //ie11 compatibility
-            this.slider.onchange = onChange;
-            sliderAnchors = Slider.createSliderAnchors();
-
-            sliderAnchors[0].addEventListener("click", () => {
-                if (parseInt(this.slider.value)-1 !>= 0) {
-                    const index = parseInt(this.slider.value)-1;
-                    this.slider.value = index.toString();
-                    this.slider.setAttribute("value", values.get(index)!!);
-                    valueContent.innerHTML = values.get(index)!;
+            prevClick = () => {
+                if (parseInt(this.slider.value) - 1 ! >= 0) {
+                    const index = parseInt(this.slider.value) - 1;
+                    this.updateValue(index.toString())
                 }
-            });
-
-            sliderAnchors[1].addEventListener("click", () => {
-                if (parseInt(this.slider.value)+1 !<= values.size-1) {
-                    const index = parseInt(this.slider.value)+1;
-                    this.slider.value = index.toString();
-                    this.slider.setAttribute("value", values.get(index)!!);
-                    valueContent.innerHTML = values.get(index)!;
-                }
-            });
-
-        } else {
-            //@ts-ignore
-            this.slider.value = isNaN(this.spec.value) ? "" : this.spec.value;
-            //@ts-ignore
-            this.slider.min = isNaN(this.spec.min) ? "" : this.spec.min;
-            //@ts-ignore
-            this.slider.max = isNaN(this.spec.max) ? "" : this.spec.max;
-            this.slider.step = this.spec.step || "";
-            minLabel.innerText = this.slider.min;
-            maxLabel.innerText = this.slider.max;
-
-            this.setSliderMinMaxClass();
-
-            valueContent.innerHTML = this.slider.value;
-            this.slider.setAttribute("value", this.slider.value);
-
-            const onChange = () => {
-                this.setSliderMinMaxClass();
-                this.slider.setAttribute("value", this.slider.value);
-                valueContent.innerHTML = this.slider.value;
             };
-
-            this.slider.oninput = onChange;
-            //ie11 compatibility
-            this.slider.onchange = onChange;
-
-            sliderAnchors = Slider.createSliderAnchors();
-
-            sliderAnchors[0].addEventListener("click", () => {
-                if (parseFloat(this.slider.value) !== parseFloat(this.slider.min) && this.slider.getAttribute("value") !== undefined) {
-                    const newSliderValue = String(parseFloat(this.slider.value)-parseFloat(this.slider.step));
-                    this.slider.setAttribute("value", newSliderValue);
-                    this.slider.value = newSliderValue;
-                    valueContent.innerHTML = this.slider.value;
+            nextClick = () => {
+                if (parseInt(this.slider.value) + 1 ! <= values.size - 1) {
+                    const index = parseInt(this.slider.value) + 1;
+                    this.updateValue(index.toString());
                 }
-            });
-
-            sliderAnchors[1].addEventListener("click", () => {
-                if (parseFloat(this.slider.value) !<= parseFloat(this.slider.max) && this.slider.getAttribute("value") !== undefined) {
-                    const newSliderValue = String(parseFloat(this.slider.value)+parseFloat(this.slider.step));
-                    this.slider.setAttribute("value", newSliderValue);
-                    this.slider.value = newSliderValue;
-                    valueContent.innerHTML = this.slider.value;
-                }
-            });
+            };
         }
+
+        minLabel.innerText = minValue;
+        maxLabel.innerText = maxValue;
+        this.slider.setAttribute("value", initialValue);
+        valueContent.innerHTML = initialValue;
+        this.slider.oninput = onChange;
+        this.slider.onchange = onChange; // ie11 compatibility
+
+        this.setSliderMinMaxClass();
+        [prevButton, nextButton] = Slider.createSliderButtons();
+        prevButton.addEventListener("click", prevClick);
+        nextButton.addEventListener("click", nextClick);
 
         this.slider.classList.add("lto-slider", "lto-" + position);
 
@@ -164,29 +142,35 @@ export class Slider implements IRenderable {
         this.container.appendChild(value);
         this.container.appendChild(minLabel);
 
-        controls.appendChild(sliderAnchors[0]);
+        controls.appendChild(prevButton);
         controls.appendChild(this.slider);
-        controls.appendChild(sliderAnchors[1]);
+        controls.appendChild(nextButton);
         this.container.appendChild(controls);
         this.container.appendChild(maxLabel);
 
         return this.container;
     }
 
-    private static createSliderAnchors() : HTMLAnchorElement [] {
-        const prevLink = document.createElement("a");
-        prevLink.classList.add("lto-slider-prev");
+    private static createSliderButtons(): HTMLAnchorElement [] {
+        const prevButton = document.createElement("a");
+        prevButton.classList.add("lto-slider-prev");
         const prevSpan = document.createElement("span");
         prevSpan.innerText = "←";
-        prevLink.appendChild(prevSpan);
+        prevButton.appendChild(prevSpan);
 
-        const nextLink = document.createElement("a");
-        nextLink.classList.add("lto-slider-next");
+        const nextButton = document.createElement("a");
+        nextButton.classList.add("lto-slider-next");
         const nextSpan = document.createElement("span");
         nextSpan.innerText = "→";
-        nextLink.appendChild(nextSpan);
+        nextButton.appendChild(nextSpan);
 
-        return [prevLink, nextLink];
+        return [prevButton, nextButton];
+    }
+
+    private updateValue(value: string) {
+        this.slider.value = value;
+        this.slider.dispatchEvent(new Event("input"));
+        this.slider.dispatchEvent(new Event("change")); // ie11 compatibility
     }
 
     public setSliderMinMaxClass() {
