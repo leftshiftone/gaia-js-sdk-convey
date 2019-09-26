@@ -96,14 +96,14 @@ export class Carousel implements IRenderable, IStackeable {
         this.resetCells();
         EventStream.emit("GAIA::carousel", current);
         this.cellContainer.children[current].classList.remove("lto-not-visible-item");
-        this.cellContainer.children[current].classList.add("lto-not-visible-item");
+        this.cellContainer.children[current].classList.add("lto-center-item");
 
-        const nextIndex = current + (this.cellContainer.children.length > 1 ? 1 : 0);
+        if (current + 1 < this.cellContainer.children.length) {
+            this.cellContainer.children[current + 1].classList.remove("lto-not-visible-item");
+            this.cellContainer.children[current + 1].classList.add("lto-next-item");
+        }
 
-        this.cellContainer.children[nextIndex].classList.remove("lto-not-visible-item");
-        this.cellContainer.children[nextIndex].classList.add("lto-next-item");
-
-        setTimeout(() => this.carousel.style.height = (this.cellContainer.children[nextIndex] as HTMLElement).scrollHeight + "px", 1);
+        setTimeout(() => this.carousel.style.height = (this.cellContainer.children[current] as HTMLElement).scrollHeight + "px", 1);
     }
 
     private next(current: number) {
