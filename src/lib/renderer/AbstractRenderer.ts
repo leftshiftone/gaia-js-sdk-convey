@@ -32,12 +32,33 @@ export abstract class AbstractRenderer implements IRenderer {
 
     // noinspection JSMethodCanBeStatic
     /**
+     * Returns the html decoded message
+     *
+     * @param text to be decoded message
+     */
+    private decodeEntities(text: string) {
+        const handler = document.createElement('div');
+
+        handler.innerHTML = text
+            .replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '')
+            .replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+
+        return handler.textContent || "";
+    }
+
+    // noinspection JSMethodCanBeStatic
+    /**
      * Returns the element by evaluating the message type.
      *
      * @param message the message
      */
     private getRenderable(message: ISpecification): IRenderable {
         console.debug('Element message of type ' + message.type);
+
+        if (message.text) {
+            message.text = this.decodeEntities(message.text);
+        }
+
         const renderableClass = Renderables.resolve(message.type.toUpperCase());
         if (renderableClass === undefined) {
             console.error(`unable to render element of type "${message.type}"`);
