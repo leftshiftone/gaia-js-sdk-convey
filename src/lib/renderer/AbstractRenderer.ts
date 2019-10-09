@@ -8,7 +8,6 @@ export abstract class AbstractRenderer implements IRenderer {
 
     protected readonly content: HTMLElement;
     protected readonly suggest: HTMLElement;
-    private decodeHandler = document.createElement('div');
 
     constructor(content: HTMLElement, suggest: HTMLElement) {
         this.content = content;
@@ -31,17 +30,20 @@ export abstract class AbstractRenderer implements IRenderer {
      */
     protected abstract renderElement(element: IRenderable, containerType?: IStackeable): HTMLElement[];
 
+    // noinspection JSMethodCanBeStatic
     /**
      * Returns the html decoded message
      *
      * @param text to be decoded message
      */
     private decodeEntities(text: string) {
-        this.decodeHandler.innerHTML = text
+        const handler = document.createElement('div');
+
+        handler.innerHTML = text
             .replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '')
             .replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
 
-        return this.decodeHandler.textContent || "";
+        return handler.textContent || "";
     }
 
     // noinspection JSMethodCanBeStatic
