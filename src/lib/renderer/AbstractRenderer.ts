@@ -8,6 +8,7 @@ export abstract class AbstractRenderer implements IRenderer {
 
     protected readonly content: HTMLElement;
     protected readonly suggest: HTMLElement;
+    private decodeHandler = document.createElement('div');
 
     constructor(content: HTMLElement, suggest: HTMLElement) {
         this.content = content;
@@ -30,6 +31,19 @@ export abstract class AbstractRenderer implements IRenderer {
      */
     protected abstract renderElement(element: IRenderable, containerType?: IStackeable): HTMLElement[];
 
+    /**
+     * Returns the html decoded message
+     *
+     * @param text to be decoded message
+     */
+    private decodeEntities(text: string) {
+        this.decodeHandler.innerHTML = text
+            .replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '')
+            .replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+
+        return this.decodeHandler.textContent || "";
+    }
+
     // noinspection JSMethodCanBeStatic
     /**
      * Returns the element by evaluating the message type.
@@ -38,6 +52,11 @@ export abstract class AbstractRenderer implements IRenderer {
      */
     private getRenderable(message: ISpecification): IRenderable {
         console.debug('Element message of type ' + message.type);
+
+        if (message.text) {
+            message.text = this.decodeEntities(message.text);
+        }
+
         const renderableClass = Renderables.resolve(message.type.toUpperCase());
         if (renderableClass === undefined) {
             console.error(`unable to render element of type "${message.type}"`);
