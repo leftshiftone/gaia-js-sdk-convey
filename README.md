@@ -1,107 +1,114 @@
-# G.A.I.A. JavaScript SDK Convey
+# GAIA Convey
 
 [![CircleCI branch](https://img.shields.io/circleci/project/github/leftshiftone/gaia-js-sdk-convey/master.svg?style=flat-square)](https://circleci.com/gh/leftshiftone/gaia-js-sdk-convey)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/leftshiftone/gaia-js-sdk-convey.svg?style=flat-square)](https://github.com/leftshiftone/gaia-js-sdk-convey/tags)
 
+Convey is a Javascript Framework for connecting to processes created with [G.A.I.A.](https://www.leftshift.one/produkt/gaia-services/).
 
+The framework ist compatible with all major Browsers and can be used standalone as well as in conjunction with React, Angular or Vue.
 
-
-
-Convey ist ein Javascript Framework, mit dem man auf die in [G.A.I.A.](https://www.leftshift.one/produkt/gaia-services/) erstellte Conversational UI zugreifen und diese selbst designen kann.
-
-Das Framework ist mit allen gängigen Browsern kompatibel. Es kann als alleinstehende Library verwendet werden oder in ein größeres Framework wie React, Angular oder Vue eingebunden werden.
-
-
-
-## Einbindung in ein Framework-Projekt
-Hierbei wird Convey in ein Projekt, das Frameworks wie React oder Angular enthält, eingebunden.
-
-1. Hinzufügen der Dependency mit dem Terminalbefehl ``npm i gaia-js-sdk-convey``.
-
-2. Erstellen einer Html Seite auf der die Conversational UI verwendet werden soll.
-
-3. Einfügen der folgenden Html Struktur:
-
-
-```html
-<div class="lto-gaia">
-<div class="lto-content"></div>
-<div class="lto-suggest"></div>
-<div>
-<input class="lto-textbox"/>
-<button class="lto-invoker"></button>
-</div>
-</div>
-```
-
-4. Hinzufügen des Javascript-Codes, der Convey initialisiert.
-
-```javascript
-new Gaia(new ContentCentricRenderer(), new OffSwitchListener())
-  .connect('wss://DOMAIN_NAME/mqtt', 'IDENTITY_ID')
-  .then(conn => {
-    conn.subscribe(ChannelType.CONTEXT, (payload) => console.log(payload));
-    conn.reception();
-  });
-```
+## Integration
+[//]: <> (TODO: Create sample project to demonstrate integration)
+In order to add Convey to your project, follow these steps:
 
 ### Prerequisites
-Link zur MQTT Schnittstelle von GAIA: zB wss://gaia.local/mqtt
-Identity ID: Identifier der zu verwendenden Identity
+In order to integrate with GAIA two things are required:
+1. MQTT endpoint: e.g. wss://gaia.local/mqtt
+2. Identifier of the so called *Identity* to connect to.
 
-## Einbindung als Standalone Library
-1. Klonen des  [Github](https://github.com/leftshiftone/gaia-js-sdk-convey) - Projekts.
-2. Ausführen von ``yarn install`` und ``yarn build`` im Terminal.
-3. Öffnen von index.html im Editor.
-4. Anpassen vom DOMAIN_NAME und der IDENTITY_ID.
-5. Öffnen der Seite im Browser.
+### Add convey
+`npm i gaia-js-sdk-convey`
 
-## Styling
-Es wird empfohlen, das Basisstyling ``gaia-js-sdk-convey-all`` zu verwenden, da es das Designen erleichtert und die Struktur automatisch erstellt. Gewisse Elemente, wie der Upload oder die Camera, die Html Divs als Buttons verwenden, enthalten jedoch kein Styling.
+### Create HTML page
+```html
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="gaia-js-sdk-convey-std.css"/>
+        <script src="gaia-js-sdk-convey-std.js"></script>
+    </head>
+    <body>
+        <div class="lto-gaia">
+            <div class="lto-content"></div>
+                <div class="lto-suggest"></div>
+                <input class="lto-textbox"/>
+                <button class="lto-invoker"/>
+            </div>
+        </div>
+    </body>
+</html>
+```
 
-Die verwendeten CSS-Klassen können der technischen Dokumentation entnommen werden.
+### Integrate Convey
+Add the following before the `</head>` tag in the HTML file.
+```html
+<script type="javascript">
+    new GaiaConvey.Gaia(
+        new GaiaConvey.ContentCentricRenderer(), 
+        new GaiaConvey.OffSwitchListener()
+    ).connect('wss://DOMAIN_NAME/mqtt', 'IDENTITY_ID')
+        .then(connection => {
+            connection.reception();
+        });
+</script>
+```
 
 ## Channels
-Für die Kommunikation mit G.A.I.A. werden verschiedene Kanäle verwendet.
+The communication with GAIA contains several channels where each one has its own purpose.
 
-* TEXT: Über diesen Channel werden anzeigbare Elemente geschickt. Dies kann zum Beispiel Text, eine Tabelle oder ein ganzes Eingabeformular sein. Beim instanzieren von Convey ist man automatisch mit diesem Channel verbunden. Die empfangenen Textbausteine werden dadurch automatisch in das Html Div ``lto-content`` gerendert.
+### TEXT
 
-* CONTEXT: Ein intelligenter Prozess enthält Variablen und Daten, mit denen gearbeitet wird. Diese werden im Context gespeichert. Damit man bei einer Änderung auf diese Werte reagieren kann, subscribt man sich und erhält so bei jeder Änderung den gesamten Kontext.
+Is the main channel and is responsible for exchanging the elements configured in GAIA. Convey automatically subscribes to this channel. The messages in this channel are rendered to HTML elements.
 
-* NOTIFICATION: Die Nachrichten aus diesem Channel enthalten Befehle, die im Client etwas ausführen sollen. Die Spezifikation des Befehls erfolgt im Prozess in G.A.I.A. Verwendung findet dies zum Beispiel, wenn man asynchrone Tasks wie das Laden von Videos oder das Starten von Animationen starten möchte.
+### NOTIFICATION
 
-* LOG: Dieser Channel hilft leichter zu verstehen bei welchem Schritt im Prozess man gerade ist oder wo ein Fehler aufgetreten ist. Es wird auch angezeigt welcher Schritt gestartet und beendet wurde, wie das betreffende Element heißt und um welchen Typ es sich handelt.
+Each notification configured in the GAIA BPMN process can be received if subscribed to this channel.
+
+### LOG
+
+GAIA sends logs for certain process executions which can be received by subscribing to this channel.
 
 
 ## Renderer
-Der Renderer bestimmen, wie Komponenten verarbeitet und dargestellt werden. Für das grundlegende Design einer Konversation gibt es verschiedene Renderer.
-
+A Renderer defines how elements, arrived in the *TEXT* channel, are rendered in the HTML DOM tree. Furthermore, a renderer allows for specifying the layout of an integration project.
 
 ### Classic Renderer
-Dieser Renderer bildet eine klassiche Konversation ab und kümmert sich um das Hinzufügen der Elemente in den Html-Dom und um Scroll- und Carousel-Animationen.
+The classic renderer renders the G.A.I.A. messages in a classic top-down manner.
 
 ### Content Centric Renderer
-Dieser Renderer Renderer versucht, die Zeit, in der ein Inhalt sichtbar ist, zu maximieren, indem er den Inhalt aktualisiert, wenn möglich, oder unterbrechende Aktionen wie Absichtskaskadierung durch Überlagerung des Inhalts anzeigt.
+The content centric renderer tries to maximize the time a content is visible by updating the content if possible or displaying interrupting actions like intent cascading by overlaying the content.
 
-Es empfieht sich diesen Renderer zu verwenden oder einen eigenen auf dessen Basis zu schreiben, da er alle Funktionalitäten aller renderbaren Elementen unterstützt.
+### RevealJS Renderer
+Renderer implementation which is based on the reveal.js library. This renderer supports horizontal as well as vertical navigation.
+
+### NoopRenderer
+No-operation dummy renderer. Mainly used for audio only use cases.
+
 
 ## Listener
-Listener bieten die Möglichkeit auf verschiedentste Events wie Disconnect, Connection-Lost oder OnError zu reagieren. Hierfür gibt es auch verschiedene Listener.
-Eine genaue Beschreibung der einzelnen Methoden findet sich [hier](https://github.com/leftshiftone/gaia-js-sdk-convey/blob/master/src/lib/api/IListener.ts).
+A listener provides the functionality to react to certain events. Events can be
+* Connected
+* ConnectionLost
+* PacketSend
+* Disconnected
+* Error
+* Message
+
 ### Default Listener
-Dieser dient als Basis und sollte beim Schreiben eines eigenen Listeners als Basis verwendet werden. Der selbst geschriebene Listener kann ganz einfach in der Initialisierung von Convey angegeben werden.
+Acts as the base listener.
 
 ### OffSwitch Listener
-Wenn man möchte, dass das Textfeld nur sichtbar ist, wenn im Prozess eine Texteingabe erforderlich ist, empfiehlt sich, diesen Listener zu verwenden oder darauf aufzubauen.
+If an input text area should only be visible when a input is required, this is the listener to be used.
 
-## Artefakte
-Bei jedem Release werden verschiedene Arten des Projekts gebaut. Darunter fallen:
-* Aud: Nur die Audio Elemente sind erhalten. Dies kann beim einem Voice Assistenten praktisch sein.
-* Cod: Dieses enthält nur den Code Reader
-* Map: Enthält auch alle Map Librarys wie Google Maps und OSM
-* Vis: Fügt eine Visualisation Library hinzu die für Statistiken verwendet werden kann.
-* Std: Dieses enthält alle Elemente außer denen die in den anderen Artefakten hinzugefügt wurde.
-* All: Enthält alle Convey Elemente
+
+## Modules
+The following modules are available:
+* std: Contains default modules
+* aud: Contains the audio module
+* cod: Contains the code reader module (e.g. QRCode)
+* map: Contains modules for Open Street Map and Google Maps
+* vis: Contains modules for rendering data as charts
+* all: Enthält alle Convey Elemente
 
 
 ## Development
