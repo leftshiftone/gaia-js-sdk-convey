@@ -43,6 +43,10 @@ export class GoogleMap {
         if (!this.spec.src)
             return;
 
+        let countSelections = 0;
+        const maxSelections = this.spec.maxSelections || 1;
+        let activeMarker: google.maps.Marker;
+
         GoogleMap.getMarkersFromSrc(this.spec.src).then((markers: Array<IMarker> | null) => {
             if (!markers)
                 return;
@@ -55,14 +59,23 @@ export class GoogleMap {
                     this.activateMarker(current) :
                     this.deactivateMarker(current);
 
-                current.addListener("click", e => {
-                    current.get("active") ?
-                        this.deactivateMarker(current) :
+                current.addListener("click", () => {
+                    if(maxSelections === 1) {
+                        if(activeMarker) this.deactivateMarker(activeMarker);
                         this.activateMarker(current);
-                    this.setMarkersToValue()
+                        activeMarker = current;
+                        return;
+                    }
+
+                    if (current.get("active")) {
+                        countSelections -= 1;
+                        this.deactivateMarker(current);
+                    } else if (countSelections < maxSelections) {
+                        countSelections += 1;
+                        this.activateMarker(current);
+                    }
                 });
             });
-            this.setMarkersToValue()
         })
     }
 
@@ -84,12 +97,16 @@ export class GoogleMap {
 
     public deactivateMarker(marker: google.maps.Marker) {
         marker.setValues({active: false});
-        marker.setIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON)
+        marker.setIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON);
+
+        this.setMarkersToValue()
     }
 
     public activateMarker(marker: google.maps.Marker) {
         marker.setValues({active: true});
         marker.setIcon(this.spec.selectedMarkerIcon ? this.spec.selectedMarkerIcon : GoogleMap.DEFAULT_SELECTED_MARKER_ICON);
+
+        this.setMarkersToValue()
     }
 
     public setMarkersToValue() {
@@ -100,7 +117,7 @@ export class GoogleMap {
         });
 
         selectedMarkers.length > 0 ?
-            this.wrapper.addAttributes({value: JSON.stringify(selectedMarkers)}) :
+            this.wrapper.addDataAttributes({value: JSON.stringify(selectedMarkers)}) :
             this.wrapper.removeAttributes("value")
     }
 
