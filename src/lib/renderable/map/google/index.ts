@@ -61,8 +61,7 @@ export class GoogleMap {
 
                 current.addListener("click", () => {
                     if(maxSelections === 1) {
-                        if(activeMarker)
-                            this.deactivateMarker(activeMarker);
+                        if(activeMarker) this.deactivateMarker(activeMarker);
                         this.activateMarker(current);
                         activeMarker = current;
                         return;
@@ -75,10 +74,8 @@ export class GoogleMap {
                         countSelections += 1;
                         this.activateMarker(current);
                     }
-                    this.setMarkersToValue()
                 });
             });
-            this.setMarkersToValue()
         })
     }
 
@@ -100,12 +97,16 @@ export class GoogleMap {
 
     public deactivateMarker(marker: google.maps.Marker) {
         marker.setValues({active: false});
-        marker.setIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON)
+        marker.setIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON);
+
+        this.setMarkersToValue()
     }
 
     public activateMarker(marker: google.maps.Marker) {
         marker.setValues({active: true});
         marker.setIcon(this.spec.selectedMarkerIcon ? this.spec.selectedMarkerIcon : GoogleMap.DEFAULT_SELECTED_MARKER_ICON);
+
+        this.setMarkersToValue()
     }
 
     public setMarkersToValue() {
@@ -116,7 +117,7 @@ export class GoogleMap {
         });
 
         selectedMarkers.length > 0 ?
-            this.wrapper.addAttributes({value: JSON.stringify(selectedMarkers)}) :
+            this.wrapper.addDataAttributes({value: JSON.stringify(selectedMarkers)}) :
             this.wrapper.removeAttributes("value")
     }
 
