@@ -43,8 +43,9 @@ export class GoogleMap {
         if (!this.spec.src)
             return;
 
-        let activeMarkers = 0;
-        const maxSelection = this.spec.maxSelections || 1;
+        let countSelections = 0;
+        const maxSelections = this.spec.maxSelections || 1;
+        let activeMarker: google.maps.Marker;
 
         GoogleMap.getMarkersFromSrc(this.spec.src).then((markers: Array<IMarker> | null) => {
             if (!markers)
@@ -58,12 +59,20 @@ export class GoogleMap {
                     this.activateMarker(current) :
                     this.deactivateMarker(current);
 
-                current.addListener("click", e => {
+                current.addListener("click", () => {
+                    if(maxSelections === 1) {
+                        if(activeMarker)
+                            this.deactivateMarker(activeMarker);
+                        this.activateMarker(current);
+                        activeMarker = current;
+                        return;
+                    }
+
                     if (current.get("active")) {
-                        activeMarkers -= 1;
+                        countSelections -= 1;
                         this.deactivateMarker(current);
-                    } else if (activeMarkers < maxSelection) {
-                        activeMarkers += 1;
+                    } else if (countSelections < maxSelections) {
+                        countSelections += 1;
                         this.activateMarker(current);
                     }
                     this.setMarkersToValue()
