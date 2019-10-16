@@ -7,12 +7,10 @@
 
 
 
-Convey ist ein Javascript Framework, mit dem man auf die in FREYA erstellte Conversational UI zugreifen und diese selbst designen kann.
+Convey ist ein Javascript Framework, mit dem man auf die in [G.A.I.A.](https://www.leftshift.one/produkt/gaia-services/) erstellte Conversational UI zugreifen und diese selbst designen kann.
 
-Das Framework ist mit allen gängigen Browsern und Internet Explorer 11 kompatibel. Es kann als alleinstehende Library verwendet werden oder in ein größeres Framework wie React, Angular oder Vue eingebunden werden.
+Das Framework ist mit allen gängigen Browsern kompatibel. Es kann als alleinstehende Library verwendet werden oder in ein größeres Framework wie React, Angular oder Vue eingebunden werden.
 
-
-Die technische Dokumentation der Klassen findet man auf [Github](https://github.com/leftshiftone/gaia-js-sdk-convey).
 
 
 ## Einbindung in ein Framework-Projekt
@@ -47,10 +45,9 @@ new Gaia(new ContentCentricRenderer(), new OffSwitchListener())
   });
 ```
 
-### Zugangsdaten
-DOMAIN_NAME: Es ist der Domainname der Website von FREYA auf Ihrer Instanz.
-
-IDENTITY_ID: Erhält man durch einen Klick auf den Fingerabdruck in der Identity-Liste in FREYA.
+### Prerequisites
+Link zur MQTT Schnittstelle von GAIA: zB wss://gaia.local/mqtt
+Identity ID: Identifier der zu verwendenden Identity
 
 ## Einbindung als Standalone Library
 1. Klonen des  [Github](https://github.com/leftshiftone/gaia-js-sdk-convey) - Projekts.
@@ -58,9 +55,6 @@ IDENTITY_ID: Erhält man durch einen Klick auf den Fingerabdruck in der Identity
 3. Öffnen von index.html im Editor.
 4. Anpassen vom DOMAIN_NAME und der IDENTITY_ID.
 5. Öffnen der Seite im Browser.
-
-## Identity ID
-Die Identity ID ist die Projekt ID, die Convey angibt mit welchem Projekt es sich verbinden soll. Sie findet sich in der Liste mit allen Projekten im oberen Bereich von FREYA. Klicken wir in dieser Liste auf den Fingerabdruck, kopieren wir die Identity ID in den Zwischenspeicher.
 
 ## Styling
 Es wird empfohlen, das Basisstyling ``gaia-js-sdk-convey-all`` zu verwenden, da es das Designen erleichtert und die Struktur automatisch erstellt. Gewisse Elemente, wie der Upload oder die Camera, die Html Divs als Buttons verwenden, enthalten jedoch kein Styling.
@@ -76,47 +70,38 @@ Für die Kommunikation mit G.A.I.A. werden verschiedene Kanäle verwendet.
 
 * NOTIFICATION: Die Nachrichten aus diesem Channel enthalten Befehle, die im Client etwas ausführen sollen. Die Spezifikation des Befehls erfolgt im Prozess in G.A.I.A. Verwendung findet dies zum Beispiel, wenn man asynchrone Tasks wie das Laden von Videos oder das Starten von Animationen starten möchte.
 
-* LOGS: Dieser Channel hilft leichter zu verstehen bei welchem Schritt im Prozess man gerade ist oder wo ein Fehler aufgetreten ist. Es wird auch angezeigt welcher Schritt gestartet und beendet wurde, wie das betreffende Element heißt und um welchen Typ es sich handelt.
+* LOG: Dieser Channel hilft leichter zu verstehen bei welchem Schritt im Prozess man gerade ist oder wo ein Fehler aufgetreten ist. Es wird auch angezeigt welcher Schritt gestartet und beendet wurde, wie das betreffende Element heißt und um welchen Typ es sich handelt.
 
-### Beispiel subscriben auf einen Channel
-Beim Initialisieren kann man die Channels angeben, auf die man sich subscriben will.
-
-Nachfolgend wird auf die Channels TEXT und CONTEXT subscribt.
-
-```javascript
-new Gaia(new ContentCentricRenderer(), new OffSwitchListener())
-  .connect('wss://DOMAIN_NAME/mqtt', 'IDENTITY_ID')
-  .then(conn => {
-    conn.subscribe(ChannelType.TEXT, (payload) => console.log(payload));
-    conn.subscribe(ChannelType.CONTEXT, (payload) => console.log(payload));
-    conn.reception();
-  });
-```
 
 ## Renderer
-Für das grundlegende Design eines Convey Clients gibt es verschiedene Renderer.
+Der Renderer bestimmen, wie Komponenten verarbeitet und dargestellt werden. Für das grundlegende Design einer Konversation gibt es verschiedene Renderer.
 
-### Abstract Renderer
-Dieser stellt die Basis für jeden Renderer dar. Er kümmert sich um das Hinzufügen der Elemente in den Html-Dom.
-
-Möchte man einen eigenen Renderer schreiben, reicht es, von diesem Renderer abzuleiten und den neuen Renderer in der Initialisierung von Convey anzugeben.
 
 ### Classic Renderer
-Dieser Renderer erbt alle Eigenschaften vom Abstract Renderer und erweitert diese um Scroll- und Carousel-Animationen.
+Dieser Renderer bildet eine klassiche Konversation ab und kümmert sich um das Hinzufügen der Elemente in den Html-Dom und um Scroll- und Carousel-Animationen.
 
 ### Content Centric Renderer
-Dieser Renderer erbt vom Classic Renderer und erweitert dessen Funktionalitäten um Suggestions und Overlays.
+Dieser Renderer Renderer versucht, die Zeit, in der ein Inhalt sichtbar ist, zu maximieren, indem er den Inhalt aktualisiert, wenn möglich, oder unterbrechende Aktionen wie Absichtskaskadierung durch Überlagerung des Inhalts anzeigt.
 
 Es empfieht sich diesen Renderer zu verwenden oder einen eigenen auf dessen Basis zu schreiben, da er alle Funktionalitäten aller renderbaren Elementen unterstützt.
 
 ## Listener
 Listener bieten die Möglichkeit auf verschiedentste Events wie Disconnect, Connection-Lost oder OnError zu reagieren. Hierfür gibt es auch verschiedene Listener.
-
+Eine genaue Beschreibung der einzelnen Methoden findet sich [hier](https://github.com/leftshiftone/gaia-js-sdk-convey/blob/master/src/lib/api/IListener.ts).
 ### Default Listener
 Dieser dient als Basis und sollte beim Schreiben eines eigenen Listeners als Basis verwendet werden. Der selbst geschriebene Listener kann ganz einfach in der Initialisierung von Convey angegeben werden.
 
 ### OffSwitch Listener
 Wenn man möchte, dass das Textfeld nur sichtbar ist, wenn im Prozess eine Texteingabe erforderlich ist, empfiehlt sich, diesen Listener zu verwenden oder darauf aufzubauen.
+
+## Artefakte
+Bei jedem Release werden verschiedene Arten des Projekts gebaut. Darunter fallen:
+* Aud: Nur die Audio Elemente sind erhalten. Dies kann beim einem Voice Assistenten praktisch sein.
+* Cod: Dieses enthält nur den Code Reader
+* Map: Enthält auch alle Map Librarys wie Google Maps und OSM
+* Vis: Fügt eine Visualisation Library hinzu die für Statistiken verwendet werden kann.
+* Std: Dieses enthält alle Elemente außer denen die in den anderen Artefakten hinzugefügt wurde.
+* All: Enthält alle Convey Elemente
 
 
 ## Development
