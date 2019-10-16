@@ -63,8 +63,8 @@ export class OffSwitchListener implements IListener {
 
     /**
      * Sets the disabled flag and adds the CSS class
-     * lto-off to the invoker and textbox, if the no
-     * NER strategy is passed
+     * lto-off to the invoker and textbox, if there is no
+     * NER strategy passed
      *
      * @param nerStrategies the NER strategy which
      * is used in the current message
