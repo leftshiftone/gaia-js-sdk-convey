@@ -119,9 +119,18 @@ Dieser dient als Basis und sollte beim Schreiben eines eigenen Listeners als Bas
 Wenn man möchte, dass das Textfeld nur sichtbar ist, wenn im Prozess eine Texteingabe erforderlich ist, empfiehlt sich, diesen Listener zu verwenden oder darauf aufzubauen.
 
 
+## Development
 
+### Release
+Releases are triggered locally. Just a tag will be pushed to trigger the CI release pipeline.
 
+#### Major
+Run `yarn trigger-release:major` locally.
 
+#### Minor
+Run `yarn trigger-release:minor` locally.
 
+#### Patch
+Run `yarn trigger-release:patch` locally.
 
 
