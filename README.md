@@ -48,6 +48,7 @@ Add the following before the `</head>` tag in the HTML file.
         new GaiaConvey.OffSwitchListener()
     ).connect('wss://DOMAIN_NAME/mqtt', 'IDENTITY_ID')
         .then(connection => {
+            connection.subscribe(ChannelType.CONTEXT, (data) => console.log(data));
             connection.reception();
         });
 </script>
@@ -108,7 +109,7 @@ The following modules are available:
 * cod: Contains the code reader module (e.g. QRCode)
 * map: Contains modules for Open Street Map and Google Maps
 * vis: Contains modules for rendering data as charts
-* all: Enthält alle Convey Elemente
+* all: Contains all modules
 
 
 ## Development
