@@ -3,7 +3,7 @@ export interface IMarker {
         lat: number
         lng: number
     }
-    meta?: object
+    meta?: Map<string, any>
     label?: string
     active: boolean
 }

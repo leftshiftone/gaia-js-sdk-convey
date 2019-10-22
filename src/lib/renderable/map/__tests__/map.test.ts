@@ -15,6 +15,6 @@ describe("MapTest", () => {
         expect(element.dataset.required).toBe("true");
         expect(element.tagName).toBe("DIV");
         expect(element.getAttribute("name")).toBe("map");
-        expect(element.getAttribute("value")).toBeNull();
+        expect(element.getAttribute("data-value")).toBeNull();
     });
 });
