@@ -63,7 +63,7 @@ export class GoogleMap {
 
             markers.forEach((marker: IMarker) => {
                 const current = new google.maps.Marker({map: this.map!, position: marker.position});
-                current.setValues({ltoLabel: marker.label, meta: marker.meta, active: marker.active});
+                current.setValues({label: marker.label, meta: marker.meta, active: marker.active});
                 this.markers.push(current);
                 current.get("active") ?
                     this.activateMarker(current) :
@@ -73,7 +73,7 @@ export class GoogleMap {
                     if(maxSelections === 1) {
                         if(activeMarker) this.deactivateMarker(activeMarker);
                         this.activateMarker(current);
-                        this.setLabel(current.get("ltoLabel") || "");
+                        this.setLabel(current.get("label") || "");
                         activeMarker = current;
                         return;
                     }
