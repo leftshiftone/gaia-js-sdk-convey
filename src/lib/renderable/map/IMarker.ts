@@ -4,5 +4,6 @@ export interface IMarker {
         lng: number
     }
     meta?: object
+    label?: string
     active: boolean
 }

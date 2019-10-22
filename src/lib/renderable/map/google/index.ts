@@ -30,6 +30,12 @@ export class GoogleMap {
         if (this.spec.class !== undefined)
             this.wrapper.addClasses(this.spec.class);
         this.includeScript();
+        const label = node("div");
+        label.addClasses("lto-map-label");
+        const mapContainer = node("div");
+        mapContainer.addClasses("lto-map-container");
+        this.wrapper.appendChild(mapContainer);
+        this.wrapper.appendChild(label);
         return this.wrapper.unwrap();
     }
 
@@ -37,6 +43,10 @@ export class GoogleMap {
         this.map = this.initMap();
         this.setCenter();
         this.addMarkersToMap();
+    }
+
+    public setLabel(text: string) {
+        this.wrapper.find(".lto-map-label").innerText(text)
     }
 
     public addMarkersToMap() {
@@ -53,7 +63,7 @@ export class GoogleMap {
 
             markers.forEach((marker: IMarker) => {
                 const current = new google.maps.Marker({map: this.map!, position: marker.position});
-                current.setValues({meta: marker.meta, active: marker.active});
+                current.setValues({label: marker.label, meta: marker.meta, active: marker.active});
                 this.markers.push(current);
                 current.get("active") ?
                     this.activateMarker(current) :
@@ -63,6 +73,7 @@ export class GoogleMap {
                     if(maxSelections === 1) {
                         if(activeMarker) this.deactivateMarker(activeMarker);
                         this.activateMarker(current);
+                        this.setLabel(current.get("label") || "");
                         activeMarker = current;
                         return;
                     }
@@ -80,7 +91,7 @@ export class GoogleMap {
     }
 
     public initMap(): Map {
-        return new google.maps.Map(this.wrapper.unwrap(), {center: {lat: 0, lng: 0}, zoom: 8});
+        return new google.maps.Map(this.wrapper.find(".lto-map-container").unwrap(), {center: {lat: 0, lng: 0}, zoom: 8});
     }
 
     public setCenter() {
