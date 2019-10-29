@@ -20,7 +20,7 @@ jobs:
               curl $BUILD_STATUS_URL\?flow\=circleci-completed -d '{"repository":"'"$CIRCLE_PROJECT_REPONAME"'","branch":"'"${CIRCLE_BRANCH:-${CIRCLE_TAG/-/\/}}"'","build_number":"'"$CIRCLE_PREVIOUS_BUILD_NUM"'","build_url":"'"$CIRCLE_BUILD_URL"'"}' -H "Content-Type: application/json" -X POST -i || true
   build:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:10-browsers
     steps:
       - run:
           <<: *webhook-created
@@ -38,7 +38,7 @@ jobs:
           <<: *webhook-failed
   code-analytics:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:10-browsers
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Vienna"
     steps:
@@ -56,7 +56,7 @@ jobs:
           <<: *webhook-failed
   dependency-updates:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:10-browsers
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Vienna"
     steps:
@@ -76,7 +76,7 @@ jobs:
           <<: *webhook-failed
   release-major:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:10-browsers
     steps:
       - run:
           <<: *webhook-created
@@ -103,7 +103,7 @@ jobs:
           <<: *webhook-failed
   release-minor:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:10-browsers
     steps:
       - run:
           <<: *webhook-created
@@ -130,7 +130,7 @@ jobs:
           <<: *webhook-failed
   release-patch:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:10-browsers
     steps:
       - run:
           <<: *webhook-created
