@@ -27,13 +27,13 @@ export class GoogleMap {
         InputContainer.setRequiredAttribute(wrapper.unwrap(), this.spec.required);
         if (this.spec.class !== undefined)
             wrapper.addClasses(this.spec.class);
-        this.includeScript(wrapper);
         const label = node("div");
         label.addClasses("lto-map-label");
         const mapContainer = node("div");
         mapContainer.addClasses("lto-map-container");
         wrapper.appendChild(mapContainer);
         wrapper.appendChild(label);
+        this.includeScript(wrapper);
         return wrapper.unwrap();
     }
 
@@ -91,10 +91,16 @@ export class GoogleMap {
     }
 
     public setCenter(map: google.maps.Map) {
-        if (this.spec.centerBrowserLocation && navigator.geolocation)
-            navigator.geolocation.getCurrentPosition(position =>
-                map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude}));
-        else if (this.spec.centerLat && this.spec.centerLng)
+        if (this.spec.centerBrowserLocation && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                    map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude})
+                }, error => {
+                    console.debug("Unable to init google maps with current position");
+                    if (this.spec.centerLat && this.spec.centerLng)
+                        map.setCenter({lat: this.spec.centerLat, lng: this.spec.centerLng});
+                }
+            );
+        } else if (this.spec.centerLat && this.spec.centerLng)
             map.setCenter({lat: this.spec.centerLat, lng: this.spec.centerLng})
     }
 
