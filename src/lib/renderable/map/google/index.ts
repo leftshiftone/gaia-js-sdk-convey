@@ -3,7 +3,6 @@ import Properties from "../../Properties";
 import node, {INode} from "../../../support/node";
 import {IMarker} from "../IMarker";
 import {InputContainer} from "../../../support/InputContainer";
-
 import LatLng = google.maps.LatLng;
 
 export class GoogleMap {
@@ -43,7 +42,15 @@ export class GoogleMap {
         this.addMarkersToMap(map, wrapper);
     }
 
-    public setLabel = (text: string, wrapper: INode) => wrapper.find(".lto-map-label").innerText(text);
+    public setLabel = (text: string, wrapper: INode) => {
+        const labelWrapper = wrapper.find(".lto-map-label");
+        let span = labelWrapper.unwrap().querySelector("span");
+        if (!span) {
+            span = node("span").unwrap();
+        }
+        span.textContent = text;
+        labelWrapper.unwrap().appendChild(span);
+    };
 
     public addMarkersToMap(map: google.maps.Map, wrapper: INode) {
         if (!this.spec.src)
@@ -66,8 +73,8 @@ export class GoogleMap {
                     this.deactivateMarker(current, wrapper);
 
                 current.addListener("click", () => {
-                    if(maxSelections === 1) {
-                        if(activeMarker) this.deactivateMarker(activeMarker, wrapper);
+                    if (maxSelections === 1) {
+                        if (activeMarker) this.deactivateMarker(activeMarker, wrapper);
                         this.activateMarker(current, wrapper);
                         this.setLabel(current.get("context").label || "", wrapper);
                         activeMarker = current;
