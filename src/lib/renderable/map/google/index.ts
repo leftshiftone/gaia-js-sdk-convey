@@ -1,9 +1,11 @@
 import {ISpecification} from "../../../api";
-import Properties from "../../Properties";
 import node, {INode} from "../../../support/node";
 import {IMarker} from "../IMarker";
+import {MarkerIcon} from "../MarkerIcon";
 import {InputContainer} from "../../../support/InputContainer";
 import LatLng = google.maps.LatLng;
+
+import Properties from "../../Properties";
 
 export class GoogleMap {
 
@@ -13,6 +15,8 @@ export class GoogleMap {
 
     private readonly spec: ISpecification;
     private markers: Array<google.maps.Marker> = [];
+    private markerIcon: MarkerIcon | null = null;
+    private selectedMarkerIcon: MarkerIcon | null = null;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -36,7 +40,21 @@ export class GoogleMap {
         return wrapper.unwrap();
     }
 
+    private initMarkerIcons() {
+        // TODO get width and height out of given marker icons and remove properties
+        const markerSize = new google.maps.Size(
+            Properties.resolve("GOOGLE_MAPS_MARKER_WIDTH") || 32,
+            Properties.resolve("GOOGLE_MAPS_MARKER_HEIGHT") || 32);
+        const selectedMarkerSize = new google.maps.Size(
+            Properties.resolve("GOOGLE_MAPS_SELECTED_MARKER_WIDTH") || 32,
+            Properties.resolve("GOOGLE_MAPS_SELECTED_MARKER_HEIGHT") || 32);
+
+        this.markerIcon = new MarkerIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON, markerSize, markerSize);
+        this.selectedMarkerIcon = new MarkerIcon(this.spec.selectedMarkerIcon ? this.spec.selectedMarkerIcon : GoogleMap.DEFAULT_SELECTED_MARKER_ICON, selectedMarkerSize, selectedMarkerSize);
+    }
+
     private init(wrapper: INode) {
+        this.initMarkerIcons();
         const map = GoogleMap.initMap(wrapper);
         this.setCenter(map);
         this.addMarkersToMap(map, wrapper);
@@ -93,9 +111,7 @@ export class GoogleMap {
         })
     }
 
-    public static initMap(wrapper: INode): google.maps.Map {
-        return new google.maps.Map(wrapper.find(".lto-map-container").unwrap(), {center: {lat: 0, lng: 0}, zoom: 8});
-    }
+    public static initMap = (wrapper: INode) => new google.maps.Map(wrapper.find(".lto-map-container").unwrap(), {center: {lat: 0, lng: 0}, zoom: 8});
 
     public setCenter(map: google.maps.Map) {
         if (this.spec.centerBrowserLocation && navigator.geolocation) {
@@ -111,21 +127,17 @@ export class GoogleMap {
             map.setCenter({lat: this.spec.centerLat, lng: this.spec.centerLng})
     }
 
-    private static getMarkersFromSrc(src: string) {
-        return fetch(src).then(data => data.json()).then(json => json.markers ? json.markers : null)
-    }
+    private static getMarkersFromSrc = (src: string) => fetch(src).then(data => data.json()).then(json => json.markers ? json.markers : null);
 
     public deactivateMarker(marker: google.maps.Marker, wrapper: INode) {
         marker.get("context").active = false;
-        marker.setIcon(this.spec.markerIcon ? this.spec.markerIcon : GoogleMap.DEFAULT_MARKER_ICON);
-
+        marker.setIcon(this.markerIcon);
         this.setMarkersToValue(wrapper)
     }
 
     public activateMarker(marker: google.maps.Marker, wrapper: INode) {
         marker.get("context").active = true;
-        marker.setIcon(this.spec.selectedMarkerIcon ? this.spec.selectedMarkerIcon : GoogleMap.DEFAULT_SELECTED_MARKER_ICON);
-
+        marker.setIcon(this.selectedMarkerIcon);
         this.setMarkersToValue(wrapper)
     }
 
