@@ -39,12 +39,12 @@ In order to integrate with GAIA two things are required:
 </html>
 ```
 
-### Integrate Convey
+### Integrate Convey as standalone lib
 Add the following before the `</head>` tag in the HTML file.
 ```html
 <script type="javascript">
     new GaiaConvey.Gaia(
-        new GaiaConvey.ContentCentricRenderer(), 
+        new GaiaConvey.ContentCentricRenderer(),
         new GaiaConvey.OffSwitchListener()
     ).connect('wss://DOMAIN_NAME/mqtt', 'IDENTITY_ID')
         .then(connection => {
@@ -52,6 +52,18 @@ Add the following before the `</head>` tag in the HTML file.
             connection.reception();
         });
 </script>
+```
+
+### Integrate Convey as NPM package
+```javascript
+import {Gaia, ContentCentricRenderer, OffSwitchListener, ChannelType} from "gaia-js-sdk-convey";
+...
+new Gaia(new ContentCentricRenderer(), new OffSwitchListener())
+    .connect('wss://DOMAIN_NAME/mqtt', 'IDENTITY_ID')
+    .then(conn => {
+        conn.subscribe(ChannelType.CONTEXT, (data) => console.log(data));
+        conn.reception();
+    });
 ```
 
 ## Channels
