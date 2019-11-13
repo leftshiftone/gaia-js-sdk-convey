@@ -14,8 +14,8 @@ export class OpenStreetMap implements IRenderable {
     public mapMarkerInactive: Icon;
     public mapContainer: HTMLDivElement;
     public spec: ISpecification;
-    private readonly osmMinZoom: number = 2;
-    private readonly osmMaxZoom: number = 14;
+    private readonly osmMinZoom: number = 0;
+    private readonly osmMaxZoom: number = 20;
     private readonly osmDefaultZoom: number = 8;
 
     constructor(spec: ISpecification) {

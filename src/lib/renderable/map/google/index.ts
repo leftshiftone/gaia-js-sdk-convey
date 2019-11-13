@@ -17,6 +17,9 @@ export class GoogleMap {
     private markers: Array<google.maps.Marker> = [];
     private markerIcon: MarkerIcon | null = null;
     private selectedMarkerIcon: MarkerIcon | null = null;
+    private readonly osmMinZoom: number = 0;
+    private readonly osmMaxZoom: number = 19;
+    private readonly osmDefaultZoom: number = 8;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -57,7 +60,7 @@ export class GoogleMap {
         this.initMarkerIcons();
         const map = GoogleMap.initMap(wrapper);
         this.setCenter(map);
-        map.setZoom(this.spec.zoom!);
+        map.setZoom(this.getZoom());
         this.addMarkersToMap(map, wrapper);
     }
 
@@ -165,5 +168,16 @@ export class GoogleMap {
         } else {
             this.init(wrapper);
         }
+    }
+
+    private getZoom(): number {
+        if (this.spec.zoom && this.spec.zoom >= this.osmMinZoom && this.spec.zoom <= this.osmMaxZoom) {
+            return this.spec.zoom;
+        } else if (this.spec.zoom && this.spec.zoom > this.osmMaxZoom) {
+            return this.osmMaxZoom;
+        } else if (this.spec.zoom && this.spec.zoom < this.osmMinZoom) {
+            return this.osmMinZoom;
+        }
+        return this.osmDefaultZoom;
     }
 }
