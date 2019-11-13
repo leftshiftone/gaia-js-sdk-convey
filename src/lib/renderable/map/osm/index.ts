@@ -16,7 +16,7 @@ export class OpenStreetMap implements IRenderable {
     public spec: ISpecification;
     private readonly osmMinZoom: number = 2;
     private readonly osmMaxZoom: number = 14;
-    private readonly osmDefaultzoom: number = 8;
+    private readonly osmDefaultZoom: number = 8;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -237,7 +237,7 @@ export class OpenStreetMap implements IRenderable {
         } else if (this.spec.zoom && this.spec.zoom < this.osmMinZoom) {
             return this.osmMinZoom;
         }
-        return this.osmDefaultzoom;
+        return this.osmDefaultZoom;
     }
 
     public static getMarkerJSON(marker: Marker) {
