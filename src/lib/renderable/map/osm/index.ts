@@ -14,6 +14,9 @@ export class OpenStreetMap implements IRenderable {
     public mapMarkerInactive: Icon;
     public mapContainer: HTMLDivElement;
     public spec: ISpecification;
+    private readonly osmMinZoom: number = 2;
+    private readonly osmMaxZoom: number = 14;
+    private readonly osmDefaultzoom: number = 8;
 
     constructor(spec: ISpecification) {
         this.spec = spec;
@@ -173,14 +176,13 @@ export class OpenStreetMap implements IRenderable {
         }
 
         setTimeout(() => {
-            const zoom = 13;
-            const leafletSettings = {minZoom: 2, maxZoom: 14};
+            const leafletSettings = {minZoom: this.osmMinZoom, maxZoom: this.osmMaxZoom};
 
             const osmUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
             const osmAttrib = 'OpenStreetMap data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 
             const osm = L.tileLayer(osmUrl, {subdomains: ['a', 'b', 'c'], attribution: osmAttrib});
-            this.map = L.map(this.mapContainer, leafletSettings).setView(this.center, zoom);
+            this.map = L.map(this.mapContainer, leafletSettings).setView(this.center, this.getZoom());
             this.map.addLayer(osm);
 
             const mapMarkerSelected = L.icon({
@@ -225,6 +227,17 @@ export class OpenStreetMap implements IRenderable {
         if (this.spec.class !== undefined) this.mapContainer.classList.add(this.spec.class);
 
         return this.mapContainer;
+    }
+
+    private getZoom(): number {
+        if (this.spec.zoom && this.spec.zoom >= this.osmMinZoom && this.spec.zoom <= this.osmMaxZoom) {
+            return this.spec.zoom;
+        } else if (this.spec.zoom && this.spec.zoom > this.osmMaxZoom) {
+            return this.osmMaxZoom;
+        } else if (this.spec.zoom && this.spec.zoom < this.osmMinZoom) {
+            return this.osmMinZoom;
+        }
+        return this.osmDefaultzoom;
     }
 
     public static getMarkerJSON(marker: Marker) {

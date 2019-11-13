@@ -48,4 +48,5 @@ export interface ISpecification {
     selectedMarkerIcon?: string;
     ordered?: boolean;
     maxSelections?: number;
+    zoom?: number;
 }

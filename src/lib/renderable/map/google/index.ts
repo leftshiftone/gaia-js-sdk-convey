@@ -57,6 +57,7 @@ export class GoogleMap {
         this.initMarkerIcons();
         const map = GoogleMap.initMap(wrapper);
         this.setCenter(map);
+        map.setZoom(this.spec.zoom!);
         this.addMarkersToMap(map, wrapper);
     }
 
