@@ -1,4 +1,4 @@
-export function closestByClass(element: any, clazz: Array<string>): HTMLElement | null{
+export function closestByClass(element: HTMLElement, clazz: Array<string>): HTMLElement | null{
     let el = element;
     let b = false;
     while (!b) {
