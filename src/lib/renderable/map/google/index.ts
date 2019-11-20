@@ -65,28 +65,25 @@ export class GoogleMap {
     }
 
     private init(wrapper: INode) {
-        this.initMarkerIcons();
         const map = GoogleMap.initMap(wrapper);
         this.setCenter(map);
         map.setZoom(this.getZoom());
+        this.initMarkerIcons();
         this.addMarkersToMap(map, wrapper);
         this.setMarkersToValue(wrapper);
 
         EventStream.addListener("GAIA::map::reset::" + this.spec.name, () => {
                 this.resetAllMarkers();
                 this.setMarkersToValue(wrapper);
+                this.setLabel("", wrapper);
             }
         );
     }
 
     public setLabel = (text: string, wrapper: INode) => {
         const labelWrapper = wrapper.find(".lto-map-label");
-        let span = labelWrapper.unwrap().querySelector("span");
-        if (!span) {
-            span = node("span").unwrap();
-        }
-        span.textContent = text;
-        labelWrapper.unwrap().appendChild(span);
+        if(!labelWrapper) return;
+        labelWrapper.unwrap().innerHTML = text;
     };
 
     public addMarkersToMap(map: google.maps.Map, wrapper: INode) {
