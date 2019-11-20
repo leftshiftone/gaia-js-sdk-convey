@@ -1,9 +1,9 @@
-# GAIA Convey
+# Convey
 
 [![CircleCI branch](https://img.shields.io/circleci/project/github/leftshiftone/gaia-js-sdk-convey/master.svg?style=flat-square)](https://circleci.com/gh/leftshiftone/gaia-js-sdk-convey)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/leftshiftone/gaia-js-sdk-convey.svg?style=flat-square)](https://github.com/leftshiftone/gaia-js-sdk-convey/tags)
 
-Convey is a Javascript Framework for connecting to processes created with [G.A.I.A.](https://www.leftshift.one/produkt/gaia-services/).
+Convey is a JavaScript Framework for connecting to processes created with [G.A.I.A.](https://www.leftshift.one/produkt/gaia-services/).
 
 The framework ist compatible with all major Browsers and can be used standalone as well as in conjunction with React, Angular or Vue.
 
@@ -12,11 +12,11 @@ The framework ist compatible with all major Browsers and can be used standalone 
 In order to add Convey to your project, follow these steps:
 
 ### Prerequisites
-In order to integrate with GAIA two things are required:
+In order to integrate with G.A.I.A. two things are required:
 1. MQTT endpoint: e.g. wss://gaia.local/mqtt
 2. Identifier of the so called *Identity* to connect to.
 
-### Add convey
+### Add Convey
 `npm i gaia-js-sdk-convey`
 
 ### Create HTML page
@@ -67,19 +67,19 @@ new Gaia(new ContentCentricRenderer(), new OffSwitchListener())
 ```
 
 ## Channels
-The communication with GAIA contains several channels where each one has its own purpose.
+The communication with G.A.I.A. contains several channels where each one has its own purpose.
 
 ### TEXT
 
-Is the main channel and is responsible for exchanging the elements configured in GAIA. Convey automatically subscribes to this channel. The messages in this channel are rendered to HTML elements.
+Is the main channel and is responsible for exchanging the elements configured in G.A.I.A.. Convey automatically subscribes to this channel. The messages in this channel are rendered to HTML elements.
 
 ### NOTIFICATION
 
-Each notification configured in the GAIA BPMN process can be received if subscribed to this channel.
+Each notification configured in the G.A.I.A. BPMN process can be received if subscribed to this channel.
 
 ### LOG
 
-GAIA sends logs for certain process executions which can be received by subscribing to this channel.
+G.A.I.A. sends logs for certain process executions which can be received by subscribing to this channel.
 
 
 ## Renderer
