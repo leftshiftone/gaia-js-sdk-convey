@@ -6,6 +6,8 @@ import {InputContainer} from "../../../support/InputContainer";
 import LatLng = google.maps.LatLng;
 
 import Properties from "../../Properties";
+import {closestByClass} from "../../../support/Elements";
+import EventStream from "../../../event/EventStream";
 
 export class GoogleMap {
 
@@ -56,22 +58,32 @@ export class GoogleMap {
         this.selectedMarkerIcon = new MarkerIcon(this.spec.selectedMarkerIcon ? this.spec.selectedMarkerIcon : GoogleMap.DEFAULT_SELECTED_MARKER_ICON, selectedMarkerSize, selectedMarkerSize);
     }
 
+    private resetAllMarkers() {
+        this.markers.forEach(marker => {
+            this.deactivateMarker(marker)
+        })
+    }
+
     private init(wrapper: INode) {
-        this.initMarkerIcons();
         const map = GoogleMap.initMap(wrapper);
         this.setCenter(map);
         map.setZoom(this.getZoom());
+        this.initMarkerIcons();
         this.addMarkersToMap(map, wrapper);
+        this.setMarkersToValue(wrapper);
+
+        EventStream.addListener("GAIA::map::reset::" + this.spec.name, () => {
+                this.resetAllMarkers();
+                this.setMarkersToValue(wrapper);
+                this.setLabel("", wrapper);
+            }
+        );
     }
 
     public setLabel = (text: string, wrapper: INode) => {
         const labelWrapper = wrapper.find(".lto-map-label");
-        let span = labelWrapper.unwrap().querySelector("span");
-        if (!span) {
-            span = node("span").unwrap();
-        }
-        span.textContent = text;
-        labelWrapper.unwrap().appendChild(span);
+        if(!labelWrapper) return;
+        labelWrapper.unwrap().innerHTML = text;
     };
 
     public addMarkersToMap(map: google.maps.Map, wrapper: INode) {
@@ -91,26 +103,29 @@ export class GoogleMap {
                 current.setValues({context: {label: marker.label, meta: marker.meta, active: marker.active}});
                 this.markers.push(current);
                 current.get("context").active ?
-                    this.activateMarker(current, wrapper) :
-                    this.deactivateMarker(current, wrapper);
+                    this.activateMarker(current) :
+                    this.deactivateMarker(current);
 
                 current.addListener("click", () => {
-                    if (maxSelections === 1) {
-                        if (activeMarker) this.deactivateMarker(activeMarker, wrapper);
-                        this.activateMarker(current, wrapper);
-                        this.setLabel(current.get("context").label || "", wrapper);
-                        activeMarker = current;
-                        return;
+                        if (maxSelections === 1) {
+                            if (activeMarker) {
+                                this.deactivateMarker(activeMarker);
+                            }
+                            this.activateMarker(current);
+                            this.setLabel(current.get("context").label || "", wrapper);
+                            activeMarker = current;
+                        } else {
+                            if (current.get("active")) {
+                                countSelections -= 1;
+                                this.deactivateMarker(current);
+                            } else if (countSelections < maxSelections) {
+                                countSelections += 1;
+                                this.activateMarker(current);
+                            }
+                        }
+                        this.setMarkersToValue(wrapper);
                     }
-
-                    if (current.get("active")) {
-                        countSelections -= 1;
-                        this.deactivateMarker(current, wrapper);
-                    } else if (countSelections < maxSelections) {
-                        countSelections += 1;
-                        this.activateMarker(current, wrapper);
-                    }
-                });
+                );
             });
         })
     }
@@ -133,16 +148,14 @@ export class GoogleMap {
 
     private static getMarkersFromSrc = (src: string) => fetch(src).then(data => data.json()).then(json => json.markers ? json.markers : null);
 
-    public deactivateMarker(marker: google.maps.Marker, wrapper: INode) {
+    public deactivateMarker(marker: google.maps.Marker) {
         marker.get("context").active = false;
         marker.setIcon(this.markerIcon);
-        this.setMarkersToValue(wrapper)
     }
 
-    public activateMarker(marker: google.maps.Marker, wrapper: INode) {
+    public activateMarker(marker: google.maps.Marker) {
         marker.get("context").active = true;
         marker.setIcon(this.selectedMarkerIcon);
-        this.setMarkersToValue(wrapper)
     }
 
     public setMarkersToValue(wrapper: INode) {
@@ -152,9 +165,14 @@ export class GoogleMap {
                 selectedMarkers.push({position: marker.getPosition()!, meta: marker.get("context").meta});
         });
 
-        selectedMarkers.length > 0 ?
-            wrapper.addDataAttributes({value: JSON.stringify(selectedMarkers)}) :
-            wrapper.removeAttributes("data-value")
+        const form: HTMLElement | null = closestByClass(wrapper.unwrap(), ["lto-form"]);
+
+        if (form) form.classList.remove("lto-submitable");
+
+        if (selectedMarkers.length > 0) {
+            if (form) form.classList.add("lto-submitable");
+            wrapper.addDataAttributes({value: JSON.stringify(selectedMarkers)})
+        } else wrapper.removeAttributes("data-value")
     }
 
     public includeScript(wrapper: INode) {
