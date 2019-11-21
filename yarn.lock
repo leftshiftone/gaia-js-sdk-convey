@@ -678,10 +678,17 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/googlemaps@^3.37.5":
-  version "3.37.5"
-  resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.37.5.tgz#f6299b417c8f97e87a41236c54cd5df8a185174c"
-  integrity sha512-lTW3x1V3KbL84fvKaIH4MI7EfEmgI369DFq4VIn7IU7VJJ4fTINVb8Z0GBYsjPo/yRsJZFA6CBXoH/yIKzMXeg==
+"@types/google-maps@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@types/google-maps/-/google-maps-3.2.1.tgz#68b84f74773960fbf4c76e2d2bc62838b8cd5026"
+  integrity sha512-0JeYMqVUeolC2hC1v8s49vjg5zt/tQXDzzcZfWxzx8Kcu1xDSpULFkhI33CIUZ/r8PmGvrud9EEZqFhJlOE4/A==
+  dependencies:
+    "@types/googlemaps" "*"
+
+"@types/googlemaps@*":
+  version "3.38.0"
+  resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.38.0.tgz#069c0303ec60706b2e32b14330634c1e1cd59e45"
+  integrity sha512-Rp7FnrwyYGnjoxM+/q/4DRqUzvV9JKK1SBRXx8APxU6NNMtYMsWmOMsQOV2U6z8aMFzlUbRv3EDixLcDep8t9w==
 
 "@types/istanbul-lib-coverage@^1.1.0":
   version "1.1.0"
