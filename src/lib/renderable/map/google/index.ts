@@ -3,15 +3,16 @@ import node, {INode} from "../../../support/node";
 import {IMarker} from "../IMarker";
 import {MarkerIcon} from "../MarkerIcon";
 import {InputContainer} from "../../../support/InputContainer";
-import LatLng = google.maps.LatLng;
-
+import {google} from "google-maps"
 import Properties from "../../Properties";
 import {closestByClass} from "../../../support/Elements";
 import EventStream from "../../../event/EventStream";
 
+declare const google: google;
+
 export class GoogleMap {
 
-    API = "https://maps.googleapis.com/maps/api/js?key=" + Properties.resolve("GOOGLE_MAPS_API_KEY");
+    API = "https://maps.googleapis.com/maps/api/js?sensor=false&key=" + Properties.resolve("GOOGLE_MAPS_API_KEY");
     static DEFAULT_MARKER_ICON = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
     static DEFAULT_SELECTED_MARKER_ICON = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
 
@@ -41,12 +42,11 @@ export class GoogleMap {
         mapContainer.addClasses("lto-map-container");
         wrapper.appendChild(mapContainer);
         wrapper.appendChild(label);
-        this.includeScript(wrapper);
+        this.includeAPI().then(() => this.init(wrapper));
         return wrapper.unwrap();
     }
 
     private initMarkerIcons() {
-        // TODO get width and height out of given marker icons and remove properties
         const markerSize = new google.maps.Size(
             Properties.resolve("GOOGLE_MAPS_MARKER_WIDTH") || 32,
             Properties.resolve("GOOGLE_MAPS_MARKER_HEIGHT") || 32);
@@ -65,6 +65,7 @@ export class GoogleMap {
     }
 
     private init(wrapper: INode) {
+        console.debug("init google maps");
         const map = GoogleMap.initMap(wrapper);
         this.setCenter(map);
         map.setZoom(this.getZoom());
@@ -82,7 +83,7 @@ export class GoogleMap {
 
     public setLabel = (text: string, wrapper: INode) => {
         const labelWrapper = wrapper.find(".lto-map-label");
-        if(!labelWrapper) return;
+        if (!labelWrapper) return;
         labelWrapper.unwrap().innerHTML = text;
     };
 
@@ -159,7 +160,7 @@ export class GoogleMap {
     }
 
     public setMarkersToValue(wrapper: INode) {
-        const selectedMarkers: Array<{ position: LatLng, meta: Map<string, any> }> = [];
+        const selectedMarkers: Array<{ position: google.maps.LatLng, meta: Map<string, any> }> = [];
         this.markers.forEach(marker => {
             if (marker.get("context").active)
                 selectedMarkers.push({position: marker.getPosition()!, meta: marker.get("context").meta});
@@ -175,18 +176,18 @@ export class GoogleMap {
         } else wrapper.removeAttributes("data-value")
     }
 
-    public includeScript(wrapper: INode) {
-        if (!document.querySelectorAll(`[src="${this.API}"]`).length) {
-            document.body.appendChild(Object.assign(
-                document.createElement('script'), {
-                    type: 'text/javascript',
-                    src: this.API,
-                    onload: () => this.init(wrapper)
-                }));
-        } else {
-            this.init(wrapper);
-        }
-    }
+    public includeAPI = () => new Promise(resolve => {
+        if (!document.head.querySelectorAll(`[src="${this.API}"]`).length) {
+            const script = document.createElement('script') as HTMLScriptElement;
+            script.onload = () => {
+                console.debug("load google maps API");
+                resolve();
+            }
+            script.type = 'text/javascript';
+            script.src = this.API;
+            document.head.appendChild(script)
+        } else resolve()
+    });
 
     private getZoom(): number {
         if (this.spec.zoom && this.spec.zoom >= this.osmMinZoom && this.spec.zoom <= this.osmMaxZoom) {
