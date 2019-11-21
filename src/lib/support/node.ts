@@ -137,7 +137,7 @@ class Node implements INode {
     }
 
     public addClasses(...classes: string[]): INode {
-        classes.forEach(clazz => this.node.classList.add(clazz));
+        classes.forEach(clazz => clazz.split(" ").forEach(it => this.node.classList.add(it)));
         return this;
     }
 
