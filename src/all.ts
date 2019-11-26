@@ -77,6 +77,7 @@ import {Trigger} from "./lib/renderable/trigger";
 import {Overlays} from "./lib/renderable/overlays/Overlays";
 import {Overlay} from "./lib/renderable/overlays/Overlay";
 import {Transition} from "./lib/renderable/transition";
+import {SmallDevice} from "./lib/renderable/smallDevice";
 
 export * from './lib/api';
 export {
@@ -162,4 +163,5 @@ export {
     Overlays,
     Overlay,
     Transition,
+    SmallDevice,
 };
