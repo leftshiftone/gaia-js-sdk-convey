@@ -1,3 +1,5 @@
+# DEPRECATED! -> Migrated to https://github.com/leftshiftone/conveyjs
+
 # Convey
 
 [![CircleCI branch](https://img.shields.io/circleci/project/github/leftshiftone/gaia-js-sdk-convey/master.svg?style=flat-square)](https://circleci.com/gh/leftshiftone/gaia-js-sdk-convey)
